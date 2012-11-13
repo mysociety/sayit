@@ -1,0 +1,36 @@
+# Apache configuration.
+#
+# Copyright (c) 2011 UK Citizens Online Democracy. All rights reserved.
+# WWW: http://www.mysociety.org
+
+# # This kind of thing would be needed if we wanted a password.
+#
+# <Location />
+#     AuthType Basic
+#     AuthName "Private beta I'm afraid."
+#     AuthUserFile htpasswdfile
+#     Require valid-user
+#     Order deny,allow
+#     Deny from all
+#     Satisfy any
+# </Location>
+
+# Replace the following below:
+#   'example.com', 'exampleuser', 'examplegroup'
+
+Alias /media /data/vhost/example.com/uploads
+Alias /static /data/vhost/example.com/collected_static
+Alias /robots.txt /data/vhost/example.com/sayit/web/robots.txt
+Alias /favicon.ico /data/vhost/example.com/sayit/web/favicon.ico
+
+WSGIDaemonProcess example.com \
+    user=exampleuser \
+    group=examplegroup \
+    processes=5 \
+    threads=1 \
+    display-name=example.com \
+    python-path=/data/vhost/example.com/sayit:/data/vhost/example.com/virtualenv-sayit/lib/python2.6/site-packages
+
+WSGIProcessGroup example.com
+
+WSGIScriptAlias / /data/vhost/example.com/sayit/spoke/wsgi.py

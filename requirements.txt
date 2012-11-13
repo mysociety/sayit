@@ -1,0 +1,26 @@
+# List all Python package requirements this project has.
+#
+# more details: http://www.pip-installer.org/en/latest/requirements.html
+
+### General useful bits
+PyYAML
+psycopg2
+
+### Django related
+Django
+South
+django-pagination
+django-bcrypt
+
+### Django related registration
+# The registration app is a little out of date - get it from the repo direct....
+# django-registration
+#-e hg+https://bitbucket.org/ubernostrum/django-registration@fad7080fe769#egg=django-registration
+#django-registration-defaults
+
+### Xapian is a full text search engine, and haystack a django interface to it.
+### If you want to use this uncomment below, and probably add the
+### '--enable-site-packages' argument to the pip install command in
+### 'post_deploy_actions.bash'
+# xapian-haystack
+# django-haystack
