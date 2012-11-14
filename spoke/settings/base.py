@@ -125,7 +125,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'django_bcrypt',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'south',
@@ -161,17 +160,6 @@ LOGGING = {
         },
     }
 }
-
-# configure the bcrypt settings
-# Enables bcrypt hashing when ``User.set_password()`` is called.
-BCRYPT_ENABLED = True
-
-# Enables bcrypt hashing when running inside Django
-# TestCases. Defaults to False, to speed up user creation.
-BCRYPT_ENABLED_UNDER_TEST = False
-
-# Number of rounds to use for bcrypt hashing. Defaults to 12.
-BCRYPT_ROUNDS = 12
 
 # pagination related settings
 PAGINATION_DEFAULT_PAGINATION = 10
