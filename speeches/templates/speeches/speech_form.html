@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Add speech{% endblock %}
+
+{% block content %}
+<p class="lead">Here is where you can add a new speech.</p>
+
+<form class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-error alert-block">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+    {% for field in form.visible_fields %}
+        <div class="control-group {% if field.errors %}error{% endif %}">
+            <span class="control-label">{{ field.label_tag }}</span>
+            <div class="controls">
+                {{ field }}
+            {% if field.errors %}
+                <span class="help-inline">{{ field.errors }}</span>
+            {% endif %}
+            <span class="help-inline">{{ field.help_text }}</span>
+            </div>
+        </div>
+    {% endfor %}
+
+<input type="submit" class="btn" value="Add speech">
+</form>
+{% endblock %}

@@ -8,9 +8,9 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
     url(r'^$', 'spoke.views.home', name='home'),
-    # url(r'^spoke/', include('spoke.foo.urls')),
+
+    url(r'^speech/', include('speeches.urls')),
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),

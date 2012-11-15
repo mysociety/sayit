@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Add speech{% endblock %}
+
+{% block content %}
+<p class="lead">Here is where you can view a speech.</p>
+
+{{ object.text }}
+
+{{ object.audio }}
+
+{{ object.location }}
+
+{{ object.speaker }}
+
+{% endblock %}

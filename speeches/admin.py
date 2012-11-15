@@ -1,12 +1,10 @@
 from django.contrib import admin
 from speeches import models
 
-# tweak to taste - simple at the top and more custom below
+class SpeechAdmin(admin.ModelAdmin):
+    pass
 
-
-# admin.site.register(models.FooBar)
-
-
+admin.site.register(models.Speech, SpeechAdmin)
 
 # class FooBarAdmin(admin.ModelAdmin):
 #     prepopulated_fields = {"slug": ["name"]}
