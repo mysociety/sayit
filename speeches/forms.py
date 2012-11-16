@@ -12,7 +12,9 @@ class SpeechForm(forms.ModelForm):
 
     def clean_audio(self):
         audio = self.cleaned_data['audio']
-        # Anything to do here?
+        if audio:
+            if audio.content_type[0:6] != 'audio/':
+                raise forms.ValidationError('You must upload an audio file')
         return audio
 
     class Meta:
