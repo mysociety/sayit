@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Add speech{% endblock %}
+{% block title %}{% if object %}Edit speech {% else %}Add speech{% endif %}{% endblock %}
 
 {% block content %}
-<p class="lead">Here is where you can add a new speech.</p>
+<p class="lead">
+    {% if object %}
+        Here is where you can edit a speech.
+    {% else %}
+        Here is where you can add a new speech.
+    {% endif %}
+</p>
 
 <form class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
 
@@ -30,6 +36,6 @@
         </div>
     {% endfor %}
 
-<input type="submit" class="btn" value="Add speech">
+<input type="submit" class="btn" value="{% if object %}Update speech{% else %}Add speech{% endif %}">
 </form>
 {% endblock %}
