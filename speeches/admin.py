@@ -1,14 +1,19 @@
 from django.contrib import admin
-from speeches import models
+from django.db import models
+
+from speeches.models import Speech
+from speeches.widgets import AudioFileInput
 
 class SpeechAdmin(admin.ModelAdmin):
-    pass
+    formfield_overrides = {
+        models.FileField: { 'widget': AudioFileInput },
+    }
 
-admin.site.register(models.Speech, SpeechAdmin)
+admin.site.register(Speech, SpeechAdmin)
 
 # class FooBarAdmin(admin.ModelAdmin):
 #     prepopulated_fields = {"slug": ["name"]}
 #     list_display  = [ 'slug', 'name', ]
 #     search_fields = ['name']
 # 
-# admin.site.register( models.FooBar, FooBarAdmin )
+# admin.site.register( FooBar, FooBarAdmin )

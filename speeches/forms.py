@@ -1,6 +1,7 @@
 from django import forms
 
 from speeches.models import Speech
+from speeches.widgets import AudioFileInput
 
 class SpeechForm(forms.ModelForm):
     def clean(self):
@@ -17,6 +18,7 @@ class SpeechForm(forms.ModelForm):
     class Meta:
         model = Speech
         widgets = {
+            'audio': AudioFileInput,
             'text': forms.Textarea(attrs={'class': 'input-block-level'}),
             'event': forms.TextInput(),
             'title': forms.TextInput(),

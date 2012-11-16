@@ -1,16 +1,21 @@
-{% extends 'base.html' %}
+{% extends 'speeches/speech_audio.html' %}
+{% load staticfiles %}
 
-{% block title %}Add speech{% endblock %}
+{% block title %}View speech{% endblock %}
 
-{% block content %}
+{% block content2 %}
 <p class="lead">Here is where you can view a speech.</p>
-
-{{ object.text }}
-
-{{ object.audio }}
 
 {{ object.location }}
 
 {{ object.speaker }}
+
+{% if object.audio %}
+<p><audio src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio></p>
+{% endif %}
+
+{% if object.text %}
+<blockquote>{{ object.text }}</blockquote>
+{% endif %}
 
 {% endblock %}

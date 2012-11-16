@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link href="{% static "mediaelement/mediaelementplayer.min.css" %}" rel="stylesheet">
+<style>
+.mejs-container { display: inline-block; }
+label.checkbox.inline { float: none; display: inline; }
+</style>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<script src="{% static "js/jquery-1.8.2.min.js" %}"></script>
+<script src="{% static "mediaelement/mediaelement-and-player.min.js" %}"></script>
+<!-- <script src="{% static "soundmanager2/script/soundmanager2.js" %}"></script> -->
+<script>
+$(function(){
+    $('audio').mediaelementplayer();
+    //soundManager.setup({
+    //    url: '{% static "soundmanager2/swf/" %}'
+    //});
+});
+</script>
+{% endblock %}
+
+{% block title %}{{ title }} | {% trans 'Spoke site admin' %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'Spoke administration' %}</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
