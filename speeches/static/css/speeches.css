@@ -1,0 +1,31 @@
+.fileinput-button span, .fileinput-button i {
+    display: none;
+}
+
+.js .fileinput-button span, .js .fileinput-button i {
+    display: inline-block;
+}
+
+.progress {
+    display: none;
+    margin-left: 180px;
+}
+
+.fileinput-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.js .fileinput-button input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    transform: translate(-300px, 0) scale(4);
+    font-size: 23px;
+    direction: ltr;
+    cursor: pointer;
+}
+

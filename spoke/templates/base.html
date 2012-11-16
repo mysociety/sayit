@@ -1,7 +1,5 @@
-{% load staticfiles %}
-{% load url from future %}
-<!DOCTYPE html>
-<html>
+{% load staticfiles %}{% load url from future %}<!DOCTYPE html>
+<html class="no-js">
     <head>
         <title>{% block fulltitle %}{% block title %}{% endblock %} :: Spoke{% endblock %}</title>
         <meta charset="utf-8">
@@ -9,6 +7,10 @@
         {% block extra_css %}{% endblock %}
         <script src="{% static "js/jquery-1.8.2.min.js" %}"></script>
         <script src="{% static "js/bootstrap.min.js" %}"></script>
+        <script>
+            var docEl = document.documentElement;
+            docEl.className = docEl.className.replace(/\bno-js\b/,'') + ' js';
+        </script>
         {% block extra_js %}{% endblock %}
         {% if settings.GOOGLE_ANALYTICS_ACCOUNT %}
         <script type="text/javascript">

@@ -1,4 +1,10 @@
 {% extends 'speeches/speech_audio.html' %}
+{% load staticfiles %}
+
+{% block extra_css %}
+{{ block.super }}
+<link href="{% static "css/speeches.css" %}" rel="stylesheet">
+{% endblock %}
 
 {% block title %}{% if object %}Edit speech {% else %}Add speech{% endif %}{% endblock %}
 
@@ -28,11 +34,16 @@
             <span class="control-label">{{ field.label_tag }}</span>
             <div class="controls">
                 {{ field }}
-            {% if field.errors %}
-                <span class="help-inline">{{ field.errors }}</span>
-            {% endif %}
-            <span class="help-inline">{{ field.help_text }}</span>
+                {% if field.errors %}
+                    <span class="help-inline">{{ field.errors }}</span>
+                {% endif %}
+                <span class="help-inline">{{ field.help_text }}</span>
             </div>
+            {% if field.name == 'audio' %}
+            <div class="progress">
+                <div class="bar" style="width: 0%;"></div>
+            </div>
+            {% endif %}
         </div>
     {% endfor %}
 

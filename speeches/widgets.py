@@ -4,19 +4,22 @@ from django.utils.safestring import mark_safe
 from django.forms.widgets import ClearableFileInput, CheckboxInput
 
 class AudioFileInput(ClearableFileInput):
+    pretty_input_start = u'<span class="btn fileinput-button"> <i class="icon-plus"></i> <span>Choose audio file</span>'
+    pretty_input_end = u'</span>'
+    template_with_initial = u'%(initial_text)s: %(initial)s %(clear_template)s<br />%(input_text)s: %(pretty_input_start)s%(input)s%(pretty_input_end)s'
     template_with_clear = u'%(clear)s <label class="inline checkbox" for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
 
-    # Same as parent, except for substitutions['initial'] - Django should have
-    # value in the substitutions dict so you don't have to replicate the entire
-    # function
+    # Overridden whole function to provide nicer input button
     def render(self, name, value, attrs=None):
         substitutions = {
             'initial_text': self.initial_text,
             'input_text': self.input_text,
             'clear_template': '',
             'clear_checkbox_label': self.clear_checkbox_label,
+            'pretty_input_start': self.pretty_input_start,
+            'pretty_input_end': self.pretty_input_end,
         }
-        template = u'%(input)s'
+        template = u'%(pretty_input_start)s%(input)s%(pretty_input_end)s'
         substitutions['input'] = super(ClearableFileInput, self).render(name, value, attrs)
 
         if value and hasattr(value, "url"):

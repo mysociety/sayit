@@ -7,15 +7,11 @@
 
 {% block extra_js %}
 <script src="{% static "mediaelement/mediaelement-and-player.min.js" %}"></script>
-<!-- <script src="{% static "soundmanager2/script/soundmanager2.js" %}"></script> -->
 {% endblock %}
 
 {% block content %}
 {% block content2 %}{% endblock %}
 <script>
     $('audio').mediaelementplayer();
-    //soundManager.setup({
-    //    url: '{% static "soundmanager2/swf/" %}'
-    //});
 </script>
 {% endblock %}
