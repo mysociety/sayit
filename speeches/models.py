@@ -69,3 +69,7 @@ class Speech(AuditedModel):
     def get_absolute_url(self):
         return ( 'speech-view', (), { 'pk': self.id } )
 
+    @models.permalink
+    def get_edit_url(self):
+        return ( 'speech-edit', (), { 'pk': self.id } )
+
