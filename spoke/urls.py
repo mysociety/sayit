@@ -10,7 +10,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', 'spoke.views.home', name='home'),
 
-    url(r'^speech/', include('speeches.urls')),
+    url(r'^speech', include('speeches.urls')),
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),

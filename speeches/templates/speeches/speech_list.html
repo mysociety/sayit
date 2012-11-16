@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Speeches{% endblock %}
+
+{% block content %}
+<h1>Current speeches</h1>
+
+<p class="lead">Here are the current speeches.</p>
+
+{% for speech in object_list %}
+<li><a href="{% url speech-view speech.id %}">{{ speech }}</a>
+{% endfor %}
+
+{% endblock %}

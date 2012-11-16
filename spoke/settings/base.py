@@ -169,5 +169,7 @@ PAGINATION_DEFAULT_WINDOW = 2
 PAGINATION_DEFAULT_ORPHANS = 2
 PAGINATION_INVALID_PAGE_RAISES_404 = True
 
+APPEND_SLASH = False
+
 # Now get the mySociety configuration
 from .mysociety import *

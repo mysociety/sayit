@@ -1,6 +1,6 @@
 from speeches.forms import SpeechForm
 from speeches.models import Speech
-from django.views.generic import CreateView, UpdateView, DetailView
+from django.views.generic import CreateView, UpdateView, DetailView, ListView
 
 class SpeechCreate(CreateView):
     model = Speech
@@ -15,4 +15,7 @@ class SpeechUpdate(UpdateView):
     form_class = SpeechForm
 
 class SpeechView(DetailView):
+    model = Speech
+
+class SpeechList(ListView):
     model = Speech
