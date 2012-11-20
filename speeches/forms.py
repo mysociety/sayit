@@ -2,6 +2,7 @@ import os
 
 from django import forms
 from django.forms.forms import BoundField
+from django.core.files.uploadedfile import UploadedFile
 
 from speeches.models import Speech
 from speeches.widgets import AudioFileInput
@@ -18,7 +19,7 @@ BoundField.label_tag = add_class(BoundField.label_tag)
 class CleanAudioMixin(object):
     def clean_audio(self):
         audio = self.cleaned_data['audio']
-        if audio:
+        if audio and isinstance(audio, UploadedFile):
             ext = os.path.splitext(audio.name)[1]
             if audio.content_type[0:6] != 'audio/' and ext not in ('.ogg', '.mp3'):
                 raise forms.ValidationError('That file does not appear to be an audio file')
@@ -33,12 +34,11 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
         }
 
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
-    audio_filename = forms.CharField(widget=forms.HiddenInput)
+    audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
 
     def clean(self):
         cleaned_data = self.cleaned_data
-
-        if 'audio_filename' in cleaned_data:
+        if 'audio_filename' in cleaned_data and cleaned_data['audio_filename']:
             filename = cleaned_data['audio_filename']
             self.cleaned_data['audio'] = filename
 
