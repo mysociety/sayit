@@ -6,6 +6,14 @@
 <link href="{% static "css/speeches.css" %}" rel="stylesheet">
 {% endblock %}
 
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static "js/speeches.js" %}"></script>
+<script src="{% static "jQuery-File-Upload/js/vendor/jquery.ui.widget.js" %}"></script>
+<script src="{% static "jQuery-File-Upload/js/jquery.iframe-transport.js" %}"></script>
+<script src="{% static "jQuery-File-Upload/js/jquery.fileupload.js" %}"></script>
+{% endblock %}
+
 {% block title %}{% if object %}Edit speech {% else %}Add speech{% endif %}{% endblock %}
 
 {% block content2 %}
@@ -31,7 +39,7 @@
 
     {% for field in form.visible_fields %}
         <div class="control-group {% if field.errors %}error{% endif %}">
-            <span class="control-label">{{ field.label_tag }}</span>
+            {{ field.label_tag }}
             <div class="controls">
                 {{ field }}
                 {% if field.errors %}
@@ -40,6 +48,11 @@
                 <span class="help-inline">{{ field.help_text }}</span>
             </div>
             {% if field.name == 'audio' %}
+            <div class="progress-result">
+            {% if form.audio_filename.value %}
+                Uploaded: {{ form.audio_filename.value }}
+            {% endif %}
+            </div>
             <div class="progress">
                 <div class="bar" style="width: 0%;"></div>
             </div>
@@ -47,6 +60,6 @@
         </div>
     {% endfor %}
 
-<input type="submit" class="btn" value="{% if object %}Update speech{% else %}Add speech{% endif %}">
+<input type="submit" id="speech_submit" class="btn" value="{% if object %}Update speech{% else %}Add speech{% endif %}">
 </form>
 {% endblock %}

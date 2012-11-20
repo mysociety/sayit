@@ -6,9 +6,12 @@
     display: inline-block;
 }
 
+.progress, .progress-result {
+    margin-left: 180px;
+}
 .progress {
     display: none;
-    margin-left: 180px;
+    margin-top: 1em;
 }
 
 .fileinput-button {

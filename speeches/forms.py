@@ -1,21 +1,50 @@
+import os
+
 from django import forms
+from django.forms.forms import BoundField
 
 from speeches.models import Speech
 from speeches.widgets import AudioFileInput
 
-class SpeechForm(forms.ModelForm):
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        if not cleaned_data.get('text') and not cleaned_data.get('audio'):
-            raise forms.ValidationError('You must provide either text or some audio')
-        return cleaned_data
+# For Bootstrap, which needs the label class, so monkey-patch
+def add_class(f):
+    def class_tag(self, contents=None, attrs=None):
+        if attrs is None: attrs = {}
+        attrs['class'] = 'control-label'
+        return f(self, contents, attrs)
+    return class_tag
+BoundField.label_tag = add_class(BoundField.label_tag)
 
+class CleanAudioMixin(object):
     def clean_audio(self):
         audio = self.cleaned_data['audio']
         if audio:
-            if audio.content_type[0:6] != 'audio/':
-                raise forms.ValidationError('You must upload an audio file')
+            ext = os.path.splitext(audio.name)[1]
+            if audio.content_type[0:6] != 'audio/' and ext not in ('.ogg', '.mp3'):
+                raise forms.ValidationError('That file does not appear to be an audio file')
         return audio
+
+class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
+    class Meta:
+        model = Speech
+        fields = ( 'audio', )
+        widgets = {
+            'audio': AudioFileInput,
+        }
+
+class SpeechForm(forms.ModelForm, CleanAudioMixin):
+    audio_filename = forms.CharField(widget=forms.HiddenInput)
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+
+        if 'audio_filename' in cleaned_data:
+            filename = cleaned_data['audio_filename']
+            self.cleaned_data['audio'] = filename
+
+        if not cleaned_data.get('text') and not cleaned_data.get('audio'):
+            raise forms.ValidationError('You must provide either text or some audio')
+        return cleaned_data
 
     class Meta:
         model = Speech

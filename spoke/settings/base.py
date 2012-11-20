@@ -56,6 +56,9 @@ MEDIA_ROOT = os.path.join(PARENT_DIR, 'uploads')
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
+# All uploaded files world-readable
+FILE_UPLOAD_PERMISSIONS = 0644
+
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
