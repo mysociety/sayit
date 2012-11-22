@@ -1,5 +1,6 @@
 # load the mySociety config from its special file
 
+import sys
 import yaml
 from .paths import *
 
@@ -18,6 +19,8 @@ DATABASES = {
         'PORT': config.get('SAYIT_DB_PORT'),
     }
 }
+if 'test' in sys.argv:
+    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
 
 TIME_ZONE = config.get('TIME_ZONE')
 SECRET_KEY = config.get('DJANGO_SECRET_KEY')
