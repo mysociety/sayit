@@ -8,7 +8,7 @@ python-virtualenv
 # mercurial
 
 # Database stuff
-postgresql-9.1
+postgresql
 python-psycopg2
 libpq-dev
 
