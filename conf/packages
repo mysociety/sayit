@@ -6,3 +6,13 @@ python-virtualenv
 # Some dependencies in requirements.txt are listed as repos, so we need the
 # various repo management tools to fetch them
 # mercurial
+
+# Database stuff
+postgresql-9.1
+python-psycopg2
+libpq-dev
+
+# If you want to run this on a headless server, or eg: in vagrant
+# you'll also need a browser and a display setup too
+# iceweasel
+# xvfb
