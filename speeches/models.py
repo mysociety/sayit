@@ -35,8 +35,9 @@ class Speaker(AuditedModel):
     name = models.TextField(db_index=True)
 
     def __unicode__(self):
-        out = "Speaker"
-        if self.name : out += ', %s,' % self.name
+        out = "null"
+        if self.name : out = '%s' % self.name
+        return out
 
 # Speech that a speaker gave
 class Speech(AuditedModel):
@@ -46,7 +47,7 @@ class Speech(AuditedModel):
 
     # What the speech is part of.
     # The below should really all be on the parents
-#    debate = models.ForeignKey(Debate, blank=True, null=True)
+    # debate = models.ForeignKey(Debate, blank=True, null=True)
     title = models.TextField(blank=True, help_text='The title of the speech, if relevant')
     event = models.TextField(db_index=True, blank=True, help_text='Was the speech at a particular event?')
     location = models.TextField(db_index=True, blank=True, help_text='Where the speech took place')
