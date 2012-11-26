@@ -26,3 +26,6 @@ selenium
 ### 'post_deploy_actions.bash'
 # xapian-haystack
 # django-haystack
+
+# mySociety modules
+PopIt-Python

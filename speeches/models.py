@@ -73,3 +73,11 @@ class Speech(AuditedModel):
     def get_edit_url(self):
         return ( 'speech-edit', (), { 'pk': self.id } )
 
+# Speaker - someone who gave a speech
+class Speaker(AuditedModel):
+    popit_id = models.TextField(unique=True)
+    name = models.TextField(db_index=True)
+
+    def __unicode__(self):
+        out = "Speaker"
+        if self.name : out += ', %s,' % self.name
