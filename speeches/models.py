@@ -29,6 +29,16 @@ class AuditedModel(models.Model):
 #    heading
 #    subheading
 
+# Speaker - someone who gave a speech
+class Speaker(AuditedModel):
+    popit_id = models.TextField(unique=True)
+    name = models.TextField(db_index=True)
+
+    def __unicode__(self):
+        out = "Speaker"
+        if self.name : out += ', %s,' % self.name
+
+# Speech that a speaker gave
 class Speech(AuditedModel):
     # The speech. Need to check have at least one of the following two (preferably both).
     audio = models.FileField(upload_to='speeches/%Y-%m-%d/', max_length=255, blank=True)
@@ -43,7 +53,7 @@ class Speech(AuditedModel):
 
     # Metadata on the speech
     # type = models.ChoiceField() # speech, scene, narrative, summary, etc.
-    speaker = models.TextField(blank=True, db_index=True, help_text='Who gave this speech?')
+    speaker = models.ForeignKey(Speaker, blank=True, null=True, help_text='Who gave this speech?', on_delete=models.SET_NULL)
     start = models.DateTimeField(blank=True, null=True, help_text='What time did the speech start?')
     end = models.DateTimeField(blank=True, null=True, help_text='The time the speech ended.')
 
@@ -72,12 +82,3 @@ class Speech(AuditedModel):
     @models.permalink
     def get_edit_url(self):
         return ( 'speech-edit', (), { 'pk': self.id } )
-
-# Speaker - someone who gave a speech
-class Speaker(AuditedModel):
-    popit_id = models.TextField(unique=True)
-    name = models.TextField(db_index=True)
-
-    def __unicode__(self):
-        out = "Speaker"
-        if self.name : out += ', %s,' % self.name
