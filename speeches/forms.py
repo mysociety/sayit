@@ -4,7 +4,7 @@ from django import forms
 from django.forms.forms import BoundField
 from django.core.files.uploadedfile import UploadedFile
 
-from speeches.models import Speech
+from speeches.models import Speech, Speaker
 from speeches.widgets import AudioFileInput
 
 # For Bootstrap, which needs the label class, so monkey-patch
@@ -54,6 +54,8 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             'event': forms.TextInput(),
             'title': forms.TextInput(),
             'location': forms.TextInput(),
-            'speaker': forms.TextInput(),
+            'speaker': forms.Select(
+                    choices=Speaker.objects.all().values_list('name', 'name')
+                ),
             'source_url': forms.TextInput(),
         }
