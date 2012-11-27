@@ -11,13 +11,8 @@ class Command(NoArgsCommand):
         # Do populating
         api = PopIt(instance = 'ukcabinet', hostname = 'ukcabinet.popit.mysociety.org', api_version = 'v1')
         results = api.person.get()
-        self.stdout.write('Names will be:\n')
         for person in results['results']:
-            self.stdout.write('Processing person: ' + pp.pformat(person) + '\n')
-            try:
-                speaker = Speaker.objects.get(popit_id=person['_id'])
-            except Speaker.DoesNotExist:
-                speaker = Speaker()
-                speaker.popit_id = person['_id']
+            speaker, created = Speaker.objects.get_or_create(popit_id=person['_id'])
+            # we ignore created for now, just always set the name
             speaker.name = person['name']
             speaker.save();
