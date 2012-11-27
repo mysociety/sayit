@@ -11,24 +11,37 @@ from speeches.models import Speech, Speaker
 
 class SpeechTest(TestCase):
     def test_add_speech(self):
+        # Test that the page exists and has the right title
         resp = self.client.get('/speech/add')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('add a new speech' in resp.content)
 
+        # Test that the form won't submit if empty
         resp = self.client.post('/speech/add')
         self.assertFormError(resp, 'form', None, 'You must provide either text or some audio')
 
+        # Test form without speaker
         resp = self.client.post('/speech/add', {
             'text': 'This is a speech'
         })
         self.assertRedirects(resp, '/speech/1')
-
         # Check in db
         speech = Speech.objects.get(id=1)
         self.assertEqual(speech.text, 'This is a speech')
 
+        # Test form with speaker, we need to add a speaker first
+        steve = Speaker.objects.create(popit_id='abcd', name='Steve')
+        resp = self.client.post('/speech/add', {
+            'text': 'This is a Steve speech',
+            'speaker': steve.id
+        })
+        self.assertRedirects(resp, '/speech/2')
+        # Check in db
+        speech = Speech.objects.get(speaker=steve.id)
+        self.assertEqual(speech.text, 'This is a Steve speech')
+
         # Test file upload, audio
-        # Use LiveServerTestCase
+        # Use LiveServerTestCase        
 
 class SeleniumTests(LiveServerTestCase):
     @classmethod
