@@ -10,6 +10,7 @@ psycopg2
 Django
 South
 django-pagination
+django-autocomplete-light
 
 # Testing
 selenium
