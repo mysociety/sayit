@@ -7,7 +7,7 @@ from selenium import webdriver
 
 from django.test import TestCase, LiveServerTestCase
 
-from speeches.models import Speech
+from speeches.models import Speech, Speaker
 
 class SpeechTest(TestCase):
     def test_add_speech(self):
@@ -19,13 +19,12 @@ class SpeechTest(TestCase):
         self.assertFormError(resp, 'form', None, 'You must provide either text or some audio')
 
         resp = self.client.post('/speech/add', {
-            'text': 'This is a speech',
-            'speaker': 'Matthew',
+            'text': 'This is a speech'
         })
         self.assertRedirects(resp, '/speech/1')
 
         # Check in db
-        speech = Speech.objects.get(speaker='Matthew')
+        speech = Speech.objects.get(id=1)
         self.assertEqual(speech.text, 'This is a speech')
 
         # Test file upload, audio
@@ -46,8 +45,6 @@ class SeleniumTests(LiveServerTestCase):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
         text_input = self.selenium.find_element_by_name('text')
         text_input.send_keys('This is a speech')
-        speaker_input = self.selenium.find_element_by_name('speaker')
-        speaker_input.send_keys('Matthew')
         self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
         self.assertIn('/speech/1', self.selenium.current_url)
 
