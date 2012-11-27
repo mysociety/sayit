@@ -25,3 +25,8 @@ if 'test' in sys.argv:
 TIME_ZONE = config.get('TIME_ZONE')
 SECRET_KEY = config.get('DJANGO_SECRET_KEY')
 GOOGLE_ANALYTICS_ACCOUNT = config.get('GOOGLE_ANALYTICS_ACCOUNT')
+
+# PopIt instance to use for list of speakers
+POPIT_INSTANCE = config.get('POPIT_INSTANCE')
+POPIT_HOSTNAME = config.get('POPIT_HOSTNAME')
+POPIT_API_VERSION = config.get('POPIT_API_VERSION')
