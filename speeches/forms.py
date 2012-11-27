@@ -1,5 +1,8 @@
 import os
 
+import autocomplete_light
+autocomplete_light.autodiscover()
+
 from django import forms
 from django.forms.forms import BoundField
 from django.core.files.uploadedfile import UploadedFile
@@ -35,7 +38,7 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
 
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
-    speaker = forms.ModelChoiceField(queryset=Speaker.objects, empty_label="-- Unknown --")
+    speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(), widget=autocomplete_light.ChoiceWidget('SpeakerAutocomplete'))
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -55,6 +58,6 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             'event': forms.TextInput(),
             'title': forms.TextInput(),
             'location': forms.TextInput(),
-            'speaker': forms.Select(),
+            'speaker': autocomplete_light.ChoiceWidget('SpeakerAutocomplete'),
             'source_url': forms.TextInput(),
         }
