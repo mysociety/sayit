@@ -38,7 +38,9 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
 
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
-    speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(), widget=autocomplete_light.ChoiceWidget('SpeakerAutocomplete'))
+    speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(), 
+            widget=autocomplete_light.ChoiceWidget('SpeakerAutocomplete'), 
+            required=False)
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -58,6 +60,5 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             'event': forms.TextInput(),
             'title': forms.TextInput(),
             'location': forms.TextInput(),
-            'speaker': autocomplete_light.ChoiceWidget('SpeakerAutocomplete'),
             'source_url': forms.TextInput(),
         }
