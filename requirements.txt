@@ -12,6 +12,10 @@ South
 django-pagination
 django-autocomplete-light
 
+# Celery
+celery
+django-celery
+
 # Testing
 selenium
 

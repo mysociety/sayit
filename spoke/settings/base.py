@@ -3,6 +3,7 @@
 import os
 from django.conf import global_settings
 from .paths import *
+import djcelery
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -136,6 +137,8 @@ INSTALLED_APPS = (
     'pagination',
     'speeches',
     'autocomplete_light',
+    'djcelery',
+    'kombu.transport.django'
 )
 
 # Log WARN and above to stderr; ERROR and above by email when DEBUG is False.
@@ -174,6 +177,9 @@ PAGINATION_DEFAULT_ORPHANS = 2
 PAGINATION_INVALID_PAGE_RAISES_404 = True
 
 APPEND_SLASH = False
+
+# Celery
+djcelery.setup_loader()
 
 # Now get the mySociety configuration
 from .mysociety import *

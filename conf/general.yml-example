@@ -33,3 +33,9 @@ ATT_OAUTH_URL: ''
 ATT_CLIENT_ID: ''
 ATT_SECRET: ''
 ATT_API_URL: ''
+
+# Celery
+# 'django://' is the default, using Django's ORM, but is probably not suitable
+# for production, see: http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html#choosing-a-broker
+# for more info
+CELERY_BROKER_URL: 'django://'
