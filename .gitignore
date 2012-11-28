@@ -3,3 +3,4 @@
 /conf/general.yml.deployed
 /conf/httpd.conf
 /conf/httpd.conf.deployed
+.DS_Store
