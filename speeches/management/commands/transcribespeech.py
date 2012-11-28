@@ -1,6 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
-from subprocess import call, CalledProcessError
+import subprocess
+import tempfile
+import os
 from speeches.models import Speech
 
 class Command(BaseCommand):
@@ -9,9 +11,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Do some transcribing
+
+        # Check we've been given at least one speech id to transcribe
         if (len(args) == 0):
             raise CommandError('No poll ids supplied')
 
+        # Transcribe each file we've been given
         for speech_id in args:
             self.stdout.write("Processing speech id: " + speech_id + "\n")
 
@@ -27,15 +32,35 @@ class Command(BaseCommand):
             if speech.text.strip():
                 raise CommandError('Speech: {0} already has a transcription!'.format(speech_id))                
 
-            # Get speech audio file
-            # audio_file = speech.audio.open(mode='r')          
-
-            # Make an 8khz version using mpg123
+            # Make an 8khz version of the audio using mpg123
+            # First make a temporary file
+            (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
             try:
-                result = call(['mpg123', '--mono --rate 8000 -w /tmp/test-output-file.wav {0}'.format(speech.audio.path)])
+                result = subprocess.call([
+                    'mpg123',
+                    '-q',
+                    '--mono', 
+                    '--rate',
+                    '8000', 
+                    '-w',
+                    tmp_filename, 
+                    speech.audio.path
+                ])
                 if result == 0:
+                    # mpg123 completed successfully
+                    self.stdout.write('File for uploading is at ' + tmp_filename)
+                    
                     # Upload it to AT&T
+
                     # Save the transcription in the db
-                    self.stdout.write('File for uploading is at /tmp/test-output-file.wav')
-            except (CalledProcessError, OSError) as e:
-                raise CommandError('Error converting file {0} to 8khz WAV for AT&T:\n{1}'.format(speech.audio.path, e.strerror))
+
+                else:
+                    # Something went wrong with mpg123
+                    raise CommandError('MPG to WAV conversion did not complete successfully')
+
+            except (subprocess.CalledProcessError, OSError) as e:
+                # Something went wrong before mpg123 was running
+                raise CommandError('Error running mpg123:\n' + e.strerror)
+            finally:
+                # Remove the temp file
+                os.remove(tmp_filename)
