@@ -1,23 +1,34 @@
 {% extends 'speeches/speech_audio.html' %}
 {% load staticfiles %}
 
+{% block extra_headers %}
+{% if object.celery_task_id %}
+    <meta http-equiv="refresh" content="5">
+{% endif %}
+{% endblock %}
+
 {% block title %}View speech{% endblock %}
 
 {% block content2 %}
 <p class="lead">Here is where you can view a speech.</p>
 
-{{ object.location }}
+{% if object.celery_task_id %}
+    <p>Please wait, audio is being transcribed. This page will automatically refresh in 5 seconds...</p>
+{% else %}
 
-{{ object.speaker }}
+    {{ object.location }}
 
-{% if object.audio %}
-<p><audio src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio></p>
+    {{ object.speaker }}
+
+    {% if object.audio %}
+        <p><audio src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio></p>
+    {% endif %}
+
+    {% if object.text %}
+        <blockquote>{{ object.text }}</blockquote>
+    {% endif %}
+
+    <a href="{{ object.get_edit_url }}">Edit</a>
 {% endif %}
-
-{% if object.text %}
-<blockquote>{{ object.text }}</blockquote>
-{% endif %}
-
-<a href="{{ object.get_edit_url }}">Edit</a>
 
 {% endblock %}
