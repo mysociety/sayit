@@ -36,6 +36,8 @@ ATT_OAUTH_URL = config.get('ATT_OAUTH_URL')
 ATT_CLIENT_ID = config.get('ATT_CLIENT_ID')
 ATT_SECRET = config.get('ATT_SECRET')
 ATT_API_URL = config.get('ATT_API_URL')
+# How long to wait for the api before timing out
+ATT_TIMEOUT = config.get('ATT_TIMEOUT')
 
 # Celery Broker details 
 BROKER_URL = config.get('CELERY_BROKER_URL')

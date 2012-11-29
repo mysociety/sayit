@@ -33,6 +33,7 @@ ATT_OAUTH_URL: ''
 ATT_CLIENT_ID: ''
 ATT_SECRET: ''
 ATT_API_URL: ''
+ATT_TIMEOUT: ''
 
 # Celery
 # 'django://' is the default, using Django's ORM, but is probably not suitable
