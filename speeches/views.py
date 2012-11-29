@@ -44,20 +44,18 @@ class SpeechCreate(CreateView):
         self.object = form.save()
 
         # Now set off a Celery task to transcribe the audio for this speech
+        # if we need to
         speech = self.object
-        print("Speech retrieved: {0}".format(speech.id))
-        # If someone is adding a new audio file and there's already a task
-        # We need to clear it
-        if speech.celery_task_id:   
-            print("Removing existing task {0} for speech {1}".format(speech.id, speech.celery_task_id))
-            celery.task.control.revoke(speech.celery_task_id)
-        # Now we can start a new one
-        result = transcribe_speech.delay(speech.id)
-        print("New task result is: {0}".format(result))
-
-        # Finally, we can remember the new task in the model
-        speech.celery_task_id = result.task_id
-        speech.save()
+        if not speech.text:
+            # If someone is adding a new audio file and there's already a task
+            # We need to clear it
+            if speech.celery_task_id:   
+                celery.task.control.revoke(speech.celery_task_id)
+            # Now we can start a new one
+            result = transcribe_speech.delay(speech.id)
+            # Finally, we can remember the new task in the model
+            speech.celery_task_id = result.task_id
+            speech.save()
         
         return HttpResponseRedirect(self.get_success_url())
 
