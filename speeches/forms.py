@@ -62,3 +62,4 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             'location': forms.TextInput(),
             'source_url': forms.TextInput(),
         }
+        exclude = ('celery_task_id')

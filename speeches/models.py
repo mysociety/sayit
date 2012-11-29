@@ -64,6 +64,9 @@ class Speech(AuditedModel):
     source_url = models.TextField(blank=True)
     # source_column? Any other source based things?
 
+    # Task id for celery transcription tasks
+    celery_task_id = models.CharField(max_length=256, null=True, blank=True)
+
     class Meta:
         verbose_name_plural = 'speeches'
 

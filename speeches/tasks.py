@@ -31,6 +31,8 @@ def transcribe_speech(speech_id):
             transcription = helper.get_transcription(auth_token, tmp_filename)
             # Then we're done - save in db and return transcription to caller
             speech.text = transcription
+            # Wipe the celery task id too
+            speech.celery_task_id = None
             speech.save()
             return transcription
         else:

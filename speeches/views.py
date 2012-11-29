@@ -1,10 +1,16 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson as json
 
 from speeches.forms import SpeechForm, SpeechAudioForm
 from speeches.models import Speech
+from speeches.tasks import transcribe_speech
 from django.views.generic import CreateView, UpdateView, DetailView, ListView
 from django.views.generic.edit import BaseFormView
+
+import celery
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Base as don't want template mixin. I find CBVs confusing :-/
 class SpeechAudioCreate(BaseFormView):
@@ -32,7 +38,28 @@ class SpeechCreate(CreateView):
 
     def form_valid(self, form):
         # Do things with audio here...
-        return super(SpeechCreate, self).form_valid(form)
+
+        # First save the form - we can't let the super-class do it because
+        # we need to add some stuff to the object afterwards
+        self.object = form.save()
+
+        # Now set off a Celery task to transcribe the audio for this speech
+        speech = self.object
+        print("Speech retrieved: {0}".format(speech.id))
+        # If someone is adding a new audio file and there's already a task
+        # We need to clear it
+        if speech.celery_task_id:   
+            print("Removing existing task {0} for speech {1}".format(speech.id, speech.celery_task_id))
+            celery.task.control.revoke(speech.celery_task_id)
+        # Now we can start a new one
+        result = transcribe_speech.delay(speech.id)
+        print("New task result is: {0}".format(result))
+
+        # Finally, we can remember the new task in the model
+        speech.celery_task_id = result.task_id
+        speech.save()
+        
+        return HttpResponseRedirect(self.get_success_url())
 
 class SpeechUpdate(UpdateView):
     model = Speech
