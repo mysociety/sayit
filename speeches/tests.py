@@ -3,13 +3,21 @@ Testing of the speeches app.
 Testing documentation is at https://docs.djangoproject.com/en/1.4/topics/testing/
 """
 
+import os
+
 from selenium import webdriver
 
 from django.test import TestCase, LiveServerTestCase
 
+import speeches
 from speeches.models import Speech, Speaker
 
 class SpeechTest(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls._speeches_path = os.path.abspath(speeches.__path__[0])
+
     def test_add_speech_page_exists(self):
         # Test that the page exists and has the right title
         resp = self.client.get('/speech/add')
@@ -43,8 +51,34 @@ class SpeechTest(TestCase):
         speech = Speech.objects.get(speaker=speaker.id)
         self.assertEqual(speech.text, 'This is a Steve speech')
 
-        # Test file upload, audio
-        # Use LiveServerTestCase        
+    def test_add_speech_with_audio(self):
+        # Load the mp3 fixture
+        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        resp = self.client.post('/speech/add', {
+            'audio': audio
+        })
+        # Assert that it uploads and we're told to wait
+        self.assertRedirects(resp, '/speech/1')
+
+        resp = self.client.get('/speech/1')
+        self.assertTrue('Please wait' in resp.content)
+
+    def test_add_speech_with_audio_and_text(self):
+        # Load the mp3 fixture
+        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        text = 'This is a speech with some text'
+
+        resp = self.client.post('/speech/add', {
+            'audio': audio,
+            'text': text
+        })
+
+        # Assert that it uploads and we see it straightaway
+        self.assertRedirects(resp, '/speech/1')
+
+        resp = self.client.get('/speech/1')
+        self.assertFalse('Please wait' in resp.content)        
+        self.assertTrue(text in resp.content)
 
 class SeleniumTests(LiveServerTestCase):
     @classmethod
