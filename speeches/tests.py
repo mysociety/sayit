@@ -10,16 +10,18 @@ from django.test import TestCase, LiveServerTestCase
 from speeches.models import Speech, Speaker
 
 class SpeechTest(TestCase):
-    def test_add_speech(self):
+    def test_add_speech_page_exists(self):
         # Test that the page exists and has the right title
         resp = self.client.get('/speech/add')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('add a new speech' in resp.content)
 
+    def test_add_speech_fails_on_empty_form(self):
         # Test that the form won't submit if empty
         resp = self.client.post('/speech/add')
         self.assertFormError(resp, 'form', None, 'You must provide either text or some audio')
 
+    def test_add_speech_without_speaker(self):
         # Test form without speaker
         resp = self.client.post('/speech/add', {
             'text': 'This is a speech'
@@ -29,15 +31,16 @@ class SpeechTest(TestCase):
         speech = Speech.objects.get(id=1)
         self.assertEqual(speech.text, 'This is a speech')
 
+    def test_add_speech_with_speaker(self):
         # Test form with speaker, we need to add a speaker first
-        steve = Speaker.objects.create(popit_id='abcd', name='Steve')
+        speaker = Speaker.objects.create(popit_id='abcd', name='Steve')
         resp = self.client.post('/speech/add', {
             'text': 'This is a Steve speech',
-            'speaker': steve.id
+            'speaker': speaker.id
         })
-        self.assertRedirects(resp, '/speech/2')
+        self.assertRedirects(resp, '/speech/1')
         # Check in db
-        speech = Speech.objects.get(speaker=steve.id)
+        speech = Speech.objects.get(speaker=speaker.id)
         self.assertEqual(speech.text, 'This is a Steve speech')
 
         # Test file upload, audio
