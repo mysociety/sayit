@@ -13,8 +13,11 @@ from selenium import webdriver
 
 import requests
 
+from popit import PopIt
+
 from django.test import TestCase, LiveServerTestCase
 from django.core.files import File
+from django.core import management
 from django.conf import settings
 
 import speeches
@@ -404,11 +407,55 @@ class TranscribeTaskTests(TestCase):
 class PopulateSpeakerCommandTests(TestCase):
 
     def test_populates_empty_db(self):
-        self.fail()
+        # Canned data to simulate a response from popit
+        people = [
+            {
+                '_id': 'abcde',
+                'name': 'Test 1'
+            },
+            {
+                '_id': 'fghij',
+                'name': 'Test 2'
+            }
+        ]
+        # Mock out popit and then call our command
+        popit_config = { 'person': Mock(), 'person.get.return_value': {'results': people} }
+        with patch('speeches.management.commands.populatespeakers.PopIt', spec=PopIt, **popit_config) as patched_popit:
+            management.call_command('populatespeakers')
+
+        db_people = Speaker.objects.all()
+        self.assertTrue(len(db_people) == 2)
+        self.assertTrue(db_people[0].popit_id == 'abcde')
+        self.assertTrue(db_people[0].name == 'Test 1')
+        self.assertTrue(db_people[1].popit_id == 'fghij')
+        self.assertTrue(db_people[1].name == 'Test 2')
 
     def test_updates_existing_records(self):
-        self.fail()
+        # Add a record into the db first
+        existing_person = Speaker.objects.create(popit_id="abcde", name="test 1")
 
+        # Canned data to simulate a response from popit
+        changed_people = [
+            {
+                '_id': 'abcde',
+                'name': 'Test 3' # Note changed name
+            },
+            {
+                '_id': 'fghij',
+                'name': 'Test 2'
+            }
+        ]
+        # Mock out popit and then call our command
+        popit_config = { 'person': Mock(), 'person.get.return_value': {'results': changed_people} }
+        with patch('speeches.management.commands.populatespeakers.PopIt', spec=PopIt, **popit_config) as new_patched_popit:
+            management.call_command('populatespeakers')
+
+        db_people = Speaker.objects.all()
+        self.assertTrue(len(db_people) == 2)
+        self.assertTrue(db_people[0].popit_id == 'abcde')
+        self.assertTrue(db_people[0].name == 'Test 3')
+        self.assertTrue(db_people[1].popit_id == 'fghij')
+        self.assertTrue(db_people[1].name == 'Test 2')
 
 class SeleniumTests(LiveServerTestCase):
     @classmethod
