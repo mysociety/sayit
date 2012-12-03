@@ -461,6 +461,7 @@ class SeleniumTests(LiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         cls.selenium = webdriver.Firefox()
+        cls._speeches_path = os.path.abspath(speeches.__path__[0])
         super(SeleniumTests, cls).setUpClass()
 
     @classmethod
@@ -475,6 +476,26 @@ class SeleniumTests(LiveServerTestCase):
         self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
         self.assertIn('/speech/1', self.selenium.current_url)
 
-    # TODO - test the ajax uploading
+    def test_upload_audio(self):
+        self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
+        audio_file_input = self.selenium.find_element_by_name("audio")
+        audio_file_input.send_keys(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'))
+        self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
+        self.assertIn('/speech/1', self.selenium.current_url)
 
-    # TODO - test the ajax autocomplete
+    def test_speaker_autocomplete(self):
+        # Put a person in the db for the autocomplete to find
+        speaker = Speaker.objects.create(popit_id='abcde', name='Name')
+
+        # Type a name in and select it
+        self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
+        speaker_input = self.selenium.find_element_by_name("speaker-autocomplete")
+        speaker_input.send_keys("Na")
+        self.selenium.find_element_by_xpath('//div[@id="id-id_speaker_text"]/descendant::span').click()
+        # Check it is selected
+        selection_element = self.selenium.find_element_by_xpath('//span[@id="id_speaker-deck"]/child::span')
+        self.assertIn('Name', selection_element.text) 
+        # Check we can unselect it
+        self.selenium.find_element_by_xpath('//span[@id="id_speaker-deck"]/descendant::span[@class="remove div"]').click()
+        speaker_input = self.selenium.find_element_by_name("speaker-autocomplete")
+        self.assertTrue(speaker_input.get_attribute('value') == "")
