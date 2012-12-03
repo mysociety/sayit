@@ -2,6 +2,7 @@ import subprocess
 import tempfile
 import os
 import requests
+from operator import itemgetter
 from celery import task
 from django.conf import settings
 from speeches.models import Speech
@@ -57,13 +58,13 @@ class TranscribeException(Exception):
        aren't covered by existing exeptions"""
     pass
 
-class TranscribeHelper():
+class TranscribeHelper(object):
     """Helper class to contain functions for transcribing audio"""
 
     def check_speech(self, speech):
         """Check that the supplied speech is ok to transcribe, ie: it has audio
            and no text"""
-        if speech.audio is None:
+        if not bool(speech.audio):
             raise TranscribeException(
                     'Speech: {0} has no audio file!'.format(speech.id))
         if speech.text.strip():
@@ -161,14 +162,14 @@ class TranscribeHelper():
             return None
         
         # Sort the results by their Confidence
-        transcriptions.sort(key = lambda x: x['Confidence'])
+        sorted_transcriptions = sorted(transcriptions, key=itemgetter('Confidence'), reverse=True)
 
         # Return the result with the highest confidence, unless
         # even that one is poor.
         # TODO - maybe relying on AT&T's grading isn't best here,
         # we could look at the Confidence level ourselves.
-        if(transcriptions[0]['Grade'] != "Reject"):
-            return transcriptions[0]['ResultText']
+        if(sorted_transcriptions[0]['Grade'] != "reject"):
+            return sorted_transcriptions[0]['ResultText']
 
         # Nothing else is good enough
         return None
