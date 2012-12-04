@@ -42,7 +42,7 @@
     {% endfor %}
 
     {% for field in form.visible_fields %}
-        <div class="control-group {% if field.errors %}error{% endif %}">
+        <div class="control-group {% if field.errors %}error{% endif %}" id="{{ field.auto_id}}_controls">
             {{ field.label_tag }}
             <div class="controls">
                 {{ field }}
