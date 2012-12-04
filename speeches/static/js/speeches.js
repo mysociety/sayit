@@ -1,5 +1,32 @@
 $(function(){
     var submitTxt;
+
+    // Make them answer an Audio/Text question first
+    $("form").hide();
+    $("p#question").show();
+    // Click handlers for the options
+    $("a#audio-link").click(function(){
+        selectFormOption("#id_text_controls");
+        return false;
+    });
+    $("a#text-link").click(function(){
+        selectFormOption("#id_audio_controls");
+        return false;
+    }); 
+    $("a#both-link").click(function(){
+        selectFormOption();
+        return false;
+    }); 
+
+    function selectFormOption(selectorsToHide) {
+        $("p#question").hide();
+        $("form").show();
+        if(typeof selectorsToHide !== "undefined") {
+            $(selectorsToHide).hide()
+        }
+    }
+
+    // Ajax file uploads
     $('#id_audio').fileupload({
         url: '/speech/ajax_audio',
         dataType: 'json',

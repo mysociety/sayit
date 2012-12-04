@@ -29,6 +29,10 @@
     {% endif %}
 </p>
 
+<p id="question" style="display:none">
+    Do you have <a href="#" id="audio-link">Audio</a> to upload, <a href="#" id="text-link">Text</a> to enter, or <a href="#" id="both-link">Both</a>? 
+</p>
+
 <form class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
 
     {% if form.non_field_errors %}
