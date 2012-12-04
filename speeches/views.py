@@ -4,6 +4,7 @@ from django.utils import simplejson as json
 from speeches.forms import SpeechForm, SpeechAudioForm
 from speeches.models import Speech
 from speeches.tasks import transcribe_speech
+import speeches.util
 from django.views.generic import CreateView, UpdateView, DetailView, ListView
 from django.views.generic.edit import BaseFormView
 
@@ -44,18 +45,7 @@ class SpeechCreate(CreateView):
         self.object = form.save()
 
         # Now set off a Celery task to transcribe the audio for this speech
-        # if we need to
-        speech = self.object
-        if not speech.text:
-            # If someone is adding a new audio file and there's already a task
-            # We need to clear it
-            if speech.celery_task_id:   
-                celery.task.control.revoke(speech.celery_task_id)
-            # Now we can start a new one
-            result = transcribe_speech.delay(speech.id)
-            # Finally, we can remember the new task in the model
-            speech.celery_task_id = result.task_id
-            speech.save()
+        speeches.util.start_transcribing_speech(self.object)
         
         return HttpResponseRedirect(self.get_success_url())
 
