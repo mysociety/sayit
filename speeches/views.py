@@ -24,7 +24,7 @@ class SpeechAudioCreate(BaseFormView):
 
     def form_valid(self, form):
         # The cleaned_data contains the TemporaryUploadedFile (File/UploadedFile subclass).
-        # The form.instance contains the FieldFile which the magic save() we want.
+        # The form.instance contains the FieldFile with the magic save() we want.
         audio = form.cleaned_data['audio']
         form.instance.audio.save(audio.name, audio, save=False)
         return self.render_to_response({ 'status': 'done', 'filename': form.instance.audio.name })
