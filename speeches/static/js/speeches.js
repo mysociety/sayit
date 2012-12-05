@@ -1,22 +1,24 @@
 $(function(){
     var submitTxt;
 
-    // Make them answer an Audio/Text question first
-    $("form#speech-form").hide();
-    $("p#question").show();
-    // Click handlers for the options
-    $("a#audio-link").click(function(){
-        selectFormOption("#id_text_controls");
-        return false;
-    });
-    $("a#text-link").click(function(){
-        selectFormOption("#id_audio_controls");
-        return false;
-    }); 
-    $("a#both-link").click(function(){
-        selectFormOption();
-        return false;
-    }); 
+    // Make them answer an Audio/Text question first if it's a new speech
+    if($("p.lead").hasClass("add-speech")) {
+        $("form#speech-form").hide();
+        $("p#question").show();
+        // Click handlers for the options
+        $("a#audio-link").click(function(){
+            selectFormOption("#id_text_controls");
+            return false;
+        });
+        $("a#text-link").click(function(){
+            selectFormOption("#id_audio_controls");
+            return false;
+        }); 
+        $("a#both-link").click(function(){
+            selectFormOption();
+            return false;
+        });
+    } 
 
     function selectFormOption(selectorsToHide) {
         $("p#question").hide();

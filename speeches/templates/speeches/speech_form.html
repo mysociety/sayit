@@ -21,7 +21,7 @@
 {% block title %}{% if object %}Edit speech {% else %}Add speech{% endif %}{% endblock %}
 
 {% block content2 %}
-<p class="lead">
+<p class="lead {% if object %}edit{% else %}add{% endif %}-speech">
     {% if object %}
         Here is where you can edit a speech.
     {% else %}
