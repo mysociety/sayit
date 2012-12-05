@@ -60,7 +60,7 @@ class SpeechView(DetailView):
 class SpeechList(ListView):
     model = Speech
     context_object_name = "speech_list"
-    queryset = Speech.objects.all().order_by("-created")
+    queryset = Speech.objects.all().order_by("speaker__name", "-created")
 
 
 class SpeakerView(DetailView):
