@@ -2,7 +2,7 @@ $(function(){
     var submitTxt;
 
     // Make them answer an Audio/Text question first
-    $("form").hide();
+    $("form#speech-form").hide();
     $("p#question").show();
     // Click handlers for the options
     $("a#audio-link").click(function(){
@@ -20,7 +20,7 @@ $(function(){
 
     function selectFormOption(selectorsToHide) {
         $("p#question").hide();
-        $("form").show();
+        $("form#speech-form").show();
         if(typeof selectorsToHide !== "undefined") {
             $(selectorsToHide).hide()
         }
