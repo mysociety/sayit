@@ -19,7 +19,9 @@
 
     {{ object.location }}
 
-    <a href="{% url "speaker-view" object.speaker.id %}">{{ object.speaker }}</a>
+    {% if object.speaker %}
+        <a href="{% url "speaker-view" object.speaker.id %}">{{ object.speaker }}</a>
+    {% endif %}
 
     {% if object.audio %}
         <p><audio src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio></p>
