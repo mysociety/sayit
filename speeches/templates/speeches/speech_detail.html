@@ -1,5 +1,6 @@
 {% extends 'speeches/speech_audio.html' %}
 {% load staticfiles %}
+{% load url from future %}
 
 {% block extra_headers %}
 {% if object.celery_task_id %}
@@ -18,7 +19,7 @@
 
     {{ object.location }}
 
-    {{ object.speaker }}
+    <a href="{% url "speaker-view" object.speaker.id %}">{{ object.speaker }}</a>
 
     {% if object.audio %}
         <p><audio src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio></p>
