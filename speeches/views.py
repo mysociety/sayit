@@ -2,9 +2,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson as json
 
 from speeches.forms import SpeechForm, SpeechAudioForm
-from speeches.models import Speech
+from speeches.models import Speech, Speaker
 from speeches.tasks import transcribe_speech
 import speeches.util
+
 from django.views.generic import CreateView, UpdateView, DetailView, ListView
 from django.views.generic.edit import BaseFormView
 
@@ -58,3 +59,16 @@ class SpeechView(DetailView):
 
 class SpeechList(ListView):
     model = Speech
+    context_object_name = "speech_list"
+    queryset = Speech.objects.all().order_by("-created")
+
+
+class SpeakerView(DetailView):
+    model = Speaker
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(SpeakerView, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the speeches by this speaker
+        context['speech_list'] = Speech.objects.filter(speaker=kwargs['object'].id)
+        return context
