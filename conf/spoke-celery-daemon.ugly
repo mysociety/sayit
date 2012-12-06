@@ -1,6 +1,5 @@
 #!/bin/sh -e
 # /etc/init.d/celeryd: start and stop the celery task worker daemon.
-
 # ============================================
 #  celeryd - Starts the Celery worker daemon.
 # ============================================
@@ -10,11 +9,8 @@
 #
 # See http://docs.celeryproject.org/en/latest/tutorials/daemonizing.html#generic-init-scripts
 
-# Daemon name
-NAME=!!(*= $daemon_name *)!!
-
 ### BEGIN INIT INFO
-# Provides:          $NAME
+# Provides:          !!(*= $daemon_name *)!!
 # Required-Start:    $network $local_fs $remote_fs
 # Required-Stop:     $network $local_fs $remote_fs
 # Default-Start:     2 3 4 5
@@ -38,6 +34,9 @@ DEFAULT_CELERYD="-m celery worker --detach"
 # if [ -f "/etc/default/celeryd" ]; then
 #     . /etc/default/celeryd
 # fi
+
+# Daemon name
+NAME=!!(*= $daemon_name *)!!
 
 # Name of nodes to start, here we have a single node
 CELERYD_NODES="w1"
