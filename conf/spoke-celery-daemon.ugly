@@ -65,7 +65,7 @@ CELERYD_LOG_FILE="$CELERYD_CHDIR/celery/%n.log"
 CELERYD_PID_FILE="$CELERYD_CHDIR/celery/%n.pid"
 
 # Workers should run as an unprivileged user.
-CELERYD_USER=!!(* $user *)!!
+CELERYD_USER=!!(*= $user *)!!
 
 # We can't get a group explicitly, so just run as the default for the user
 #CELERYD_GROUP="celery"
