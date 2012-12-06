@@ -28,12 +28,50 @@ DEFAULT_CELERYD="-m celery worker --detach"
 
 # /etc/init.d/celeryd: start and stop the celery task worker daemon.
 
-CELERY_DEFAULTS=${CELERY_DEFAULTS:-"/etc/default/celeryd"}
+# Don't load celery defaults from /etc/default/celeryd, put them right here
 
-test -f "$CELERY_DEFAULTS" && . "$CELERY_DEFAULTS"
-if [ -f "/etc/default/celeryd" ]; then
-    . /etc/default/celeryd
-fi
+# CELERY_DEFAULTS=${CELERY_DEFAULTS:-"/etc/default/celeryd"}
+
+# test -f "$CELERY_DEFAULTS" && . "$CELERY_DEFAULTS"
+# if [ -f "/etc/default/celeryd" ]; then
+#     . /etc/default/celeryd
+# fi
+
+# Name of nodes to start, here we have a single node
+CELERYD_NODES="w1"
+# or we could have three nodes:
+#CELERYD_NODES="w1 w2 w3"
+
+# Where to chdir at start.
+CELERYD_CHDIR="/data/vhost/!!(*= $vhost *)!!"
+
+# Python interpreter from environment.
+ENV_PYTHON="$CELERYD_CHDIR/virtualenv-sayit/bin/python"
+
+# How to call "manage.py celeryd_multi"
+CELERYD_MULTI="$ENV_PYTHON $CELERYD_CHDIR/sayit/manage.py celeryd_multi"
+
+# How to call "manage.py celeryctl"
+CELERYCTL="$ENV_PYTHON $CELERYD_CHDIR/sayit/manage.py celeryctl"
+
+# Extra arguments to celeryd
+CELERYD_OPTS="--time-limit=300 --concurrency=8"
+
+# Name of the celery config module.
+CELERY_CONFIG_MODULE="celeryconfig"
+
+# %n will be replaced with the nodename.
+CELERYD_LOG_FILE="$CELERYD_CHDIR/celery/%n.log"
+CELERYD_PID_FILE="$CELERYD_CHDIR/celery/%n.pid"
+
+# Workers should run as an unprivileged user.
+CELERYD_USER="!!(* $user *)!!"
+
+# We can't get a group explicitly, so just run as the default for the user
+#CELERYD_GROUP="celery"
+
+# Name of the projects settings module.
+export DJANGO_SETTINGS_MODULE="spoke.settings"
 
 # Sets --app argument for CELERY_BIN
 CELERY_APP_ARG=""
