@@ -1,5 +1,4 @@
 #!/bin/sh -e
-# /etc/init.d/celeryd: start and stop the celery task worker daemon.
 # ============================================
 #  celeryd - Starts the Celery worker daemon.
 # ============================================
@@ -25,6 +24,8 @@ DEFAULT_LOG_FILE="/var/log/celery/%N.log"
 DEFAULT_LOG_LEVEL="INFO"
 DEFAULT_NODES="celery"
 DEFAULT_CELERYD="-m celery worker --detach"
+
+# /etc/init.d/celeryd: start and stop the celery task worker daemon.
 
 # Don't load celery defaults from /etc/default/celeryd, put them right here
 
