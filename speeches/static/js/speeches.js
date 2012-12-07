@@ -63,7 +63,7 @@ $(function(){
             }
         });
         $("input#id_end_0").on("changeDate", function(e) {
-            $time = $("input#id_start_1")
+            $time = $("input#id_end_1")
             if( $time.val() == "" ){
                 $time.val("00:00")
             }
