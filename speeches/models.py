@@ -43,7 +43,11 @@ class Speaker(AuditedModel):
 class Speech(AuditedModel):
     # The speech. Need to check have at least one of the following two (preferably both).
     audio = models.FileField(upload_to='speeches/%Y-%m-%d/', max_length=255, blank=True)
-    text = models.TextField(blank=True, db_index=True, help_text='The text of the speech')
+    # TODO - we will want to do full text search at some point, so we need an index on
+    # this field in some way, but The Right Thing looks complicated, and the current method breaks
+    # on really big text.  Since we don't have search at all at the moment, I've removed
+    # the basic index completely for now.
+    text = models.TextField(blank=True, db_index=False, help_text='The text of the speech')
 
     # What the speech is part of.
     # The below should really all be on the parents
