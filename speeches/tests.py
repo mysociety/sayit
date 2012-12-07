@@ -470,29 +470,63 @@ class SeleniumTests(LiveServerTestCase):
         cls.selenium.quit()
         super(SeleniumTests, cls).tearDownClass()
 
-    # TODO - This always fails because p#question is not displayed
-    # but I can't figure out why - it works in chrome and FF
-    # def test_select_text_only(self):
-    #     self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
+    def test_select_text_only(self):
+        self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
 
-    #     # Assert question is shown and form is hidden
-    #     self.assertTrue(self.selenium.find_element_by_id("question").is_displayed())
-    #     self.assertFalse(self.selenium.find_element_by_id("speech-form").is_displayed())
+        # Assert question is shown and form is hidden
+        self.assertTrue(self.selenium.find_element_by_id("question").is_displayed())
+        self.assertFalse(self.selenium.find_element_by_id("speech-form").is_displayed())
         
-    #     # Select text
-    #     self.selenium.find_element_by_id("text-link").click()
+        # Select text
+        self.selenium.find_element_by_id("text-link").click()
         
-    #     # Assert form is show with text input
-    #     self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
-    #     self.assertTrue(self.selenium.find_element_by_id("id_text_controls").is_displayed())
+        # Assert form is show with text input
+        self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
+        self.assertTrue(self.selenium.find_element_by_id("id_text_controls").is_displayed())
         
-    #     # Assert audio and question are hidden
-    #     self.assertFalse(self.selenium.find_element_by_id("id_audio_controls").is_displayed())
-    #     self.assertFalse(self.selenium.find_element_by_id("question").is_displayed())
+        # Assert audio and question are hidden
+        self.assertFalse(self.selenium.find_element_by_id("id_audio_controls").is_displayed())
+        self.assertFalse(self.selenium.find_element_by_id("question").is_displayed())
+
+    def test_select_audio_only(self):
+        self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
+
+        # Assert question is shown and form is hidden
+        self.assertTrue(self.selenium.find_element_by_id("question").is_displayed())
+        self.assertFalse(self.selenium.find_element_by_id("speech-form").is_displayed())
+        
+        # Select audio
+        self.selenium.find_element_by_id("audio-link").click()
+        
+        # Assert form is shown with audio input
+        self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
+        self.assertTrue(self.selenium.find_element_by_id("id_audio_controls").is_displayed())
+        
+        # Assert text and question are hidden
+        self.assertFalse(self.selenium.find_element_by_id("id_text_controls").is_displayed())
+        self.assertFalse(self.selenium.find_element_by_id("question").is_displayed())
+
+    def test_select_text_and_audio(self):
+        self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
+
+        # Assert question is shown and form is hidden
+        self.assertTrue(self.selenium.find_element_by_id("question").is_displayed())
+        self.assertFalse(self.selenium.find_element_by_id("speech-form").is_displayed())
+        
+        # Select both
+        self.selenium.find_element_by_id("both-link").click()
+        
+        # Assert form is shown with audio input and text input
+        self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
+        self.assertTrue(self.selenium.find_element_by_id("id_audio_controls").is_displayed())
+        self.assertTrue(self.selenium.find_element_by_id("id_text_controls").is_displayed())
+        
+        # Assert Question is hidden        
+        self.assertFalse(self.selenium.find_element_by_id("question").is_displayed())
 
     def test_add_speech(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-        #self.selenium.find_element_by_id("text-link").click()
+        self.selenium.find_element_by_id("text-link").click()
         text_input = self.selenium.find_element_by_name('text')
         text_input.send_keys('This is a speech')
         self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
@@ -500,7 +534,7 @@ class SeleniumTests(LiveServerTestCase):
 
     def test_upload_audio(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-        #self.selenium.find_element_by_id("audio-link").click()
+        self.selenium.find_element_by_id("audio-link").click()
         audio_file_input = self.selenium.find_element_by_name("audio")
         audio_file_input.send_keys(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'))
         self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
@@ -512,7 +546,7 @@ class SeleniumTests(LiveServerTestCase):
 
         # Type a name in and select it
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-        #self.selenium.find_element_by_id("text-link").click()
+        self.selenium.find_element_by_id("text-link").click()
         speaker_input = self.selenium.find_element_by_name("speaker-autocomplete")
         speaker_input.send_keys("Na")
         self.selenium.find_element_by_xpath('//div[@id="id-id_speaker_text"]/descendant::span').click()

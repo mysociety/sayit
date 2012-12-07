@@ -181,5 +181,10 @@ APPEND_SLASH = False
 # Celery
 djcelery.setup_loader()
 
+# South
+# Don't use migrations in testing - makes things faster and avoids
+# errors with difference between sqlite and postgres
+SOUTH_TESTS_MIGRATE = False
+
 # Now get the mySociety configuration
 from .mysociety import *
