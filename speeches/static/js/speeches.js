@@ -1,8 +1,8 @@
 $(function(){
     var submitTxt;
 
-    // Make them answer an Audio/Text question first if it's a new speech
-    if($("p.lead").hasClass("add-speech")) {
+    // Make them answer an Audio/Text question first if it's a brand new speech
+    if($("p.lead").hasClass("add-speech") && $("ul.errorlist").length == 0) {
         $("form#speech-form").hide();
         $("p#question").show();
         // Click handlers for the options
@@ -18,6 +18,9 @@ $(function(){
             selectFormOption();
             return false;
         });
+    }
+    else {
+        enableDatePickers();
     } 
 
     function selectFormOption(selectorsToHide) {
@@ -26,6 +29,45 @@ $(function(){
         if(typeof selectorsToHide !== "undefined") {
             $(selectorsToHide).hide()
         }
+        enableDatePickers();
+    }
+
+    function enableDatePickers(){
+        // Datepickers
+        $("input#id_start_0, input#id_end_0").datepicker({
+            format:'dd/mm/yyyy',
+            weekStart: 1,
+            autoclose: true,        
+        })
+
+        // Placeholders for dates
+        $("input#id_start_0, input#id_end_0").attr("placeholder", "dd/mm/yyyy");
+
+        // Add placeholder attributes to times too
+        $("input#id_start_1, input#id_end_1").attr("placeholder", "hh:mm");
+
+        // Make the end the same as the start the first time people
+        // enter something in the start
+        $("#id_start_0").one("changeDate", function(e) {
+            dateString = $("#id_start_0").val();
+            $("#id_end_0").val(dateString);
+            $("#id_end_0").datepicker("setStartDate", dateString);
+        });
+
+        // Make the times auto-fill with 00:00 if they're empty, because
+        // Django doesn't default them to anything and throws a validation error
+        $("input#id_start_0").on("changeDate", function(e) {
+            $time = $("input#id_start_1")
+            if( $time.val() == "" ){
+                $time.val("00:00")
+            }
+        });
+        $("input#id_end_0").on("changeDate", function(e) {
+            $time = $("input#id_start_1")
+            if( $time.val() == "" ){
+                $time.val("00:00")
+            }
+        });
     }
 
     // Ajax file uploads
@@ -76,5 +118,6 @@ $(function(){
             $('#id_audio_filename').val(server_filename);
         }
     });
+
 });
 

@@ -9,6 +9,7 @@ from django.core.files.uploadedfile import UploadedFile
 
 from speeches.models import Speech, Speaker
 from speeches.widgets import AudioFileInput
+from speeches.util import BootstrapSplitDateTimeWidget
 
 # For Bootstrap, which needs the label class, so monkey-patch
 def add_class(f):
@@ -41,6 +42,12 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
     speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(), 
             widget=autocomplete_light.ChoiceWidget('SpeakerAutocomplete'), 
             required=False)
+    start = forms.SplitDateTimeField(input_date_formats=['%d/%m/%Y'],
+            input_time_formats=['%H:%M', '%H:%M:%S'],
+            widget=BootstrapSplitDateTimeWidget)
+    end = forms.SplitDateTimeField(input_date_formats=['%d/%m/%Y'],
+            input_time_formats=['%H:%M', '%H:%M:%S'],
+            widget=BootstrapSplitDateTimeWidget)
 
     def clean(self):
         cleaned_data = self.cleaned_data

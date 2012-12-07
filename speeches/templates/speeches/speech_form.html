@@ -5,6 +5,7 @@
 {{ block.super }}
 <link href="{% static "css/speeches.css" %}" rel="stylesheet">
 <link rel="stylesheet" href="{% static "autocomplete_light/style.css" %}" />
+<link rel="stylesheet" href="{% static "css/bootstrap-datepicker.css" %}" />
 {% endblock %}
 
 {% block extra_js %}
@@ -16,6 +17,7 @@
 <script src="{% static "autocomplete_light/autocomplete.js" %}"></script>
 <script src="{% static "autocomplete_light/widget.js" %}"></script>
 <script src="{% static "autocomplete_light/text_widget.js" %}"></script>
+<script src="{% static "js/bootstrap-datepicker.js" %}"></script>
 {% endblock %}
 
 {% block title %}{% if object %}Edit speech {% else %}Add speech{% endif %}{% endblock %}
