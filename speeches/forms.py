@@ -44,10 +44,12 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             required=False)
     start = forms.SplitDateTimeField(input_date_formats=['%d/%m/%Y'],
             input_time_formats=['%H:%M', '%H:%M:%S'],
-            widget=BootstrapSplitDateTimeWidget)
+            widget=BootstrapSplitDateTimeWidget,
+            required=False)
     end = forms.SplitDateTimeField(input_date_formats=['%d/%m/%Y'],
             input_time_formats=['%H:%M', '%H:%M:%S'],
-            widget=BootstrapSplitDateTimeWidget)
+            widget=BootstrapSplitDateTimeWidget,
+            required=False)
 
     def clean(self):
         cleaned_data = self.cleaned_data
