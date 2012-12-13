@@ -28,7 +28,7 @@
     {% endif %}
 
     {% if object.text %}
-        <blockquote>{{ object.text }}</blockquote>
+        <blockquote>{{ object.text|linebreaks }}</blockquote>
     {% endif %}
 
     <a href="{{ object.get_edit_url }}">Edit</a>
