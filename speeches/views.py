@@ -8,6 +8,7 @@ import speeches.util
 
 from django.views.generic import CreateView, UpdateView, DetailView, ListView
 from django.views.generic.edit import BaseFormView
+from django.views.decorators.csrf import csrf_exempt
 
 import celery
 import logging
@@ -34,6 +35,7 @@ class SpeechAudioCreate(BaseFormView):
     def form_invalid(self, form):
         return self.render_to_response({ 'error': form.errors['audio'] })
 
+@csrf_exempt
 class SpeechCreate(CreateView):
     model = Speech
     form_class = SpeechForm
