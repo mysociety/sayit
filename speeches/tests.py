@@ -7,7 +7,7 @@ import os
 import tempfile
 import filecmp
 
-from mock import patch, Mock
+from mock import patch, Mock, MagicMock
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -244,6 +244,48 @@ class TranscribeTaskTests(TestCase):
 
         # Compare the created file to one we made earlier
         self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb.wav')))
+
+    # Test that the code doesn't try to convert a wav or amr file
+    # but sends it direct instead
+    def test_original_wav_file_used(self):
+        # Put a speech in the db for the task to use
+        test_file_path = os.path.join(self._speeches_path, 'fixtures', 'lamb.wav')
+        audio = open(test_file_path, 'rb')
+        self.speech = Speech.objects.create(audio=File(audio, "lamb.wav"))
+
+        # Get a helper class
+        helper = TranscribeHelper();
+
+        # Mock out the method our code should call to spy on it
+        mock_get_transcription = MagicMock(return_value="Transcription")
+
+        # Patch it where it'll be called
+        with patch('speeches.tasks.TranscribeHelper.get_transcription', mock_get_transcription):
+            # Call our uut
+            result = transcribe_speech(self.speech.id)
+
+        # Assert it called the helper with the right file
+        mock_get_transcription.assert_called_once_with(self.speech.audio.path)
+
+    def test_original_amr_file_used(self):
+        # Put a speech in the db for the task to use
+        test_file_path = os.path.join(self._speeches_path, 'fixtures', 'lamb.amr')
+        audio = open(test_file_path, 'rb')
+        self.speech = Speech.objects.create(audio=File(audio, "lamb.amr"))
+
+        # Get a helper class
+        helper = TranscribeHelper();
+
+        # Mock out the method our code should call to spy on it
+        mock_get_transcription = MagicMock(return_value="Transcription")
+
+        # Patch it where it'll be called
+        with patch('speeches.tasks.TranscribeHelper.get_transcription', mock_get_transcription):
+            # Call our uut
+            result = transcribe_speech(self.speech.id)
+
+        # Assert it called the helper with the right file
+        mock_get_transcription.assert_called_once_with(self.speech.audio.path)
 
     def test_transcription_selection(self):
         # Mock responses

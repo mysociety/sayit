@@ -14,30 +14,45 @@ def transcribe_speech(speech_id):
     # Note, we have to catch exceptions to be able to retry them if we want
     # to, at the moment we just give up
     speech = Speech.objects.get(id=speech_id)
+    default_transcription = "This speech could not be transcribed automatically"
     try:
         # Check speech is ok to be transcribed
         helper = TranscribeHelper();
         helper.check_speech(speech)
 
-        # Make an 8khz version of the audio using mpg123
-        # First make a temporary file
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        try:
-            if helper.make_wav(tmp_filename, speech.audio.path):
-                # mpg123 completed successfully, so upload it to AT&T
-                # First we need an oauth token
-                auth_token = helper.get_oauth_token()
-                # Now we can use that token to make a request
-                transcription = helper.get_transcription(auth_token,
-                                                         tmp_filename)
-                speech.text = transcription
-                return transcription
-            else:
-                # Something went wrong with mpg123
-                raise TranscribeException(
-                    'MPG to WAV conversion did not complete successfully')
-        finally:
-            os.remove(tmp_filename)
+        # See if we need to convert it (necessary for ogg and mp3)
+        (file_name, file_extension) = os.path.splitext(speech.audio.path)
+
+        # Set a default
+        transcription = default_transcription
+
+        if (file_extension == ".wav" or file_extension == ".amr"):
+            # No conversion needed
+            transcription = helper.get_transcription(speech.audio.path)
+        elif (file_extension == ".mp3"):
+            # Convert to wav
+            # Make an 8khz version of the audio using mpg123
+            # First make a temporary file
+            (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
+            try:
+                if helper.make_wav(tmp_filename, speech.audio.path):
+                    transcription = helper.get_transcription(tmp_filename)
+                else:
+                    # Something went wrong with mpg123
+                    raise TranscribeException(
+                        'MPG to WAV conversion did not complete successfully')
+            finally:
+                os.remove(tmp_filename)
+
+        elif (file_extension == '.ogg'):
+            # Convert ogg to wav or amr
+            # TODO: implement this!
+            raise TranscriptionException('OGG conversion is not yet supported')
+
+        # Save the result into the DB
+        speech.text = transcription
+        return transcription
+
     except (TranscribeException, OSError) as e:
         # We could retry here with something like:
         
@@ -46,7 +61,7 @@ def transcribe_speech(speech_id):
 
         # But for now we just give up
         if not speech.text:
-            speech.text = "This speech could not be transcribed automatically" 
+            speech.text = default_transcription
     finally:
         # Wipe the celery task id no matter what happens
         # TODO - would this work in the case of a retry?
@@ -117,8 +132,11 @@ class TranscribeHelper(object):
 
         return token_r.json['access_token']
 
-    def get_transcription(self, auth_token, filename):
+    def get_transcription(self, filename):
         """Get a transcription from AT&T for the given file"""  
+
+        # First we need an oauth token
+        auth_token = self.get_oauth_token()
         
         request_headers = {
             'Authorization': 'Bearer ' + auth_token,
