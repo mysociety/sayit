@@ -2,10 +2,14 @@ import subprocess
 import tempfile
 import os
 import requests
+import mimetypes
 from operator import itemgetter
 from celery import task
+from celery.utils.log import get_task_logger
 from django.conf import settings
 from speeches.models import Speech
+
+logger = get_task_logger(__name__)
 
 @task()
 def transcribe_speech(speech_id):
@@ -104,6 +108,8 @@ class TranscribeHelper(object):
 
     def get_oauth_token(self):
         """Get an oauth token from AT&T for the Speech service"""
+
+        logger.info("Getting auth token")
         
         # TODO - I think there might be a nicer way to do this with the
         # built-in oauth stuff that the requests module offers
@@ -126,21 +132,33 @@ class TranscribeHelper(object):
             
             # Check the response was ok
             if(token_r.status_code != requests.codes.ok):
+                logger.error("Auth request returned: {0}\n{1}".format(token_r.status_code, token_r.text))
                 token_r.raise_for_status()
         except requests.exceptions.RequestException as e:
+            logger.error("Transcription Auth API returned an error: {0}".format(e))
             raise TranscribeException("Transcription Auth API returned an error: {0}".format(e))
 
         return token_r.json['access_token']
 
     def get_transcription(self, filename):
-        """Get a transcription from AT&T for the given file"""  
+        """Get a transcription from AT&T for the given file""" 
+
+        logger.info("Getting transcription for filename: " + filename)
 
         # First we need an oauth token
         auth_token = self.get_oauth_token()
+
+        # Guess the mimetype from the file
+        (mime_type, encoding) = mimetypes.guess_type(filename, strict=False)
+        logger.info("Mime type guessed as: {0}".format(mime_type))
+        if mime_type is None:
+            # Choose a default instead
+            logger.info("Setting mime type to default (audio/wav)")
+            mime_type = "audio/wav"
         
         request_headers = {
             'Authorization': 'Bearer ' + auth_token,
-            'Content-type': 'audio/wav',
+            'Content-type': mime_type,
             'Accept': 'application/json',
             'X-SpeechContext': 'Generic'
         }
@@ -149,12 +167,15 @@ class TranscribeHelper(object):
             transcribe_r = requests.post(settings.ATT_API_URL,
                                          headers=request_headers,
                                          data=open(filename, 'rb'),
-                                         timeout=settings.ATT_TIMEOUT)
+                                         timeout=settings.ATT_TIMEOUT)            
 
             # Check response was ok
             if(transcribe_r.status_code != requests.codes.ok):
+                logger.error("API request returned: {0}\n{1}"
+                        .format(transcribe_r.status_code, transcribe_r.text))
                 transcribe_r.raise_for_status()
         except requests.exceptions.RequestException as e:
+            logger.error("Transcription API returned an error: {0}".format(e));
             raise TranscribeException("Transcription API returned an error: {0}".format(e))
 
         # Get the response json as a python object
@@ -163,9 +184,11 @@ class TranscribeHelper(object):
         # Get the best transcription from the response
         transcription = self.best_transcription(transcription_response)
         if(transcription is None):
+            logger.error("AT&T could not transcribe the audio, they returned:\n{0}"
+                .format(transcribe_r.text))
             raise TranscribeException(
-                "AT&T could not transcribe the audio, they returned:\n" +
-                 transcribe_r.text)
+                "AT&T could not transcribe the audio, they returned:\n{0}"
+                    .format(transcribe_r.text))
 
         return transcription       
 
