@@ -77,7 +77,7 @@ $(function(){
         add: function(e, data) {
             var valid = true;
             $.each(data.files, function(i, file){
-                if (!(/.(ogg|mp3)$/.test(file.name) || /audio\//.test(file.type))) {
+                if (!(/.(ogg|mp3|wav|3gp)$/.test(file.name) || /audio\//.test(file.type))) {
                     valid = false;
                 }
             });
