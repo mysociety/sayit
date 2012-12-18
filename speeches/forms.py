@@ -25,7 +25,7 @@ class CleanAudioMixin(object):
         audio = self.cleaned_data['audio']
         if audio and isinstance(audio, UploadedFile):
             ext = os.path.splitext(audio.name)[1]
-            if audio.content_type[0:6] != 'audio/' and ext not in ('.ogg', '.mp3', '.wav', '.amr'):
+            if audio.content_type[0:6] != 'audio/' and ext not in ('.ogg', '.mp3', '.wav', '.3gp'):
                 raise forms.ValidationError('That file does not appear to be an audio file')
         return audio
 
