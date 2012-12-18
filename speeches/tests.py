@@ -97,7 +97,7 @@ class SpeechTest(TestCase):
     def test_add_speech_fails_with_unsupported_audio(self):
         # Load the .au fixture (it's not really a .au file, but the extension is enough
         # for this test)
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.au'), 'rb')
+        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.aiff'), 'rb')
 
         resp = self.client.post('/speech/add', {
             'audio': audio
@@ -248,56 +248,41 @@ class TranscribeTaskTests(TestCase):
             helper.check_speech(speech_has_text)
 
 
-    def test_wav_file_creation(self):
+    def test_wav_file_creation_from_mp3(self):
         helper = TranscribeHelper()
         
         (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        helper.make_wav(tmp_filename, self.speech.audio.path)
+        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'))
 
         # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb.wav')))
+        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_mp3.wav')))
 
-    # Test that the code doesn't try to convert a wav or amr file
-    # but sends it direct instead
-    def test_original_wav_file_used(self):
-        # Put a speech in the db for the task to use
-        test_file_path = os.path.join(self._speeches_path, 'fixtures', 'lamb.wav')
-        audio = open(test_file_path, 'rb')
-        self.speech = Speech.objects.create(audio=File(audio, "lamb.wav"))
+    def test_wav_file_creation_from_android_3gp(self):
+        helper = TranscribeHelper()
+        
+        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
+        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb.3gp'))
 
-        # Get a helper class
-        helper = TranscribeHelper();
+        # Compare the created file to one we made earlier
+        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_3gp.wav')))
+    
+    def test_wav_file_creation_from_iphone_wav(self):
+        helper = TranscribeHelper()
+        
+        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
+        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_iphone.wav'))
 
-        # Mock out the method our code should call to spy on it
-        mock_get_transcription = MagicMock(return_value="Transcription")
+        # Compare the created file to one we made earlier
+        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_iphone.wav')))
 
-        # Patch it where it'll be called
-        with patch('speeches.tasks.TranscribeHelper.get_transcription', mock_get_transcription):
-            # Call our uut
-            result = transcribe_speech(self.speech.id)
+    def test_wav_file_creation_from_stereo_wav(self):
+        helper = TranscribeHelper()
+        
+        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
+        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_stereo.wav'))
 
-        # Assert it called the helper with the right file
-        mock_get_transcription.assert_called_once_with(self.speech.audio.path)
-
-    def test_original_amr_file_used(self):
-        # Put a speech in the db for the task to use
-        test_file_path = os.path.join(self._speeches_path, 'fixtures', 'lamb.amr')
-        audio = open(test_file_path, 'rb')
-        self.speech = Speech.objects.create(audio=File(audio, "lamb.amr"))
-
-        # Get a helper class
-        helper = TranscribeHelper();
-
-        # Mock out the method our code should call to spy on it
-        mock_get_transcription = MagicMock(return_value="Transcription")
-
-        # Patch it where it'll be called
-        with patch('speeches.tasks.TranscribeHelper.get_transcription', mock_get_transcription):
-            # Call our uut
-            result = transcribe_speech(self.speech.id)
-
-        # Assert it called the helper with the right file
-        mock_get_transcription.assert_called_once_with(self.speech.audio.path)
+        # Compare the created file to one we made earlier
+        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_stereo.wav')))
 
     def test_transcription_selection(self):
         # Mock responses

@@ -24,37 +24,22 @@ def transcribe_speech(speech_id):
         helper = TranscribeHelper();
         helper.check_speech(speech)
 
-        # See if we need to convert it (necessary for ogg and mp3)
-        (file_name, file_extension) = os.path.splitext(speech.audio.path)
-
-        # Set a default
-        transcription = default_transcription
-
-        if (file_extension == ".wav" or file_extension == ".amr"):
-            # No conversion needed
-            transcription = helper.get_transcription(speech.audio.path)
-        elif (file_extension == ".mp3"):
-            # Convert to wav
-            # Make an 8khz version of the audio using mpg123
-            # First make a temporary file
-            (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-            try:
-                if helper.make_wav(tmp_filename, speech.audio.path):
-                    transcription = helper.get_transcription(tmp_filename)
-                else:
-                    # Something went wrong with mpg123
-                    raise TranscribeException(
-                        'MPG to WAV conversion did not complete successfully')
-            finally:
-                os.remove(tmp_filename)
-
-        elif (file_extension == '.ogg'):
-            # Convert ogg to wav or amr
-            # TODO: implement this!
-            raise TranscriptionException('OGG conversion is not yet supported')
-
-        # Save the result into the DB
-        speech.text = transcription
+        # Convert to wav
+        # Make an 8khz version of the audio using ffmpeg
+        # First make a temporary file
+        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
+        try:
+            if helper.make_wav(tmp_filename, speech.audio.path):
+                transcription = helper.get_transcription(tmp_filename)
+                # Save the result into the DB
+                speech.text = transcription
+            else:
+                # Something went wrong with mpg123
+                raise TranscribeException(
+                    'WAV conversion did not complete successfully')
+        finally:
+            os.remove(tmp_filename)
+        
         return transcription
 
     except (TranscribeException, OSError) as e:
@@ -67,7 +52,7 @@ def transcribe_speech(speech_id):
         if not speech.text:
             speech.text = default_transcription
     finally:
-        # Wipe the celery task id no matter what happens
+        # Wipe the celery task id and save the speech no matter what happens
         # TODO - would this work in the case of a retry?
         speech.celery_task_id = None
         speech.save()
@@ -93,16 +78,30 @@ class TranscribeHelper(object):
     def make_wav(self, tmp_filename, speech_filename):
         """Make a .wav file suitable for uploading to AT&T and return true if
            it succeeded"""
-        
+
         result = subprocess.call([
-            'mpg123',
-            '-q',
-            '--mono', 
-            '--rate',
-            '8000', 
-            '-w',
-            tmp_filename, 
-            speech_filename
+            'ffmpeg',
+            # Tell ffmpeg to shut up
+            '-loglevel',
+            '0',
+            # Say yes to everything
+            '-y',
+            # Input file
+            '-i',
+            speech_filename,
+            # Output options
+            # Sample rate of 8KHz
+            '-ar',
+            '8000',
+            # Single channel, ie: mono
+            '-ac',
+            '1',
+            # Use the 16-bit pcm codec
+            '-acodec',
+            'pcm_s16le',
+            # Output file
+            tmp_filename
+
         ])
         return result == 0
 
