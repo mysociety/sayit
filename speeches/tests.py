@@ -94,6 +94,18 @@ class SpeechTest(TestCase):
         self.assertFalse('Please wait' in resp.content)        
         self.assertTrue(text in resp.content)
 
+    def test_add_speech_fails_with_unsupported_audio(self):
+        # Load the .au fixture (it's not really a .au file, but the extension is enough
+        # for this test)
+        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.au'), 'rb')
+
+        resp = self.client.post('/speech/add', {
+            'audio': audio
+        })
+
+        # Assert that it fails and gives us an error
+        self.assertFormError(resp, 'form', 'audio', 'That file does not appear to be an audio file')
+
     def test_add_speech_creates_celery_task(self):
         # Load the mp3 fixture
         audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
