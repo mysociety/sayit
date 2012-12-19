@@ -13,8 +13,10 @@ python-psycopg2
 libpq-dev
 
 # MPG/OGG/3GP -> WAV conversion tools
+# Note that these both need to be relatively recent versions
+# The versions from squeeze-backports or ubuntu 12.04 (0.8.3 and 0.8.4) are good
 ffmpeg
-libopencore-amrnb0
+libavcodec-extra-53
 
 # If you want to run this on a headless server, or eg: in vagrant
 # you'll also need a browser and a display setup too
