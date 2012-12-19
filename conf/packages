@@ -12,8 +12,9 @@ postgresql
 python-psycopg2
 libpq-dev
 
-# MPG -> WAV conversion tool
-mpg123
+# MPG/OGG/3GP -> WAV conversion tools
+ffmpeg
+libopencore-amrnb0
 
 # If you want to run this on a headless server, or eg: in vagrant
 # you'll also need a browser and a display setup too
