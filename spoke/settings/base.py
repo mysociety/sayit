@@ -167,6 +167,11 @@ LOGGING = {
             'level': 'WARN',
             'propagate': True,
         },
+        'speeches': {
+            'handlers': [ 'mail_admins', 'console' ],
+            'level': 'WARN',
+            'propagate': True,  
+        },
     }
 }
 
