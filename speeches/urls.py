@@ -1,7 +1,13 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from django.views.decorators.csrf import csrf_exempt
 
 from speeches.views import *
+from tastypie.api import Api
+from speeches.api import SpeechResource, SpeakerResource
+
+v01_api = Api(api_name='v0.1')
+v01_api.register(SpeakerResource())
+v01_api.register(SpeechResource())
 
 urlpatterns = patterns('',
 	url(r'^$', RecentSpeechList.as_view(), name='home'),
@@ -25,5 +31,7 @@ urlpatterns = patterns('',
 
     url(r'^recording/(?P<pk>\d+)$', RecordingView.as_view(), name='recording-view'),
     url(r'^api/v0.1/recording/$', csrf_exempt(RecordingAPICreate.as_view()), name='recording-api-add'),
+
+    url(r'^api/', include(v01_api.urls))
 )
 

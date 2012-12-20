@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'instances',
     'speeches',
     'django_nose',
+    'tastypie',
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
