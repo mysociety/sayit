@@ -31,7 +31,7 @@ class AuditedModel(models.Model):
 
 # Speaker - someone who gave a speech
 class Speaker(AuditedModel):
-    popit_id = models.TextField(unique=True)
+    popit_url = models.TextField(unique=True)
     name = models.TextField(db_index=True)
 
     def __unicode__(self):
