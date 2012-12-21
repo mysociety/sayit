@@ -74,3 +74,40 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             'source_url': forms.TextInput(),
         }
         exclude = ('celery_task_id')
+
+class SpeechAPIForm(forms.ModelForm, CleanAudioMixin):
+    # A form like SpeechForm, but simpler, that is intended for use
+    # like an api, eg: from mobile apps. See: speeches.views.SpeechAPICreate
+
+    # Force speaker to be a CharField so we can supply popit_urls instead
+    # of speaker ids
+    speaker = forms.CharField(required=False)
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        if 'audio_filename' in cleaned_data and cleaned_data['audio_filename']:
+            filename = cleaned_data['audio_filename']
+            self.cleaned_data['audio'] = filename
+
+        if not cleaned_data.get('text') and not cleaned_data.get('audio'):
+            raise forms.ValidationError('You must provide either text or some audio')
+        return cleaned_data
+
+    # Look up the popit url in the db and return a speaker object id instead
+    def clean_speaker(self):
+        speaker_url = self.cleaned_data['speaker']
+        speaker = None
+        if speaker_url:
+            try:
+                speaker = Speaker.objects.get(popit_url=speaker_url)
+            except Speaker.DoesNotExist:
+                # TODO - lookup the speaker from the popit url somehow
+                # Need to think about security and whether to do it right now
+                # or save it in the db anyway and check asynchronously with the
+                # populatespeakers management command
+                speaker = None
+        return speaker
+
+    class Meta:
+        model = Speech
+        exclude = ('celery_task_id')

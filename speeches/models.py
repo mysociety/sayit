@@ -29,6 +29,11 @@ class AuditedModel(models.Model):
 #    heading
 #    subheading
 
+# SpeakerManager, so that we can define get_by_natural_key()
+class SpeakerManager(models.Manager):
+    def get_by_natural_key(self, popit_url):
+        return self.get(popit_url=popit_url)
+
 # Speaker - someone who gave a speech
 class Speaker(AuditedModel):
     popit_url = models.TextField(unique=True)
@@ -38,6 +43,9 @@ class Speaker(AuditedModel):
         out = "null"
         if self.name : out = '%s' % self.name
         return out
+
+    def natural_key(self):
+        return (self.popit_url,)
 
 # Speech that a speaker gave
 class Speech(AuditedModel):

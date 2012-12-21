@@ -1,7 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson as json
+from django.core.urlresolvers import reverse
+from django.core import serializers
 
-from speeches.forms import SpeechForm, SpeechAudioForm
+from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm
 from speeches.models import Speech, Speaker
 from speeches.tasks import transcribe_speech
 import speeches.util
@@ -49,6 +51,50 @@ class SpeechCreate(CreateView):
         speeches.util.start_transcribing_speech(self.object)
         
         return HttpResponseRedirect(self.get_success_url())
+
+# Api version of SpeechCreate
+class SpeechAPICreate(CreateView):
+    model = Speech
+    form_class = SpeechAPIForm
+
+    # Limit this view to POST requests, we don't want to show an HTML form for it
+    http_method_names = ['post']
+
+    # Return JSON - context should already be serialized JSON
+    def render_to_response(self, context, **kwargs):
+        kwargs['content_type'] = 'application/json'
+        return HttpResponse(context, **kwargs)
+
+    # Do as SpeechCreate does, but return a Location header instead of
+    # redirecting to success_url
+    def form_valid(self, form):
+        # Do things with audio here...
+
+        # First save the form - we can't let the super-class do it because
+        # we need to add some stuff to the object afterwards
+        self.object = form.save()
+
+        # Now set off a Celery task to transcribe the audio for this speech
+        speeches.util.start_transcribing_speech(self.object)
+
+        # Return a 201
+
+        # Serialise the object - annoyingly the second param must be an array or a QuerySet
+        serialisable_fields = ('audio', 'title', 'text', 'created', 'modified', 'start',
+            'end', 'source_url', 'speaker', 'location', 'event')
+        serialised = serializers.serialize("json", [self.object], fields=serialisable_fields, use_natural_keys=True)
+        # Now we need to massage this a bit because it's an array
+        serialised = serialised[1:-1]
+
+        response = self.render_to_response(serialised)
+        response.status_code = 201
+        response['Location'] = reverse("speech-view", args=[self.object.id])
+        return response
+
+    def form_invalid(self, form):
+        response = self.render_to_response(json.dumps({ 'errors': json.dumps(form.errors) }))
+        response.status_code = 400
+        return response
 
 class SpeechUpdate(UpdateView):
     model = Speech
