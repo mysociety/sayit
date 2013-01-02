@@ -3,23 +3,24 @@ import tempfile
 import shutil
 
 from django.test import TestCase
+from django.test.utils import override_settings
 from django.conf import settings
 
 import speeches
 from speeches.models import Speech, Speaker
 
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class SpeechTests(TestCase):
 
     @classmethod
     def setUpClass(cls):
         cls._speeches_path = os.path.abspath(speeches.__path__[0])
 
-    def setUp(self):
-        self.tempdir = tempfile.mkdtemp()
-        settings.MEDIA_ROOT = self.tempdir
-
     def tearDown(self):
-        shutil.rmtree(self.tempdir)
+        # Clear the speeches folder if it exists
+        speeches_folder = os.path.join(settings.MEDIA_ROOT, 'speeches')
+        if(os.path.exists(speeches_folder)):
+            shutil.rmtree(speeches_folder)
 
     def test_add_speech_page_exists(self):
         # Test that the page exists and has the right title
@@ -85,8 +86,7 @@ class SpeechTests(TestCase):
         self.assertTrue(text in resp.content)
 
     def test_add_speech_fails_with_unsupported_audio(self):
-        # Load the .au fixture (it's not really a .au file, but the extension is enough
-        # for this test)
+        # Load the .aiff fixture
         audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.aiff'), 'rb')
 
         resp = self.client.post('/speech/add', {

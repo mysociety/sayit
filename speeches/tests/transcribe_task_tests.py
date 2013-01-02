@@ -8,6 +8,7 @@ from mock import patch, Mock
 import requests
 
 from django.test import TestCase
+from django.test.utils import override_settings
 from django.core.files import File
 from django.conf import settings
 
@@ -15,6 +16,7 @@ import speeches
 from speeches.models import Speech
 from speeches.tasks import transcribe_speech, TranscribeHelper, TranscribeException
 
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class TranscribeTaskTests(TestCase):
 
     @classmethod
@@ -35,15 +37,16 @@ class TranscribeTaskTests(TestCase):
             del settings.CELERY_ALWAYS_EAGER
 
     def setUp(self):
-        self.tempdir = tempfile.mkdtemp()
-        settings.MEDIA_ROOT = self.tempdir
         # Put a speech in the db for the task to use
         audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
         self.speech = Speech.objects.create(audio=File(audio, "lamb.mp3"))
 
     def tearDown(self):
         self.speech.delete()
-        shutil.rmtree(self.tempdir)
+        # Clear the speeches folder if it exists
+        speeches_folder = os.path.join(settings.MEDIA_ROOT, 'speeches')
+        if(os.path.exists(speeches_folder)):
+            shutil.rmtree(speeches_folder)
 
     def test_happy_path(self):
         # Canned responses for our code to use

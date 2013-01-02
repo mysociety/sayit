@@ -6,11 +6,13 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 
 from django.test import LiveServerTestCase
+from django.test.utils import override_settings
 from django.conf import settings
 
 import speeches
 from speeches.models import Speaker, Speech
 
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class SeleniumTests(LiveServerTestCase):
     @classmethod
     def setUpClass(cls):
@@ -23,12 +25,11 @@ class SeleniumTests(LiveServerTestCase):
         cls.selenium.quit()
         super(SeleniumTests, cls).tearDownClass()
 
-    def setUp(self):
-        self.tempdir = tempfile.mkdtemp()
-        settings.MEDIA_ROOT = self.tempdir
-
     def tearDown(self):
-        shutil.rmtree(self.tempdir)
+        # Clear the speeches folder if it exists
+        speeches_folder = os.path.join(settings.MEDIA_ROOT, 'speeches')
+        if(os.path.exists(speeches_folder)):
+            shutil.rmtree(speeches_folder)
 
     def test_select_text_only(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
