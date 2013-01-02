@@ -39,6 +39,7 @@ class TranscribeTaskTests(TestCase):
         self.speech = Speech.objects.create(audio=File(audio, "lamb.mp3"))
 
     def tearDown(self):
+        os.remove(self.speech.audio.path)
         self.speech.delete()
 
     def test_happy_path(self):

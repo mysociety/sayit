@@ -63,3 +63,28 @@ class SpeechAPITests(TestCase):
         # Check in db
         speech = Speech.objects.get(speaker=speaker.id)
         self.assertEqual(speech.text, 'This is a Steve speech')
+
+    def test_add_speech_with_audio(self):
+        # Load the mp3 fixture
+        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+
+        resp = self.client.post('/api/v0.1/speech/', {
+            'audio': audio
+        })
+        
+        # Check response headers
+        self.assertEquals(resp.status_code, 201)
+        self.assertEquals(resp['Content-Type'], 'application/json')
+        self.assertEquals(resp['Location'], 'http://testserver/speech/1')
+
+        # Check response JSON
+
+        response_content = simplejson.loads(resp.content)
+        self.assertTrue("lamb.mp3" in response_content['fields']['audio'])
+
+        # Check in db
+        speech = Speech.objects.get(id=1)
+        self.assertIsNotNone(speech.audio)
+
+        # Cleanup 
+        os.remove(speech.audio.path)

@@ -59,6 +59,9 @@ class SpeechTests(TestCase):
         speech = Speech.objects.get(id=1)
         self.assertIsNotNone(speech.audio)
 
+        # Cleanup 
+        os.remove(speech.audio.path)
+
     def test_add_speech_with_audio_and_text(self):
         # Load the mp3 fixture
         audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
@@ -73,6 +76,10 @@ class SpeechTests(TestCase):
         resp = self.client.get('/speech/1')
         self.assertFalse('Please wait' in resp.content)        
         self.assertTrue(text in resp.content)
+
+        # Cleanup 
+        speech = Speech.objects.get(id=1)
+        os.remove(speech.audio.path)
 
     def test_add_speech_fails_with_unsupported_audio(self):
         # Load the .au fixture (it's not really a .au file, but the extension is enough
@@ -97,6 +104,9 @@ class SpeechTests(TestCase):
         speech = Speech.objects.get(id=1)
         self.assertIsNotNone(speech.celery_task_id)
 
+        # Cleanup 
+        os.remove(speech.audio.path)
+
     def test_add_speech_with_text_does_not_create_celery_task(self):
         # Load the mp3 fixture
         audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
@@ -110,6 +120,9 @@ class SpeechTests(TestCase):
         # Assert that a celery task id is in the model
         speech = Speech.objects.get(id=1)
         self.assertIsNone(speech.celery_task_id)
+
+        # Cleanup
+        os.remove(speech.audio.path)
 
     def test_speech_displayed_when_celery_task_finished(self):
         # Load the mp3 fixture
@@ -133,3 +146,6 @@ class SpeechTests(TestCase):
         resp = self.client.get('/speech/1')
         self.assertFalse('Please wait' in resp.content)        
         self.assertTrue(text in resp.content)
+
+        # Cleanup
+        os.remove(speech.audio.path)

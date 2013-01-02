@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from django.test import LiveServerTestCase
 
 import speeches
-from speeches.models import Speaker
+from speeches.models import Speaker, Speech
 
 class SeleniumTests(LiveServerTestCase):
     @classmethod
@@ -89,6 +89,10 @@ class SeleniumTests(LiveServerTestCase):
         audio_file_input.send_keys(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'))
         self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
         self.assertIn('/speech/1', self.selenium.current_url)
+
+        # Cleanup 
+        speech = Speech.objects.get(id=1)
+        os.remove(speech.audio.path)
 
     def test_speaker_autocomplete(self):
         # Put a person in the db for the autocomplete to find
