@@ -1,6 +1,7 @@
 import os
 import tempfile
 import filecmp
+import shutil
 
 from mock import patch, Mock
 
@@ -34,13 +35,15 @@ class TranscribeTaskTests(TestCase):
             del settings.CELERY_ALWAYS_EAGER
 
     def setUp(self):
+        self.tempdir = tempfile.mkdtemp()
+        settings.MEDIA_ROOT = self.tempdir
         # Put a speech in the db for the task to use
         audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
         self.speech = Speech.objects.create(audio=File(audio, "lamb.mp3"))
 
     def tearDown(self):
-        os.remove(self.speech.audio.path)
         self.speech.delete()
+        shutil.rmtree(self.tempdir)
 
     def test_happy_path(self):
         # Canned responses for our code to use
