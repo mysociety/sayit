@@ -25,9 +25,41 @@ class SpeechAPITests(TestCase):
         resp = self.client.post('/api/v0.1/speech/', {
             'text': 'This is a speech'
         })
+        
+        # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
         self.assertEquals(resp['Location'], 'http://testserver/speech/1')
+
+        # Check response JSON
+        response_content = simplejson.loads(resp.content)
+        self.assertEquals(response_content['fields']['text'], 'This is a speech')
+        self.assertIsNone(response_content['fields']['speaker'])
+
         # Check in db
         speech = Speech.objects.get(id=1)
         self.assertEqual(speech.text, 'This is a speech')
+
+
+    def test_add_speech_with_speaker(self):
+        # Test form with speaker, we need to add a speaker first
+        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
+
+        resp = self.client.post('/api/v0.1/speech/', {
+            'text': 'This is a Steve speech',
+            'speaker': speaker.popit_url
+        })
+        
+        # Check response headers
+        self.assertEquals(resp.status_code, 201)
+        self.assertEquals(resp['Content-Type'], 'application/json')
+        self.assertEquals(resp['Location'], 'http://testserver/speech/1')
+
+        # Check response JSON
+        response_content = simplejson.loads(resp.content)
+        self.assertEquals(response_content['fields']['text'], 'This is a Steve speech')
+        self.assertEquals(response_content['fields']['speaker'], ['http://popit.mysociety.org/api/v1/person/abcd'])
+
+        # Check in db
+        speech = Speech.objects.get(speaker=speaker.id)
+        self.assertEqual(speech.text, 'This is a Steve speech')
