@@ -1,4 +1,5 @@
 import os
+import logging
 
 import autocomplete_light
 autocomplete_light.autodiscover()
@@ -10,6 +11,8 @@ from django.core.files.uploadedfile import UploadedFile
 from speeches.models import Speech, Speaker
 from speeches.widgets import AudioFileInput
 from speeches.util import BootstrapSplitDateTimeWidget
+
+logger = logging.getLogger(__name__)
 
 # For Bootstrap, which needs the label class, so monkey-patch
 def add_class(f):
@@ -105,6 +108,7 @@ class SpeechAPIForm(forms.ModelForm, CleanAudioMixin):
                 # Need to think about security and whether to do it right now
                 # or save it in the db anyway and check asynchronously with the
                 # populatespeakers management command
+                logger.error('Speaker: {0} does not exist in db, setting to None'.format(speaker_url))
                 speaker = None
         return speaker
 
