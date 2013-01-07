@@ -46,6 +46,9 @@ class BootstrapDateWidget(DateInput):
 
     def render(self, name, value, attrs=None):
         """Override the output rendering to return a widget with some Bootstrap niceness"""
+
+        # Set a placeholder attribute
+        attrs['placeholder'] = 'dd/mm/yyyy'
         
         widget = DateInput.render(self, name, value, attrs)
 
@@ -61,6 +64,9 @@ class BootstrapTimeWidget(TimeInput):
 
     def render(self, name, value, attrs=None):
         """Override the output rendering to return a widget with some Bootstrap niceness"""
+
+        # Set a placeholder attribute
+        attrs['placeholder'] = 'hh:mm'
         
         widget = TimeInput.render(self, name, value, attrs)
 
