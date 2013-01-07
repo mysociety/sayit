@@ -34,39 +34,24 @@ $(function(){
 
     function enableDatePickers(){
         // Datepickers
-        $("input#id_start_0, input#id_end_0").datepicker({
+        $("input#id_start_date, input#id_end_date").datepicker({
             format:'dd/mm/yyyy',
             weekStart: 1,
             autoclose: true,        
         })
 
         // Placeholders for dates
-        $("input#id_start_0, input#id_end_0").attr("placeholder", "dd/mm/yyyy");
+        $("input#id_start_date, input#id_end_date").attr("placeholder", "dd/mm/yyyy");
 
         // Add placeholder attributes to times too
-        $("input#id_start_1, input#id_end_1").attr("placeholder", "hh:mm");
+        $("input#id_start_time, input#id_end_time").attr("placeholder", "hh:mm");
 
         // Make the end the same as the start the first time people
         // enter something in the start
-        $("#id_start_0").one("changeDate", function(e) {
-            dateString = $("#id_start_0").val();
-            $("#id_end_0").val(dateString);
-            $("#id_end_0").datepicker("setStartDate", dateString);
-        });
-
-        // Make the times auto-fill with 00:00 if they're empty, because
-        // Django doesn't default them to anything and throws a validation error
-        $("input#id_start_0").on("changeDate", function(e) {
-            $time = $("input#id_start_1")
-            if( $time.val() == "" ){
-                $time.val("00:00")
-            }
-        });
-        $("input#id_end_0").on("changeDate", function(e) {
-            $time = $("input#id_end_1")
-            if( $time.val() == "" ){
-                $time.val("00:00")
-            }
+        $("#id_start_date").one("changeDate", function(e) {
+            dateString = $("#id_start_date").val();
+            $("#id_end_date").val(dateString);
+            $("#id_end_date").datepicker("setStartDate", dateString);
         });
     }
 
