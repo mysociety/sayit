@@ -1,7 +1,7 @@
 from django.utils.html import escape, conditional_escape
 from django.utils.safestring import mark_safe
 
-from django.forms.widgets import ClearableFileInput, CheckboxInput
+from django.forms.widgets import ClearableFileInput, CheckboxInput, DateInput, TimeInput
 
 class AudioFileInput(ClearableFileInput):
     pretty_input_start = u'<span class="btn fileinput-button"> <i class="icon-plus"></i> <span>Choose audio file</span>'
@@ -36,3 +36,32 @@ class AudioFileInput(ClearableFileInput):
 
         return mark_safe(template % substitutions)
 
+class BootstrapDateWidget(DateInput):
+    """
+    A Widget that overrides the default date widget and styles it with Bootstrap
+    """
+
+    def __init__(self, attrs=None, format=None):
+        super(BootstrapDateWidget, self).__init__(attrs, format)
+
+    def render(self, name, value, attrs=None):
+        """Override the output rendering to return a widget with some Bootstrap niceness"""
+        
+        widget = DateInput.render(self, name, value, attrs)
+
+        return mark_safe(u'<div class="input-append">' + widget + '<span class="add-on"><i class="icon-calendar"></i></span></div>')
+
+class BootstrapTimeWidget(TimeInput):
+    """
+    A Widget that overrides the default time widget and styles it with Bootstrap
+    """
+
+    def __init__(self, attrs=None, format=None):
+        super(BootstrapTimeWidget, self).__init__(attrs, format)
+
+    def render(self, name, value, attrs=None):
+        """Override the output rendering to return a widget with some Bootstrap niceness"""
+        
+        widget = TimeInput.render(self, name, value, attrs)
+
+        return mark_safe(u'<div class="input-append">' + widget + '<span class="add-on"><i class="icon-time"></i></span></div>')

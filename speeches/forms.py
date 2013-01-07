@@ -9,8 +9,7 @@ from django.forms.forms import BoundField
 from django.core.files.uploadedfile import UploadedFile
 
 from speeches.models import Speech, Speaker
-from speeches.widgets import AudioFileInput
-from speeches.util import BootstrapSplitDateTimeWidget
+from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
 
 logger = logging.getLogger(__name__)
 
@@ -47,13 +46,17 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
     speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(), 
             widget=autocomplete_light.ChoiceWidget('SpeakerAutocomplete'), 
             required=False)
-    start = forms.SplitDateTimeField(input_date_formats=['%d/%m/%Y'],
-            input_time_formats=['%H:%M', '%H:%M:%S'],
-            widget=BootstrapSplitDateTimeWidget,
+    start_date = forms.DateField(input_formats=['%d/%m/%Y'],
+            widget=BootstrapDateWidget,
             required=False)
-    end = forms.SplitDateTimeField(input_date_formats=['%d/%m/%Y'],
-            input_time_formats=['%H:%M', '%H:%M:%S'],
-            widget=BootstrapSplitDateTimeWidget,
+    start_time = forms.TimeField(input_formats=['%H:%M', '%H:%M:%S'],
+            widget=BootstrapTimeWidget,
+            required=False)
+    end_date = forms.DateField(input_formats=['%d/%m/%Y'],
+            widget=BootstrapDateWidget,
+            required=False)
+    end_time = forms.TimeField(input_formats=['%H:%M', '%H:%M:%S'],
+            widget=BootstrapTimeWidget,
             required=False)
 
     def clean(self):
@@ -64,7 +67,18 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
 
         if not cleaned_data.get('text') and not cleaned_data.get('audio'):
             raise forms.ValidationError('You must provide either text or some audio')
+
         return cleaned_data
+
+    def clean_start_time(self):
+        if self.cleaned_data['start_time'] and not self.cleaned_data['start_date']:
+            raise forms.ValidationError('If you provide a start time you must give a start date too')
+        return self.cleaned_data['start_time']
+
+    def clean_end_time(self):
+        if self.cleaned_data['end_time'] and not self.cleaned_data['end_date']:
+            raise forms.ValidationError('If you provide an end time you must give an end date too')
+        return self.cleaned_data['end_time']
 
     class Meta:
         model = Speech
