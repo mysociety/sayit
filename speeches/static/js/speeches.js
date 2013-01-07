@@ -40,12 +40,6 @@ $(function(){
             autoclose: true,        
         })
 
-        // Placeholders for dates
-        //$("input#id_start_date, input#id_end_date").attr("placeholder", "dd/mm/yyyy");
-
-        // Add placeholder attributes to times too
-        //$("input#id_start_time, input#id_end_time").attr("placeholder", "hh:mm");
-
         // Make the end the same as the start the first time people
         // enter something in the start
         $("#id_start_date").one("changeDate", function(e) {
