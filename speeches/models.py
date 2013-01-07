@@ -67,8 +67,12 @@ class Speech(AuditedModel):
     # Metadata on the speech
     # type = models.ChoiceField() # speech, scene, narrative, summary, etc.
     speaker = models.ForeignKey(Speaker, blank=True, null=True, help_text='Who gave this speech?', on_delete=models.SET_NULL)
-    start = models.DateTimeField(blank=True, null=True, help_text='What time did the speech start?')
-    end = models.DateTimeField(blank=True, null=True, help_text='The time the speech ended.')
+    
+    start_date = models.DateField(blank=True, null=True, help_text='What date did the speech start?')
+    start_time = models.TimeField(blank=True, null=True, help_text='What time did the speech start?')
+
+    end_date = models.DateField(blank=True, null=True, help_text='What date did the speech end?')
+    end_time = models.TimeField(blank=True, null=True, help_text='What time did the speech end?')
 
     # What if source material has multiple speeches, same timestamp - need a way of ordering them?
     # pos = models.IntegerField()
