@@ -41,3 +41,10 @@ ATT_TIMEOUT = config.get('ATT_TIMEOUT')
 
 # Celery Broker details 
 BROKER_URL = config.get('CELERY_BROKER_URL')
+
+# Content formatting
+# How many characters of speech text to show
+SPEECH_SUMMARY_LENGTH = config.get('SPEECH_SUMMARY_LENGTH')
+# Default auto-transcription text
+DEFAULT_TRANSCRIPTION = config.get('DEFAULT_TRANSCRIPTION')
+SITE_TITLE = config.get('SITE_TITLE')

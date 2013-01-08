@@ -95,6 +95,15 @@ class Speech(AuditedModel):
         if self.audio: out += ' (with audio)'
         return out
 
+    @property
+    def summary(self):
+        summary_length = settings.SPEECH_SUMMARY_LENGTH
+        default_transcription = settings.DEFAULT_TRANSCRIPTION
+        if self.audio and (not self.text or self.text == default_transcription):
+            return "[ recorded audio ]"
+        else:
+            return self.text[:summary_length] + '...' if len(self.text) > summary_length else self.text
+
     @models.permalink
     def get_absolute_url(self):
         return ( 'speech-view', (), { 'pk': self.id } )

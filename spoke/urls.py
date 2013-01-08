@@ -14,8 +14,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'spoke.views.home', name='home'),
-
+    
     url(r'^', include('speeches.urls')),
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

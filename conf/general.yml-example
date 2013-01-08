@@ -40,3 +40,10 @@ ATT_TIMEOUT: ''
 # for production, see: http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html#choosing-a-broker
 # for more info
 CELERY_BROKER_URL: 'django://'
+
+# Content formatting
+# How many characters of speech text to show
+SPEECH_SUMMARY_LENGTH: 30
+# Default auto-transcription text
+DEFAULT_TRANSCRIPTION: "This speech could not be transcribed automatically"
+SITE_TITLE: "Some important people's speeches"

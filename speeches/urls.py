@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from speeches.views import *
 
 urlpatterns = patterns('',
+	url(r'^$', RecentSpeechList.as_view(), name='home'),
     url(r'^speeches$', SpeechList.as_view(), name='speech-list'),
     url(r'^speech/add$', SpeechCreate.as_view(), name='speech-add'),
     url(r'^speech/ajax_audio$', SpeechAudioCreate.as_view(), name='speech-ajax-audio'),

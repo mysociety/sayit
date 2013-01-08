@@ -2,6 +2,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson as json
 from django.core.urlresolvers import reverse
 from django.core import serializers
+from django.conf import settings
+
+from django.db.models import Count
 
 from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm
 from speeches.models import Speech, Speaker
@@ -108,6 +111,21 @@ class SpeechList(ListView):
     context_object_name = "speech_list"
     queryset = Speech.objects.all().order_by("speaker__name", "-created")
 
+class RecentSpeechList(ListView):
+    model = Speech
+    context_object_name = "recent_speeches"
+    # Get the first 50 speeches only
+    queryset = Speech.objects.all().order_by("-created")[:50]
+    # Use a slightly different template
+    template_name = "speeches/recent_speech_list.html"
+   
+    # Add an extra variable to the template for the site info
+    # TODO: Get this from a config table in the db or something like that
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(RecentSpeechList, self).get_context_data(**kwargs)
+        context['site_title'] = settings.SITE_TITLE
+        return context
 
 class SpeakerView(DetailView):
     model = Speaker
