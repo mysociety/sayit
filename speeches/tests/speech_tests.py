@@ -1,6 +1,7 @@
 import os
 import tempfile
 import shutil
+import datetime
 
 from django.test import TestCase
 from django.test.utils import override_settings
@@ -143,3 +144,45 @@ class SpeechTests(TestCase):
         resp = self.client.get('/speech/1')
         self.assertFalse('Please wait' in resp.content)        
         self.assertTrue(text in resp.content)
+
+    def test_add_speech_with_dates_only(self):
+        # Test form with dates (but not times)
+        resp = self.client.post('/speech/add', {
+            'text': 'This is a speech',
+            'start_date': '01/01/2000',
+            'end_date': '01/01/2000'
+        })
+        self.assertRedirects(resp, '/speech/1')
+        # Check in db
+        speech = Speech.objects.get(id=1)
+        self.assertEqual(speech.start_date, datetime.date(year=2000, month=1, day=1))
+        self.assertIsNone(speech.start_time)
+        self.assertEqual(speech.end_date, datetime.date(year=2000, month=1, day=1))
+        self.assertIsNone(speech.end_time)
+
+    def test_add_speech_with_dates_and_times(self):
+        # Test form with dates (but not times)
+        resp = self.client.post('/speech/add', {
+            'text': 'This is a speech',
+            'start_date': '01/01/2000',
+            'start_time': '12:45',
+            'end_date': '01/01/2000',
+            'end_time': '17:53'
+        })
+        self.assertRedirects(resp, '/speech/1')
+        # Check in db
+        speech = Speech.objects.get(id=1)
+        self.assertEqual(speech.start_date, datetime.date(year=2000, month=1, day=1))
+        self.assertEqual(speech.start_time, datetime.time(hour=12, minute=45))
+        self.assertEqual(speech.end_date, datetime.date(year=2000, month=1, day=1))
+        self.assertEqual(speech.end_time, datetime.time(hour=17, minute=53))
+
+    def test_add_speech_fails_with_times_only(self):
+        # Test form with dates (but not times)
+        resp = self.client.post('/speech/add', {
+            'text': 'This is a speech',
+            'start_time': '12:45',
+            'end_time': '17:53'
+        })
+        self.assertFormError(resp, 'form', 'start_time', 'If you provide a start time you must give a start date too')
+        self.assertFormError(resp, 'form', 'end_time', 'If you provide an end time you must give an end date too')
