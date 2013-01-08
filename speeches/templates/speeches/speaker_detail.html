@@ -8,9 +8,8 @@
 
     <h1>{{ object.name }}</h1>
 
-    <p>Popit ID: {{ object.popit_id }}</p>
-
     <h3>Speeches</h3>
+    <p><a class="btn" href="{% url "speech-add" %}?speaker={{ object.id }}">Add a new speech by {{ object.name }}</a></p>
     <ul>
         {% if not speech_list %}
             <li>{{ object.name }} has no recorded speeches yet.</li>
