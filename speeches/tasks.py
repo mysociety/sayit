@@ -18,7 +18,7 @@ def transcribe_speech(speech_id):
     # Note, we have to catch exceptions to be able to retry them if we want
     # to, at the moment we just give up
     speech = Speech.objects.get(id=speech_id)
-    default_transcription = "This speech could not be transcribed automatically"
+    default_transcription = settings.DEFAULT_TRANSCRIPTION
     try:
         # Check speech is ok to be transcribed
         helper = TranscribeHelper();
