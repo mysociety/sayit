@@ -8,30 +8,62 @@
 {% endif %}
 {% endblock %}
 
-{% block title %}View speech{% endblock %}
+{% block title %}
+    {%if object.title %}
+        {{ object.title }}
+    {% else %}
+        &#8220;{{ object.summary }}&#8221;
+    {% endif %}
+{% endblock %}
 
 {% block content2 %}
-<p class="lead">Here is where you can view a speech.</p>
 
 {% if object.celery_task_id %}
-    <p>Please wait, audio is being transcribed. This page will automatically refresh in 5 seconds...</p>
+    <p class="lead">Please wait, audio is being transcribed. This page will automatically refresh in 5 seconds...</p>
 {% else %}
 
-    {{ object.location }}
+    <h1>
+        {%if object.title %}
+            {{ object.title }}
+        {% else %}
+            &#8220;{{ object.summary }}&#8221;
+        {% endif %}
+    </h1>
+    
+    <p class="lead muted">
+        <small>Statement made by </small>
+        {% if object.speaker %}
+            <a href="{% url "speaker-view" object.speaker.id %}">{{ object.speaker }}</a>
+        {% else %}
+            Unknown speaker
+        {% endif %}
+        <small> on </small>
+        {% if object.start_date %}
+            {{ object.start_date }}
+        {% else %}
+            Unknown date
+        {% endif %}
 
-    {% if object.speaker %}
-        <a href="{% url "speaker-view" object.speaker.id %}">{{ object.speaker }}</a>
-    {% endif %}
+        {% if object.location %}
+            <br /><small>Location: </small>{{ object.location }}
+        {% endif %}
+    </p>
+
+    
 
     {% if object.audio %}
         <p><audio src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio></p>
     {% endif %}
 
     {% if object.text %}
-        <blockquote>{{ object.text|linebreaks }}</blockquote>
+        {{ object.text|linebreaks }}
     {% endif %}
 
-    <a href="{{ object.get_edit_url }}">Edit</a>
+    {% if object.source_url %}
+        <p><a href="{{ object.source_url }}">Source: {{ object.source_url }}</a></p>
+    {% endif %}
+
+    <p><a href="{{ object.get_edit_url }}">Edit</a></p>
 {% endif %}
 
 {% endblock %}
