@@ -2,12 +2,14 @@
 {% load staticfiles %}
 {% load url from future %}
 
-{% block title %}Speeches{% endblock %}
+{% block extra_css %}
+<link href="{% static "css/speeches.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}All Speakers{% endblock %}
 
 {% block content %}
-<h1>Current speeches</h1>
-
-<p class="lead">Here are the current speeches.</p>
+<h1>All speakers</h1>
 
 {% regroup speech_list by speaker as grouped_speech_list %}
 
@@ -22,9 +24,19 @@
 				{% endif %}
 			</h3>
 		</li>
-		<ul>
+		<ul class="unstyled">
 			{% for speech in speech.list %}
-				<li><a href="{% url "speech-view" speech.id %}">{{ speech }}</a>
+				<li>
+					<span class="speech-date muted"><small>{{ speech.start_date|default_if_none:"[ Undated ]" }} </small></span>
+
+					{% if speech.title %}
+						<span class="speech-title"> <strong><a href="{%url "speech-view" speech.id%}">{{ speech.title }}</a></strong></span>
+					{% endif %}
+
+					<span class="speech-summary"> <span class="quote">&#8220;</span><a href="{%url "speech-view" speech.id%}"><em>{{ speech.summary}}</em></a><span class="quote">&#8221;</span></span>
+
+					<span class="speech-location muted"> <small>Location: {{ speech.location|default:"[ Unknown ]" }}</small></span>
+				</li>
 			{% endfor %}
 		</ul>
 	{% endfor %}

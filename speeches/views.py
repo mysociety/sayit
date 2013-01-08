@@ -109,7 +109,9 @@ class SpeechView(DetailView):
 class SpeechList(ListView):
     model = Speech
     context_object_name = "speech_list"
-    queryset = Speech.objects.all().order_by("speaker__name", "-created")
+    # The .annotate magic allows us to put things with a null start date
+    # to the bottom of the list, otherwise they would naturally sort to the top
+    queryset = Speech.objects.all().annotate(null_start_date=Count('start_date')).order_by("speaker__name", "-null_start_date", "-start_date", "-start_time")
 
 class RecentSpeechList(ListView):
     model = Speech
