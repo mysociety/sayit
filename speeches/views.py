@@ -43,6 +43,19 @@ class SpeechCreate(CreateView):
     model = Speech
     form_class = SpeechForm
 
+    def get_initial(self):
+        initial = super(SpeechCreate, self).get_initial()
+        initial = initial.copy()
+        if "speaker" in self.request.GET:
+            try:
+                initial['speaker'] = Speaker.objects.get(pk=self.request.GET["speaker"])
+            except Speaker.DoesNotExist:
+                # Ignore the supplied speaker
+                # TODO - would be good to tell the user that they don't exist but we need
+                # to enable the messages module or similar to make it work
+                pass
+            return initial
+
     def form_valid(self, form):
         # Do things with audio here...
 
