@@ -31,8 +31,3 @@
     direction: ltr;
     cursor: pointer;
 }
-
-input#id_start_1, input#id_end_1 {
-    margin-left:10px;
-}
-
