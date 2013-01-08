@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 class AuditedModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -90,7 +91,7 @@ class Speech(AuditedModel):
         out = 'Speech'
         if self.title: out += ', %s,' % self.title
         if self.speaker: out += ' by %s' % self.speaker
-        if self.start: out += ' at %s' % self.start
+        if self.start_date: out += ' at %s' % self.start_date
         if self.text: out += ' (with text)'
         if self.audio: out += ' (with audio)'
         return out
