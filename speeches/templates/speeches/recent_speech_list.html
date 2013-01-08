@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load url from future %}
+
+{% block extra_css %}
+<link href="{% static "css/speeches.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Speeches{% endblock %}
+
+{% block content %}
+<h1>{{ site_title }}</h1>
+
+<ul class="unstyled">
+	{% for speech in recent_speeches %}
+		<li>
+			<span class="speech-date muted"><small>{{ speech.start_date|default_if_none:"[ Undated ]" }} </small></span>
+			<span class="speech-speaker"> <strong>{{ speech.speaker|default_if_none:"[ Unknown Speaker ]" }}</strong></span>
+
+			<span class="speech-summary"> said <span class="quote">&#8220;</span><a href="{%url "speech-view" speech.id%}"><em>{{ speech.summary}}</em></a><span class="quote">&#8221;</span></span>
+
+			<span class="speech-location muted"> <small>Location: {{ speech.location|default:"[ Unknown ]" }}</small></span>
+		</li>
+	{% endfor %}
+</ul>
+{% endblock %}
