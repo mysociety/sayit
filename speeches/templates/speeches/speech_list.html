@@ -33,7 +33,7 @@
 						<span class="speech-title"> <strong><a href="{%url "speech-view" speech.id%}">{{ speech.title }}</a></strong></span>
 					{% endif %}
 
-					<span class="speech-summary"> <span class="quote">&#8220;</span><a href="{%url "speech-view" speech.id%}"><em>{{ speech.summary}}</em></a><span class="quote">&#8221;</span></span>
+					<span class="speech-summary"> &#8220;<a href="{%url "speech-view" speech.id%}"><em>{{ speech.summary}}</em></a>&#8221;</span>
 
 					<span class="speech-location muted"> <small>Location: {{ speech.location|default:"[ Unknown ]" }}</small></span>
 				</li>

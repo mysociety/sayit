@@ -17,7 +17,7 @@
 			<span class="speech-date muted"><small>{{ speech.start_date|default_if_none:"[ Undated ]" }} </small></span>
 			<span class="speech-speaker"> <strong>{{ speech.speaker|default_if_none:"[ Unknown Speaker ]" }}</strong></span>
 
-			<span class="speech-summary"> said <span class="quote">&#8220;</span><a href="{%url "speech-view" speech.id%}"><em>{{ speech.summary}}</em></a><span class="quote">&#8221;</span></span>
+			<span class="speech-summary"> said &#8220;<a href="{%url "speech-view" speech.id%}"><em>{{ speech.summary}}</em></a>&#8221;</span>
 
 			<span class="speech-location muted"> <small>Location: {{ speech.location|default:"[ Unknown ]" }}</small></span>
 		</li>
