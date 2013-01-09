@@ -73,10 +73,10 @@ class Speech(AuditedModel):
     # the basic index completely for now.
     text = models.TextField(blank=True, db_index=False, help_text='The text of the speech')
 
-    # What the speech is part of.
-    # The below should really all be on the parents
-    # debate = models.ForeignKey(Debate, blank=True, null=True)
+    # What the speech is part of.    
+    debate = models.ForeignKey(Debate, blank=True, null=True)    
     title = models.TextField(blank=True, help_text='The title of the speech, if relevant')
+    # The below two fields could be on the debate if we made it a required field of a speech
     event = models.TextField(db_index=True, blank=True, help_text='Was the speech at a particular event?')
     location = models.TextField(db_index=True, blank=True, help_text='Where the speech took place')
 
