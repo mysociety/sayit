@@ -44,7 +44,7 @@
                     <ul class="nav nav-list">
                         <li class="nav-header">Basics</li>
                         <li{% if request.path == '/' %} class="active"{% endif %}><a href="/">Home</a>
-                        <li{% if request.path == '/speech' %} class="active"{% endif %}><a href="{% url 'speech-list' %}">All speakers</a>
+                        <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speech-list' %}">All speakers</a>
                         <li{% if request.path == '/speech/add' %} class="active"{% endif %}><a href="{% url 'speech-add' %}
                         ">Add speech</a>
                         <li{% if request.path == '/meetings' %} class="active"{% endif %}><a href="{% url 'meeting-list' %}">Meetings</a>
