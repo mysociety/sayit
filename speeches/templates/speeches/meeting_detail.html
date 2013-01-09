@@ -10,6 +10,15 @@
 
     <h3>Debates</h3>
 
+    <ul>
+        {% if not debate_list %}
+            <li>{{ object.title }} doesn't contain any debates yet.</li>
+        {% endif %}
+        {% for debate in debate_list %}
+            <li><a href="{% url "debate-view" debate.id %}">{{ debate }}</a>
+        {% endfor %}
+    </ul>
+
     <p><a href="{{ object.get_edit_url }}">Edit</a></p>
 
 {% endblock %}
