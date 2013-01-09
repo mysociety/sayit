@@ -10,12 +10,12 @@
 
     <h3>Speeches</h3>
     <p><a class="btn" href="{% url "speech-add" %}?speaker={{ object.id }}">Add a new speech by {{ object.name }}</a></p>
-    <ul>
+    <ul class="unstyled">
         {% if not speech_list %}
             <li>{{ object.name }} has no recorded speeches yet.</li>
         {% endif %}
         {% for speech in speech_list %}
-            <li><a href="{% url "speech-view" speech.id %}">{{ speech }}</a>
+            {% include "speeches/speech_list_item_without_speaker.html" with speech=speech only %}
         {% endfor %}
     </ul>
 
