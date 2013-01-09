@@ -1,0 +1,9 @@
+{% load url from future %}
+<li>
+	<span class="speech-date muted"><small>{{ speech.start_date|default_if_none:"Undated" }} </small></span>
+	<span class="speech-speaker"> <strong>{{ speech.speaker|default_if_none:"Unknown Speaker" }}</strong></span>
+
+	<span class="speech-summary"> said <a href="{%url "speech-view" speech.id%}"><em>&#8220;{{ speech.summary}}&#8221;</em></a></span>
+
+	<span class="speech-location muted"> <small>Location: {{ speech.location|default:"Unknown" }}</small></span>
+</li>
