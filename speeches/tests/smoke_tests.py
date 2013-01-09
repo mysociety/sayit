@@ -38,3 +38,7 @@ class SmokeTests(TestCase):
     def test_add_meeting_page(self):
         resp = self.client.get("/meeting/add")
         self.assertEqual(resp.status_code, 200)
+
+    def test_meeting_list_page(self):
+        resp = self.client.get("/meetings")
+        self.assertEqual(resp.status_code, 200)

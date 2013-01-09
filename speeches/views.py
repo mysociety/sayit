@@ -170,6 +170,11 @@ class MeetingView(DetailView):
         context['debate_list'] = Debate.objects.filter(meeting=kwargs['object'].id)
         return context
 
+class MeetingList(ListView):
+    model = Meeting
+    context_object_name = 'meeting_list'
+    queryset = Meeting.objects.all().order_by("-created")
+
 class DebateCreate(CreateView):
     model = Debate
     form_class = DebateForm
