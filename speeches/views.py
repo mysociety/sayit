@@ -6,8 +6,8 @@ from django.conf import settings
 
 from django.db.models import Count
 
-from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm
-from speeches.models import Speech, Speaker
+from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm
+from speeches.models import Speech, Speaker, Meeting
 from speeches.tasks import transcribe_speech
 import speeches.util
 
@@ -151,3 +151,14 @@ class SpeakerView(DetailView):
         # Add in a QuerySet of all the speeches by this speaker
         context['speech_list'] = Speech.objects.filter(speaker=kwargs['object'].id)
         return context
+
+class MeetingCreate(CreateView):
+    model = Meeting
+    form_class = MeetingForm
+
+class MeetingUpdate(UpdateView):
+    model = Meeting
+    form_class = MeetingForm
+
+class MeetingView(DetailView):
+    model = Meeting

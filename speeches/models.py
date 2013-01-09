@@ -17,11 +17,19 @@ class AuditedModel(models.Model):
         super(AuditedModel, self).save(*args, **kwargs)
 
 class Meeting(AuditedModel):
-   title = models.CharField(max_length=255, blank=False, null=False)
+    title = models.CharField(max_length=255, blank=False, null=False)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ( 'meeting-view', (), { 'pk': self.id } )
+
+    @models.permalink
+    def get_edit_url(self):
+        return ( 'meeting-edit', (), { 'pk': self.id } )
 
 class Debate(AuditedModel):
-   meeting = models.ForeignKey(Meeting, blank=True, null=True)
-   title = models.CharField(max_length=255, blank=False, null=False)
+    meeting = models.ForeignKey(Meeting, blank=True, null=True)
+    title = models.CharField(max_length=255, blank=False, null=False)
 
 # SpeakerManager, so that we can define get_by_natural_key()
 class SpeakerManager(models.Manager):

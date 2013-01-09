@@ -8,7 +8,7 @@ from django import forms
 from django.forms.forms import BoundField
 from django.core.files.uploadedfile import UploadedFile
 
-from speeches.models import Speech, Speaker
+from speeches.models import Speech, Speaker, Meeting
 from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
 
 logger = logging.getLogger(__name__)
@@ -129,3 +129,8 @@ class SpeechAPIForm(forms.ModelForm, CleanAudioMixin):
     class Meta:
         model = Speech
         exclude = ('celery_task_id')
+
+class MeetingForm(forms.ModelForm):
+    # Form for the meeting model
+    class Meta:
+        model = Meeting
