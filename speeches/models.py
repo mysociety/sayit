@@ -16,19 +16,12 @@ class AuditedModel(models.Model):
         self.modified = now
         super(AuditedModel, self).save(*args, **kwargs)
 
-# TODO Meeting needed, or hierarchy of Debate enough? What metadata is there?
-#class Meeting(AuditedModel):
-#    title = models.CharField()
-#    start = models.DateTimeField()
-#    end = models.DateTimeField()
+class Meeting(AuditedModel):
+   title = models.CharField(max_length=255, blank=False, null=False)
 
-#class Debate(AuditedModel):
-#    meeting = models.ForeignKey(Meeting, blank=True, null=True)
-#    parent = models.ForeignKey(self)
-#    start = models.DateTimeField()
-#    end = models.DateTimeField()
-#    heading
-#    subheading
+class Debate(AuditedModel):
+   meeting = models.ForeignKey(Meeting, blank=True, null=True)
+   title = models.CharField(max_length=255, blank=False, null=False)
 
 # SpeakerManager, so that we can define get_by_natural_key()
 class SpeakerManager(models.Manager):
