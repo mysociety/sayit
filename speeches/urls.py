@@ -16,5 +16,9 @@ urlpatterns = patterns('',
     url(r'^meeting/(?P<pk>\d+)$', MeetingView.as_view(), name='meeting-view'),
     url(r'^meeting/add$', MeetingCreate.as_view(), name='meeting-add'),
     url(r'^meeting/(?P<pk>\d+)/edit$', MeetingUpdate.as_view(), name='meeting-edit'),
+
+    url(r'^debate/(?P<pk>\d+)$', DebateView.as_view(), name='debate-view'),
+    url(r'^debate/add$', DebateCreate.as_view(), name='debate-add'),
+    url(r'^debate/(?P<pk>\d+)/edit$', DebateUpdate.as_view(), name='debate-edit'),
 )
 

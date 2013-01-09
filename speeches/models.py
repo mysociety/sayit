@@ -27,9 +27,23 @@ class Meeting(AuditedModel):
     def get_edit_url(self):
         return ( 'meeting-edit', (), { 'pk': self.id } )
 
+    def __unicode__(self):
+        return self.title
+
 class Debate(AuditedModel):
     meeting = models.ForeignKey(Meeting, blank=True, null=True)
     title = models.CharField(max_length=255, blank=False, null=False)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ( 'debate-view', (), { 'pk': self.id } )
+
+    @models.permalink
+    def get_edit_url(self):
+        return ( 'debate-edit', (), { 'pk': self.id } )
+
+    def __unicode__(self):
+        return self.title
 
 # SpeakerManager, so that we can define get_by_natural_key()
 class SpeakerManager(models.Manager):

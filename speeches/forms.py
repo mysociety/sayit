@@ -8,7 +8,7 @@ from django import forms
 from django.forms.forms import BoundField
 from django.core.files.uploadedfile import UploadedFile
 
-from speeches.models import Speech, Speaker, Meeting
+from speeches.models import Speech, Speaker, Meeting, Debate
 from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
 
 logger = logging.getLogger(__name__)
@@ -134,3 +134,8 @@ class MeetingForm(forms.ModelForm):
     # Form for the meeting model
     class Meta:
         model = Meeting
+
+class DebateForm(forms.ModelForm):
+    # Form for the meeting model
+    class Meta:
+        model = Debate

@@ -6,8 +6,8 @@ from django.conf import settings
 
 from django.db.models import Count
 
-from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm
-from speeches.models import Speech, Speaker, Meeting
+from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm, DebateForm
+from speeches.models import Speech, Speaker, Meeting, Debate
 from speeches.tasks import transcribe_speech
 import speeches.util
 
@@ -162,3 +162,14 @@ class MeetingUpdate(UpdateView):
 
 class MeetingView(DetailView):
     model = Meeting
+
+class DebateCreate(CreateView):
+    model = Debate
+    form_class = DebateForm
+
+class DebateUpdate(UpdateView):
+    model = Debate
+    form_class = DebateForm
+
+class DebateView(DetailView):
+    model = Debate

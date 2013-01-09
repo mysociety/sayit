@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load url from future %}
+
+{% block title %}View Debate: {{ object.title}}{% endblock %}
+
+{% block content %}
+
+    <h1>{{ object.title }}</h1>
+
+    <h3>Speeches</h3>
+
+    <p><a href="{{ object.get_edit_url }}">Edit</a></p>
+
+{% endblock %}
