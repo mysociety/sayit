@@ -10,6 +10,15 @@
 
     <h3>Speeches</h3>
 
+    <ul class="unstyled">
+        {% if not speech_list %}
+            <li>{{ object.title }} doesn't contain any speeches yet.</li>
+        {% endif %}
+        {% for speech in speech_list %}
+            {% include "speeches/speech_list_item_with_speaker.html" with speech=speech only %}
+        {% endfor %}
+    </ul>
+
     <p><a href="{{ object.get_edit_url }}">Edit</a></p>
 
 {% endblock %}

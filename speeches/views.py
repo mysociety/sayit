@@ -185,3 +185,10 @@ class DebateUpdate(UpdateView):
 
 class DebateView(DetailView):
     model = Debate
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(DebateView, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the debates in this meeting
+        context['speech_list'] = Speech.objects.filter(debate=kwargs['object'].id)
+        return context
