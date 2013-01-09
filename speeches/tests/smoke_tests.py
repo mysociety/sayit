@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from speeches.models import Speech, Speaker
+from speeches.models import Speech, Speaker, Meeting
 
 class SmokeTests(TestCase):
     """Simple smoke tests (is it up?) of all the urls on the site"""
@@ -27,4 +27,14 @@ class SmokeTests(TestCase):
 
     def test_add_speech_page(self):
         resp = self.client.get('/speech/add')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_a_meeting_page(self):
+        # Add a meeting first
+        meeting = Meeting.objects.create(title="A Meeting")
+        resp = self.client.get("/meeting/%s" % meeting.id)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_add_meeting_page(self):
+        resp = self.client.get("/meeting/add")
         self.assertEqual(resp.status_code, 200)
