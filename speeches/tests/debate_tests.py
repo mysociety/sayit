@@ -52,7 +52,7 @@ class DebateTests(TestCase):
 
         self.assertSequenceEqual([speech], resp.context['speech_list'])
 
-    def test_meeting_page_has_button_to_add_debate(self):
+    def test_debate_page_has_button_to_add_speech(self):
         # Add a debate
         debate = Debate.objects.create(title='A test debate')
 
