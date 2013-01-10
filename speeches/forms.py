@@ -132,6 +132,11 @@ class SpeechAPIForm(forms.ModelForm, CleanAudioMixin):
 
 class MeetingForm(forms.ModelForm):
     # Form for the meeting model
+    # Use a fancy bootstrap field for the date
+    date = forms.DateField(input_formats=['%d/%m/%Y'],
+            widget=BootstrapDateWidget,
+            required=False)
+
     class Meta:
         model = Meeting
 

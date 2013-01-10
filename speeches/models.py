@@ -18,6 +18,7 @@ class AuditedModel(models.Model):
 
 class Meeting(AuditedModel):
     title = models.CharField(max_length=255, blank=False, null=False)
+    date = models.DateField(blank=True, null=True, help_text='When date did the meeting happen?')
 
     @models.permalink
     def get_absolute_url(self):
