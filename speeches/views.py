@@ -187,6 +187,19 @@ class DebateCreate(CreateView):
     model = Debate
     form_class = DebateForm
 
+    def get_initial(self):
+        initial = super(DebateCreate, self).get_initial()
+        initial = initial.copy()
+        if "meeting" in self.request.GET:
+            try:
+                initial['meeting'] = Meeting.objects.get(pk=self.request.GET["meeting"])
+            except Meeting.DoesNotExist:
+                # Ignore the supplied meeting
+                # TODO - would be good to tell the user that it doesn't exist but we need
+                # to enable the messages module or similar to make it work
+                pass
+        return initial
+
 class DebateUpdate(UpdateView):
     model = Debate
     form_class = DebateForm

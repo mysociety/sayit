@@ -9,8 +9,8 @@
     <h1>{{ object.title }}</h1>
 
     <h3>Debates</h3>
-
-    <ul>
+    <p><a class="btn" href="{% url "debate-add" %}?meeting={{ object.id }}">Add a new debate in this meeting</a></p>
+    <ul class="unstyled">
         {% if not debate_list %}
             <li>{{ object.title }} doesn't contain any debates yet.</li>
         {% endif %}
