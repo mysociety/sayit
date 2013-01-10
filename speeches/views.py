@@ -54,7 +54,15 @@ class SpeechCreate(CreateView):
                 # TODO - would be good to tell the user that they don't exist but we need
                 # to enable the messages module or similar to make it work
                 pass
-            return initial
+        if "debate" in self.request.GET:
+            try:
+                initial['debate'] = Debate.objects.get(pk=self.request.GET["debate"])
+            except Debate.DoesNotExist:
+                # Ignore the supplied debate
+                # TODO - would be good to tell the user that it doesn't exist but we need
+                # to enable the messages module or similar to make it work
+                pass
+        return initial
 
     def form_valid(self, form):
         # Do things with audio here...

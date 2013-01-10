@@ -10,6 +10,8 @@
 
     <h3>Speeches</h3>
 
+    <p><a class="btn" href="{% url "speech-add" %}?debate={{ object.id }}">Add a new speech in this debate</a></a></p>
+
     <ul class="unstyled">
         {% if not speech_list %}
             <li>{{ object.title }} doesn't contain any speeches yet.</li>
@@ -22,3 +24,5 @@
     <p><a href="{{ object.get_edit_url }}">Edit</a></p>
 
 {% endblock %}
+
+771284oy58i8H4T$
