@@ -10,6 +10,7 @@ from django.core.files.uploadedfile import UploadedFile
 
 from speeches.models import Speech, Speaker, Meeting, Debate
 from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
+from speeches.util import GroupedModelChoiceField
 
 logger = logging.getLogger(__name__)
 
@@ -46,6 +47,8 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
     speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(), 
             widget=autocomplete_light.ChoiceWidget('SpeakerAutocomplete'), 
             required=False)
+    debate = GroupedModelChoiceField(queryset=Debate.objects.all().order_by('meeting'),
+            group_by_field='meeting')
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],
             widget=BootstrapDateWidget,
             required=False)
