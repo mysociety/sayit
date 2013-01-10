@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from speeches.models import Meeting
+from speeches.models import Meeting, Debate
 
 class MeetingTests(TestCase):
     """Tests for the meetings functionality"""
@@ -18,3 +18,30 @@ class MeetingTests(TestCase):
         # Check in db
         meeting = Meeting.objects.get(id=1)
         self.assertEquals(meeting.title, 'A test meeting')
+
+    def test_meeting_page_lists_debates(self):
+        # Add a meeting
+        meeting = Meeting.objects.create(title='A test meeting')
+
+        # Call the meetings page
+        resp = self.client.get('/meeting/1')
+
+        # Assert no debates 
+        self.assertSequenceEqual([], resp.context['debate_list'])
+
+        # Add a debate
+        debate = Debate.objects.create(title="A test debate", meeting=meeting)
+
+        # Call the meetings page again 
+        resp = self.client.get('/meeting/1')
+
+        self.assertSequenceEqual([debate], resp.context['debate_list'])
+
+    def test_meeting_page_has_button_to_add_debate(self):
+        # Add a meeting
+        meeting = Meeting.objects.create(title='A test meeting')
+
+        # Call the meetings page
+        resp = self.client.get('/meeting/1')
+
+        self.assertContains(resp, '<a class="btn" href="/debate/add?meeting=1">Add a new debate in this meeting</a>', html=True)
