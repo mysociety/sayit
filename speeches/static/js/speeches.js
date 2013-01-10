@@ -34,13 +34,13 @@ $(function(){
 
     function enableDatePickers(){
         // Datepickers
-        $("input#id_start_date, input#id_end_date").datepicker({
+        $("input.datepicker").datepicker({
             format:'dd/mm/yyyy',
             weekStart: 1,
             autoclose: true,        
         })
 
-        // Make the end the same as the start the first time people
+        // Make the speech end date the same as the start the first time people
         // enter something in the start
         $("#id_start_date").one("changeDate", function(e) {
             dateString = $("#id_start_date").val();

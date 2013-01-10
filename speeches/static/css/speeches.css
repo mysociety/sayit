@@ -31,3 +31,9 @@
     direction: ltr;
     cursor: pointer;
 }
+
+/* Datepicker lib gives a 1px margin to inputs to align
+   the dropdown calendar, so add it to the add-on icon too */
+.datepicker .add-on {
+    margin-top:1px;
+}

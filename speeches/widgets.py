@@ -49,10 +49,16 @@ class BootstrapDateWidget(DateInput):
 
         # Set a placeholder attribute
         attrs['placeholder'] = 'dd/mm/yyyy'
+
+        # Add a class attribute so that we can generically javascript things
+        if 'class' in attrs:
+            attrs['class'] = attrs['class'] + " datepicker"
+        else:
+            attrs['class'] = 'datepicker'
         
         widget = DateInput.render(self, name, value, attrs)
 
-        return mark_safe(u'<div class="input-append">' + widget + '<span class="add-on"><i class="icon-calendar"></i></span></div>')
+        return mark_safe(u'<div class="input-append datepicker">' + widget + '<span class="add-on"><i class="icon-calendar"></i></span></div>')
 
 class BootstrapTimeWidget(TimeInput):
     """
