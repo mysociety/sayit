@@ -44,8 +44,8 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
 
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
-    speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(), 
-            widget=autocomplete_light.ChoiceWidget('SpeakerAutocomplete'), 
+    speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(),
+            widget=autocomplete_light.ChoiceWidget('SpeakerAutocomplete'),
             required=False)
     debate = GroupedModelChoiceField(queryset=Debate.objects.all().order_by('meeting'),
             group_by_field='meeting')
@@ -144,6 +144,6 @@ class MeetingForm(forms.ModelForm):
         model = Meeting
 
 class DebateForm(forms.ModelForm):
-    # Form for the meeting model
+    # Form for the debate model
     class Meta:
         model = Debate
