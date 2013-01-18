@@ -73,7 +73,7 @@ class SpeechCreate(CreateView):
 
         # Now set off a Celery task to transcribe the audio for this speech
         speeches.util.start_transcribing_speech(self.object)
-        
+
         return HttpResponseRedirect(self.get_success_url())
 
 # Api version of SpeechCreate
@@ -120,6 +120,24 @@ class SpeechAPICreate(CreateView):
         response.status_code = 400
         return response
 
+class SpeechesAPICreate(BaseFormView):
+    # View for SpeechesAPIForm, to create a series of speeches
+    # from one uploaded audio file
+    form_class = SpeechesAPIForm
+
+    # Return JSON - context should already be serialized JSON
+    def render_to_response(self, context, **kwargs):
+        kwargs['content_type'] = 'application/json'
+        return HttpResponse(context, **kwargs)
+
+    def form_valid(self, form):
+        # Save the
+
+    def form_invalid(self, form):
+        response = self.render_to_response(json.dumps({ 'errors': json.dumps(form.errors) }))
+        response.status_code = 400
+        return response
+
 class SpeechUpdate(UpdateView):
     model = Speech
     form_class = SpeechForm
@@ -141,7 +159,7 @@ class RecentSpeechList(ListView):
     queryset = Speech.objects.all().order_by("-created")[:50]
     # Use a slightly different template
     template_name = "speeches/recent_speech_list.html"
-   
+
     # Add an extra variable to the template for the site info
     # TODO: Get this from a config table in the db or something like that
     def get_context_data(self, **kwargs):
