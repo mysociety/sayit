@@ -48,7 +48,8 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             widget=autocomplete_light.ChoiceWidget('SpeakerAutocomplete'),
             required=False)
     debate = GroupedModelChoiceField(queryset=Debate.objects.all().order_by('meeting'),
-            group_by_field='meeting')
+            group_by_field='meeting',
+            required=False)
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],
             widget=BootstrapDateWidget,
             required=False)
