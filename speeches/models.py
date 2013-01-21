@@ -138,5 +138,5 @@ class RecordingTimestamp(AuditedModel):
 
 # A raw recording, might be divided up into multiple speeches
 class Recording(AuditedModel):
-    audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=True)
+    audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=False)
     timestamps = models.ManyToManyField(RecordingTimestamp, blank=True, null=True)

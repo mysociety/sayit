@@ -23,7 +23,7 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('audio', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+            ('audio', self.gf('django.db.models.fields.files.FileField')(max_length=255)),
         ))
         db.send_create_signal('speeches', ['Recording'])
 
@@ -66,7 +66,7 @@ class Migration(SchemaMigration):
         },
         'speeches.recording': {
             'Meta': {'object_name': 'Recording'},
-            'audio': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
+            'audio': ('django.db.models.fields.files.FileField', [], {'max_length': '255'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
