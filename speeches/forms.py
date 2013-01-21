@@ -136,7 +136,7 @@ class SpeechAPIForm(forms.ModelForm, CleanAudioMixin):
 
 class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
     # Form for uploading a recording
-    audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
+    audio_filename = forms.CharField(widget=forms.HiddenInput, required=True)
     timestamps = forms.ModelMultipleChoiceField(queryset=RecordingTimestamp.objects.all(), required=False)
 
     def clean(self):
