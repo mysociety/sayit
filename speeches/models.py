@@ -128,6 +128,7 @@ class Speech(AuditedModel):
     @models.permalink
     def get_edit_url(self):
         return ( 'speech-edit', (), { 'pk': self.id } )
+
 # A timestamp of a particular speaker at a particular time.
 # Used to record events like "This speaker started speaking at 00:33"
 # in a specific recording, before it's chopped up into a speech
