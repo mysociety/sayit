@@ -19,6 +19,15 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+class JSONResponseMixin(object):
+    # Mixin for returning HTTPResponses with content type as JSON
+
+    # render_to_json_response expects a context object which is
+    # JSON, so use a serialiser or json.dumps({some_object})
+    def render_to_json_response(self, context, **kwargs):
+        kwargs['content_type'] = 'application/json'
+        return HttpResponse(context, **kwargs)
+
 # Base as don't want template mixin. I find CBVs confusing :-/
 class SpeechAudioCreate(BaseFormView):
     form_class = SpeechAudioForm
@@ -77,17 +86,12 @@ class SpeechCreate(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 # Api version of SpeechCreate
-class SpeechAPICreate(CreateView):
+class SpeechAPICreate(CreateView, JSONResponseMixin):
     model = Speech
     form_class = SpeechAPIForm
 
     # Limit this view to POST requests, we don't want to show an HTML form for it
     http_method_names = ['post']
-
-    # Return JSON - context should already be serialized JSON
-    def render_to_response(self, context, **kwargs):
-        kwargs['content_type'] = 'application/json'
-        return HttpResponse(context, **kwargs)
 
     # Do as SpeechCreate does, but return a Location header instead of
     # redirecting to success_url
@@ -110,31 +114,13 @@ class SpeechAPICreate(CreateView):
         # Now we need to massage this a bit because it's an array
         serialised = serialised[1:-1]
 
-        response = self.render_to_response(serialised)
+        response = self.render_to_json_response(serialised)
         response.status_code = 201
         response['Location'] = reverse("speech-view", args=[self.object.id])
         return response
 
     def form_invalid(self, form):
-        response = self.render_to_response(json.dumps({ 'errors': json.dumps(form.errors) }))
-        response.status_code = 400
-        return response
-
-class SpeechesAPICreate(BaseFormView):
-    # View for SpeechesAPIForm, to create a series of speeches
-    # from one uploaded audio file
-    form_class = SpeechesAPIForm
-
-    # Return JSON - context should already be serialized JSON
-    def render_to_response(self, context, **kwargs):
-        kwargs['content_type'] = 'application/json'
-        return HttpResponse(context, **kwargs)
-
-    def form_valid(self, form):
-        # Save the
-
-    def form_invalid(self, form):
-        response = self.render_to_response(json.dumps({ 'errors': json.dumps(form.errors) }))
+        response = self.render_to_json_response(json.dumps({ 'errors': json.dumps(form.errors) }))
         response.status_code = 400
         return response
 
