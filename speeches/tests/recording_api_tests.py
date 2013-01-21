@@ -84,6 +84,32 @@ class RecordingAPITests(TestCase):
         self.assertEquals(recording.timestamps.get(id=1), timestamp1)
         self.assertEquals(recording.timestamps.get(id=2), timestamp2)
 
+    def test_add_recording_with_unknown_speaker_timestamp(self):
+        # Add two timestamps
+        timestamp1 = RecordingTimestamp.objects.create(timestamp=datetime.datetime.now())
+
+        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+
+        resp = self.client.post('/api/v0.1/recording/', {
+            'audio': audio,
+            'timestamps': [timestamp1.id]
+        })
+
+        # Check response headers
+        self.assertEquals(resp.status_code, 201)
+        self.assertEquals(resp['Content-Type'], 'application/json')
+        self.assertEquals(resp['Location'], 'http://testserver/recording/1')
+
+        # Check response JSON
+        response_content = simplejson.loads(resp.content)
+        self.assertTrue("lamb.mp3" in response_content['fields']['audio'])
+
+        # Check in db
+        recording = Recording.objects.get(id=1)
+        self.assertIsNotNone(recording.audio)
+        self.assertEquals(recording.timestamps.all().count(), 1)
+        self.assertEquals(recording.timestamps.get(id=1), timestamp1)
+
     def test_add_recording_fails_with_unsupported_audio(self):
         # Load the .aiff fixture
         audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.aiff'), 'rb')
