@@ -6,7 +6,7 @@ from django.conf import settings
 
 from django.db.models import Count
 
-from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm, DebateForm
+from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm, DebateForm, RecordingAPIForm
 from speeches.models import Speech, Speaker, Meeting, Debate
 from speeches.tasks import transcribe_speech
 import speeches.util
@@ -217,3 +217,25 @@ class DebateView(DetailView):
         # Add in a QuerySet of all the debates in this meeting
         context['speech_list'] = Speech.objects.filter(debate=kwargs['object'].id)
         return context
+
+class RecordingAPICreate(BaseFormView, JSONResponseMixin):
+    # View for RecordingAPIForm, to create a recording
+    form_class = RecordingAPIForm
+
+    def form_valid(self, form):
+        # Create recording from the form data
+        self.object = form.save()
+
+        # Return a 201 response
+        serialisable_fields = ('audio', 'timestamps')
+        serialised = serializers.serialize("json", [self.object], fields=serialisable_fields, use_natural_keys=True)
+
+        response = self.render_to_json_response(serialised)
+        response.status_code = 201
+        response['Location'] = reverse("recording-view", args=[self.object.id])
+        return response
+
+    def form_invalid(self, form):
+        response = self.render_to_json_response(json.dumps({ 'errors': json.dumps(form.errors) }))
+        response.status_code = 400
+        return response
