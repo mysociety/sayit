@@ -7,7 +7,7 @@ from django.conf import settings
 from django.db.models import Count
 
 from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm, DebateForm, RecordingAPIForm
-from speeches.models import Speech, Speaker, Meeting, Debate
+from speeches.models import Speech, Speaker, Meeting, Debate, Recording
 from speeches.tasks import transcribe_speech
 import speeches.util
 
@@ -220,7 +220,11 @@ class DebateView(DetailView):
 
 class RecordingAPICreate(BaseFormView, JSONResponseMixin):
     # View for RecordingAPIForm, to create a recording
+    model = Recording
     form_class = RecordingAPIForm
+
+    # Limit this view to POST requests, we don't want to show an HTML form for it
+    http_method_names = ['post']
 
     def form_valid(self, form):
         # Create recording from the form data
@@ -228,7 +232,7 @@ class RecordingAPICreate(BaseFormView, JSONResponseMixin):
 
         # Return a 201 response
         serialisable_fields = ('audio', 'timestamps')
-        serialised = serializers.serialize("json", [self.object], fields=serialisable_fields, use_natural_keys=True)
+        serialised = serializers.serialize("json", [self.object], fields=serialisable_fields)
 
         response = self.render_to_json_response(serialised)
         response.status_code = 201
