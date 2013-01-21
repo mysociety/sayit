@@ -144,6 +144,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
         if 'audio_filename' in cleaned_data and cleaned_data['audio_filename']:
             filename = cleaned_data['audio_filename']
             self.cleaned_data['audio'] = filename
+        return cleaned_data
 
     class Meta:
         model = Recording
