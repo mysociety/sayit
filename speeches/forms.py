@@ -117,18 +117,7 @@ class SpeechAPIForm(forms.ModelForm, CleanAudioMixin):
     # Look up the popit url in the db and return a speaker object id instead
     def clean_speaker(self):
         speaker_url = self.cleaned_data['speaker']
-        speaker = None
-        if speaker_url:
-            try:
-                speaker = Speaker.objects.get(popit_url=speaker_url)
-            except Speaker.DoesNotExist:
-                # TODO - lookup the speaker from the popit url somehow
-                # Need to think about security and whether to do it right now
-                # or save it in the db anyway and check asynchronously with the
-                # populatespeakers management command
-                logger.error('Speaker: {0} does not exist in db, setting to None'.format(speaker_url))
-                speaker = None
-        return speaker
+        return Speaker.objects.get_or_create_from_popit_url(speaker_url)
 
     class Meta:
         model = Speech
