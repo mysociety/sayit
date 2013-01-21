@@ -236,7 +236,7 @@ class RecordingAPICreate(CreateView, JSONResponseMixin):
         # Return a 201 response
         serialisable_fields = ('audio', 'timestamps')
         serialised = serializers.serialize("json", [self.object], fields=serialisable_fields)
-
+        serialised = serialised[1:-1]
         response = self.render_to_json_response(serialised)
         response.status_code = 201
         response['Location'] = reverse("recording-view", args=[self.object.id])
