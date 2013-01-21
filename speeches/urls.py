@@ -23,6 +23,6 @@ urlpatterns = patterns('',
     url(r'^debate/add$', DebateCreate.as_view(), name='debate-add'),
     url(r'^debate/(?P<pk>\d+)/edit$', DebateUpdate.as_view(), name='debate-edit'),
 
-    url(r'^api/v0.1/recording/$', csrf_exempt(RecordingAPICreate.as_view()), name='recordinging-api-add'),
+    url(r'^api/v0.1/recording/$', csrf_exempt(RecordingAPICreate.as_view()), name='recording-api-add'),
 )
 
