@@ -48,6 +48,23 @@ class Debate(AuditedModel):
 
 # SpeakerManager, so that we can define get_by_natural_key()
 class SpeakerManager(models.Manager):
+
+    # Get or create a speaker from a popit_url
+    # TODO - we need to do the create bit
+    def get_or_create_from_popit_url(self, popit_url):
+        speaker = None
+        if popit_url:
+            try:
+                speaker = self.get(popit_url=popit_url)
+            except Speaker.DoesNotExist:
+                # TODO - lookup the speaker from the popit url
+                # For now we will trust the sender, and do it right now...
+                logger.error('Speaker: {0} does not exist in db, setting to None'.format(popit_url))
+                speaker = None
+        return speaker
+
+    # Define get_by_natural_key so that we can refer to speakers by their
+    # popit_url instead of our local primary key id
     def get_by_natural_key(self, popit_url):
         return self.get(popit_url=popit_url)
 
@@ -55,6 +72,7 @@ class SpeakerManager(models.Manager):
 class Speaker(AuditedModel):
     popit_url = models.TextField(unique=True)
     name = models.TextField(db_index=True)
+    objects = SpeakerManager()
 
     def __unicode__(self):
         out = "null"
