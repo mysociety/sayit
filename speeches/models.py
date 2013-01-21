@@ -74,8 +74,8 @@ class Speech(AuditedModel):
     # the basic index completely for now.
     text = models.TextField(blank=True, db_index=False, help_text='The text of the speech')
 
-    # What the speech is part of.    
-    debate = models.ForeignKey(Debate, blank=True, null=True)    
+    # What the speech is part of.
+    debate = models.ForeignKey(Debate, blank=True, null=True)
     title = models.TextField(blank=True, help_text='The title of the speech, if relevant')
     # The below two fields could be on the debate if we made it a required field of a speech
     event = models.TextField(db_index=True, blank=True, help_text='Was the speech at a particular event?')
@@ -84,7 +84,7 @@ class Speech(AuditedModel):
     # Metadata on the speech
     # type = models.ChoiceField() # speech, scene, narrative, summary, etc.
     speaker = models.ForeignKey(Speaker, blank=True, null=True, help_text='Who gave this speech?', on_delete=models.SET_NULL)
-    
+
     start_date = models.DateField(blank=True, null=True, help_text='What date did the speech start?')
     start_time = models.TimeField(blank=True, null=True, help_text='What time did the speech start?')
 
@@ -128,3 +128,14 @@ class Speech(AuditedModel):
     @models.permalink
     def get_edit_url(self):
         return ( 'speech-edit', (), { 'pk': self.id } )
+# A timestamp of a particular speaker at a particular time.
+# Used to record events like "This speaker started speaking at 00:33"
+# in a specific recording, before it's chopped up into a speech
+class RecordingTimestamp(AuditedModel):
+    speaker = models.ForeignKey(Speaker, blank=True, null=True, on_delete=models.SET_NULL)
+    timestamp = models.DateTimeField(db_index=True, blank=False)
+
+# A raw recording, might be divided up into multiple speeches
+class Recording(AuditedModel):
+    audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=True)
+    timestamps = models.ManyToManyField(RecordingTimestamp, blank=True, null=True)
