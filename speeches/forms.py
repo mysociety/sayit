@@ -1,5 +1,7 @@
 import os
 import logging
+from datetime import datetime
+import pytz
 
 import autocomplete_light
 autocomplete_light.autodiscover()
@@ -7,6 +9,7 @@ autocomplete_light.autodiscover()
 from django import forms
 from django.forms.forms import BoundField
 from django.core.files.uploadedfile import UploadedFile
+from django.utils import simplejson
 
 from speeches.models import Speech, Speaker, Meeting, Debate, Recording, RecordingTimestamp
 from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
@@ -126,12 +129,55 @@ class SpeechAPIForm(forms.ModelForm, CleanAudioMixin):
 class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
     # Form for uploading a recording
 
+    # Force timestampt to be a charfield so we can supply json to it
+    timestamps = forms.CharField(required=False)
+
     def clean(self):
         cleaned_data = self.cleaned_data
         if 'audio_filename' in cleaned_data and cleaned_data['audio_filename']:
             filename = cleaned_data['audio_filename']
             self.cleaned_data['audio'] = filename
         return cleaned_data
+
+    def clean_timestamps(self):
+        # Allow uploading of timestamps which don't exist by turning the supplied
+        # dictionary of timestamps into new RecordingTimestamp instances
+        timestamps = []
+
+        if not 'timestamps' in self.cleaned_data or not self.cleaned_data['timestamps']:
+            return timestamps
+
+        timestamps_json = simplejson.loads(self.cleaned_data['timestamps'])
+
+        if not isinstance(timestamps_json, list):
+            return timestamps
+
+        for recording_timestamp in timestamps_json:
+            try:
+                if 'timestamp' in recording_timestamp:
+                    # Note - we divide by 1000 because the time comes from javascript
+                    # and is in milliseconds, by this expects the time in seconds
+                    supplied_time = int(recording_timestamp['timestamp']/1000)
+                    # We also make it a UTC time!
+                    timestamp = datetime.utcfromtimestamp(supplied_time).replace(tzinfo=pytz.utc)
+                    speaker = None
+                    if 'speaker' in recording_timestamp:
+                        speaker_url = recording_timestamp['speaker']
+                        speaker = Speaker.objects.get_or_create_from_popit_url(speaker_url)
+                    timestamps.append(RecordingTimestamp.objects.create(speaker=speaker, timestamp=timestamp))
+                else:
+                    # Timestamp is required
+                    logger.error("No timestamp supplied in request: {0}".format(recording_timestamp))
+                    pass
+            except ValueError:
+                # Ignore this one
+                logger.error("ValueError encountered parsing: {0} into speaker/timestamp".format(recording_timestamp))
+
+
+        if timestamps.count == 0:
+            logger.error("Timestamps parameter was given but no timestamps parsed from: {0}".format(self.cleaned_data['timestamp']))
+
+        return timestamps
 
     class Meta:
         model = Recording
