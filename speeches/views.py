@@ -218,7 +218,10 @@ class DebateView(DetailView):
         context['speech_list'] = Speech.objects.filter(debate=kwargs['object'].id)
         return context
 
-class RecordingAPICreate(BaseFormView, JSONResponseMixin):
+class RecordingView(DetailView):
+    model = Recording
+
+class RecordingAPICreate(CreateView, JSONResponseMixin):
     # View for RecordingAPIForm, to create a recording
     model = Recording
     form_class = RecordingAPIForm
