@@ -5,10 +5,10 @@ import autocomplete_light
 autocomplete_light.autodiscover()
 
 from django import forms
-from django.forms.forms import BoundField,
+from django.forms.forms import BoundField
 from django.core.files.uploadedfile import UploadedFile
 
-from speeches.models import Speech, Speaker, Meeting, Debate
+from speeches.models import Speech, Speaker, Meeting, Debate, Recording, RecordingTimestamp
 from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
 from speeches.util import GroupedModelChoiceField
 
@@ -134,14 +134,19 @@ class SpeechAPIForm(forms.ModelForm, CleanAudioMixin):
         model = Speech
         exclude = ('celery_task_id')
 
-class SpeechesAPIForm(CleanAudioMixin):
-    # Form for uploading several speeches in one go.
-    # Actually only contains one audio file, an array of speakers
-    # and an array of timestamps, we then divide the audio into lots
-    # of pieces and create.
-    speeches = forms.CharField(required=false);
-    timestamps = forms.CharField(required=false);
+class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
+    # Form for uploading a recording
+    audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
+    timestamps = forms.ModelMultipleChoiceField(queryset=RecordingTimestamp.objects.all(), required=False)
 
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        if 'audio_filename' in cleaned_data and cleaned_data['audio_filename']:
+            filename = cleaned_data['audio_filename']
+            self.cleaned_data['audio'] = filename
+
+    class Meta:
+        model = Recording
 
 
 class MeetingForm(forms.ModelForm):
