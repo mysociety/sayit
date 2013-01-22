@@ -215,3 +215,11 @@ class AudioHelper(object):
 
         ])
         return result == 0
+
+    def make_mp3(self, in_filename, out_filename):
+        """Make a .mp3 file suitable for displaying publically on the website"""
+        pass
+
+    def split_recording(self, recording, out_folder):
+        """Make a series of .mp3 files from one recording, based on its' timestamps"""
+        pass
