@@ -13,7 +13,7 @@ from django.utils import simplejson
 
 from speeches.models import Speech, Speaker, Meeting, Debate, Recording, RecordingTimestamp
 from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
-from speeches.util import GroupedModelChoiceField
+from speeches.utils import GroupedModelChoiceField
 
 logger = logging.getLogger(__name__)
 

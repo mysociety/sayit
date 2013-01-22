@@ -15,7 +15,7 @@ from django.conf import settings
 import speeches
 from speeches.models import Speech
 from speeches.tasks import transcribe_speech
-from speeches.util import TranscribeHelper, TranscribeException
+from speeches.utils import TranscribeHelper, TranscribeException
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class TranscribeTaskTests(TestCase):
