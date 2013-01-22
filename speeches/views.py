@@ -8,7 +8,6 @@ from django.db.models import Count
 
 from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm, DebateForm, RecordingAPIForm
 from speeches.models import Speech, Speaker, Meeting, Debate, Recording
-from speeches.tasks import transcribe_speech
 import speeches.util
 
 from django.views.generic import CreateView, UpdateView, DetailView, ListView
@@ -81,7 +80,7 @@ class SpeechCreate(CreateView):
         self.object = form.save()
 
         # Now set off a Celery task to transcribe the audio for this speech
-        speeches.util.start_transcribing_speech(self.object)
+        self.object.start_transcribing()
 
         return HttpResponseRedirect(self.get_success_url())
 
@@ -103,7 +102,7 @@ class SpeechAPICreate(CreateView, JSONResponseMixin):
         self.object = form.save()
 
         # Now set off a Celery task to transcribe the audio for this speech
-        speeches.util.start_transcribing_speech(self.object)
+        self.object.start_transcribing()
 
         # Return a 201
 

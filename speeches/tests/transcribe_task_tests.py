@@ -14,7 +14,8 @@ from django.conf import settings
 
 import speeches
 from speeches.models import Speech
-from speeches.tasks import transcribe_speech, TranscribeHelper, TranscribeException
+from speeches.tasks import transcribe_speech
+from speeches.util import TranscribeHelper, TranscribeException
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class TranscribeTaskTests(TestCase):
@@ -52,29 +53,29 @@ class TranscribeTaskTests(TestCase):
         # Canned responses for our code to use
         attrs = {
             'status_code': 200,
-            'json': { 
-                "access_token": "bb2da510a68542df9e4051cd9ebb0a5a", 
-                "expires_in": "0", 
-                "refresh_token": "a096a765c27ff1ef7a0379d387769d603e6ad6c0" 
+            'json': {
+                "access_token": "bb2da510a68542df9e4051cd9ebb0a5a",
+                "expires_in": "0",
+                "refresh_token": "a096a765c27ff1ef7a0379d387769d603e6ad6c0"
             }
         }
         auth_response = Mock(spec=requests.Response, **attrs)
-        
+
         transcription = 'A transcription'
-        attrs = { 
+        attrs = {
             'status_code': 200,
-            'json': { 
-                "Recognition": { 
-                    "Status": "OK", 
-                    "ResponseId": "c77727642111312f5cce0115a2ba8ce4", 
-                    "NBest": [ { 
-                        "WordScores": [0.07, 0.1], 
+            'json': {
+                "Recognition": {
+                    "Status": "OK",
+                    "ResponseId": "c77727642111312f5cce0115a2ba8ce4",
+                    "NBest": [ {
+                        "WordScores": [0.07, 0.1],
                         "Confidence": 0.601629956,
-                        "Grade": "accept", 
-                        "ResultText": transcription, 
-                        "Words": ["A", "transcription"], 
-                        "LanguageId": "en-US", 
-                        "Hypothesis": transcription 
+                        "Grade": "accept",
+                        "ResultText": transcription,
+                        "Words": ["A", "transcription"],
+                        "LanguageId": "en-US",
+                        "Hypothesis": transcription
                     } ]
                 }
             }
@@ -86,8 +87,8 @@ class TranscribeTaskTests(TestCase):
             if(args[0] == settings.ATT_OAUTH_URL):
                 return auth_response
             elif(args[0] == settings.ATT_API_URL):
-                return transcription_response        
-        
+                return transcription_response
+
         # Call our task to transcribe our file
         with patch('requests.post') as patched_post:
             patched_post.side_effect = return_side_effect
@@ -117,7 +118,7 @@ class TranscribeTaskTests(TestCase):
 
     def test_wav_file_creation_from_mp3(self):
         helper = TranscribeHelper()
-        
+
         (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
         helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'))
 
@@ -126,16 +127,16 @@ class TranscribeTaskTests(TestCase):
 
     def test_wav_file_creation_from_android_3gp(self):
         helper = TranscribeHelper()
-        
+
         (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
         helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb.3gp'))
 
         # Compare the created file to one we made earlier
         self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_3gp.wav')))
-    
+
     def test_wav_file_creation_from_iphone_wav(self):
         helper = TranscribeHelper()
-        
+
         (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
         helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_iphone.wav'))
 
@@ -144,7 +145,7 @@ class TranscribeTaskTests(TestCase):
 
     def test_wav_file_creation_from_stereo_wav(self):
         helper = TranscribeHelper()
-        
+
         (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
         helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_stereo.wav'))
 
@@ -155,79 +156,79 @@ class TranscribeTaskTests(TestCase):
         # Mock responses
 
         # Single acceptable response (happy path)
-        accept_transcription_response = { 
-            "Recognition": { 
-                "Status": "OK", 
-                "ResponseId": "c77727642111312f5cce0115a2ba8ce4", 
-                "NBest": [ { 
-                    "WordScores": [0.07, 0.1], 
+        accept_transcription_response = {
+            "Recognition": {
+                "Status": "OK",
+                "ResponseId": "c77727642111312f5cce0115a2ba8ce4",
+                "NBest": [ {
+                    "WordScores": [0.07, 0.1],
                     "Confidence": 0.601629956,
-                    "Grade": "accept", 
-                    "ResultText": 'A transcription', 
-                    "Words": ["A", "transcription"], 
-                    "LanguageId": "en-US", 
-                    "Hypothesis": 'A transcription' 
+                    "Grade": "accept",
+                    "ResultText": 'A transcription',
+                    "Words": ["A", "transcription"],
+                    "LanguageId": "en-US",
+                    "Hypothesis": 'A transcription'
                 } ]
             }
         }
 
         # "Confirm" grade response - should be accepted too
-        confirm_transcription_response = { 
-            "Recognition": { 
-                "Status": "OK", 
-                "ResponseId": "c77727642111312f5cce0115a2ba8ce4", 
-                "NBest": [ { 
-                    "WordScores": [0.07, 0.1], 
+        confirm_transcription_response = {
+            "Recognition": {
+                "Status": "OK",
+                "ResponseId": "c77727642111312f5cce0115a2ba8ce4",
+                "NBest": [ {
+                    "WordScores": [0.07, 0.1],
                     "Confidence": 0.3,
-                    "Grade": "confirm", 
-                    "ResultText": 'A transcription', 
-                    "Words": ["A", "transcription"], 
-                    "LanguageId": "en-US", 
-                    "Hypothesis": 'A transcription' 
+                    "Grade": "confirm",
+                    "ResultText": 'A transcription',
+                    "Words": ["A", "transcription"],
+                    "LanguageId": "en-US",
+                    "Hypothesis": 'A transcription'
                 } ]
             }
         }
 
         # Reject response - should be rejected
-        reject_transcription_response = { 
-            "Recognition": { 
-                "Status": "OK", 
-                "ResponseId": "c77727642111312f5cce0115a2ba8ce4", 
-                "NBest": [ { 
-                    "WordScores": [0.07, 0.1], 
+        reject_transcription_response = {
+            "Recognition": {
+                "Status": "OK",
+                "ResponseId": "c77727642111312f5cce0115a2ba8ce4",
+                "NBest": [ {
+                    "WordScores": [0.07, 0.1],
                     "Confidence": 0.0,
-                    "Grade": "reject", 
-                    "ResultText": 'A transcription', 
-                    "Words": ["A", "transcription"], 
-                    "LanguageId": "en-US", 
-                    "Hypothesis": 'A transcription' 
+                    "Grade": "reject",
+                    "ResultText": 'A transcription',
+                    "Words": ["A", "transcription"],
+                    "LanguageId": "en-US",
+                    "Hypothesis": 'A transcription'
                 } ]
             }
         }
 
         # Multiple acceptable responses - should pick the one with the highest confidence
-        multiple_transcription_response = {  
-            "Recognition": { 
-                "Status": "OK", 
-                "ResponseId": "c77727642111312f5cce0115a2ba8ce4", 
-                "NBest": [ 
-                    { 
-                        "WordScores": [0.07, 0.1], 
+        multiple_transcription_response = {
+            "Recognition": {
+                "Status": "OK",
+                "ResponseId": "c77727642111312f5cce0115a2ba8ce4",
+                "NBest": [
+                    {
+                        "WordScores": [0.07, 0.1],
                         "Confidence": 0.9,
-                        "Grade": "accept", 
-                        "ResultText": 'Best transcription', 
-                        "Words": ["Best", "transcription"], 
-                        "LanguageId": "en-US", 
-                        "Hypothesis": 'Best transcription' 
+                        "Grade": "accept",
+                        "ResultText": 'Best transcription',
+                        "Words": ["Best", "transcription"],
+                        "LanguageId": "en-US",
+                        "Hypothesis": 'Best transcription'
                     },
-                    { 
-                        "WordScores": [0.07, 0.1], 
+                    {
+                        "WordScores": [0.07, 0.1],
                         "Confidence": 0.8,
-                        "Grade": "accept", 
-                        "ResultText": 'A transcription', 
-                        "Words": ["A", "transcription"], 
-                        "LanguageId": "en-US", 
-                        "Hypothesis": 'A transcription' 
+                        "Grade": "accept",
+                        "ResultText": 'A transcription',
+                        "Words": ["A", "transcription"],
+                        "LanguageId": "en-US",
+                        "Hypothesis": 'A transcription'
                     }
                 ]
             }
@@ -239,7 +240,7 @@ class TranscribeTaskTests(TestCase):
         self.assertTrue(helper.best_transcription(confirm_transcription_response) == "A transcription")
         self.assertTrue(helper.best_transcription(reject_transcription_response) is None)
         self.assertTrue(helper.best_transcription(multiple_transcription_response) == "Best transcription")
-        
+
     # There are numerous places where we could error:
     # checking a speech
     # making a temp file

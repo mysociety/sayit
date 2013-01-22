@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 
+import speeches
+
 class AuditedModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -146,6 +148,20 @@ class Speech(AuditedModel):
     @models.permalink
     def get_edit_url(self):
         return ( 'speech-edit', (), { 'pk': self.id } )
+
+    def start_transcribing(self):
+        """Kick off a celery task to transcribe this speech"""
+        # We only do anything if there's no text already
+        if not self.text:
+            # If someone is adding a new audio file and there's already a task
+            # We need to clear it
+            if self.celery_task_id:
+                celery.task.control.revoke(self.celery_task_id)
+            # Now we can start a new one
+            result = speeches.tasks.transcribe_speech.delay(self.id)
+            # Finally, we can remember the new task in the model
+            self.celery_task_id = result.task_id
+            self.save()
 
 # A timestamp of a particular speaker at a particular time.
 # Used to record events like "This speaker started speaking at 00:33"

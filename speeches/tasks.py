@@ -1,9 +1,5 @@
-import subprocess
 import tempfile
 import os
-import requests
-import mimetypes
-from operator import itemgetter
 
 from celery import task
 from celery.utils.log import get_task_logger
@@ -11,7 +7,7 @@ from celery.utils.log import get_task_logger
 from django.conf import settings
 
 from speeches.models import Speech
-from speeches.utils import TranscribeHelper, TranscribeException, AudioHelper
+from speeches.util import TranscribeHelper, TranscribeException
 
 logger = get_task_logger(__name__)
 
