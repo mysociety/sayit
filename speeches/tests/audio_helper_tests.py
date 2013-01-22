@@ -18,7 +18,7 @@ class AudioHelperTests(TestCase):
         helper = AudioHelper()
 
         (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'))
+        helper.make_wav(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), tmp_filename)
 
         # Compare the created file to one we made earlier
         self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_mp3.wav')))
@@ -27,7 +27,7 @@ class AudioHelperTests(TestCase):
         helper = AudioHelper()
 
         (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb.3gp'))
+        helper.make_wav(os.path.join(self._speeches_path, 'fixtures', 'lamb.3gp'), tmp_filename)
 
         # Compare the created file to one we made earlier
         self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_3gp.wav')))
@@ -36,7 +36,7 @@ class AudioHelperTests(TestCase):
         helper = AudioHelper()
 
         (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_iphone.wav'))
+        helper.make_wav(os.path.join(self._speeches_path, 'fixtures', 'lamb_iphone.wav'), tmp_filename)
 
         # Compare the created file to one we made earlier
         self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_iphone.wav')))
@@ -45,7 +45,7 @@ class AudioHelperTests(TestCase):
         helper = AudioHelper()
 
         (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_stereo.wav'))
+        helper.make_wav(os.path.join(self._speeches_path, 'fixtures', 'lamb_stereo.wav'), tmp_filename)
 
         # Compare the created file to one we made earlier
         self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_stereo.wav')))

@@ -186,7 +186,7 @@ class TranscribeHelper(object):
 
 class AudioHelper(object):
 
-    def make_wav(self, tmp_filename, speech_filename):
+    def make_wav(self, in_filename, out_filename):
         """Make a .wav file suitable for uploading to AT&T and return true if
            it succeeded"""
 
@@ -199,7 +199,7 @@ class AudioHelper(object):
             '-y',
             # Input file
             '-i',
-            speech_filename,
+            in_filename,
             # Output options
             # Sample rate of 8KHz
             '-ar',
@@ -211,7 +211,7 @@ class AudioHelper(object):
             '-acodec',
             'pcm_s16le',
             # Output file
-            tmp_filename
+            out_filename
 
         ])
         return result == 0

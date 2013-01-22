@@ -30,7 +30,7 @@ def transcribe_speech(speech_id):
         # First make a temporary file
         (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
         try:
-            if audio_helper.make_wav(tmp_filename, speech.audio.path):
+            if audio_helper.make_wav(speech.audio.path, tmp_filename):
                 transcription = transcribe_helper.get_transcription(tmp_filename)
                 # Save the result into the DB
                 speech.text = transcription
