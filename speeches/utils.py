@@ -1,10 +1,14 @@
 import subprocess
 import mimetypes
 import logging
+import tempfile
+import calendar
 from itertools import groupby
 from operator import itemgetter
+from datetime import datetime
 
 import requests
+import pytz
 
 from django.conf import settings
 from django.forms.models import ModelChoiceIterator, ModelChoiceField
@@ -189,17 +193,8 @@ class AudioHelper(object):
     def make_wav(self, in_filename, out_filename):
         """Make a .wav file suitable for uploading to AT&T and return true if
            it succeeded"""
-
-        result = subprocess.call([
-            'ffmpeg',
-            # Tell ffmpeg to shut up
-            '-loglevel',
-            '0',
-            # Say yes to everything
-            '-y',
-            # Input file
-            '-i',
-            in_filename,
+        options = self._build_ffmpeg_options(in_filename)
+        options.extend([
             # Output options
             # Sample rate of 8KHz
             '-ar',
@@ -214,12 +209,40 @@ class AudioHelper(object):
             out_filename
 
         ])
+        result = subprocess.call(options)
         return result == 0
 
     def make_mp3(self, in_filename, out_filename):
         """Make a .mp3 file suitable for displaying publically on the website"""
-        pass
+        options = self._build_ffmpeg_options(in_filename)
+        options.extend(self._build_ffmpeg_mp3_output_options(out_filename))
+        result = subprocess.call(options)
+        return result == 0
 
-    def split_recording(self, recording, out_folder):
-        """Make a series of .mp3 files from one recording, based on its' timestamps"""
-        pass
+    def _build_ffmpeg_options(self, in_filename):
+        return [
+            'ffmpeg',
+            # Tell ffmpeg to shut up
+            '-loglevel',
+            '0',
+            # Say yes to everything
+            '-y',
+            # Input file
+            '-i',
+            in_filename
+        ]
+
+    def _build_ffmpeg_mp3_output_options(self, out_filename):
+        return [
+            # Output options
+            # 128 kbps bitrate
+            '-ab',
+            '128k',
+            '-acodec',
+            'libmp3lame',
+            # Output file
+            out_filename
+        ]
+
+
+
