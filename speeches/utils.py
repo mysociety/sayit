@@ -219,6 +219,52 @@ class AudioHelper(object):
         result = subprocess.call(options)
         return result == 0
 
+    def split_recording(self, recording, out_folder):
+        """Make a series of .mp3 files from one recording, based on its' timestamps"""
+
+        # Does it have any audio?
+        if not recording.audio:
+            return False
+
+        # Do we have any timestamps to split it by?
+        number_of_timestamps = recording.timestamps.count()
+        if number_of_timestamps <= 1:
+            # None, or one - just make an mp3 of the whole thing
+            (fd, filename) = tempfile.mkstemp(suffix=".mp3", dir=out_folder)
+            return self.make_mp3(recording.audio.path, filename)
+
+        # We have more than one timestamp
+        # We assume the first timestamp is 00:00:00 in the recording
+        # so we can then calculate the other offsets from there.
+        sorted_timestamps = recording.timestamps.all().order_by("timestamp")
+        start_time_utc = calendar.timegm(sorted_timestamps[0].timestamp.timetuple())
+        start_time_relative = 0
+
+        for timestamp, index in enumerate(sorted_timestamps):
+            end_time_relative = None
+
+            if index < number_of_timestamps - 1:
+                next_timestamp = sorted_timestamps[index + 1].timestamp
+                end_time_utc = calendar.timegm(next_timestamp.timetuple())
+                end_time_relative = end_time_utc - start_time_utc
+
+            in_filename = recording.audio.path
+            (fd, filename) = tempfile.mkstemp(suffix=".mp3", dir=out_folder)
+            options = _build_ffmpeg_options(in_filename)
+            options.extend([
+                # Where to start from
+                "-ss",
+                start_time_relative
+            ])
+            if end_time_relative is not None:
+                # Where to go to
+                options.extend(['-t', end_time_relative])
+            options.extend(_build_ffmpeg_mp3_output_options(out_filename))
+            result = subprocess.call(options)
+
+            start_time_utc = end_time_utc
+            start_time_relative = end_time_relative
+
     def _build_ffmpeg_options(self, in_filename):
         return [
             'ffmpeg',

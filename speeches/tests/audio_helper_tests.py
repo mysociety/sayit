@@ -68,4 +68,13 @@ class AudioHelperTests(TestCase):
         self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_mp3_from_3gp.mp3')))
 
     def test_recording_splitting_no_timestamps(self):
-        self.fail("Not implemented")
+        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'))
+
+        tmp_folder = tempfile.mkdtemp()
+
+        self.helper.split_recording(recording, tmp_folder)
+
+        count_files_created = len([name for name in os.listdir(tmp_folder) if os.path.isfile(name)])
+
+        self.assertEquals(count_files_created, 0)
