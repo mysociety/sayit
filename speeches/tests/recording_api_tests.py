@@ -12,7 +12,7 @@ from django.conf import settings
 import speeches
 from speeches.models import Speaker, Recording, RecordingTimestamp
 
-@override_settings(MEDIA_ROOT=tempfile.mkdtemp(), DEBUG=True)
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class RecordingAPITests(TestCase):
 
     @classmethod
@@ -48,7 +48,7 @@ class RecordingAPITests(TestCase):
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
-        self.assertTrue("lamb.mp3" in response_content['fields']['audio'])
+        self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
         recording = Recording.objects.get(id=1)
@@ -72,7 +72,7 @@ class RecordingAPITests(TestCase):
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
-        self.assertTrue("lamb.mp3" in response_content['fields']['audio'])
+        self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
         recording = Recording.objects.get(id=1)
@@ -96,7 +96,7 @@ class RecordingAPITests(TestCase):
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
-        self.assertTrue("lamb.mp3" in response_content['fields']['audio'])
+        self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
         recording = Recording.objects.get(id=1)

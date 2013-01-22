@@ -36,7 +36,7 @@ class SpeechAPITests(TestCase):
         resp = self.client.post('/api/v0.1/speech/', {
             'text': 'This is a speech'
         })
-        
+
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
@@ -60,7 +60,7 @@ class SpeechAPITests(TestCase):
             'text': 'This is a Steve speech',
             'speaker': speaker.popit_url
         })
-        
+
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
@@ -82,7 +82,7 @@ class SpeechAPITests(TestCase):
         resp = self.client.post('/api/v0.1/speech/', {
             'audio': audio
         })
-        
+
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
@@ -90,7 +90,7 @@ class SpeechAPITests(TestCase):
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
-        self.assertTrue("lamb.mp3" in response_content['fields']['audio'])
+        self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
         speech = Speech.objects.get(id=1)
@@ -113,7 +113,7 @@ class SpeechAPITests(TestCase):
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
-        self.assertTrue("lamb.mp3" in response_content['fields']['audio'])
+        self.assertTrue(".mp3" in response_content['fields']['audio'])
         self.assertEquals(response_content['fields']['text'], text)
 
         # Check in db
