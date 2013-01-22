@@ -75,36 +75,6 @@ class TranscribeHelper(object):
             raise TranscribeException(
                     'Speech: {0} is already transcribed!'.format(speech.id))
 
-    def make_wav(self, tmp_filename, speech_filename):
-        """Make a .wav file suitable for uploading to AT&T and return true if
-           it succeeded"""
-
-        result = subprocess.call([
-            'ffmpeg',
-            # Tell ffmpeg to shut up
-            '-loglevel',
-            '0',
-            # Say yes to everything
-            '-y',
-            # Input file
-            '-i',
-            speech_filename,
-            # Output options
-            # Sample rate of 8KHz
-            '-ar',
-            '8000',
-            # Single channel, ie: mono
-            '-ac',
-            '1',
-            # Use the 16-bit pcm codec
-            '-acodec',
-            'pcm_s16le',
-            # Output file
-            tmp_filename
-
-        ])
-        return result == 0
-
     def get_oauth_token(self):
         """Get an oauth token from AT&T for the Speech service"""
 
@@ -213,3 +183,35 @@ class TranscribeHelper(object):
 
         # Nothing else is good enough
         return None
+
+class AudioHelper(object):
+
+    def make_wav(self, tmp_filename, speech_filename):
+        """Make a .wav file suitable for uploading to AT&T and return true if
+           it succeeded"""
+
+        result = subprocess.call([
+            'ffmpeg',
+            # Tell ffmpeg to shut up
+            '-loglevel',
+            '0',
+            # Say yes to everything
+            '-y',
+            # Input file
+            '-i',
+            speech_filename,
+            # Output options
+            # Sample rate of 8KHz
+            '-ar',
+            '8000',
+            # Single channel, ie: mono
+            '-ac',
+            '1',
+            # Use the 16-bit pcm codec
+            '-acodec',
+            'pcm_s16le',
+            # Output file
+            tmp_filename
+
+        ])
+        return result == 0

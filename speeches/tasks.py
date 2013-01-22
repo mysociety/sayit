@@ -7,7 +7,7 @@ from celery.utils.log import get_task_logger
 from django.conf import settings
 
 from speeches.models import Speech
-from speeches.utils import TranscribeHelper, TranscribeException
+from speeches.utils import TranscribeHelper, TranscribeException, AudioHelper
 
 logger = get_task_logger(__name__)
 
@@ -21,16 +21,17 @@ def transcribe_speech(speech_id):
     default_transcription = settings.DEFAULT_TRANSCRIPTION
     try:
         # Check speech is ok to be transcribed
-        helper = TranscribeHelper();
-        helper.check_speech(speech)
+        transcribe_helper = TranscribeHelper();
+        transcribe_helper.check_speech(speech)
 
         # Convert to wav
+        audio_helper = AudioHelper();
         # Make an 8khz version of the audio using ffmpeg
         # First make a temporary file
         (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
         try:
-            if helper.make_wav(tmp_filename, speech.audio.path):
-                transcription = helper.get_transcription(tmp_filename)
+            if audio_helper.make_wav(tmp_filename, speech.audio.path):
+                transcription = transcribe_helper.get_transcription(tmp_filename)
                 # Save the result into the DB
                 speech.text = transcription
             else:

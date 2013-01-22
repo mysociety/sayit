@@ -8,3 +8,4 @@ from speeches.tests.meeting_tests import *
 from speeches.tests.debate_tests import *
 from speeches.tests.speaker_tests import *
 from speeches.tests.recording_api_tests import *
+from speeches.tests.audio_helper_tests import *

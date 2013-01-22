@@ -1,6 +1,5 @@
 import os
 import tempfile
-import filecmp
 import shutil
 
 from mock import patch, Mock
@@ -114,43 +113,6 @@ class TranscribeTaskTests(TestCase):
         speech_has_text = Speech.objects.create(text="Text")
         with self.assertRaises(TranscribeException):
             helper.check_speech(speech_has_text)
-
-
-    def test_wav_file_creation_from_mp3(self):
-        helper = TranscribeHelper()
-
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'))
-
-        # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_mp3.wav')))
-
-    def test_wav_file_creation_from_android_3gp(self):
-        helper = TranscribeHelper()
-
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb.3gp'))
-
-        # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_3gp.wav')))
-
-    def test_wav_file_creation_from_iphone_wav(self):
-        helper = TranscribeHelper()
-
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_iphone.wav'))
-
-        # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_iphone.wav')))
-
-    def test_wav_file_creation_from_stereo_wav(self):
-        helper = TranscribeHelper()
-
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        helper.make_wav(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_stereo.wav'))
-
-        # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._speeches_path, 'fixtures', 'lamb_from_stereo.wav')))
 
     def test_transcription_selection(self):
         # Mock responses
