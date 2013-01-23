@@ -15,7 +15,7 @@ class SpeechTests(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._speeches_path = os.path.abspath(speeches.__path__[0])
+        cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
 
     def tearDown(self):
         # Clear the speeches folder if it exists
@@ -58,7 +58,7 @@ class SpeechTests(TestCase):
 
     def test_add_speech_with_audio(self):
         # Load the mp3 fixture
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
 
         resp = self.client.post('/speech/add', {
             'audio': audio
@@ -73,7 +73,7 @@ class SpeechTests(TestCase):
 
     def test_add_speech_with_audio_and_text(self):
         # Load the mp3 fixture
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
         text = 'This is a speech with some text'
 
         resp = self.client.post('/speech/add', {
@@ -83,12 +83,12 @@ class SpeechTests(TestCase):
 
         # Assert that it uploads and we see it straightaway
         resp = self.client.get('/speech/1')
-        self.assertFalse('Please wait' in resp.content)        
+        self.assertFalse('Please wait' in resp.content)
         self.assertTrue(text in resp.content)
 
     def test_add_speech_fails_with_unsupported_audio(self):
         # Load the .aiff fixture
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.aiff'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, 'lamb.aiff'), 'rb')
 
         resp = self.client.post('/speech/add', {
             'audio': audio
@@ -99,7 +99,7 @@ class SpeechTests(TestCase):
 
     def test_add_speech_creates_celery_task(self):
         # Load the mp3 fixture
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
         resp = self.client.post('/speech/add', {
             'audio': audio
         })
@@ -110,7 +110,7 @@ class SpeechTests(TestCase):
 
     def test_add_speech_with_text_does_not_create_celery_task(self):
         # Load the mp3 fixture
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
         text = 'This is a speech with some text'
 
         resp = self.client.post('/speech/add', {
@@ -124,7 +124,7 @@ class SpeechTests(TestCase):
 
     def test_speech_displayed_when_celery_task_finished(self):
         # Load the mp3 fixture
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
         text = 'This is a speech with some text'
 
         resp = self.client.post('/speech/add', {
@@ -142,7 +142,7 @@ class SpeechTests(TestCase):
 
         # Check the page doesn't show "Please wait" but shows our text instead
         resp = self.client.get('/speech/1')
-        self.assertFalse('Please wait' in resp.content)        
+        self.assertFalse('Please wait' in resp.content)
         self.assertTrue(text in resp.content)
 
     def test_add_speech_with_dates_only(self):

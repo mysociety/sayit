@@ -17,7 +17,7 @@ class RecordingAPITests(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._speeches_path = os.path.abspath(speeches.__path__[0])
+        cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
 
     def tearDown(self):
         # Clear the recordings folder if it exists
@@ -35,7 +35,7 @@ class RecordingAPITests(TestCase):
 
     def test_add_recording_with_audio(self):
         # Load the mp3 fixture
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
 
         resp = self.client.post('/api/v0.1/recording/', {
             'audio': audio
@@ -58,7 +58,7 @@ class RecordingAPITests(TestCase):
         # Add two speakers
         speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
 
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
 
         resp = self.client.post('/api/v0.1/recording/', {
             'audio': audio,
@@ -82,7 +82,7 @@ class RecordingAPITests(TestCase):
         self.assertEquals(recording.timestamps.get(id=1).timestamp, expected_timestamp)
 
     def test_add_recording_with_unknown_speaker_timestamp(self):
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
 
         resp = self.client.post('/api/v0.1/recording/', {
             'audio': audio,
@@ -107,7 +107,7 @@ class RecordingAPITests(TestCase):
 
     def test_add_recording_fails_with_unsupported_audio(self):
         # Load the .aiff fixture
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.aiff'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, 'lamb.aiff'), 'rb')
 
         resp = self.client.post('/api/v0.1/recording/', {
             'audio': audio

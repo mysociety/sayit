@@ -21,7 +21,7 @@ class TranscribeTaskTests(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._speeches_path = os.path.abspath(speeches.__path__[0])
+        cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
         # Tell Celery to be "eager", ie: run tasks straight away
         # as if they were normal methods
         if hasattr(settings, 'CELERY_ALWAYS_EAGER'):
@@ -38,7 +38,7 @@ class TranscribeTaskTests(TestCase):
 
     def setUp(self):
         # Put a speech in the db for the task to use
-        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
         self.speech = Speech.objects.create(audio=File(audio, "lamb.mp3"))
 
     def tearDown(self):
@@ -212,7 +212,7 @@ class TranscribeTaskTests(TestCase):
     # removing the temp file
     # So we test with a mock that throws an Exception at each of these in turn
     def test_clears_task_on_valid_speech_error(self):
-        with patch('speeches.tasks.TranscribeHelper.check_speech') as patched_helper:
+        with patch('speeches.utils.TranscribeHelper.check_speech') as patched_helper:
             patched_helper.side_effect = Exception("Boom!")
             with self.assertRaises(Exception):
                 result = transcribe_speech(self.speech.id)
@@ -242,7 +242,7 @@ class TranscribeTaskTests(TestCase):
         self.assertTrue(speech.celery_task_id is None)
 
     def test_clears_task_on_auth_errors(self):
-        with patch('speeches.tasks.TranscribeHelper.get_oauth_token') as patched_get_oauth_token:
+        with patch('speeches.utils.TranscribeHelper.get_oauth_token') as patched_get_oauth_token:
             patched_get_oauth_token.side_effect = Exception("Boom!")
             with self.assertRaises(Exception):
                 result = transcribe_speech(self.speech.id)
@@ -252,9 +252,9 @@ class TranscribeTaskTests(TestCase):
         self.assertTrue(speech.celery_task_id is None)
 
     def test_clears_task_on_api_errors(self):
-        with patch('speeches.tasks.TranscribeHelper.get_oauth_token') as patched_get_oauth_token:
+        with patch('speeches.utils.TranscribeHelper.get_oauth_token') as patched_get_oauth_token:
             patched_get_oauth_token.return_value = "bb2da510a68542df9e4051cd9ebb0a5a"
-            with patch('speeches.tasks.TranscribeHelper.get_transcription') as patched_get_transcription:
+            with patch('speeches.utils.TranscribeHelper.get_transcription') as patched_get_transcription:
                 patched_get_transcription.side_effect = Exception("Boom!")
                 with self.assertRaises(Exception):
                     result = transcribe_speech(self.speech.id)

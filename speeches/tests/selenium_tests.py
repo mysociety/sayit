@@ -17,7 +17,7 @@ class SeleniumTests(LiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         cls.selenium = webdriver.Firefox()
-        cls._speeches_path = os.path.abspath(speeches.__path__[0])
+        cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
         super(SeleniumTests, cls).setUpClass()
 
     @classmethod
@@ -37,14 +37,14 @@ class SeleniumTests(LiveServerTestCase):
         # Assert question is shown and form is hidden
         self.assertTrue(self.selenium.find_element_by_id("question").is_displayed())
         self.assertFalse(self.selenium.find_element_by_id("speech-form").is_displayed())
-        
+
         # Select text
         self.selenium.find_element_by_id("text-link").click()
-        
+
         # Assert form is show with text input
         self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
         self.assertTrue(self.selenium.find_element_by_id("id_text_controls").is_displayed())
-        
+
         # Assert audio and question are hidden
         self.assertFalse(self.selenium.find_element_by_id("id_audio_controls").is_displayed())
         self.assertFalse(self.selenium.find_element_by_id("question").is_displayed())
@@ -55,14 +55,14 @@ class SeleniumTests(LiveServerTestCase):
         # Assert question is shown and form is hidden
         self.assertTrue(self.selenium.find_element_by_id("question").is_displayed())
         self.assertFalse(self.selenium.find_element_by_id("speech-form").is_displayed())
-        
+
         # Select audio
         self.selenium.find_element_by_id("audio-link").click()
-        
+
         # Assert form is shown with audio input
         self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
         self.assertTrue(self.selenium.find_element_by_id("id_audio_controls").is_displayed())
-        
+
         # Assert text and question are hidden
         self.assertFalse(self.selenium.find_element_by_id("id_text_controls").is_displayed())
         self.assertFalse(self.selenium.find_element_by_id("question").is_displayed())
@@ -73,16 +73,16 @@ class SeleniumTests(LiveServerTestCase):
         # Assert question is shown and form is hidden
         self.assertTrue(self.selenium.find_element_by_id("question").is_displayed())
         self.assertFalse(self.selenium.find_element_by_id("speech-form").is_displayed())
-        
+
         # Select both
         self.selenium.find_element_by_id("both-link").click()
-        
+
         # Assert form is shown with audio input and text input
         self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
         self.assertTrue(self.selenium.find_element_by_id("id_audio_controls").is_displayed())
         self.assertTrue(self.selenium.find_element_by_id("id_text_controls").is_displayed())
-        
-        # Assert Question is hidden        
+
+        # Assert Question is hidden
         self.assertFalse(self.selenium.find_element_by_id("question").is_displayed())
 
     def test_add_speech(self):
@@ -97,7 +97,7 @@ class SeleniumTests(LiveServerTestCase):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
         self.selenium.find_element_by_id("audio-link").click()
         audio_file_input = self.selenium.find_element_by_name("audio")
-        audio_file_input.send_keys(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'))
+        audio_file_input.send_keys(os.path.join(self._in_fixtures, 'lamb.mp3'))
         self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
         self.assertIn('/speech/1', self.selenium.current_url)
 
@@ -113,7 +113,7 @@ class SeleniumTests(LiveServerTestCase):
         self.selenium.find_element_by_xpath('//div[@id="id-id_speaker_text"]/descendant::span').click()
         # Check it is selected
         selection_element = self.selenium.find_element_by_xpath('//span[@id="id_speaker-deck"]/child::span')
-        self.assertIn('Name', selection_element.text) 
+        self.assertIn('Name', selection_element.text)
         # Check we can unselect it
         self.selenium.find_element_by_xpath('//span[@id="id_speaker-deck"]/descendant::span[@class="remove div"]').click()
         speaker_input = self.selenium.find_element_by_name("speaker-autocomplete")
