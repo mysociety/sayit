@@ -74,16 +74,10 @@ class AudioHelperTests(TestCase):
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
         recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'))
 
-        tmp_folder = tempfile.mkdtemp()
+        files_created = self.helper.split_recording(recording)
 
-        print("tmp_folder: {0}".format(tmp_folder))
-
-        result = self.helper.split_recording(recording, tmp_folder)
-
-        count_files_created = len([name for name in os.listdir(tmp_folder)])
-
-        self.assertTrue(result)
-        self.assertEquals(count_files_created, 1)
+        self.assertEquals(len(files_created), 1)
+        self.assertTrue(filecmp.cmp(files_created[0], os.path.join(self._expected_fixtures, 'mp3', 'lamb_whole.mp3')))
 
     def test_recording_splitting_one_timestamp(self):
         speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
@@ -93,33 +87,31 @@ class AudioHelperTests(TestCase):
         recording.timestamps.add(timestamp)
         recording.save()
 
-        tmp_folder = tempfile.mkdtemp()
+        files_created = self.helper.split_recording(recording)
 
-        result = self.helper.split_recording(recording, tmp_folder)
-
-        count_files_created = len([name for name in os.listdir(tmp_folder)])
-
-        self.assertTrue(result)
-        self.assertEquals(count_files_created, 1)
+        self.assertEquals(len(files_created), 1)
+        self.assertTrue(filecmp.cmp(files_created[0], os.path.join(self._expected_fixtures, 'mp3', 'lamb_whole.mp3')))
 
     def test_recording_splitting_several_timestamps(self):
         speaker1 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
         speaker2 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/efgh', name='Dave')
-        now = timezone.now()
-        timestamp1 = RecordingTimestamp.objects.create(speaker=speaker1, timestamp=now)
-        now_plus_3_seconds = now + timedelta(seconds=3)
-        timestamp2 = RecordingTimestamp.objects.create(speaker=speaker2, timestamp=now_plus_3_seconds)
+        speaker3 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/ijkl', name='Struan')
+        start = timezone.now()
+        timestamp1 = RecordingTimestamp.objects.create(speaker=speaker1, timestamp=start)
+        start_plus_3_seconds = start + timedelta(seconds=3)
+        timestamp2 = RecordingTimestamp.objects.create(speaker=speaker2, timestamp=start_plus_3_seconds)
+        start_plus_4_seconds = start + timedelta(seconds=4)
+        timestamp3 = RecordingTimestamp.objects.create(speaker=speaker3, timestamp=start_plus_4_seconds)
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
         recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'))
         recording.timestamps.add(timestamp1)
         recording.timestamps.add(timestamp2)
+        recording.timestamps.add(timestamp3)
         recording.save()
 
-        tmp_folder = tempfile.mkdtemp()
+        files_created = self.helper.split_recording(recording)
 
-        result = self.helper.split_recording(recording, tmp_folder)
-
-        count_files_created = len([name for name in os.listdir(tmp_folder)])
-
-        self.assertTrue(result)
-        self.assertEquals(count_files_created, 2)
+        self.assertEquals(len(files_created), 3)
+        self.assertTrue(filecmp.cmp(files_created[0], os.path.join(self._expected_fixtures, 'mp3', 'lamb_first_three_seconds.mp3')))
+        self.assertTrue(filecmp.cmp(files_created[1], os.path.join(self._expected_fixtures, 'mp3', 'lamb_from_three_to_four_seconds.mp3')))
+        self.assertTrue(filecmp.cmp(files_created[2], os.path.join(self._expected_fixtures, 'mp3', 'lamb_from_four_seconds_onwards.mp3')))

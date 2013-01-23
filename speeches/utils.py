@@ -188,6 +188,10 @@ class TranscribeHelper(object):
         # Nothing else is good enough
         return None
 
+class AudioException(Exception):
+    """Custom exception for audio transcoding ThingsThatGoWrong"""
+    pass
+
 class AudioHelper(object):
 
     def make_wav(self, in_filename, out_filename):
@@ -217,61 +221,77 @@ class AudioHelper(object):
         options = self._build_ffmpeg_options(in_filename)
         options.extend(self._build_ffmpeg_mp3_output_options(out_filename))
         result = subprocess.call(options)
-        return result == 0
+        if not result == 0:
+            message = "FFMPEG failed with result: {0} on timestamp: {1}".format(result, timestamp)
+            logger.error(message)
+            raise AudioException(message)
 
-    def split_recording(self, recording, out_folder):
+        return out_filename
+
+    def split_recording(self, recording):
         """Make a series of .mp3 files from one recording, based on its' timestamps"""
+
+        # List of files we'll return
+        files = []
 
         # Does it have any audio?
         if not recording.audio:
             logger.error("Asked to split recording: {0} with no audio, returning immediately".format(recording))
-            return False
+            return files
 
         # Do we have any timestamps to split it by?
         if not recording.timestamps or recording.timestamps.count() <= 1:
             # None, or one - just make an mp3 of the whole thing
             logger.info("No timestamps in the recording: {0} or only one, so making an mp3 of all of it.".format(recording))
-            (fd, filename) = tempfile.mkstemp(suffix=".mp3", dir=out_folder)
-            return self.make_mp3(recording.audio.path, filename)
+            (fd, filename) = tempfile.mkstemp(suffix=".mp3")
+            files.append(self.make_mp3(recording.audio.path, filename))
+            return files
 
         # We have more than one timestamp
+        sorted_timestamps = recording.timestamps.all().order_by("timestamp")
+        start_timestamp = sorted_timestamps[0]
+        for index, timestamp in enumerate(sorted_timestamps):
+            next_timestamp = None
+            if index < (len(sorted_timestamps) - 1):
+                next_timestamp = sorted_timestamps[index + 1]
+
+            files.append(self.make_partial_mp3(recording, start_timestamp, timestamp, next_timestamp))
+
+        return files
+
+    def make_partial_mp3(self, recording, start_timestamp, timestamp, next_timestamp):
+        """Make a partial mp3 file for a given timestamp"""
         # We assume the first timestamp is 00:00:00 in the recording
         # so we can then calculate the other offsets from there.
-        sorted_timestamps = recording.timestamps.all().order_by("timestamp")
-        start_time_utc = calendar.timegm(sorted_timestamps[0].timestamp.timetuple())
-        start_time_relative = 0
 
-        for timestamp, index in enumerate(sorted_timestamps):
-            end_time_relative = None
-            end_time_utc = None
+        # Work out the time this timestamp starts, in seconds from the start of the recording
+        start_time_relative = timestamp.utc - start_timestamp.utc
 
-            if index < recording.timestamps.count() - 1:
-                next_timestamp = sorted_timestamps[index + 1].timestamp
-                end_time_utc = calendar.timegm(next_timestamp.timetuple())
-                end_time_relative = end_time_utc - start_time_utc
+        # Work out the time this timestamp ends, in seconds from the start
+        end_time_relative = None
+        if next_timestamp is not None:
+            end_time_relative = next_timestamp.utc - start_timestamp.utc
 
-            in_filename = recording.audio.path
-            (fd, out_filename) = tempfile.mkstemp(suffix=".mp3", dir=out_folder)
-            options = self._build_ffmpeg_options(in_filename)
-            # Where to start from
-            options.extend(["-ss", str(start_time_relative)])
-            if end_time_relative is not None:
-                # Where to go to
-                options.extend(['-t', str(end_time_relative)])
-            options.extend(self._build_ffmpeg_mp3_output_options(out_filename))
-            result = subprocess.call(options)
+        (fd, out_filename) = tempfile.mkstemp(suffix=".mp3")
 
-            # Check that the result was ok, and if not, return immediately
-            if not result == 0:
-                logger.error("FFMPEG failed with result: {0} on timestamp: {1}".format(result, timestamp))
-                return False
+        options = self._build_ffmpeg_options(recording.audio.path)
+        # Where to start from
+        options.extend(["-ss", str(start_time_relative)])
+        # Where to go to
+        if end_time_relative is not None:
+            options.extend(['-t', str(end_time_relative)])
+        options.extend(self._build_ffmpeg_mp3_output_options(out_filename))
 
-            # Move the times on for the next timestamp, if there are any
-            if index < recording.timestamps.count() - 1:
-                start_time_utc = end_time_utc
-                start_time_relative = end_time_relative
+        result = subprocess.call(options)
 
-        return True
+        # Check that the result was ok, and if not, blow up
+        if not result == 0:
+            message = "FFMPEG failed with result: {0} on timestamp: {1}".format(result, timestamp)
+            logger.error(message)
+            raise AudioException(message)
+
+        return out_filename
+
 
     def _build_ffmpeg_options(self, in_filename):
         return [
