@@ -1,9 +1,11 @@
 import os
 import tempfile
 import filecmp
+from datetime import timedelta
 
 from django.test import TestCase
 from django.core.files import File
+from django.utils import timezone
 
 import speeches
 from speeches.utils import AudioHelper
@@ -73,8 +75,50 @@ class AudioHelperTests(TestCase):
 
         tmp_folder = tempfile.mkdtemp()
 
-        self.helper.split_recording(recording, tmp_folder)
+        print("tmp_folder: {0}".format(tmp_folder))
 
-        count_files_created = len([name for name in os.listdir(tmp_folder) if os.path.isfile(name)])
+        result = self.helper.split_recording(recording, tmp_folder)
 
-        self.assertEquals(count_files_created, 0)
+        count_files_created = len([name for name in os.listdir(tmp_folder)])
+
+        self.assertTrue(result)
+        self.assertEquals(count_files_created, 1)
+
+    def test_recording_splitting_one_timestamp(self):
+        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
+        timestamp = RecordingTimestamp.objects.create(speaker=speaker, timestamp=timezone.now())
+        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'))
+        recording.timestamps.add(timestamp)
+        recording.save()
+
+        tmp_folder = tempfile.mkdtemp()
+
+        result = self.helper.split_recording(recording, tmp_folder)
+
+        count_files_created = len([name for name in os.listdir(tmp_folder)])
+
+        self.assertTrue(result)
+        self.assertEquals(count_files_created, 1)
+
+    def test_recording_splitting_several_timestamps(self):
+        speaker1 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
+        speaker2 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/efgh', name='Dave')
+        now = timezone.now()
+        timestamp1 = RecordingTimestamp.objects.create(speaker=speaker1, timestamp=now)
+        now_plus_3_seconds = now + timedelta(seconds=3)
+        timestamp2 = RecordingTimestamp.objects.create(speaker=speaker2, timestamp=now_plus_3_seconds)
+        audio = open(os.path.join(self._speeches_path, 'fixtures', 'lamb.mp3'), 'rb')
+        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'))
+        recording.timestamps.add(timestamp1)
+        recording.timestamps.add(timestamp2)
+        recording.save()
+
+        tmp_folder = tempfile.mkdtemp()
+
+        result = self.helper.split_recording(recording, tmp_folder)
+
+        count_files_created = len([name for name in os.listdir(tmp_folder)])
+
+        self.assertTrue(result)
+        self.assertEquals(count_files_created, 2)

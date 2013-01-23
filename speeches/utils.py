@@ -224,12 +224,13 @@ class AudioHelper(object):
 
         # Does it have any audio?
         if not recording.audio:
+            logger.error("Asked to split recording: {0} with no audio, returning immediately".format(recording))
             return False
 
         # Do we have any timestamps to split it by?
-        number_of_timestamps = recording.timestamps.count()
-        if number_of_timestamps <= 1:
+        if not recording.timestamps or recording.timestamps.count() <= 1:
             # None, or one - just make an mp3 of the whole thing
+            logger.info("No timestamps in the recording: {0} or only one, so making an mp3 of all of it.".format(recording))
             (fd, filename) = tempfile.mkstemp(suffix=".mp3", dir=out_folder)
             return self.make_mp3(recording.audio.path, filename)
 
@@ -242,28 +243,35 @@ class AudioHelper(object):
 
         for timestamp, index in enumerate(sorted_timestamps):
             end_time_relative = None
+            end_time_utc = None
 
-            if index < number_of_timestamps - 1:
+            if index < recording.timestamps.count() - 1:
                 next_timestamp = sorted_timestamps[index + 1].timestamp
                 end_time_utc = calendar.timegm(next_timestamp.timetuple())
                 end_time_relative = end_time_utc - start_time_utc
 
             in_filename = recording.audio.path
-            (fd, filename) = tempfile.mkstemp(suffix=".mp3", dir=out_folder)
-            options = _build_ffmpeg_options(in_filename)
-            options.extend([
-                # Where to start from
-                "-ss",
-                start_time_relative
-            ])
+            (fd, out_filename) = tempfile.mkstemp(suffix=".mp3", dir=out_folder)
+            options = self._build_ffmpeg_options(in_filename)
+            # Where to start from
+            options.extend(["-ss", str(start_time_relative)])
             if end_time_relative is not None:
                 # Where to go to
-                options.extend(['-t', end_time_relative])
-            options.extend(_build_ffmpeg_mp3_output_options(out_filename))
+                options.extend(['-t', str(end_time_relative)])
+            options.extend(self._build_ffmpeg_mp3_output_options(out_filename))
             result = subprocess.call(options)
 
-            start_time_utc = end_time_utc
-            start_time_relative = end_time_relative
+            # Check that the result was ok, and if not, return immediately
+            if not result == 0:
+                logger.error("FFMPEG failed with result: {0} on timestamp: {1}".format(result, timestamp))
+                return False
+
+            # Move the times on for the next timestamp, if there are any
+            if index < recording.timestamps.count() - 1:
+                start_time_utc = end_time_utc
+                start_time_relative = end_time_relative
+
+        return True
 
     def _build_ffmpeg_options(self, in_filename):
         return [
