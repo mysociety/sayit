@@ -1,3 +1,5 @@
+import calendar
+
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
@@ -169,6 +171,11 @@ class Speech(AuditedModel):
 class RecordingTimestamp(AuditedModel):
     speaker = models.ForeignKey(Speaker, blank=True, null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(db_index=True, blank=False)
+
+    @property
+    def utc(self):
+        """Return our timestamp as a UTC long"""
+        return calendar.timegm(self.timestamp.timetuple())
 
 # A raw recording, might be divided up into multiple speeches
 class Recording(AuditedModel):
