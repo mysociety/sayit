@@ -7,7 +7,7 @@ from celery.utils.log import get_task_logger
 from django.conf import settings
 
 from speeches.models import Speech
-from speeches.utils import TranscribeHelper, TranscribeException, AudioHelper
+from speeches.utils import TranscribeHelper, TranscribeException, AudioHelper, AudioException
 
 logger = get_task_logger(__name__)
 
