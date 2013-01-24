@@ -125,7 +125,7 @@ class SpeechManager(models.Manager):
                     end_time = next_timestamp.timestamp.time()
 
             created_speeches.append(self.create(
-                audio=File(audio_file),
+                audio=File(open(audio_file)),
                 speaker=speaker,
                 start_date=start_date,
                 start_time=start_time,
