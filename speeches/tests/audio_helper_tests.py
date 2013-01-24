@@ -20,55 +20,54 @@ class AudioHelperTests(TestCase):
 
     def setUp(self):
         self.helper = AudioHelper()
+        self.tmp_filename = None
+
+    def tearDown(self):
+        if self.tmp_filename is not None:
+            os.remove(self.tmp_filename)
+
 
     def test_wav_file_creation_from_mp3(self):
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        self.helper.make_wav(os.path.join(self._in_fixtures, 'lamb.mp3'), tmp_filename)
+        self.tmp_filename = self.helper.make_wav(os.path.join(self._in_fixtures, 'lamb.mp3'))
 
         # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._expected_fixtures, 'wav', 'lamb_from_mp3.wav')))
+        self.assertTrue(filecmp.cmp(self.tmp_filename, os.path.join(self._expected_fixtures, 'wav', 'lamb_from_mp3.wav')))
 
     def test_wav_file_creation_from_android_3gp(self):
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        self.helper.make_wav(os.path.join(self._in_fixtures, 'lamb.3gp'), tmp_filename)
+        self.tmp_filename = self.helper.make_wav(os.path.join(self._in_fixtures, 'lamb.3gp'))
 
         # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._expected_fixtures, 'wav', 'lamb_from_3gp.wav')))
+        self.assertTrue(filecmp.cmp(self.tmp_filename, os.path.join(self._expected_fixtures, 'wav', 'lamb_from_3gp.wav')))
 
     def test_wav_file_creation_from_iphone_wav(self):
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        self.helper.make_wav(os.path.join(self._in_fixtures, 'lamb_iphone.wav'), tmp_filename)
+        self.tmp_filename = self.helper.make_wav(os.path.join(self._in_fixtures, 'lamb_iphone.wav'))
 
         # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._expected_fixtures, 'wav', 'lamb_from_iphone.wav')))
+        self.assertTrue(filecmp.cmp(self.tmp_filename, os.path.join(self._expected_fixtures, 'wav', 'lamb_from_iphone.wav')))
 
     def test_wav_file_creation_from_stereo_wav(self):
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
-        self.helper.make_wav(os.path.join(self._in_fixtures, 'lamb_stereo.wav'), tmp_filename)
+        self.tmp_filename = self.helper.make_wav(os.path.join(self._in_fixtures, 'lamb_stereo.wav'))
 
         # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._expected_fixtures, 'wav', 'lamb_from_stereo.wav')))
+        self.assertTrue(filecmp.cmp(self.tmp_filename, os.path.join(self._expected_fixtures, 'wav', 'lamb_from_stereo.wav')))
 
     def test_mp3_file_creation_from_stereo_wav(self):
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.mp3')
-        self.helper.make_mp3(os.path.join(self._in_fixtures, 'lamb_stereo.wav'), tmp_filename)
+        self.tmp_filename = self.helper.make_mp3(os.path.join(self._in_fixtures, 'lamb_stereo.wav'))
 
         # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._expected_fixtures, 'mp3', 'lamb_mp3_from_stereo.mp3')))
+        self.assertTrue(filecmp.cmp(self.tmp_filename, os.path.join(self._expected_fixtures, 'mp3', 'lamb_mp3_from_stereo.mp3')))
 
     def test_mp3_file_creation_from_iphone_wav(self):
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.mp3')
-        self.helper.make_mp3(os.path.join(self._in_fixtures, 'lamb_iphone.wav'), tmp_filename)
+        self.tmp_filename = self.helper.make_mp3(os.path.join(self._in_fixtures, 'lamb_iphone.wav'))
 
         # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._expected_fixtures, 'mp3', 'lamb_mp3_from_iphone.mp3')))
+        self.assertTrue(filecmp.cmp(self.tmp_filename, os.path.join(self._expected_fixtures, 'mp3', 'lamb_mp3_from_iphone.mp3')))
 
     def test_mp3_file_creation_from_android_3gp(self):
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.mp3')
-        self.helper.make_mp3(os.path.join(self._in_fixtures, 'lamb.3gp'), tmp_filename)
+        self.tmp_filename = self.helper.make_mp3(os.path.join(self._in_fixtures, 'lamb.3gp'))
 
         # Compare the created file to one we made earlier
-        self.assertTrue(filecmp.cmp(tmp_filename, os.path.join(self._expected_fixtures, 'mp3', 'lamb_mp3_from_3gp.mp3')))
+        self.assertTrue(filecmp.cmp(self.tmp_filename, os.path.join(self._expected_fixtures, 'mp3', 'lamb_mp3_from_3gp.mp3')))
 
     def test_recording_splitting_no_timestamps(self):
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')

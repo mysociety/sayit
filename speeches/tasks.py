@@ -27,23 +27,19 @@ def transcribe_speech(speech_id):
         # Convert to wav
         audio_helper = AudioHelper();
         # Make an 8khz version of the audio using ffmpeg
-        # First make a temporary file
-        (fd, tmp_filename) = tempfile.mkstemp(suffix='.wav')
+        tmp_filename = None
         try:
-            if audio_helper.make_wav(speech.audio.path, tmp_filename):
-                transcription = transcribe_helper.get_transcription(tmp_filename)
-                # Save the result into the DB
-                speech.text = transcription
-            else:
-                # Something went wrong with mpg123
-                raise TranscribeException(
-                    'WAV conversion did not complete successfully')
+            tmp_filename = audio_helper.make_wav(speech.audio.path)
+            transcription = transcribe_helper.get_transcription(tmp_filename)
+            # Save the result into the DB
+            speech.text = transcription
         finally:
-            os.remove(tmp_filename)
+            if tmp_filename is not None:
+                os.remove(tmp_filename)
 
         return transcription
 
-    except (TranscribeException, OSError) as e:
+    except (AudioException, TranscribeException, OSError) as e:
         # We could retry here with something like:
 
         # backoff = 2 ** transcribe_speech.request.retries

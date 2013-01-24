@@ -194,9 +194,12 @@ class AudioException(Exception):
 
 class AudioHelper(object):
 
-    def make_wav(self, in_filename, out_filename):
+    def make_wav(self, in_filename):
         """Make a .wav file suitable for uploading to AT&T and return true if
            it succeeded"""
+        # First make a temporary file
+        (fd, out_filename) = tempfile.mkstemp(suffix='.wav')
+
         options = self._build_ffmpeg_options(in_filename)
         options.extend([
             # Output options
@@ -214,15 +217,23 @@ class AudioHelper(object):
 
         ])
         result = subprocess.call(options)
-        return result == 0
 
-    def make_mp3(self, in_filename, out_filename):
-        """Make a .mp3 file suitable for displaying publically on the website"""
+        if not result == 0:
+            message = "FFMPEG failed to make .wav with result: {0} on file: {1}".format(result, in_filename)
+            logger.error(message)
+            raise AudioException(message)
+
+        return out_filename
+
+    def make_mp3(self, in_filename):
+        """Make a .mp3 file suitable for displaying publically on the website, returns
+           the filename if it succeeded, and throws an AudioException if something went wrong"""
+        (fd, out_filename) = tempfile.mkstemp(suffix=".mp3")
         options = self._build_ffmpeg_options(in_filename)
         options.extend(self._build_ffmpeg_mp3_output_options(out_filename))
         result = subprocess.call(options)
         if not result == 0:
-            message = "FFMPEG failed with result: {0} on timestamp: {1}".format(result, timestamp)
+            message = "FFMPEG failed to make .mp3 with result: {0} on file: {1}".format(result, in_filename)
             logger.error(message)
             raise AudioException(message)
 
@@ -243,8 +254,7 @@ class AudioHelper(object):
         if not recording.timestamps or recording.timestamps.count() <= 1:
             # None, or one - just make an mp3 of the whole thing
             logger.info("No timestamps in the recording: {0} or only one, so making an mp3 of all of it.".format(recording))
-            (fd, filename) = tempfile.mkstemp(suffix=".mp3")
-            files.append(self.make_mp3(recording.audio.path, filename))
+            files.append(self.make_mp3(recording.audio.path))
             return files
 
         # We have more than one timestamp
