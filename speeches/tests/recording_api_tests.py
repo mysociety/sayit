@@ -115,14 +115,37 @@ class RecordingAPITests(TestCase):
         # Check the recording
         recording = Recording.objects.get(id=1)
         self.assertIsNotNone(recording.audio)
-        # Check the timestamps
+
+        # Check the timestamps were made
         self.assertEquals(recording.timestamps.count(), 3)
+
+        # Check the timestamps are what we expect
         ordered_timestamps = recording.timestamps.order_by("timestamp")
         self.assertEquals(ordered_timestamps[0].timestamp, expected_timestamp1)
         self.assertEquals(ordered_timestamps[1].timestamp, expected_timestamp2)
         self.assertEquals(ordered_timestamps[2].timestamp, expected_timestamp3)
+
         # Check that speeches were made
         self.assertEquals(Speech.objects.count(), 3)
+
+        # Check that the speeches are what we expect (ish)
+        self.assertEquals(Speech.objects.get(id=1).speaker, speaker1)
+        self.assertEquals(Speech.objects.get(id=1).start_date, expected_timestamp1.date())
+        self.assertEquals(Speech.objects.get(id=1).start_time, expected_timestamp1.time())
+        self.assertEquals(Speech.objects.get(id=1).end_date, expected_timestamp2.date())
+        self.assertEquals(Speech.objects.get(id=1).end_time, expected_timestamp2.time())
+
+        self.assertEquals(Speech.objects.get(id=2).speaker, speaker2)
+        self.assertEquals(Speech.objects.get(id=2).start_date, expected_timestamp2.date())
+        self.assertEquals(Speech.objects.get(id=2).start_time, expected_timestamp2.time())
+        self.assertEquals(Speech.objects.get(id=2).end_date, expected_timestamp3.date())
+        self.assertEquals(Speech.objects.get(id=2).end_time, expected_timestamp3.time())
+
+        self.assertEquals(Speech.objects.get(id=3).speaker, speaker3)
+        self.assertEquals(Speech.objects.get(id=3).start_date, expected_timestamp3.date())
+        self.assertEquals(Speech.objects.get(id=3).start_time, expected_timestamp3.time())
+        self.assertEquals(Speech.objects.get(id=3).end_date, None)
+        self.assertEquals(Speech.objects.get(id=3).end_time, None)
 
     def test_add_recording_with_unknown_speaker_timestamp(self):
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
