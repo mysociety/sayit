@@ -10,7 +10,9 @@ from django.conf import settings
 import speeches
 from speeches.models import Speech, Speaker
 
-@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+TEMP_MEDIA_ROOT = tempfile.mkdtemp()
+
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class SpeechTests(TestCase):
 
     @classmethod
@@ -186,3 +188,22 @@ class SpeechTests(TestCase):
         })
         self.assertFormError(resp, 'form', 'start_time', 'If you provide a start time you must give a start date too')
         self.assertFormError(resp, 'form', 'end_time', 'If you provide an end time you must give an end date too')
+
+    def test_add_speech_with_audio_encodes_to_mp3(self):
+        # Load the wav fixture
+        audio = open(os.path.join(self._in_fixtures, 'lamb_stereo.wav'), 'rb')
+
+        resp = self.client.post('/speech/add', {
+            'audio': audio
+        })
+
+        # Assert that it uploads and we're told to wait
+        print(resp.content)
+
+        resp = self.client.get('/speech/1')
+        self.assertTrue('Please wait' in resp.content)
+
+        # Assert that it's in the model
+        speech = Speech.objects.get(id=1)
+        self.assertIsNotNone(speech.audio)
+        self.assertTrue(".mp3" in speech.audio.path)

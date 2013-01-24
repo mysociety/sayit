@@ -1,5 +1,6 @@
 import calendar
 import logging
+import os
 
 from django.db import models
 from django.utils import timezone
@@ -203,6 +204,28 @@ class Speech(AuditedModel):
     @models.permalink
     def get_edit_url(self):
         return ( 'speech-edit', (), { 'pk': self.id } )
+
+    def save(self, *args, **kwargs):
+        """Overriden save method to automatically convert the audio to an mp3"""
+
+        # If we have an audio file and it's not an mp3, make it one
+        if self.audio and not self.audio.name.lower().endswith('.mp3'):
+            if not os.path.exists(self.audio.path):
+                # If it doesn't already exist, save the old audio first so that we can re-encode it
+                # This is needed if it's newly uploaded
+                self.audio.save(self.audio.name, File(self.audio), False)
+            # Transcode the audio into mp3
+            audio_helper = speeches.utils.AudioHelper()
+            mp3_filename = audio_helper.make_mp3(self.audio.path)
+            mp3_file = open(mp3_filename, 'rb')
+            # Delete the old file
+            self.audio.delete(False)
+            # Save the mp3 as the new file
+            self.audio.save(mp3_file.name, File(mp3_file), False)
+
+        super(Speech, self).save(*args, **kwargs)
+
+
 
     def start_transcribing(self):
         """Kick off a celery task to transcribe this speech"""
