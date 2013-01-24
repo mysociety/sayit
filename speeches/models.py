@@ -8,6 +8,8 @@ from django.core.files import File
 import speeches
 from speeches.utils import AudioHelper
 
+logger = logging.getLogger(__name__)
+
 class AuditedModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
