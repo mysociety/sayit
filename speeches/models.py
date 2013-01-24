@@ -3,8 +3,10 @@ import calendar
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from django.core.files import File
 
 import speeches
+from speeches.utils import AudioHelper
 
 class AuditedModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -50,7 +52,7 @@ class Debate(AuditedModel):
     def __unicode__(self):
         return self.title
 
-# SpeakerManager, so that we can define get_by_natural_key()
+# SpeakerManager
 class SpeakerManager(models.Manager):
 
     # Get or create a speaker from a popit_url
@@ -86,8 +88,56 @@ class Speaker(AuditedModel):
     def natural_key(self):
         return (self.popit_url,)
 
+# Speech manager
+class SpeechManager(models.Manager):
+
+    def create_from_recording(self, recording):
+        """Create one or more speeches from a recording. If there's no audio"""
+        created_speeches = []
+
+        # Split the recording's audio files
+        audio_helper = AudioHelper()
+        audio_files = audio_helper.split_recording(recording)
+
+        # Create a speech for each one of the audio files
+        sorted_timestamps = recording.timestamps.order_by("timestamp")
+        for index, audio_file in enumerate(audio_files):
+            speaker = None
+            start_date = None
+            start_time = None
+            end_date = None
+            end_time = None
+
+            # Get the related timestamp, if any.
+            if sorted_timestamps and len(sorted_timestamps) > 0:
+                # We assume that the files are returned in order of timestamp
+                timestamp = sorted_timestamps[index]
+                speaker = timestamp.speaker
+                start_date = timestamp.timestamp.date()
+                start_time = timestamp.timestamp.time()
+                # If there's another one we can work out the end too
+                if index < len(sorted_timestamps) - 1:
+                    next_timestamp = sorted_timestamps[index + 1]
+                    end_date = next_timestamp.timestamp.date()
+                    end_time = next_timestamp.timestamp.time()
+
+            created_speeches.append(self.create(
+                audio=File(audio_file),
+                speaker=speaker,
+                start_date=start_date,
+                start_time=start_time,
+                end_date=end_date,
+                end_time=end_time
+            ))
+
+        return created_speeches
+
+
 # Speech that a speaker gave
 class Speech(AuditedModel):
+    # Custom manager
+    objects = SpeechManager()
+
     # The speech. Need to check have at least one of the following two (preferably both).
     audio = models.FileField(upload_to='speeches/%Y-%m-%d/', max_length=255, blank=True)
     # TODO - we will want to do full text search at some point, so we need an index on
