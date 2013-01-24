@@ -10,7 +10,7 @@ from django.utils import simplejson
 from django.conf import settings
 
 import speeches
-from speeches.models import Speaker, Recording, RecordingTimestamp
+from speeches.models import Speech, Speaker, Recording, RecordingTimestamp
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class RecordingAPITests(TestCase):
@@ -77,7 +77,7 @@ class RecordingAPITests(TestCase):
         # Check in db
         recording = Recording.objects.get(id=1)
         self.assertIsNotNone(recording.audio)
-        self.assertEquals(recording.timestamps.all().count(), 1)
+        self.assertEquals(recording.timestamps.count(), 1)
         expected_timestamp = datetime.utcfromtimestamp(946684800).replace(tzinfo=pytz.utc)
         self.assertEquals(recording.timestamps.get(id=1).timestamp, expected_timestamp)
 
@@ -92,6 +92,10 @@ class RecordingAPITests(TestCase):
         timestamps = '[{"speaker":"http://popit.mysociety.org/api/v1/person/abcd","timestamp":946684800000},'
         timestamps += '{"speaker":"http://popit.mysociety.org/api/v1/person/efgh","timestamp":946684803000},'
         timestamps += '{"speaker":"http://popit.mysociety.org/api/v1/person/hijk","timestamp":946684804000}]'
+
+        expected_timestamp1 = datetime.utcfromtimestamp(946684800).replace(tzinfo=pytz.utc)
+        expected_timestamp2 = datetime.utcfromtimestamp(946684803).replace(tzinfo=pytz.utc)
+        expected_timestamp3 = datetime.utcfromtimestamp(946684804).replace(tzinfo=pytz.utc)
 
         resp = self.client.post('/api/v0.1/recording/', {
             'audio': audio,
@@ -108,19 +112,22 @@ class RecordingAPITests(TestCase):
         self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
+        # Check the recording
         recording = Recording.objects.get(id=1)
         self.assertIsNotNone(recording.audio)
-        self.assertEquals(recording.timestamps.all().count(), 3)
-        expected_timestamp1 = datetime.utcfromtimestamp(946684800).replace(tzinfo=pytz.utc)
-        expected_timestamp2 = datetime.utcfromtimestamp(946684803).replace(tzinfo=pytz.utc)
-        expected_timestamp3 = datetime.utcfromtimestamp(946684804).replace(tzinfo=pytz.utc)
+        # Check the timestamps
+        self.assertEquals(recording.timestamps.count(), 3)
         ordered_timestamps = recording.timestamps.order_by("timestamp")
         self.assertEquals(ordered_timestamps[0].timestamp, expected_timestamp1)
         self.assertEquals(ordered_timestamps[1].timestamp, expected_timestamp2)
         self.assertEquals(ordered_timestamps[2].timestamp, expected_timestamp3)
+        # Check that speeches were made
+        self.assertEquals(Speech.objects.count(), 3)
 
     def test_add_recording_with_unknown_speaker_timestamp(self):
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
+
+        expected_timestamp = datetime.utcfromtimestamp(946684800).replace(tzinfo=pytz.utc)
 
         resp = self.client.post('/api/v0.1/recording/', {
             'audio': audio,
@@ -140,7 +147,6 @@ class RecordingAPITests(TestCase):
         recording = Recording.objects.get(id=1)
         self.assertIsNotNone(recording.audio)
         self.assertEquals(recording.timestamps.all().count(), 1)
-        expected_timestamp = datetime.utcfromtimestamp(946684800).replace(tzinfo=pytz.utc)
         self.assertEquals(recording.timestamps.get(id=1).timestamp, expected_timestamp)
 
     def test_add_recording_fails_with_unsupported_audio(self):

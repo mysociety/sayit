@@ -9,6 +9,7 @@ from django.db.models import Count
 from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm, DebateForm, RecordingAPIForm
 from speeches.models import Speech, Speaker, Meeting, Debate, Recording
 import speeches.utils
+from speeches.utils import AudioHelper, AudioException
 
 from django.views.generic import CreateView, UpdateView, DetailView, ListView
 from django.views.generic.edit import BaseFormView
@@ -229,8 +230,13 @@ class RecordingAPICreate(CreateView, JSONResponseMixin):
     http_method_names = ['post']
 
     def form_valid(self, form):
+        logger.error("Processing recording")
+
         # Create recording from the form data
         self.object = form.save()
+
+        # Create speeches from the recording
+        Speech.objects.create_from_recording(self.object)
 
         # Return a 201 response
         serialisable_fields = ('audio', 'timestamps')
