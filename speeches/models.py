@@ -223,9 +223,8 @@ class Speech(AuditedModel):
             # Save the mp3 as the new file
             self.audio.save(mp3_file.name, File(mp3_file), False)
 
+        # Call the original model save to do everything
         super(Speech, self).save(*args, **kwargs)
-
-
 
     def start_transcribing(self):
         """Kick off a celery task to transcribe this speech"""

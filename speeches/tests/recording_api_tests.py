@@ -135,6 +135,7 @@ class RecordingAPITests(TestCase):
         self.assertEquals(speech1.start_time, expected_timestamp1.time())
         self.assertEquals(speech1.end_date, expected_timestamp2.date())
         self.assertEquals(speech1.end_time, expected_timestamp2.time())
+        self.assertIsNotNone(speech1.celery_task_id)
         self.assertIsNotNone(speech1.audio.path)
 
         speech2 = Speech.objects.get(id=2)
@@ -143,6 +144,7 @@ class RecordingAPITests(TestCase):
         self.assertEquals(speech2.start_time, expected_timestamp2.time())
         self.assertEquals(speech2.end_date, expected_timestamp3.date())
         self.assertEquals(speech2.end_time, expected_timestamp3.time())
+        self.assertIsNotNone(speech2.celery_task_id)
         self.assertIsNotNone(speech2.audio.path)
 
         speech3 = Speech.objects.get(id=3)
@@ -151,6 +153,7 @@ class RecordingAPITests(TestCase):
         self.assertEquals(speech3.start_time, expected_timestamp3.time())
         self.assertEquals(speech3.end_date, None)
         self.assertEquals(speech3.end_time, None)
+        self.assertIsNotNone(speech3.celery_task_id)
         self.assertIsNotNone(speech3.audio.path)
 
     def test_add_recording_with_unknown_speaker_timestamp(self):

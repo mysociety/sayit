@@ -236,7 +236,11 @@ class RecordingAPICreate(CreateView, JSONResponseMixin):
         self.object = form.save()
 
         # Create speeches from the recording
-        Speech.objects.create_from_recording(self.object)
+        speeches = Speech.objects.create_from_recording(self.object)
+
+        # Transcribe each speech
+        for speech in speeches:
+            speech.start_transcribing()
 
         # Return a 201 response
         serialisable_fields = ('audio', 'timestamps')
