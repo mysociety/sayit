@@ -97,6 +97,16 @@ class SeleniumTests(LiveServerTestCase):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
         self.selenium.find_element_by_id("audio-link").click()
         audio_file_input = self.selenium.find_element_by_name("audio")
+        
+        # The file input is covered by the button. This javascript takes the
+        # input and moves it out so that when selenium tries to click on it (to
+        # focus it for the send_keys) the click does not 'fall' on another
+        # element.
+        self.selenium.execute_script("""
+            var $audio = $('input[name=audio]');
+            $audio.insertAfter( $audio.parent() );
+        """);
+        
         audio_file_input.send_keys(os.path.join(self._in_fixtures, 'lamb.mp3'))
         self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
         self.assertIn('/speech/1', self.selenium.current_url)
