@@ -264,10 +264,28 @@ class TranscribeTaskTests(TestCase):
         self.assertTrue(speech.celery_task_id is None)
 
     def test_clears_task_on_removing_tmp_file_errors(self):
-        with patch('os.remove') as patched_remove:
-            patched_remove.side_effect = Exception("Boom!")
-            with self.assertRaises(Exception):
-                result = transcribe_speech(self.speech.id)
+        with patch('speeches.utils.TranscribeHelper.get_oauth_token') as patched_get_oauth_token:
+            patched_get_oauth_token.return_value = "bb2da510a68542df9e4051cd9ebb0a5a"
+            with patch('speeches.utils.TranscribeHelper.get_transcription') as patched_get_transcription:
+                patched_get_transcription.return_value = {
+                    "Recognition": {
+                        "Status": "OK",
+                        "ResponseId": "c77727642111312f5cce0115a2ba8ce4",
+                        "NBest": [ {
+                            "WordScores": [0.07, 0.1],
+                            "Confidence": 0.601629956,
+                            "Grade": "accept",
+                            "ResultText": 'A transcription',
+                            "Words": ["A", "transcription"],
+                            "LanguageId": "en-US",
+                            "Hypothesis": 'A transcription'
+                        } ]
+                    }
+                }
+                with patch('os.remove') as patched_remove:
+                    patched_remove.side_effect = Exception("Boom!")
+                    with self.assertRaises(Exception):
+                        result = transcribe_speech(self.speech.id)
 
         # Assert that it saved the right data into the db
         speech = Speech.objects.get(id=self.speech.id)
