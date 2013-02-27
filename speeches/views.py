@@ -230,7 +230,7 @@ class RecordingAPICreate(CreateView, JSONResponseMixin):
     http_method_names = ['post']
 
     def form_valid(self, form):
-        logger.error("Processing recording")
+        logger.info("Processing recording")
 
         # Create recording from the form data
         self.object = form.save()

@@ -17,12 +17,12 @@ class Command(NoArgsCommand):
         results = api.person.get()
         for person in results['results']:
 
-            logger.warn('Processing: {0}'.format(person['meta']['api_url']))
-            
+            logger.info('Processing: {0}'.format(person['meta']['api_url']))
+
             speaker, created = Speaker.objects.get_or_create(popit_url=person['meta']['api_url'])
 
-            logger.warn('Person was created? {0}'.format(created))
-            logger.warn('Persons id in the spoke db is: {0}'.format(speaker.id))
+            logger.info('Person was created? {0}'.format(created))
+            logger.info('Persons id in the spoke db is: {0}'.format(speaker.id))
 
             # we ignore created for now, just always set the name
             speaker.name = person['name']
