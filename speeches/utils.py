@@ -1,3 +1,4 @@
+import os
 import subprocess
 import mimetypes
 import logging
@@ -216,7 +217,9 @@ class AudioHelper(object):
             out_filename
 
         ])
-        result = subprocess.call(options)
+
+        with open(os.devnull, 'w') as dev_null:
+            result = subprocess.call(options, stderr=dev_null)
 
         if not result == 0:
             message = "FFMPEG failed to make .wav with result: {0} on file: {1}".format(result, in_filename)
@@ -231,7 +234,8 @@ class AudioHelper(object):
         (fd, out_filename) = tempfile.mkstemp(suffix=".mp3")
         options = self._build_ffmpeg_options(in_filename)
         options.extend(self._build_ffmpeg_mp3_output_options(out_filename))
-        result = subprocess.call(options)
+        with open(os.devnull, 'w') as dev_null:
+            result = subprocess.call(options, stderr=dev_null)
         if not result == 0:
             message = "FFMPEG failed to make .mp3 with result: {0} on file: {1}".format(result, in_filename)
             logger.error(message)
@@ -292,7 +296,8 @@ class AudioHelper(object):
             options.extend(['-t', str(end_time_relative)])
         options.extend(self._build_ffmpeg_mp3_output_options(out_filename))
 
-        result = subprocess.call(options)
+        with open(os.devnull, 'w') as dev_null:
+            result = subprocess.call(options, stderr=dev_null)
 
         # Check that the result was ok, and if not, blow up
         if not result == 0:
