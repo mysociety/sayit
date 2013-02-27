@@ -18,6 +18,7 @@ django-celery
 
 # Testing
 selenium
+mock
 
 ### Django related registration
 # The registration app is a little out of date - get it from the repo direct....
