@@ -23,6 +23,9 @@ mock
 # For testing the types of files (using libmagic1):
 python-magic
 
+# For finding the lengths of MP3 files
+audioread
+
 ### Django related registration
 # The registration app is a little out of date - get it from the repo direct....
 # django-registration

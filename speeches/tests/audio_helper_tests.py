@@ -7,6 +7,7 @@ from django.test import TestCase
 from django.core.files import File
 from django.utils import timezone
 
+import audioread
 import magic
 import speeches
 from speeches.utils import AudioHelper
@@ -34,11 +35,16 @@ class AudioHelperTests(TestCase):
                             extension[1:],
                             filename)
 
-    def assertFilesIdentical(self, filename_a, filename_b):
+    def assertSameAudioLength(self, filename_a, filename_b):
         files = (filename_a, filename_b)
-        identical = filecmp.cmp(*files)
-        self.assertTrue(identical,
-                        'The files %s and %s were not identical' % files)
+        af1 = audioread.audio_open(filename_a)
+        af2 = audioread.audio_open(filename_b)
+        message = 'The audio files %s (%.3fs) and %s (%.3fs) were of different lengths'
+        message = message % (files[0], af1.duration, files[1], af2.duration)
+        self.assertAlmostEqual(af1.duration,
+                               af2.duration,
+                               2, # to 2 decimal places (of seconds)
+                               message)
 
     def convert(self, known_input, method, expected_output):
         self.tmp_filename = getattr(self.helper, method)(os.path.join(self._in_fixtures, known_input))
@@ -47,7 +53,7 @@ class AudioHelperTests(TestCase):
         self.assertEquals(magic.from_file(self.tmp_filename),
                           magic.from_file(expected))
         # Now check that the files are identical:
-        self.assertFilesIdentical(self.tmp_filename, expected)
+        self.assertSameAudioLength(self.tmp_filename, expected)
 
     def test_wav_file_creation_from_mp3(self):
         self.convert('lamb.mp3', 'make_wav', 'lamb_from_mp3.wav')
@@ -77,7 +83,7 @@ class AudioHelperTests(TestCase):
         files_created = self.helper.split_recording(recording)
 
         self.assertEquals(len(files_created), 1)
-        self.assertFilesIdentical(files_created[0], self.expected_output_file('lamb_whole.mp3'))
+        self.assertSameAudioLength(files_created[0], self.expected_output_file('lamb_whole.mp3'))
 
     def test_recording_splitting_one_timestamp(self):
         speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
@@ -90,7 +96,7 @@ class AudioHelperTests(TestCase):
         files_created = self.helper.split_recording(recording)
 
         self.assertEquals(len(files_created), 1)
-        self.assertFilesIdentical(files_created[0], self.expected_output_file('lamb_whole.mp3'))
+        self.assertSameAudioLength(files_created[0], self.expected_output_file('lamb_whole.mp3'))
 
     def test_recording_splitting_several_timestamps(self):
         speaker1 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
@@ -112,6 +118,6 @@ class AudioHelperTests(TestCase):
         files_created = self.helper.split_recording(recording)
 
         self.assertEquals(len(files_created), 3)
-        self.assertFilesIdentical(files_created[0], self.expected_output_file('lamb_first_three_seconds.mp3'))
-        self.assertFilesIdentical(files_created[1], self.expected_output_file('lamb_from_three_to_four_seconds.mp3'))
-        self.assertFilesIdentical(files_created[2], self.expected_output_file('lamb_from_four_seconds_onwards.mp3'))
+        self.assertSameAudioLength(files_created[0], self.expected_output_file('lamb_first_three_seconds.mp3'))
+        self.assertSameAudioLength(files_created[1], self.expected_output_file('lamb_from_three_to_four_seconds.mp3'))
+        self.assertSameAudioLength(files_created[2], self.expected_output_file('lamb_from_four_seconds_onwards.mp3'))
