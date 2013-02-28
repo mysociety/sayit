@@ -26,6 +26,8 @@ TIME_ZONE = config.get('TIME_ZONE')
 SECRET_KEY = config.get('DJANGO_SECRET_KEY')
 GOOGLE_ANALYTICS_ACCOUNT = config.get('GOOGLE_ANALYTICS_ACCOUNT')
 
+BASE_URL = config.get('BASE_URL')
+
 # PopIt instance to use for list of speakers
 POPIT_INSTANCE = config.get('POPIT_INSTANCE')
 POPIT_HOSTNAME = config.get('POPIT_HOSTNAME')

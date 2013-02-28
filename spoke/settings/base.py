@@ -102,6 +102,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'pagination.middleware.PaginationMiddleware',
+    'instances.middleware.MultiInstanceMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -133,12 +134,13 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'djcelery',
+    'kombu.transport.django',
     'south',
     'pagination',
-    'speeches',
     'autocomplete_light',
-    'djcelery',
-    'kombu.transport.django'
+    'instances',
+    'speeches',
 )
 
 # Log WARN and above to stderr; ERROR and above by email when DEBUG is False.
