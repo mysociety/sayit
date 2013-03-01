@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.conf import settings
 from django.core.files import File
 
+from instances.models import InstanceMixin
 import speeches
 from speeches.utils import AudioHelper
 
@@ -26,7 +27,7 @@ class AuditedModel(models.Model):
         self.modified = now
         super(AuditedModel, self).save(*args, **kwargs)
 
-class Meeting(AuditedModel):
+class Meeting(InstanceMixin, AuditedModel):
     title = models.CharField(max_length=255, blank=False, null=False)
     date = models.DateField(blank=True, null=True, help_text='When date did the meeting happen?')
 
@@ -41,7 +42,7 @@ class Meeting(AuditedModel):
     def __unicode__(self):
         return self.title
 
-class Debate(AuditedModel):
+class Debate(InstanceMixin, AuditedModel):
     meeting = models.ForeignKey(Meeting, blank=True, null=True)
     title = models.CharField(max_length=255, blank=False, null=False)
 
@@ -79,7 +80,7 @@ class SpeakerManager(models.Manager):
         return self.get(popit_url=popit_url)
 
 # Speaker - someone who gave a speech
-class Speaker(AuditedModel):
+class Speaker(InstanceMixin, AuditedModel):
     popit_url = models.TextField(unique=True)
     name = models.TextField(db_index=True)
     objects = SpeakerManager()
@@ -138,7 +139,7 @@ class SpeechManager(models.Manager):
 
 
 # Speech that a speaker gave
-class Speech(AuditedModel):
+class Speech(InstanceMixin, AuditedModel):
     # Custom manager
     objects = SpeechManager()
 
@@ -243,7 +244,7 @@ class Speech(AuditedModel):
 # A timestamp of a particular speaker at a particular time.
 # Used to record events like "This speaker started speaking at 00:33"
 # in a specific recording, before it's chopped up into a speech
-class RecordingTimestamp(AuditedModel):
+class RecordingTimestamp(InstanceMixin, AuditedModel):
     speaker = models.ForeignKey(Speaker, blank=True, null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(db_index=True, blank=False)
 
@@ -253,6 +254,6 @@ class RecordingTimestamp(AuditedModel):
         return calendar.timegm(self.timestamp.timetuple())
 
 # A raw recording, might be divided up into multiple speeches
-class Recording(AuditedModel):
+class Recording(InstanceMixin, AuditedModel):
     audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=False)
     timestamps = models.ManyToManyField(RecordingTimestamp, blank=True, null=True)
