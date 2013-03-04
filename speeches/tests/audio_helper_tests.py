@@ -1,19 +1,20 @@
+import audioread
+import magic
 import os
 import tempfile
 import filecmp
 from datetime import timedelta
 
-from django.test import TestCase
 from django.core.files import File
 from django.utils import timezone
 
-import audioread
-import magic
+from instances.tests import InstanceTestCase
+
 import speeches
 from speeches.utils import AudioHelper
 from speeches.models import Recording, RecordingTimestamp, Speaker
 
-class AudioHelperTests(TestCase):
+class AudioHelperTests(InstanceTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -21,6 +22,7 @@ class AudioHelperTests(TestCase):
         cls._expected_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'expected_outputs')
 
     def setUp(self):
+        super(AudioHelperTests, self).setUp()
         self.helper = AudioHelper()
         self.tmp_filename = None
         self.remove_tmp_filename = False
@@ -78,7 +80,7 @@ class AudioHelperTests(TestCase):
 
     def test_recording_splitting_no_timestamps(self):
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
-        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'))
+        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'), instance=self.instance)
 
         files_created = self.helper.split_recording(recording)
 
@@ -86,10 +88,10 @@ class AudioHelperTests(TestCase):
         self.assertSameAudioLength(files_created[0], self.expected_output_file('lamb_whole.mp3'))
 
     def test_recording_splitting_one_timestamp(self):
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
-        timestamp = RecordingTimestamp.objects.create(speaker=speaker, timestamp=timezone.now())
+        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
+        timestamp = RecordingTimestamp.objects.create(speaker=speaker, timestamp=timezone.now(), instance=self.instance)
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
-        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'))
+        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'), instance=self.instance)
         recording.timestamps.add(timestamp)
         recording.save()
 
@@ -99,17 +101,17 @@ class AudioHelperTests(TestCase):
         self.assertSameAudioLength(files_created[0], self.expected_output_file('lamb_whole.mp3'))
 
     def test_recording_splitting_several_timestamps(self):
-        speaker1 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
-        speaker2 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/efgh', name='Dave')
-        speaker3 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/ijkl', name='Struan')
+        speaker1 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
+        speaker2 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/efgh', name='Dave', instance=self.instance)
+        speaker3 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/ijkl', name='Struan', instance=self.instance)
         start = timezone.now()
-        timestamp1 = RecordingTimestamp.objects.create(speaker=speaker1, timestamp=start)
+        timestamp1 = RecordingTimestamp.objects.create(speaker=speaker1, timestamp=start, instance=self.instance)
         start_plus_3_seconds = start + timedelta(seconds=3)
-        timestamp2 = RecordingTimestamp.objects.create(speaker=speaker2, timestamp=start_plus_3_seconds)
+        timestamp2 = RecordingTimestamp.objects.create(speaker=speaker2, timestamp=start_plus_3_seconds, instance=self.instance)
         start_plus_4_seconds = start + timedelta(seconds=4)
-        timestamp3 = RecordingTimestamp.objects.create(speaker=speaker3, timestamp=start_plus_4_seconds)
+        timestamp3 = RecordingTimestamp.objects.create(speaker=speaker3, timestamp=start_plus_4_seconds, instance=self.instance)
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
-        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'))
+        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'), instance=self.instance)
         recording.timestamps.add(timestamp1)
         recording.timestamps.add(timestamp2)
         recording.timestamps.add(timestamp3)

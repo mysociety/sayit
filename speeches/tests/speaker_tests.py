@@ -1,13 +1,13 @@
-from django.test import TestCase
+from instances.tests import InstanceTestCase
 
 from speeches.models import Speaker, Speech
 
-class SpeakerTests(TestCase):
+class SpeakerTests(InstanceTestCase):
     """Tests for the speaker functionality"""
 
     def test_speaker_page_lists_speeches(self):
         # Add a speaker
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
+        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
         
         # Call the speaker's page
         resp = self.client.get('/speaker/1')
@@ -16,7 +16,7 @@ class SpeakerTests(TestCase):
         self.assertSequenceEqual([], resp.context['speech_list'])
 
         # Add a speech
-        speech = Speech.objects.create(text="A test speech", speaker=speaker)
+        speech = Speech.objects.create(text="A test speech", speaker=speaker, instance=self.instance)
 
         # Call the speaker's page again
         resp = self.client.get('/speaker/1')
@@ -25,7 +25,7 @@ class SpeakerTests(TestCase):
 
     def test_speaker_page_has_button_to_add_speech(self):
         # Add a speaker
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
+        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
         
         # Call the speaker's page
         resp = self.client.get('/speaker/1')

@@ -4,16 +4,17 @@ import shutil
 from datetime import datetime
 import pytz
 
-from django.test import TestCase
 from django.test.utils import override_settings
 from django.utils import simplejson
 from django.conf import settings
+
+from instances.tests import InstanceTestCase
 
 import speeches
 from speeches.models import Speech, Speaker, Recording, RecordingTimestamp
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
-class RecordingAPITests(TestCase):
+class RecordingAPITests(InstanceTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -44,7 +45,7 @@ class RecordingAPITests(TestCase):
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertEquals(resp['Location'], 'http://testserver/recording/1')
+        self.assertIn('/recording/1', resp['Location'])
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
@@ -56,7 +57,7 @@ class RecordingAPITests(TestCase):
 
     def test_add_recording_with_timestamp(self):
         # Add two speakers
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
+        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
 
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
 
@@ -68,7 +69,7 @@ class RecordingAPITests(TestCase):
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertEquals(resp['Location'], 'http://testserver/recording/1')
+        self.assertIn('/recording/1', resp['Location'])
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
@@ -83,9 +84,9 @@ class RecordingAPITests(TestCase):
 
     def test_add_recording_with_multiple_timestamps(self):
         # Add two speakers
-        speaker1 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
-        speaker2 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/efgh', name='Dave')
-        speaker3 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/hijk', name='Struan')
+        speaker1 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
+        speaker2 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/efgh', name='Dave', instance=self.instance)
+        speaker3 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/hijk', name='Struan', instance=self.instance)
 
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
 
@@ -105,7 +106,7 @@ class RecordingAPITests(TestCase):
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertEquals(resp['Location'], 'http://testserver/recording/1')
+        self.assertIn('/recording/1', resp['Location'])
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
@@ -169,7 +170,7 @@ class RecordingAPITests(TestCase):
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertEquals(resp['Location'], 'http://testserver/recording/1')
+        self.assertIn('/recording/1', resp['Location'])
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)

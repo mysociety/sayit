@@ -6,10 +6,11 @@ from mock import patch, Mock
 
 import requests
 
-from django.test import TestCase
 from django.test.utils import override_settings
 from django.core.files import File
 from django.conf import settings
+
+from instances.tests import InstanceTestCase
 
 import speeches
 from speeches.models import Speech
@@ -17,7 +18,7 @@ from speeches.tasks import transcribe_speech
 from speeches.utils import TranscribeHelper, TranscribeException
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
-class TranscribeTaskTests(TestCase):
+class TranscribeTaskTests(InstanceTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -38,8 +39,9 @@ class TranscribeTaskTests(TestCase):
 
     def setUp(self):
         # Put a speech in the db for the task to use
+        super(TranscribeTaskTests, self).setUp()
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
-        self.speech = Speech.objects.create(audio=File(audio, "lamb.mp3"))
+        self.speech = Speech.objects.create(audio=File(audio, "lamb.mp3"), instance=self.instance)
 
     def tearDown(self):
         self.speech.delete()
@@ -105,12 +107,12 @@ class TranscribeTaskTests(TestCase):
         helper.check_speech(self.speech)
 
         # Speech with no audio should error
-        speech_no_audio = Speech.objects.create(audio=None)
+        speech_no_audio = Speech.objects.create(audio=None, instance=self.instance)
         with self.assertRaises(TranscribeException):
             helper.check_speech(speech_no_audio)
 
         # Speech with text should error
-        speech_has_text = Speech.objects.create(text="Text")
+        speech_has_text = Speech.objects.create(text="Text", instance=self.instance)
         with self.assertRaises(TranscribeException):
             helper.check_speech(speech_has_text)
 

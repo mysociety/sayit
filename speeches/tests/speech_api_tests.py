@@ -2,16 +2,17 @@ import os
 import tempfile
 import shutil
 
-from django.test import TestCase
 from django.test.utils import override_settings
 from django.utils import simplejson
 from django.conf import settings
+
+from instances.tests import InstanceTestCase
 
 import speeches
 from speeches.models import Speech, Speaker
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
-class SpeechAPITests(TestCase):
+class SpeechAPITests(InstanceTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -38,9 +39,8 @@ class SpeechAPITests(TestCase):
         })
 
         # Check response headers
-        self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertEquals(resp['Location'], 'http://testserver/speech/1')
+        self.assertRedirects(resp, 'speech/1', status_code=201)
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
@@ -54,7 +54,7 @@ class SpeechAPITests(TestCase):
 
     def test_add_speech_with_speaker(self):
         # Test form with speaker, we need to add a speaker first
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
+        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
 
         resp = self.client.post('/api/v0.1/speech/', {
             'text': 'This is a Steve speech',
@@ -64,7 +64,7 @@ class SpeechAPITests(TestCase):
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertEquals(resp['Location'], 'http://testserver/speech/1')
+        self.assertRedirects(resp, 'speech/1', status_code=201)
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
@@ -84,9 +84,8 @@ class SpeechAPITests(TestCase):
         })
 
         # Check response headers
-        self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertEquals(resp['Location'], 'http://testserver/speech/1')
+        self.assertRedirects(resp, 'speech/1', status_code=201)
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
@@ -107,9 +106,8 @@ class SpeechAPITests(TestCase):
         })
 
         # Check response headers
-        self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertEquals(resp['Location'], 'http://testserver/speech/1')
+        self.assertRedirects(resp, 'speech/1', status_code=201)
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)

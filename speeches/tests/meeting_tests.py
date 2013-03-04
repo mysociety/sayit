@@ -1,8 +1,8 @@
-from django.test import TestCase
+from instances.tests import InstanceTestCase
 
 from speeches.models import Meeting, Debate
 
-class MeetingTests(TestCase):
+class MeetingTests(InstanceTestCase):
     """Tests for the meetings functionality"""
 
     def test_add_meeting_fails_on_empty_form(self):
@@ -21,7 +21,7 @@ class MeetingTests(TestCase):
 
     def test_meeting_page_lists_debates(self):
         # Add a meeting
-        meeting = Meeting.objects.create(title='A test meeting')
+        meeting = Meeting.objects.create(title='A test meeting', instance=self.instance)
 
         # Call the meetings page
         resp = self.client.get('/meeting/1')
@@ -30,7 +30,7 @@ class MeetingTests(TestCase):
         self.assertSequenceEqual([], resp.context['debate_list'])
 
         # Add a debate
-        debate = Debate.objects.create(title="A test debate", meeting=meeting)
+        debate = Debate.objects.create(title="A test debate", meeting=meeting, instance=self.instance)
 
         # Call the meetings page again 
         resp = self.client.get('/meeting/1')
@@ -39,7 +39,7 @@ class MeetingTests(TestCase):
 
     def test_meeting_page_has_button_to_add_debate(self):
         # Add a meeting
-        meeting = Meeting.objects.create(title='A test meeting')
+        meeting = Meeting.objects.create(title='A test meeting', instance=self.instance)
 
         # Call the meetings page
         resp = self.client.get('/meeting/1')

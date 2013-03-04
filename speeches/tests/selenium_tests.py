@@ -9,11 +9,13 @@ from django.test import LiveServerTestCase
 from django.test.utils import override_settings
 from django.conf import settings
 
+from instances.tests import InstanceLiveServerTestCase
+
 import speeches
 from speeches.models import Speaker, Speech
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
-class SeleniumTests(LiveServerTestCase):
+class SeleniumTests(InstanceLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         cls.selenium = webdriver.Firefox()
@@ -30,6 +32,11 @@ class SeleniumTests(LiveServerTestCase):
         speeches_folder = os.path.join(settings.MEDIA_ROOT, 'speeches')
         if(os.path.exists(speeches_folder)):
             shutil.rmtree(speeches_folder)
+
+    @property
+    def live_server_url(self):
+        url = super(SeleniumTests, self).live_server_url
+        return url.replace('localhost', 'testing.127.0.0.1.xip.io')
 
     def test_select_text_only(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
@@ -113,7 +120,7 @@ class SeleniumTests(LiveServerTestCase):
 
     def test_speaker_autocomplete(self):
         # Put a person in the db for the autocomplete to find
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcde', name='Name')
+        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcde', name='Name', instance=self.instance)
 
         # Type a name in and select it
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))

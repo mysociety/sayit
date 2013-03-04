@@ -13,6 +13,10 @@ class MultiInstanceMiddleware:
         pattern = r'^(?P<instance>.*?)\.%s(?::(?P<port>.*))?$' % re.escape(domain)
         matches = re.match(pattern, host)
         if not matches:
+            domain = '127.0.0.1.xip.io'
+            pattern = r'^(?P<instance>.*?)\.%s(?::(?P<port>.*))?$' % re.escape(domain)
+            matches = re.match(pattern, host)
+        if not matches:
             request.instance = None
             request.urlconf = 'instances.urls'
             return

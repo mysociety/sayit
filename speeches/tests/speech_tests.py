@@ -3,9 +3,10 @@ import tempfile
 import shutil
 import datetime
 
-from django.test import TestCase
 from django.test.utils import override_settings
 from django.conf import settings
+
+from instances.tests import InstanceTestCase
 
 import speeches
 from speeches.models import Speech, Speaker
@@ -13,7 +14,7 @@ from speeches.models import Speech, Speaker
 TEMP_MEDIA_ROOT = tempfile.mkdtemp()
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
-class SpeechTests(TestCase):
+class SpeechTests(InstanceTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -48,7 +49,7 @@ class SpeechTests(TestCase):
 
     def test_add_speech_with_speaker(self):
         # Test form with speaker, we need to add a speaker first
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve')
+        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
 
         resp = self.client.post('/speech/add', {
             'text': 'This is a Steve speech',
