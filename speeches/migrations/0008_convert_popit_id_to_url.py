@@ -12,9 +12,9 @@ class Migration(DataMigration):
         # popit_url
         for speaker in orm['speeches.Speaker'].objects.all():
             popit_id = speaker.popit_id;
-            popit_url = 'http://{0}.{1}/api/{2}/person/{3}'.format(settings.POPIT_INSTANCE, 
-                settings.POPIT_HOSTNAME,
-                settings.POPIT_API_VERSION, 
+            popit_url = 'http://{0}.{1}/api/{2}/person/{3}'.format('--blank--',
+                'popit.mysociety.org',
+                'v1',
                 popit_id)
             speaker.popit_id = popit_url
             speaker.save()
@@ -25,9 +25,9 @@ class Migration(DataMigration):
         # popit_url
         for speaker in orm['speeches.Speaker'].objects.all():
             popit_url = speaker.popit_id;
-            popit_url_start = 'http://{0}.{1}/api/{2}/person/'.format(settings.POPIT_INSTANCE, 
-                settings.POPIT_HOSTNAME,
-                settings.POPIT_API_VERSION)
+            popit_url_start = 'http://{0}.{1}/api/{2}/person/'.format('--blank--',
+                'popit.mysociety.org',
+                'v1')
             popit_id = popit_url.replace(popit_url_start, '')
             speaker.popit_id = popit_id
             speaker.save()

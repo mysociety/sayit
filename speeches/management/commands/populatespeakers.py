@@ -1,6 +1,7 @@
 import logging
+from optparse import make_option
+
 from django.core.management.base import NoArgsCommand
-from django.conf import settings
 from popit import PopIt
 from speeches.models import Speaker
 
@@ -10,10 +11,16 @@ class Command(NoArgsCommand):
 
     help = 'Populates the database with people from Popit'
 
+    option_list = NoArgsCommand.option_list + (
+        make_option('--instance', help='Popit instance name'),
+        make_option('--hostname', help='Popit host name'),
+        make_option('--api-version', help='Popit API version'),
+    )
+
     def handle_noargs(self, **options):
-        api = PopIt(instance = settings.POPIT_INSTANCE,
-                    hostname = settings.POPIT_HOSTNAME,
-                    api_version = settings.POPIT_API_VERSION)
+        api = PopIt(instance = options['instance'],
+                    hostname = options['hostname'],
+                    api_version = options['api_version'])
         results = api.person.get()
         for person in results['results']:
 
@@ -22,7 +29,7 @@ class Command(NoArgsCommand):
             speaker, created = Speaker.objects.get_or_create(popit_url=person['meta']['api_url'])
 
             logger.info('Person was created? {0}'.format(created))
-            logger.info('Persons id in the spoke db is: {0}'.format(speaker.id))
+            logger.info('Person ID in the database is: {0}'.format(speaker.id))
 
             # we ignore created for now, just always set the name
             speaker.name = person['name']

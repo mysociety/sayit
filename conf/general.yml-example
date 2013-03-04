@@ -25,11 +25,6 @@ BASE_URL: ''
 # be used in the templates.
 GOOGLE_ANALYTICS_ACCOUNT: ''
 
-# PopIt instance to use for list of speakers
-POPIT_INSTANCE: ''
-POPIT_HOSTNAME: ''
-POPIT_API_VERSION: 'v1'
-
 # AT&T api details
 ATT_OAUTH_URL: ''
 ATT_CLIENT_ID: ''

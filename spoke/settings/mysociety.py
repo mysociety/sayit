@@ -28,11 +28,6 @@ GOOGLE_ANALYTICS_ACCOUNT = config.get('GOOGLE_ANALYTICS_ACCOUNT')
 
 BASE_URL = config.get('BASE_URL')
 
-# PopIt instance to use for list of speakers
-POPIT_INSTANCE = config.get('POPIT_INSTANCE')
-POPIT_HOSTNAME = config.get('POPIT_HOSTNAME')
-POPIT_API_VERSION = config.get('POPIT_API_VERSION')
-
 # AT&T api details
 ATT_OAUTH_URL = config.get('ATT_OAUTH_URL')
 ATT_CLIENT_ID = config.get('ATT_CLIENT_ID')
