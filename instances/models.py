@@ -5,6 +5,8 @@ from .fields import DNSLabelField
 
 class Instance(models.Model):
     label = DNSLabelField( db_index=True, unique=True )
+    title = models.CharField( max_length=100 )
+    description = models.TextField( blank=True )
 
     def __unicode__(self):
         return u'Instance %s' % self.label

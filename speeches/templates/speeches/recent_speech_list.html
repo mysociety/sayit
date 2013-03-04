@@ -6,10 +6,14 @@
 <link href="{% static "css/speeches.css" %}" rel="stylesheet">
 {% endblock %}
 
-{% block title %}Speeches{% endblock %}
+{% block title %}{{ request.instance.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ site_title }}</h1>
+<h1>{{ request.instance.title }}</h1>
+
+{{ request.instance.description|linebreaks }}
+
+<h2>Recent Speeches</h2>
 
 <ul class="unstyled">
 	{% for speech in recent_speeches %}

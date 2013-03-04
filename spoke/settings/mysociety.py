@@ -45,4 +45,3 @@ BROKER_URL = config.get('CELERY_BROKER_URL')
 SPEECH_SUMMARY_LENGTH = config.get('SPEECH_SUMMARY_LENGTH')
 # Default auto-transcription text
 DEFAULT_TRANSCRIPTION = config.get('DEFAULT_TRANSCRIPTION')
-SITE_TITLE = config.get('SITE_TITLE')

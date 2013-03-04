@@ -140,14 +140,6 @@ class RecentSpeechList(ListView):
     # Use a slightly different template
     template_name = "speeches/recent_speech_list.html"
 
-    # Add an extra variable to the template for the site info
-    # TODO: Get this from a config table in the db or something like that
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(RecentSpeechList, self).get_context_data(**kwargs)
-        context['site_title'] = settings.SITE_TITLE
-        return context
-
 class SpeakerView(DetailView):
     model = Speaker
 
