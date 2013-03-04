@@ -97,7 +97,7 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             'location': forms.TextInput(),
             'source_url': forms.TextInput(),
         }
-        exclude = ('celery_task_id')
+        exclude = ('celery_task_id', 'instance')
 
 class SpeechAPIForm(forms.ModelForm, CleanAudioMixin):
     # A form like SpeechForm, but simpler, that is intended for use
@@ -124,12 +124,12 @@ class SpeechAPIForm(forms.ModelForm, CleanAudioMixin):
 
     class Meta:
         model = Speech
-        exclude = ('celery_task_id')
+        exclude = ('celery_task_id', 'instance')
 
 class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
     # Form for uploading a recording
 
-    # Force timestampt to be a charfield so we can supply json to it
+    # Force timestamps to be a charfield so we can supply json to it
     timestamps = forms.CharField(required=False)
 
     def clean(self):
@@ -181,6 +181,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
 
     class Meta:
         model = Recording
+        exclude = 'instance'
 
 
 class MeetingForm(forms.ModelForm):
@@ -192,8 +193,10 @@ class MeetingForm(forms.ModelForm):
 
     class Meta:
         model = Meeting
+        exclude = 'instance'
 
 class DebateForm(forms.ModelForm):
     # Form for the debate model
     class Meta:
         model = Debate
+        exclude = 'instance'

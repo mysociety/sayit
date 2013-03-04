@@ -6,6 +6,8 @@ from django.conf import settings
 
 from django.db.models import Count
 
+from instances.forms import InstanceFormMixin
+
 from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm, DebateForm, RecordingAPIForm
 from speeches.models import Speech, Speaker, Meeting, Debate, Recording
 import speeches.utils
@@ -48,7 +50,7 @@ class SpeechAudioCreate(BaseFormView):
     def form_invalid(self, form):
         return self.render_to_response({ 'error': form.errors['audio'] })
 
-class SpeechCreate(CreateView):
+class SpeechCreate(InstanceFormMixin, CreateView):
     model = Speech
     form_class = SpeechForm
 
@@ -74,19 +76,15 @@ class SpeechCreate(CreateView):
         return initial
 
     def form_valid(self, form):
-        # Do things with audio here...
-
-        # First save the form - we can't let the super-class do it because
-        # we need to add some stuff to the object afterwards
-        self.object = form.save()
+        resp = super(SpeechCreate, self).form_valid(form)
 
         # Now set off a Celery task to transcribe the audio for this speech
         self.object.start_transcribing()
 
-        return HttpResponseRedirect(self.get_success_url())
+        return resp
 
 # Api version of SpeechCreate
-class SpeechAPICreate(CreateView, JSONResponseMixin):
+class SpeechAPICreate(InstanceFormMixin, CreateView, JSONResponseMixin):
     model = Speech
     form_class = SpeechAPIForm
 
@@ -96,11 +94,7 @@ class SpeechAPICreate(CreateView, JSONResponseMixin):
     # Do as SpeechCreate does, but return a Location header instead of
     # redirecting to success_url
     def form_valid(self, form):
-        # Do things with audio here...
-
-        # First save the form - we can't let the super-class do it because
-        # we need to add some stuff to the object afterwards
-        self.object = form.save()
+        super(SpeechAPICreate, self).form_valid(form)
 
         # Now set off a Celery task to transcribe the audio for this speech
         self.object.start_transcribing()
@@ -124,7 +118,7 @@ class SpeechAPICreate(CreateView, JSONResponseMixin):
         response.status_code = 400
         return response
 
-class SpeechUpdate(UpdateView):
+class SpeechUpdate(InstanceFormMixin, UpdateView):
     model = Speech
     form_class = SpeechForm
 
@@ -164,11 +158,11 @@ class SpeakerView(DetailView):
         context['speech_list'] = Speech.objects.filter(speaker=kwargs['object'].id)
         return context
 
-class MeetingCreate(CreateView):
+class MeetingCreate(InstanceFormMixin, CreateView):
     model = Meeting
     form_class = MeetingForm
 
-class MeetingUpdate(UpdateView):
+class MeetingUpdate(InstanceFormMixin, UpdateView):
     model = Meeting
     form_class = MeetingForm
 
@@ -187,7 +181,7 @@ class MeetingList(ListView):
     context_object_name = 'meeting_list'
     queryset = Meeting.objects.all().order_by("-created")
 
-class DebateCreate(CreateView):
+class DebateCreate(InstanceFormMixin, CreateView):
     model = Debate
     form_class = DebateForm
 
@@ -204,7 +198,7 @@ class DebateCreate(CreateView):
                 pass
         return initial
 
-class DebateUpdate(UpdateView):
+class DebateUpdate(InstanceFormMixin, UpdateView):
     model = Debate
     form_class = DebateForm
 
@@ -221,7 +215,7 @@ class DebateView(DetailView):
 class RecordingView(DetailView):
     model = Recording
 
-class RecordingAPICreate(CreateView, JSONResponseMixin):
+class RecordingAPICreate(InstanceFormMixin, CreateView, JSONResponseMixin):
     # View for RecordingAPIForm, to create a recording
     model = Recording
     form_class = RecordingAPIForm
@@ -232,8 +226,7 @@ class RecordingAPICreate(CreateView, JSONResponseMixin):
     def form_valid(self, form):
         logger.info("Processing recording")
 
-        # Create recording from the form data
-        self.object = form.save()
+        super(RecordingAPICreate, self).form_valid(form)
 
         # Create speeches from the recording
         speeches = Speech.objects.create_from_recording(self.object)
