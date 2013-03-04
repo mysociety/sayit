@@ -26,7 +26,8 @@ TIME_ZONE = config.get('TIME_ZONE')
 SECRET_KEY = config.get('DJANGO_SECRET_KEY')
 GOOGLE_ANALYTICS_ACCOUNT = config.get('GOOGLE_ANALYTICS_ACCOUNT')
 
-BASE_URL = config.get('BASE_URL')
+BASE_HOST = config.get('BASE_HOST')
+BASE_PORT = config.get('BASE_PORT')
 
 # AT&T api details
 ATT_OAUTH_URL = config.get('ATT_OAUTH_URL')
