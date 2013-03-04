@@ -223,13 +223,20 @@ class RecordingAPICreate(InstanceFormMixin, CreateView, JSONResponseMixin):
     # Limit this view to POST requests, we don't want to show an HTML form for it
     http_method_names = ['post']
 
+    success_url = 'DUMMY'
+
+    def get_form_kwargs(self):
+        kwargs = super(RecordingAPICreate, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
     def form_valid(self, form):
         logger.info("Processing recording")
 
         super(RecordingAPICreate, self).form_valid(form)
 
         # Create speeches from the recording
-        speeches = Speech.objects.create_from_recording(self.object)
+        speeches = Speech.objects.create_from_recording(self.object, self.request.instance)
 
         # Transcribe each speech
         for speech in speeches:

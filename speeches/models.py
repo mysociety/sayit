@@ -96,7 +96,7 @@ class Speaker(InstanceMixin, AuditedModel):
 # Speech manager
 class SpeechManager(models.Manager):
 
-    def create_from_recording(self, recording):
+    def create_from_recording(self, recording, instance):
         """Create one or more speeches from a recording. If there's no audio"""
         created_speeches = []
 
@@ -127,6 +127,7 @@ class SpeechManager(models.Manager):
                     end_time = next_timestamp.timestamp.time()
 
             created_speeches.append(self.create(
+                instance = instance,
                 audio=File(open(audio_file)),
                 speaker=speaker,
                 start_date=start_date,

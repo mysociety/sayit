@@ -132,6 +132,10 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
     # Force timestamps to be a charfield so we can supply json to it
     timestamps = forms.CharField(required=False)
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request')
+        return super(RecordingAPIForm, self).__init__(*args, **kwargs)
+
     def clean(self):
         cleaned_data = self.cleaned_data
         if 'audio_filename' in cleaned_data and cleaned_data['audio_filename']:
@@ -156,7 +160,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
             try:
                 if 'timestamp' in recording_timestamp:
                     # Note - we divide by 1000 because the time comes from javascript
-                    # and is in milliseconds, by this expects the time in seconds
+                    # and is in milliseconds, but this expects the time in seconds
                     supplied_time = int(recording_timestamp['timestamp']/1000)
                     # We also make it a UTC time!
                     timestamp = datetime.utcfromtimestamp(supplied_time).replace(tzinfo=pytz.utc)
@@ -164,7 +168,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
                     if 'speaker' in recording_timestamp:
                         speaker_url = recording_timestamp['speaker']
                         speaker = Speaker.objects.get_or_create_from_popit_url(speaker_url)
-                    timestamps.append(RecordingTimestamp.objects.create(speaker=speaker, timestamp=timestamp))
+                    timestamps.append(RecordingTimestamp.objects.create(speaker=speaker, timestamp=timestamp, instance=self.request.instance))
                 else:
                     # Timestamp is required
                     logger.error("No timestamp supplied in request: {0}".format(recording_timestamp))
