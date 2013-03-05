@@ -6,7 +6,7 @@ from django.conf import settings
 
 from django.db.models import Count
 
-from instances.forms import InstanceFormMixin
+from instances.views import InstanceFormMixin, InstanceViewMixin
 
 from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm, DebateForm, RecordingAPIForm
 from speeches.models import Speech, Speaker, Meeting, Debate, Recording
@@ -50,10 +50,17 @@ class SpeechAudioCreate(BaseFormView):
     def form_invalid(self, form):
         return self.render_to_response({ 'error': form.errors['audio'] })
 
-class SpeechCreate(InstanceFormMixin, CreateView):
+class SpeechMixin(InstanceFormMixin):
     model = Speech
     form_class = SpeechForm
 
+    def get_form(self, form_class):
+        form = super(SpeechMixin, self).get_form(form_class)
+        form.fields['debate'].queryset = Debate.objects.for_instance(self.request.instance)
+        form.fields['speaker'].queryset = Speaker.objects.for_instance(self.request.instance)
+        return form
+
+class SpeechCreate(SpeechMixin, CreateView):
     def get_initial(self):
         initial = super(SpeechCreate, self).get_initial()
         initial = initial.copy()
@@ -91,6 +98,11 @@ class SpeechAPICreate(InstanceFormMixin, CreateView, JSONResponseMixin):
     # Limit this view to POST requests, we don't want to show an HTML form for it
     http_method_names = ['post']
 
+    def get_form(self, form_class):
+        form = super(SpeechAPICreate, self).get_form(form_class)
+        form.fields['debate'].queryset = Debate.objects.for_instance(self.request.instance)
+        return form
+
     # Do as SpeechCreate does, but return a Location header instead of
     # redirecting to success_url
     def form_valid(self, form):
@@ -118,29 +130,31 @@ class SpeechAPICreate(InstanceFormMixin, CreateView, JSONResponseMixin):
         response.status_code = 400
         return response
 
-class SpeechUpdate(InstanceFormMixin, UpdateView):
-    model = Speech
-    form_class = SpeechForm
+class SpeechUpdate(SpeechMixin, UpdateView):
+    pass
 
-class SpeechView(DetailView):
+class SpeechView(InstanceViewMixin, DetailView):
     model = Speech
 
-class SpeechList(ListView):
+class SpeechList(InstanceViewMixin, ListView):
     model = Speech
     context_object_name = "speech_list"
+
     # The .annotate magic allows us to put things with a null start date
     # to the bottom of the list, otherwise they would naturally sort to the top
-    queryset = Speech.objects.all().annotate(null_start_date=Count('start_date')).order_by("speaker__name", "-null_start_date", "-start_date", "-start_time")
+    def get_queryset(self):
+        return super(SpeechList, self).get_queryset().annotate(null_start_date=Count('start_date')).order_by("speaker__name", "-null_start_date", "-start_date", "-start_time")
 
-class RecentSpeechList(ListView):
+class RecentSpeechList(InstanceViewMixin, ListView):
     model = Speech
     context_object_name = "recent_speeches"
-    # Get the first 50 speeches only
-    queryset = Speech.objects.all().order_by("-created")[:50]
     # Use a slightly different template
     template_name = "speeches/recent_speech_list.html"
 
-class SpeakerView(DetailView):
+    def get_queryset(self):
+        return super(RecentSpeechList, self).get_queryset().order_by("-created")[:50]
+
+class SpeakerView(InstanceViewMixin, DetailView):
     model = Speaker
 
     def get_context_data(self, **kwargs):
@@ -158,7 +172,7 @@ class MeetingUpdate(InstanceFormMixin, UpdateView):
     model = Meeting
     form_class = MeetingForm
 
-class MeetingView(DetailView):
+class MeetingView(InstanceViewMixin, DetailView):
     model = Meeting
 
     def get_context_data(self, **kwargs):
@@ -168,15 +182,23 @@ class MeetingView(DetailView):
         context['debate_list'] = Debate.objects.filter(meeting=kwargs['object'].id)
         return context
 
-class MeetingList(ListView):
+class MeetingList(InstanceViewMixin, ListView):
     model = Meeting
     context_object_name = 'meeting_list'
-    queryset = Meeting.objects.all().order_by("-created")
 
-class DebateCreate(InstanceFormMixin, CreateView):
+    def get_queryset(self):
+        return super(MeetingList, self).get_queryset().order_by("-created")
+
+class DebateMixin(InstanceFormMixin):
     model = Debate
     form_class = DebateForm
 
+    def get_form(self, form_class):
+        form = super(DebateMixin, self).get_form(form_class)
+        form.fields['meeting'].queryset = Meeting.objects.for_instance(self.request.instance)
+        return form
+
+class DebateCreate(DebateMixin, CreateView):
     def get_initial(self):
         initial = super(DebateCreate, self).get_initial()
         initial = initial.copy()
@@ -190,11 +212,10 @@ class DebateCreate(InstanceFormMixin, CreateView):
                 pass
         return initial
 
-class DebateUpdate(InstanceFormMixin, UpdateView):
-    model = Debate
-    form_class = DebateForm
+class DebateUpdate(DebateMixin, UpdateView):
+    pass
 
-class DebateView(DetailView):
+class DebateView(InstanceViewMixin, DetailView):
     model = Debate
 
     def get_context_data(self, **kwargs):
@@ -204,7 +225,7 @@ class DebateView(DetailView):
         context['speech_list'] = Speech.objects.filter(debate=kwargs['object'].id)
         return context
 
-class RecordingView(DetailView):
+class RecordingView(InstanceViewMixin, DetailView):
     model = Recording
 
 class RecordingAPICreate(InstanceFormMixin, CreateView, JSONResponseMixin):

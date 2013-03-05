@@ -5,3 +5,7 @@ class InstanceFormMixin(object):
             form.instance.instance = self.request.instance
         return super(InstanceFormMixin, self).form_valid(form)
 
+class InstanceViewMixin(object):
+    def get_queryset(self):
+        return self.model.objects.for_instance(self.request.instance)
+
