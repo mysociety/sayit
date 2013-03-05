@@ -10,6 +10,9 @@ class Migration(SchemaMigration):
     depends_on = (
         ("instances", "0001_initial"),
     )
+    needed_by = (
+        ("instances", "0002_auto__add_field_instance_description"),
+    )
 
     def forwards(self, orm):
         instance = orm['instances.Instance'](label='default')
