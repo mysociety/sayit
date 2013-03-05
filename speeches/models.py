@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.conf import settings
 from django.core.files import File
 
-from instances.models import InstanceMixin
+from instances.models import InstanceMixin, InstanceManager
 import speeches
 from speeches.utils import AudioHelper
 
@@ -58,7 +58,7 @@ class Debate(InstanceMixin, AuditedModel):
         return self.title
 
 # SpeakerManager
-class SpeakerManager(models.Manager):
+class SpeakerManager(InstanceManager):
 
     # Get or create a speaker from a popit_url
     # TODO - we need to do the create bit
@@ -94,7 +94,7 @@ class Speaker(InstanceMixin, AuditedModel):
         return (self.popit_url,)
 
 # Speech manager
-class SpeechManager(models.Manager):
+class SpeechManager(InstanceManager):
 
     def create_from_recording(self, recording, instance):
         """Create one or more speeches from a recording. If there's no audio"""

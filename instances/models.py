@@ -3,6 +3,10 @@ from django.conf import settings
 
 from .fields import DNSLabelField
 
+class InstanceManager(models.Manager):
+    def for_instance(self, instance):
+        return self.get_query_set().filter(instance=instance)
+
 class Instance(models.Model):
     label = DNSLabelField( db_index=True, unique=True )
     title = models.CharField( max_length=100 )
@@ -19,6 +23,8 @@ class Instance(models.Model):
 
 class InstanceMixin(models.Model):
     instance = models.ForeignKey(Instance)
+
+    objects = InstanceManager()
 
     class Meta:
         abstract = True
