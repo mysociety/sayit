@@ -81,9 +81,12 @@ class SpeakerManager(InstanceManager):
 
 # Speaker - someone who gave a speech
 class Speaker(InstanceMixin, AuditedModel):
-    popit_url = models.TextField(unique=True)
+    popit_url = models.TextField()
     name = models.TextField(db_index=True)
     objects = SpeakerManager()
+
+    class Meta:
+        unique_together = ('instance', 'popit_url')
 
     def __unicode__(self):
         out = "null"
