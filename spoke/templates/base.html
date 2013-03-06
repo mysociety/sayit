@@ -1,4 +1,4 @@
-{% load staticfiles %}{% load url from future %}<!DOCTYPE html>
+{% load staticfiles %}{% load url from future %}{% load i18n %}<!DOCTYPE html>
 <html class="no-js">
     <head>
         <title>{% block fulltitle %}{% block title %}{% endblock %} :: Spoke{% endblock %}</title>
@@ -31,11 +31,11 @@
     </head>
 
     <body>
-        {% if settings.DEBUG %}
-        <div class="alert alert-info">
-            This is a staging site &ndash; any data saved here <strong>may be deleted</strong>.
+      {% if settings.DEBUG %}
+        <div class="alert alert-error">
+            {% trans "This is a staging site &ndash; any data saved here <strong>may be deleted</strong>." %}
         </div>
-        {% endif %}
+      {% endif %}
 
         <div class="container-fluid">
             <div class="row-fluid">
@@ -51,6 +51,10 @@
                         <li{% if request.path == '/meetings' %} class="active"{% endif %}><a href="{% url 'meeting-list' %}">Meetings</a>
                         <li{% if request.path == '/meeting/add' %} class="active"{% endif %}><a href="{% url 'meeting-add' %}">Add meeting</a>
                         <li{% if request.path == '/debate/add' %} class="active"{% endif %}><a href="{% url 'debate-add' %}">Add debate</a>
+                      {% endif %}
+                      {% if request.user.is_authenticated %}
+                        <li class="nav-header">User</li>
+                        <li><a href="{% url 'django.contrib.auth.views.logout' %}?next=/">{% trans "Log out" %}</a></li>
                       {% endif %}
                     </ul>
                     {% endblock %}
