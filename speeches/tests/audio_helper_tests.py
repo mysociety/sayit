@@ -47,9 +47,12 @@ class AudioHelperTests(InstanceTestCase):
         af2 = audioread.audio_open(filename_b)
         message = 'The audio files %s (%.3fs) and %s (%.3fs) were of different lengths'
         message = message % (files[0], af1.duration, files[1], af2.duration)
+        # Compare the length in seconds to 1 decimal place - this is
+        # intended to be imprecise enough to ignore any differences in
+        # frame padding in the MP3:
         self.assertAlmostEqual(af1.duration,
                                af2.duration,
-                               2, # to 2 decimal places (of seconds)
+                               1,
                                message)
 
     def convert(self, known_input, method, expected_output):
