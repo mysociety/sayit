@@ -141,6 +141,17 @@ class SpeechManager(InstanceManager):
         return created_speeches
 
 
+class Section(MPTTModel, AuditedModel):
+    title = models.CharField(max_length=255, blank=False, null=False)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+
+    def __unicode__(self):
+        return u"%s (depth: %d)" % (self.title, self.level)
+
+    class MPTTMeta:
+        order_insertion_by = ['title']
+
+
 # Speech that a speaker gave
 class Speech(InstanceMixin, AuditedModel):
     # Custom manager
@@ -259,13 +270,3 @@ class RecordingTimestamp(InstanceMixin, AuditedModel):
 class Recording(InstanceMixin, AuditedModel):
     audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=False)
     timestamps = models.ManyToManyField(RecordingTimestamp, blank=True, null=True)
-
-class Section(MPTTModel, AuditedModel):
-    title = models.CharField(max_length=255, blank=False, null=False)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
-
-    def __unicode__(self):
-        return u"%s (depth: %d)" % (self.title, self.level)
-
-    class MPTTMeta:
-        order_insertion_by = ['title']
