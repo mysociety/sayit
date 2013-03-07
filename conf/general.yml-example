@@ -19,6 +19,8 @@ STAGING: '1'
 TIME_ZONE: 'Europe/London'
 DJANGO_SECRET_KEY: ''
 
+# For local development, a good choice here is to set BASE_HOST
+# to '127.0.0.1.xip.io' and BASE_PORT to 8000
 BASE_HOST: ''
 BASE_PORT: ''
 
