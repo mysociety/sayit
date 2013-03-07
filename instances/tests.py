@@ -2,6 +2,7 @@ from django.test import TestCase, LiveServerTestCase
 from django.test.client import Client
 from django.test.utils import override_settings
 from django.core.validators import ValidationError
+from django.contrib.auth.models import User
 
 from .models import Instance
 
@@ -22,6 +23,9 @@ class InstanceTestCase(TestCase):
 
     def setUp(self):
         self.instance = Instance.objects.create(label='testing')
+        user = User.objects.create_user(username='admin', email='admin@example.org', password='admin')
+        user.instances.add(self.instance)
+        self.client.login(username='admin', password='admin')
 
     def assertRedirects(self, *args, **kwargs):
         kwargs['host'] = FAKE_URL
@@ -30,6 +34,15 @@ class InstanceTestCase(TestCase):
 class InstanceLiveServerTestCase(LiveServerTestCase):
     def setUp(self):
         self.instance = Instance.objects.create(label='testing')
+        user = User.objects.create_user(username='admin', email='admin@example.org', password='admin')
+        user.instances.add(self.instance)
+
+        self.selenium.get('%s%s' % (self.live_server_url, '/accounts/login/?next=/'))
+        username_input = self.selenium.find_element_by_name("username")
+        username_input.send_keys('admin')
+        password_input = self.selenium.find_element_by_name("password")
+        password_input.send_keys('admin')
+        self.selenium.find_element_by_xpath('//input[@value="Log in"]').click()
 
 # ---
 
