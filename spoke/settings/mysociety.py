@@ -4,7 +4,11 @@ import sys
 import yaml
 from .paths import *
 
-config = yaml.load(open(os.path.join(PROJECT_ROOT, 'conf', 'general.yml')))
+from django.core.exceptions import ImproperlyConfigured
+
+config_file = os.path.join(PROJECT_ROOT, 'conf', 'general.yml')
+with open(config_file) as f:
+    config = yaml.load(f)
 
 DEBUG = bool(int(config.get('STAGING')))
 TEMPLATE_DEBUG = DEBUG
