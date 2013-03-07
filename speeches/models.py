@@ -57,21 +57,11 @@ class Debate(InstanceMixin, AuditedModel):
     def __unicode__(self):
         return self.title
 
-# SpeakerManager
 class SpeakerManager(InstanceManager):
-
-    # Get or create a speaker from a popit_url
-    # TODO - we need to do the create bit
     def get_or_create_from_popit_url(self, popit_url):
         speaker = None
         if popit_url:
-            try:
-                speaker = self.get(popit_url=popit_url)
-            except Speaker.DoesNotExist:
-                # TODO - lookup the speaker from the popit url
-                # For now we will trust the sender, and do it right now...
-                logger.error('Speaker: {0} does not exist in db, setting to None'.format(popit_url))
-                speaker = None
+            speaker, created = self.get_or_create(popit_url=popit_url, defaults={ 'name': 'Unknown' })
         return speaker
 
 # Speaker - someone who gave a speech

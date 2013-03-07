@@ -244,7 +244,7 @@ class AudioHelper(object):
         return out_filename
 
     def split_recording(self, recording):
-        """Make a series of .mp3 files from one recording, based on its' timestamps"""
+        """Make a series of .mp3 files from one recording, based on its timestamps"""
 
         # List of files we'll return
         files = []
