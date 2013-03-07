@@ -69,7 +69,7 @@ class SpeechAPITests(InstanceTestCase):
         # Check response JSON
         response_content = simplejson.loads(resp.content)
         self.assertEquals(response_content['fields']['text'], 'This is a Steve speech')
-        self.assertEquals(response_content['fields']['speaker'], ['http://popit.mysociety.org/api/v1/person/abcd'])
+        self.assertEquals(response_content['fields']['speaker'], 1)
 
         # Check in db
         speech = Speech.objects.get(speaker=speaker.id)

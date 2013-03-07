@@ -74,27 +74,26 @@ class SpeakerManager(InstanceManager):
                 speaker = None
         return speaker
 
-    # Define get_by_natural_key so that we can refer to speakers by their
-    # popit_url instead of our local primary key id
-    def get_by_natural_key(self, popit_url):
-        return self.get(popit_url=popit_url)
-
 # Speaker - someone who gave a speech
 class Speaker(InstanceMixin, AuditedModel):
-    popit_url = models.TextField()
+    popit_url = models.TextField(blank=True)
     name = models.TextField(db_index=True)
     objects = SpeakerManager()
 
-    class Meta:
-        unique_together = ('instance', 'popit_url')
-
     def __unicode__(self):
-        out = "null"
-        if self.name : out = '%s' % self.name
-        return out
+        if self.name:
+            return self.name
+        return "[no name]"
 
-    def natural_key(self):
-        return (self.popit_url,)
+    # http://stackoverflow.com/a/5772272/669631
+    def save(self, *args, **kwargs):
+        if self.popit_url != '':
+            conflicting_instance = Speaker.objects.filter(instance=self.instance, popit_url=self.popit_url)
+            if self.id:
+                conflicting_instance = conflicting_instance.exclude(pk=self.id)
+            if conflicting_instance.exists():
+                raise Exception('Speaker with this instance and popit id already exists.')
+        super(Speaker, self).save(*args, **kwargs)
 
 # Speech manager
 class SpeechManager(InstanceManager):

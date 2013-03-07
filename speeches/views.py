@@ -114,7 +114,7 @@ class SpeechAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
         # Serialise the object - annoyingly the second param must be an array or a QuerySet
         serialisable_fields = ('audio', 'title', 'text', 'created', 'modified', 'start',
             'end', 'source_url', 'speaker', 'location', 'event')
-        serialised = serializers.serialize("json", [self.object], fields=serialisable_fields, use_natural_keys=True)
+        serialised = serializers.serialize("json", [self.object], fields=serialisable_fields)
         # Now we need to massage this a bit because it's an array
         serialised = serialised[1:-1]
 
