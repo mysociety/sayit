@@ -13,6 +13,7 @@ class Instance(models.Model):
     title = models.CharField( max_length=100 )
     description = models.TextField( blank=True )
     users = models.ManyToManyField(User, related_name='instances', blank=True)
+    created_by = models.ForeignKey(User, related_name='created_instances', null=True, blank=True)
 
     def __unicode__(self):
         return u'Instance %s' % self.label

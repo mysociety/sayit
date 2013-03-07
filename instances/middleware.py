@@ -30,7 +30,6 @@ class MultiInstanceMiddleware:
             return HttpResponseRedirect(url)
 
     def process_response(self, request, response):
-        #if getattr(request, "urlconf", None):
         patch_vary_headers(response, ('Host',))
         return response
 
