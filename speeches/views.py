@@ -22,23 +22,21 @@ import logging
 logger = logging.getLogger(__name__)
 
 class JSONResponseMixin(object):
-    # Mixin for returning HTTPResponses with content type as JSON
-
-    # render_to_json_response expects a context object which is
-    # JSON, so use a serialiser or json.dumps({some_object})
-    def render_to_json_response(self, context, **kwargs):
-        kwargs['content_type'] = 'application/json'
-        return HttpResponse(context, **kwargs)
-
-# Base as don't want template mixin. I find CBVs confusing :-/
-class SpeechAudioCreate(BaseFormView):
-    form_class = SpeechAudioForm
+    """Mixin for returning HTTPResponse of JSON data"""
 
     def render_to_response(self, context, **kwargs):
-        form = context.pop('form', None) # Don't care about the form
-        data = json.dumps(context)
         kwargs['content_type'] = 'application/json'
-        return HttpResponse(data, **kwargs)
+        if not isinstance(context, basestring):
+            context = json.dumps(context)
+        location = kwargs.pop('location', None)
+        response = HttpResponse(context, **kwargs)
+        if location:
+            response['Location'] = location
+        return response
+
+class SpeechAudioCreate(JSONResponseMixin, BaseFormView):
+    form_class = SpeechAudioForm
+    http_method_names = ['post']
 
     def form_valid(self, form):
         # The cleaned_data contains the TemporaryUploadedFile (File/UploadedFile subclass).
@@ -91,7 +89,7 @@ class SpeechCreate(SpeechMixin, CreateView):
         return resp
 
 # Api version of SpeechCreate
-class SpeechAPICreate(InstanceFormMixin, CreateView, JSONResponseMixin):
+class SpeechAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
     model = Speech
     form_class = SpeechAPIForm
 
@@ -120,15 +118,10 @@ class SpeechAPICreate(InstanceFormMixin, CreateView, JSONResponseMixin):
         # Now we need to massage this a bit because it's an array
         serialised = serialised[1:-1]
 
-        response = self.render_to_json_response(serialised)
-        response.status_code = 201
-        response['Location'] = reverse("speech-view", args=[self.object.id])
-        return response
+        return self.render_to_response(serialised, status=201, location=reverse("speech-view", args=[self.object.id]))
 
     def form_invalid(self, form):
-        response = self.render_to_json_response(json.dumps({ 'errors': json.dumps(form.errors) }))
-        response.status_code = 400
-        return response
+        return self.render_to_response({ 'errors': json.dumps(form.errors) }, status=400)
 
 class SpeechUpdate(SpeechMixin, UpdateView):
     pass
@@ -228,7 +221,7 @@ class DebateView(InstanceViewMixin, DetailView):
 class RecordingView(InstanceViewMixin, DetailView):
     model = Recording
 
-class RecordingAPICreate(InstanceFormMixin, CreateView, JSONResponseMixin):
+class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
     # View for RecordingAPIForm, to create a recording
     model = Recording
     form_class = RecordingAPIForm
@@ -259,12 +252,7 @@ class RecordingAPICreate(InstanceFormMixin, CreateView, JSONResponseMixin):
         serialisable_fields = ('audio', 'timestamps')
         serialised = serializers.serialize("json", [self.object], fields=serialisable_fields)
         serialised = serialised[1:-1]
-        response = self.render_to_json_response(serialised)
-        response.status_code = 201
-        response['Location'] = reverse("recording-view", args=[self.object.id])
-        return response
+        return self.render_to_response(serialised, status=201, location=reverse("recording-view", args=[self.object.id]))
 
     def form_invalid(self, form):
-        response = self.render_to_json_response(json.dumps({ 'errors': json.dumps(form.errors) }))
-        response.status_code = 400
-        return response
+        return self.render_to_response({ 'errors': json.dumps(form.errors) }, status=400)
