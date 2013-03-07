@@ -5,3 +5,4 @@
 /conf/httpd.conf.deployed
 .DS_Store
 chromedriver.log
+*~
