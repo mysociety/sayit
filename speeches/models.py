@@ -167,6 +167,9 @@ class Speech(InstanceMixin, AuditedModel):
 
     # What the speech is part of.
     debate = models.ForeignKey(Debate, blank=True, null=True)
+    # The section that this speech is part of - this is replacing
+    # debate, which will be removed after migration.
+    section = models.ForeignKey(Section, blank=True, null=True, help_text='The section that this speech is contained in')
     title = models.TextField(blank=True, help_text='The title of the speech, if relevant')
     # The below two fields could be on the debate if we made it a required field of a speech
     event = models.TextField(db_index=True, blank=True, help_text='Was the speech at a particular event?')
