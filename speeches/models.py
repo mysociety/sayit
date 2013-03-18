@@ -141,7 +141,7 @@ class SpeechManager(InstanceManager):
         return created_speeches
 
 
-class Section(MPTTModel, AuditedModel):
+class Section(MPTTModel, AuditedModel, InstanceMixin):
     title = models.CharField(max_length=255, blank=False, null=False)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
 
