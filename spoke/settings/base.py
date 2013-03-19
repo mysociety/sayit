@@ -145,6 +145,7 @@ INSTALLED_APPS = (
     'speeches',
     'django_nose',
     'tastypie',
+    'login_token',
 )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

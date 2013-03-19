@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+{{ block.super }}
+        <link href="{% static "css/login-tokens.css" %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block content %}
+<h1>Your Mobile Login Tokens</h1>
+
+  {% if logged_in %}
+
+    {% for instance, token in instances_and_tokens %}
+
+      <h3>{{ instance.title }}</h3>
+      <h4>{{ instance.label }}.{{ BASE_HOST }}</h4>
+
+      <p>You mobile login token for
+        <a href="{{ instance.get_absolute_url }}">{{ instance.title }}</a> is:</p>
+
+      <div class="login-token-code">{{ token }}</div>
+
+    {% endfor %}
+
+  {% else %}
+
+    <p>You're not logged in, so there are no login tokens for you
+    to use on your mobile device.</p>
+
+  {% endif %}
+
+{% endblock %}

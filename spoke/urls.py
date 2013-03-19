@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
 
+    url(r'^accounts/tokens/?$', 'login_token.views.login_tokens_for_user'),
 )
 
 urlpatterns += staticfiles_urlpatterns()
