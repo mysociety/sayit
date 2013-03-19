@@ -142,7 +142,10 @@ INSTALLED_APPS = (
     'autocomplete_light',
     'instances',
     'speeches',
+    'django_nose',
 )
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # Log WARN and above to stderr; ERROR and above by email when DEBUG is False.
 LOGGING = {
