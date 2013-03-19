@@ -68,6 +68,7 @@ class Migration(SchemaMigration):
         # Deleting field 'Recording.instance'
         db.delete_column('speeches_recording', 'instance_id')
 
+        orm['instances.Instance'].objects.get(label='default').delete()
 
     models = {
         'instances.instance': {
