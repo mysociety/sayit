@@ -8,6 +8,9 @@ from tastypie.authorization import ReadOnlyAuthorization
 from speeches.models import Speech, Speaker
 
 class SpeakerResource(ModelResource):
+    def get_object_list(self, request):
+        return super(SpeakerResource, self).get_object_list(request).filter(instance=request.instance)
+
     class Meta:
         queryset = Speaker.objects.all()
         resource_name = 'speaker'
@@ -18,6 +21,9 @@ class SpeakerResource(ModelResource):
 
 class SpeechResource(ModelResource):
     speaker = fields.ForeignKey(SpeakerResource, 'speaker', null=True)
+
+    def get_object_list(self, request):
+        return super(SpeechResource, self).get_object_list(request).filter(instance=request.instance)
 
     class Meta:
         queryset = Speech.objects.all()
