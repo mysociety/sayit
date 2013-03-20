@@ -17,9 +17,8 @@ def login_tokens_for_user(request):
         else:
             instances = list(Instance.objects.all().order_by('label'))
 
-        # FIXME: get login tokens from the LoginToken table
-        instances_and_tokens = [(i, " ".join(LoginToken.generate_token()))
-                                for i in instances]
+        instances_and_tokens = [(lt.instance, lt.token)
+                                for lt in LoginToken.objects.filter(instance__in=instances)]
 
     return render(request,
                   'login_token/tokens.html',

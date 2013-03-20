@@ -3,8 +3,27 @@ import re
 
 from django.contrib.auth.models import User
 from django.db import models
-
 from instances.models import InstanceMixin
+
+
+NUMBER_OF_TOKEN_WORDS = 3
+
+def generate_token():
+    def useful_word(w):
+        # FIXME: should try to exclude offensive words
+        if len(w) < 4:
+            return False
+        if re.search('^[a-z]*$', w):
+            return True
+    words = []
+    with open('/usr/share/dict/words') as fp:
+        for line in fp:
+            word = line.strip()
+            if useful_word(word):
+                words.append(word)
+    return " ".join(random.choice(words)
+                    for i in range(NUMBER_OF_TOKEN_WORDS))
+
 
 class LoginToken(InstanceMixin, models.Model):
     '''Represents a readable login token for mobile devices
@@ -16,22 +35,3 @@ class LoginToken(InstanceMixin, models.Model):
 
     user = models.ForeignKey(User)
     token = models.TextField(max_length=255)
-
-    NUMBER_OF_TOKEN_WORDS = 3
-
-    @classmethod
-    def generate_token(cls):
-        def useful_word(w):
-            # FIXME: should try to exclude offensive words
-            if len(w) < 4:
-                return False
-            if re.search('^[a-z]*$', w):
-                return True
-        words = []
-        with open('/usr/share/dict/words') as fp:
-            for line in fp:
-                word = line.strip()
-                if useful_word(word):
-                    words.append(word)
-        return [random.choice(words)
-                for i in range(cls.NUMBER_OF_TOKEN_WORDS)]
