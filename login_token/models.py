@@ -34,4 +34,5 @@ class LoginToken(InstanceMixin, models.Model):
     user.'''
 
     user = models.ForeignKey(User)
-    token = models.TextField(max_length=255)
+    token = models.TextField(max_length=255,
+                             default=generate_token)
