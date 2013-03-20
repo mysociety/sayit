@@ -3,14 +3,15 @@ import logging
 from datetime import datetime
 import pytz
 
-import autocomplete_light
+from django_select2.widgets import Select2Widget, Select2MultipleWidget
 
 from django import forms
 from django.forms.forms import BoundField
 from django.core.files.uploadedfile import UploadedFile
 from django.utils import simplejson
 
-from speeches.models import Speech, Speaker, Meeting, Debate, Recording, RecordingTimestamp
+# from speeches.fields import TagField
+from speeches.models import Speech, Speaker, Meeting, Debate, Recording, RecordingTimestamp, Tag
 from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
 from speeches.utils import GroupedModelChoiceField
 
@@ -47,7 +48,8 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
     speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(),
-            widget=autocomplete_light.ChoiceWidget('SpeakerAutocomplete'),
+            empty_label = '',
+            widget = Select2Widget(select2_options={ 'placeholder':'Choose a speaker', 'width': 'resolve' }),
             required=False)
     debate = GroupedModelChoiceField(queryset=Debate.objects.all().order_by('meeting'),
             group_by_field='meeting',
@@ -63,6 +65,10 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             required=False)
     end_time = forms.TimeField(input_formats=['%H:%M', '%H:%M:%S'],
             widget=BootstrapTimeWidget,
+            required=False)
+    #tags = TagField()
+    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
+            widget = Select2MultipleWidget(select2_options={ 'placeholder':'Choose tags', 'width': 'resolve' }),
             required=False)
 
     def clean(self):

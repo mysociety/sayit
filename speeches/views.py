@@ -9,7 +9,7 @@ from django.db.models import Count
 from instances.views import InstanceFormMixin, InstanceViewMixin
 
 from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm, DebateForm, RecordingAPIForm
-from speeches.models import Speech, Speaker, Meeting, Debate, Recording
+from speeches.models import Speech, Speaker, Meeting, Debate, Recording, Tag
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
 
@@ -56,6 +56,7 @@ class SpeechMixin(InstanceFormMixin):
         form = super(SpeechMixin, self).get_form(form_class)
         form.fields['debate'].queryset = Debate.objects.for_instance(self.request.instance)
         form.fields['speaker'].queryset = Speaker.objects.for_instance(self.request.instance)
+        form.fields['tags'].queryset = Tag.objects.for_instance(self.request.instance)
         return form
 
 class SpeechCreate(SpeechMixin, CreateView):

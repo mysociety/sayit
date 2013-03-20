@@ -139,7 +139,7 @@ INSTALLED_APPS = (
     'kombu.transport.django',
     'south',
     'pagination',
-    'autocomplete_light',
+    'django_select2',
     'instances',
     'speeches',
     'django_nose',

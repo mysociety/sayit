@@ -10,7 +10,7 @@ psycopg2
 Django>=1.4,<1.5
 South
 django-pagination
-django-autocomplete-light==1.1.4
+django_select2
 
 # Celery
 celery
