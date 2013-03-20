@@ -38,7 +38,8 @@ class LoginToken(InstanceMixin, models.Model):
 
     user = models.ForeignKey(User)
     token = models.TextField(max_length=255,
-                             default=generate_token)
+                             default=generate_token,
+                             unique=True)
 
     def regenerate_token(self):
         token = generate_token()
