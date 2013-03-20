@@ -85,6 +85,14 @@ class Speaker(InstanceMixin, AuditedModel):
                 raise Exception('Speaker with this instance and popit id already exists.')
         super(Speaker, self).save(*args, **kwargs)
 
+
+class Tag(InstanceMixin, AuditedModel):
+    name = models.CharField(unique=True, max_length=100)
+
+    def __unicode__(self):
+        return self.name
+
+
 # Speech manager
 class SpeechManager(InstanceManager):
 
@@ -154,12 +162,11 @@ class Speech(InstanceMixin, AuditedModel):
     # Metadata on the speech
     # type = models.ChoiceField() # speech, scene, narrative, summary, etc.
     speaker = models.ForeignKey(Speaker, blank=True, null=True, help_text='Who gave this speech?', on_delete=models.SET_NULL)
-
     start_date = models.DateField(blank=True, null=True, help_text='What date did the speech start?')
     start_time = models.TimeField(blank=True, null=True, help_text='What time did the speech start?')
-
     end_date = models.DateField(blank=True, null=True, help_text='What date did the speech end?')
     end_time = models.TimeField(blank=True, null=True, help_text='What time did the speech end?')
+    tags = models.ManyToManyField(Tag, blank=True, null=True)
 
     # What if source material has multiple speeches, same timestamp - need a way of ordering them?
     # pos = models.IntegerField()
