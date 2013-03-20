@@ -2,9 +2,18 @@ import re
 
 from .models import LoginToken, generate_token, NUMBER_OF_TOKEN_WORDS
 
+from instances.models import Instance
+from django.contrib.auth.models import User
+
 from django.test import TestCase
 
 class LoginTokenTests(TestCase):
+
+    def setUp(self):
+        self.instance_a = Instance.objects.create(label='example-a')
+        self.instance_b = Instance.objects.create(label='example-b')
+        self.user_a = User.objects.create_user(username='alice', email='alice@example.org', password='abc123')
+        self.user_b = User.objects.create_user(username='bob', email='bob@example.org', password='123abc')
 
     def test_login_token_creation(self):
 
@@ -22,3 +31,46 @@ class LoginTokenTests(TestCase):
     def test_login_token_views(self):
         # FIXME: complete
         pass
+
+    def test_instance_users_changes(self):
+
+        self.assertTrue(0 == len(LoginToken.objects.all()),
+                        "There should be no LoginToken objects to start with")
+
+        self.instance_a.users.add(self.user_a)
+        self.instance_a.users.add(self.user_b)
+
+        login_tokens = LoginToken.objects.all()
+
+        self.assertTrue(2 == len(login_tokens),
+                        "There should two LoginToken objects after adding two users to an instance")
+
+        self.assertTrue(1 == len(LoginToken.objects.filter(user=self.user_a,
+                                                           instance=self.instance_a)),
+                        "The user alice wasn't found in instance example-a")
+
+        self.assertTrue(1 == len(LoginToken.objects.filter(user=self.user_b,
+                                                           instance=self.instance_a)),
+                        "The user bob wasn't found in instance example-b")
+
+        self.instance_b.users.add(self.user_a)
+
+        self.assertTrue(3 == len(LoginToken.objects.all()),
+                        "There should two LoginToken objects after adding two users to an instance")
+
+        self.instance_a.users.remove(self.user_a)
+
+        login_tokens = LoginToken.objects.all()
+
+        self.assertTrue(2 == len(login_tokens),
+                        "There should only be two LoginToken objects left after removing one")
+
+        self.instance_a.users.add(self.user_a)
+
+        # We get a different signal when doing clear() instead of
+        # remove():
+
+        self.instance_b.users.clear()
+
+        self.assertTrue(0 == len(LoginToken.objects.filter(instance=self.instance_b)),
+                        "After clearing users from example-a, there should be no LoginToken objects left")

@@ -50,6 +50,12 @@ class LoginToken(InstanceMixin, models.Model):
                               self.user.username,
                               self.instance.label)
 
+# FIXME: The big problem with this scheme is when you remove a user
+# from an instance in the admin interface, there are actually two
+# signals sent: first a clear, and then an add with the primary keys
+# of all but the user you're removing.  This means that we remove all
+# the LoginToken objects and then re-add all but one of them, and the
+# LoginToken objects will have different tokens.
 
 @transaction.commit_on_success
 def handle_instance_users_change(*args, **kwargs):
