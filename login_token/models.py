@@ -40,3 +40,9 @@ class LoginToken(InstanceMixin, models.Model):
     def regenerate_token(self):
         token = generate_token()
         token.save()
+
+    def __repr__(self):
+        repr_format = '<LoginToken: "%s" user="%s" instance="%s">'
+        return repr_format % (self.token,
+                              self.user.username,
+                              self.instance.label)
