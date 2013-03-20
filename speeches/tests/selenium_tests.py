@@ -125,13 +125,14 @@ class SeleniumTests(InstanceLiveServerTestCase):
         # Type a name in and select it
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
         self.selenium.find_element_by_id("text-link").click()
-        speaker_input = self.selenium.find_element_by_name("speaker-autocomplete")
-        speaker_input.send_keys("Na")
-        self.selenium.find_element_by_xpath('//div[@id="id-id_speaker_text"]/descendant::span').click()
+        speaker_input = self.selenium.find_element_by_xpath("//div[@id='s2id_id_speaker']/child::a").click()
+        self.selenium.find_element_by_xpath('//div[@class="select2-result-label"]').click()
         # Check it is selected
-        selection_element = self.selenium.find_element_by_xpath('//span[@id="id_speaker-deck"]/child::span')
+        selection_element = self.selenium.find_element_by_xpath('//div[@id="s2id_id_speaker"]/descendant::span')
         self.assertIn('Name', selection_element.text)
+        speaker_input = self.selenium.find_element_by_id("id_speaker")
+        self.assertTrue(speaker_input.get_attribute('value') == "1")
         # Check we can unselect it
-        self.selenium.find_element_by_xpath('//span[@id="id_speaker-deck"]/descendant::span[@class="remove div"]').click()
-        speaker_input = self.selenium.find_element_by_name("speaker-autocomplete")
+        self.selenium.find_element_by_xpath('//div[@id="s2id_id_speaker"]/descendant::abbr[@class="select2-search-choice-close"]').click()
+        speaker_input = self.selenium.find_element_by_id("id_speaker")
         self.assertTrue(speaker_input.get_attribute('value') == "")
