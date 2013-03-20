@@ -79,7 +79,7 @@ def handle_instance_users_change(*args, **kwargs):
     if kwargs['reverse']:
         # Then the modification came through user.instances:
         user = kwargs['instance']
-        if action == 'post_clear':
+        if action == 'post_clear' or action == 'post_remove':
             iids_in_user_instances = set(i.id for i in user.instances.all())
             iids_in_login_token = set(lt.instance.id for lt in LoginToken.objects.filter(user=user))
             iids_to_remove = iids_in_login_token - iids_in_user_instances
@@ -92,7 +92,7 @@ def handle_instance_users_change(*args, **kwargs):
     else:
         # Then the modification came through instance.users
         instance = kwargs['instance']
-        if action == 'post_clear':
+        if action == 'post_clear' or action == 'post_remove':
             uids_in_instance_users = set(u.id for u in instance.users.all())
             uids_in_login_token = set(lt.user.id for lt in LoginToken.objects.filter(instance=instance))
             uids_to_remove = uids_in_login_token - uids_in_instance_users
