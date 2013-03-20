@@ -8,7 +8,7 @@ from django.db.models import Count
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
 
-from speeches.forms import SpeechForm, SpeechAudioForm, SpeechAPIForm, MeetingForm, DebateForm, RecordingAPIForm
+from speeches.forms import SpeechForm, SpeechAudioForm, MeetingForm, DebateForm, RecordingAPIForm
 from speeches.models import Speech, Speaker, Meeting, Debate, Recording, Tag
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
@@ -88,41 +88,6 @@ class SpeechCreate(SpeechMixin, CreateView):
         self.object.start_transcribing()
 
         return resp
-
-# Api version of SpeechCreate
-class SpeechAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
-    model = Speech
-    form_class = SpeechAPIForm
-
-    # Limit this view to POST requests, we don't want to show an HTML form for it
-    http_method_names = ['post']
-
-    def get_form(self, form_class):
-        form = super(SpeechAPICreate, self).get_form(form_class)
-        form.fields['debate'].queryset = Debate.objects.for_instance(self.request.instance)
-        return form
-
-    # Do as SpeechCreate does, but return a Location header instead of
-    # redirecting to success_url
-    def form_valid(self, form):
-        super(SpeechAPICreate, self).form_valid(form)
-
-        # Now set off a Celery task to transcribe the audio for this speech
-        self.object.start_transcribing()
-
-        # Return a 201
-
-        # Serialise the object - annoyingly the second param must be an array or a QuerySet
-        serialisable_fields = ('audio', 'title', 'text', 'created', 'modified', 'start',
-            'end', 'source_url', 'speaker', 'location', 'event')
-        serialised = serializers.serialize("json", [self.object], fields=serialisable_fields)
-        # Now we need to massage this a bit because it's an array
-        serialised = serialised[1:-1]
-
-        return self.render_to_response(serialised, status=201, location=reverse("speech-view", args=[self.object.id]))
-
-    def form_invalid(self, form):
-        return self.render_to_response({ 'errors': json.dumps(form.errors) }, status=400)
 
 class SpeechUpdate(SpeechMixin, UpdateView):
     pass
