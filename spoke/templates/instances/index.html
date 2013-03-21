@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Welcome to SayIt. Or spoke.</h1>
+
+<p>A repository of speeches, written questions, dialogues, what have you. We're working on it.</p>
+
+<ul>
+  {% for i in instances %}
+    <li><a href="{{ i.get_absolute_url }}">{{ i }}</a></li>
+  {% empty %}
+    <li>No instances present.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

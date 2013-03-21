@@ -18,7 +18,7 @@ class MultiInstanceMiddleware:
             matches = re.match(pattern, host)
         if not matches:
             request.instance = None
-            request.urlconf = 'instances.urls'
+            request.urlconf = getattr(settings, 'ROOT_URLCONF_HOST', 'instances.urls')
             return
 
         try:

@@ -109,6 +109,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'spoke.urls'
+ROOT_URLCONF_HOST = 'spoke.urls-host'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'spoke.wsgi.application'
