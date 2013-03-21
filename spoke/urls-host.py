@@ -29,6 +29,7 @@ urlpatterns = patterns('',
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
     (r'^accounts/tokens/?$', 'login_token.views.login_tokens_for_user'),
+    (r'^accounts/mobile-login', 'login_token.views.check_login_token'),
 
     (r'^api/', include(v01_api.urls)),
 
