@@ -18,9 +18,13 @@ def login_tokens_for_user(request):
     if logged_in:
         if request.instance:
             token, created = LoginToken.objects.get_or_create(instance=request.instance, user=request.user)
+            if request.method == 'POST':
+                token.regenerate_token()
             tokens = [ token ]
         else:
-            tokens = LoginToken.objects.filter(user=request.user)
+            tokens = LoginToken.objects.filter(user=request.user).order_by('instance__label')
+            if request.method == 'POST':
+                tokens.get(instance=request.POST['instance']).regenerate_token()
 
         instances_and_tokens = [(lt.instance, lt.token)
                                 for lt in tokens]

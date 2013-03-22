@@ -17,10 +17,14 @@
       <h3>{{ instance.title }}</h3>
       <h4>{{ instance.label }}.{{ BASE_HOST }}</h4>
 
-      <p>You mobile login token for
+      <form method="post">{% csrf_token %}
+        <input type="hidden" name="instance" value="{{ instance.id }}">
+        <p>Your current mobile login token for
         <a href="{{ instance.get_absolute_url }}">{{ instance.title }}</a> is:</p>
 
-      <div class="login-token-code">{{ token }}</div>
+        <div class="login-token-code">{{ token }}</div>
+        <input class="btn btn-mini" type="submit" value="change">
+      </form>
 
     {% endfor %}
 
