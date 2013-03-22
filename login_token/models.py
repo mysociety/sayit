@@ -1,3 +1,4 @@
+import os.path
 import random
 import re
 
@@ -11,22 +12,11 @@ from instances.models import InstanceMixin, Instance
 
 NUMBER_OF_TOKEN_WORDS = 3
 
-def generate_token():
-    def useful_word(w):
-        # FIXME: should try to exclude offensive words
-        if len(w) < 4:
-            return False
-        if re.search('^[a-z]*$', w):
-            return True
-    words = []
-    with open('/usr/share/dict/words') as fp:
-        for line in fp:
-            word = line.strip()
-            if useful_word(word):
-                words.append(word)
-    return " ".join(random.choice(words)
-                    for i in range(NUMBER_OF_TOKEN_WORDS))
+with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'words')) as fp:
+    words = fp.read().splitlines()
 
+def generate_token():
+    return " ".join(random.sample(words, NUMBER_OF_TOKEN_WORDS))
 
 class LoginToken(InstanceMixin, models.Model):
     '''Represents a readable login token for mobile devices
@@ -41,7 +31,7 @@ class LoginToken(InstanceMixin, models.Model):
                              default=generate_token,
                              unique=True)
 
-    def regenerate_token(self):
+    def regenerate(self):
         self.token = generate_token()
         self.save()
 

@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from instances.models import Instance
-from login_token.models import LoginToken, generate_token
+from login_token.models import LoginToken
 
 from datetime import timedelta
 
@@ -20,12 +20,12 @@ def login_tokens_for_user(request):
         if request.instance:
             token, created = LoginToken.objects.get_or_create(instance=request.instance, user=request.user)
             if request.method == 'POST':
-                token.regenerate_token()
+                token.regenerate()
             tokens = [ token ]
         else:
             tokens = LoginToken.objects.filter(user=request.user).order_by('instance__label')
             if request.method == 'POST':
-                tokens.get(instance=request.POST['instance']).regenerate_token()
+                tokens.get(instance=request.POST['instance']).regenerate()
 
         instances_and_tokens = [(lt.instance, lt.token)
                                 for lt in tokens]

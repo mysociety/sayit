@@ -54,6 +54,7 @@
                       {% endif %}
                       {% if request.user.is_authenticated %}
                         <li class="nav-header">User</li>
+                        <li><a href="{% url 'tokens' %}">{% if request.instance %}{% trans "Token" %}{% else %}{% trans "Tokens" %}{% endif %}</a></li>
                         <li><a href="{% url 'django.contrib.auth.views.logout' %}?next=/">{% trans "Log out" %}</a></li>
                       {% endif %}
                     </ul>
