@@ -16,14 +16,14 @@ def login_tokens_for_user(request):
     logged_in = request.user.is_authenticated()
     instances_and_tokens = []
     if logged_in:
-        instances = []
         if request.instance:
-            instances.append(request.instance)
+            token, created = LoginToken.objects.get_or_create(instance=request.instance, user=request.user)
+            tokens = [ token ]
         else:
-            instances = list(Instance.objects.all().order_by('label'))
+            tokens = LoginToken.objects.filter(user=request.user)
 
         instances_and_tokens = [(lt.instance, lt.token)
-                                for lt in LoginToken.objects.filter(instance__in=instances)]
+                                for lt in tokens]
 
     return render(request,
                   'login_token/tokens.html',
