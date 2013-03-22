@@ -1,4 +1,5 @@
 import json
+import re
 import sys
 
 from django.conf import settings
@@ -48,6 +49,7 @@ def check_login_token(request):
                             content_type='text/json',
                             status=401)
     token = request.POST[key]
+    token = re.sub('\s+', ' ', token).strip()
 
     def instance_dict(i):
         return {'label': i.label,
@@ -68,6 +70,7 @@ def check_login_token(request):
     data = {'result': {'user': lt.user.username,
                        'session-token': request.session.session_key,
                        'instance': instance_dict(lt.instance),
+                       'mobile-token': token,
                        'other-instances': [instance_dict(i) for i in other_instances]}}
     return HttpResponse(json.dumps(data),
                         content_type='text/json')
