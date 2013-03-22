@@ -5,6 +5,10 @@ from tastypie.api import Api
 
 from instances.models import Instance
 
+# Admin section
+from django.contrib import admin
+admin.autodiscover()
+
 class InstanceResource(ModelResource):
     class Meta:
         queryset = Instance.objects.all()
@@ -19,7 +23,14 @@ v01_api = Api(api_name='v0.1')
 v01_api.register(InstanceResource())
 
 urlpatterns = patterns('',
+    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    (r'^admin/', include(admin.site.urls)),
+
+    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    (r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
+
     (r'^api/', include(v01_api.urls)),
+
     (r'^', include('instances.urls')),
 )
 

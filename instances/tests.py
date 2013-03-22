@@ -31,6 +31,7 @@ class InstanceTestCase(TestCase):
         kwargs['host'] = FAKE_URL
         return super(InstanceTestCase, self).assertRedirects(*args, **kwargs)
 
+@override_settings( SESSION_COOKIE_DOMAIN='127.0.0.1.xip.io' )
 class InstanceLiveServerTestCase(LiveServerTestCase):
     def setUp(self):
         self.instance = Instance.objects.create(label='testing')

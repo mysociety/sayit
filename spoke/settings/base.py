@@ -201,3 +201,8 @@ SOUTH_TESTS_MIGRATE = False
 
 # Now get the mySociety configuration
 from .mysociety import *
+
+# Cookies, after because we need BASE_HOST from mysociety.py
+SESSION_COOKIE_DOMAIN = BASE_HOST
+SESSION_COOKIE_NAME = 's'
+
