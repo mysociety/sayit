@@ -54,9 +54,15 @@ class LoginToken(InstanceMixin, models.Model):
 # FIXME: The big problem with this scheme is when you remove a user
 # from an instance in the admin interface, there are actually two
 # signals sent: first a clear, and then an add with the primary keys
-# of all but the user you're removing.  This means that we remove all
-# the LoginToken objects and then re-add all but one of them, and the
-# LoginToken objects will have different tokens.
+# of all but the user you're removing.  This means that we would
+# remove all the LoginToken objects and then re-add all but one of
+# them, and the LoginToken objects will have different tokens.  For
+# the moment, don't remove tokens at all on 'remove', so old tokens
+# will still exist after permission for the user for an instance has
+# been removed.  This bug in Django are logged, but not fixed yet:
+#
+#   https://code.djangoproject.com/ticket/16073
+#   https://code.djangoproject.com/ticket/6707
 
 @transaction.commit_on_success
 def handle_instance_users_change(*args, **kwargs):
@@ -78,37 +84,51 @@ def handle_instance_users_change(*args, **kwargs):
     action = kwargs['action']
     primary_keys = kwargs['pk_set']
 
-    # We don't get primary keys from pre_clear, post_clear, pre_remove
-    # or post_remove, so in both removal cases, we try to work out
-    # which keys have disappeared and remove them from
-    # login_token_logintoken:
-
-    if kwargs['reverse']:
-        # Then the modification came through user.instances:
-        user = kwargs['instance']
-        if action == 'post_clear' or action == 'post_remove':
-            iids_in_user_instances = set(i.id for i in user.instances.all())
-            iids_in_login_token = set(lt.instance.id for lt in LoginToken.objects.filter(user=user))
-            iids_to_remove = iids_in_login_token - iids_in_user_instances
-            LoginToken.objects.filter(user=user,
-                                      instance__in=iids_to_remove).delete()
-        elif action == 'post_add':
+    if action == 'post_add':
+        if kwargs['reverse']:
+            user = kwargs['instance']
             for instance_id in primary_keys:
-                LoginToken.objects.create(instance=Instance.objects.get(pk=instance_id),
-                                          user=user)
-    else:
-        # Then the modification came through instance.users
-        instance = kwargs['instance']
-        if action == 'post_clear' or action == 'post_remove':
-            uids_in_instance_users = set(u.id for u in instance.users.all())
-            uids_in_login_token = set(lt.user.id for lt in LoginToken.objects.filter(instance=instance))
-            uids_to_remove = uids_in_login_token - uids_in_instance_users
-            LoginToken.objects.filter(instance=instance,
-                                      user__in=uids_to_remove).delete()
-        elif action == 'post_add':
+                LoginToken.objects.get_or_create(instance=Instance.objects.get(pk=instance_id),
+                                                 user=user)
+        else:
+            instance = kwargs['instance']
             for user_id in primary_keys:
-                LoginToken.objects.create(instance=instance,
-                                          user=User.objects.get(pk=user_id))
+                LoginToken.objects.get_or_create(instance=instance,
+                                                 user=User.objects.get(pk=user_id))
+    elif action == 'post_clear' or action == 'post_remove':
+        pass # See the FIXME comment above
+
+        # # We don't get primary keys from pre_clear, post_clear, pre_remove
+        # # or post_remove, so in both removal cases, we try to work out
+        # # which keys have disappeared and remove them from
+        # # login_token_logintoken:
+        #
+        # if kwargs['reverse']:
+        #     # Then the modification came through user.instances:
+        #     user = kwargs['instance']
+        #     if action == 'post_clear' or action == 'post_remove':
+        #         iids_in_user_instances = set(i.id for i in user.instances.all())
+        #         iids_in_login_token = set(lt.instance.id for lt in LoginToken.objects.filter(user=user))
+        #         iids_to_remove = iids_in_login_token - iids_in_user_instances
+        #         LoginToken.objects.filter(user=user,
+        #                                   instance__in=iids_to_remove).delete()
+        #     elif action == 'post_add':
+        #         for instance_id in primary_keys:
+        #             LoginToken.objects.create(instance=Instance.objects.get(pk=instance_id),
+        #                                       user=user)
+        # else:
+        #     # Then the modification came through instance.users
+        #     instance = kwargs['instance']
+        #     if action == 'post_clear' or action == 'post_remove':
+        #         uids_in_instance_users = set(u.id for u in instance.users.all())
+        #         uids_in_login_token = set(lt.user.id for lt in LoginToken.objects.filter(instance=instance))
+        #         uids_to_remove = uids_in_login_token - uids_in_instance_users
+        #         LoginToken.objects.filter(instance=instance,
+        #                                   user__in=uids_to_remove).delete()
+        #     elif action == 'post_add':
+        #         for user_id in primary_keys:
+        #             LoginToken.objects.get_or_create(instance=instance,
+        #                                              user=User.objects.get(pk=user_id))
 
 m2m_changed.connect(handle_instance_users_change,
                     sender=Instance.users.through)

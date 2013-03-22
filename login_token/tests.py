@@ -56,14 +56,14 @@ class LoginTokenTests(TestCase):
         self.instance_b.users.add(self.user_a)
 
         self.assertTrue(3 == len(LoginToken.objects.all()),
-                        "There should two LoginToken objects after adding two users to an instance")
+                        "There should be three LoginToken objects after adding three users to two instances")
 
         self.instance_a.users.remove(self.user_a)
 
         login_tokens = LoginToken.objects.all()
 
-        self.assertTrue(2 == len(login_tokens),
-                        "There should only be two LoginToken objects left after removing one")
+        self.assertTrue(3 == len(login_tokens),
+                        "There should still be three LoginToken objects left after removing one")
 
         self.instance_a.users.add(self.user_a)
 
@@ -72,5 +72,5 @@ class LoginTokenTests(TestCase):
 
         self.instance_b.users.clear()
 
-        self.assertTrue(0 == len(LoginToken.objects.filter(instance=self.instance_b)),
-                        "After clearing users from example-a, there should be no LoginToken objects left")
+        self.assertTrue(1 == len(LoginToken.objects.filter(instance=self.instance_b)),
+                        "After clearing users from example-b, there should still be the object left, as we're not removing")
