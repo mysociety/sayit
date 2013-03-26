@@ -1,64 +1,70 @@
+from datetime import datetime, date, time, timedelta
+
 from django.test import TestCase
 
 from speeches.models import Section, Speech
 from instances.models import Instance
 
-from datetime import date, time
-
 class SectionTests(TestCase):
 
-    def create_sections(self):
+    def create_sections(self, node, parent=None):
+        if parent:
+            instance = parent.instance
+        else:
+            instance, _ = Instance.objects.get_or_create(label='whatever')
 
-        instance = Instance.objects.create(label='whatever')
-        top_level = Section.objects.create(
-            instance=instance,
-            title="Government Written Answers")
-        sub_level_si = Section.objects.create(
-            instance=instance,
-            title="Ministry of Silly Walks",
-            parent=top_level)
-        sub_sub_level_b = Section.objects.create(
-            instance=instance,
-            title="Thursday 7th of March",
-            parent=sub_level_si)
-        sub_sub_level = Section.objects.create(
-            instance=instance,
-            title="Wednesday 6th of March",
-            parent=sub_level_si)
-        sub_level_aa = Section.objects.create(
-            instance=instance,
-            title="Ministry of Aardvarks",
-            parent=top_level)
-        sub_level_so = Section.objects.create(
-            instance=instance,
-            title="Ministry of Something Else",
-            parent=top_level)
-
-        # Attach speeches to some of these sections:
-        Speech.objects.create(instance=instance,
-                              text='An early example speech, rhubarb rhubarb',
-                              start_date=date(2013, 3, 7),
-                              start_time=time(9, 0),
-                              section=sub_sub_level_b)
-        Speech.objects.create(instance=instance,
-                              text='A later example speech, blah blah blah',
-                              start_date=date(2013, 3, 7),
-                              start_time=time(9, 30),
-                              section=sub_sub_level_b)
-        Speech.objects.create(instance=instance,
-                              text='A speech on the previous day that goes on and on',
-                              start_date=date(2013, 3, 6),
-                              start_time=time(9, 0),
-                              section=sub_sub_level)
+        for key, item in node.items():
+            s = Section.objects.create( instance=instance, title=key, parent=parent )
+            if isinstance(item, dict):
+                self.create_sections(item, s)
+            else:
+                num, d, t = item
+                for i in range(0, num):
+                    Speech.objects.create(
+                        instance = instance,
+                        section = s,
+                        text = 'rhubarb rhubarb',
+                        start_date = d,
+                        start_time = t,
+                    )
+                    if t:
+                        t = (datetime.combine(date.today(), t) + timedelta(minutes=10)).time()
 
     def setUp(self):
-        self.create_sections()
+        self.create_sections({
+            "Government Debates": {
+                "Monday 25th March": {
+                    "Oral Answers to Questions - Silly Walks": [ 4, date(2013, 3, 25), time(9, 0) ],
+                    "Bill on Silly Walks": [ 2, date(2013, 3, 25), time(12, 0) ],
+                },
+                "Friday 29th March": {
+                    "Fixed Easter Bill": {
+                        "New Clause 1": [ 3, date(2013, 3, 29), time(14, 0) ],
+                        "Clause 1": [ 3, date(2013, 3, 29), time(14, 30) ],
+                        "Z Clause": [ 2, date(2013, 3, 29), time(15, 00) ],
+                    },
+                },
+            },
+            "Government Written Answers": {
+                "Ministry of Silly Walks": {
+                    "Wednesday 6th of March": [ 1, date(2013, 3, 6), None ],
+                    "Thursday 7th of March": [ 2, date(2013, 3, 7), None ],
+                },
+                "Ministry of Aardvarks": {},
+                "Ministry of Something Else": {},
+            },
+        })
+
+    def test_datetimes(self):
+        section = Section.objects.get(title="Bill on Silly Walks")
+        dts = sorted(section.speech_datetimes())
+        self.assertEqual(dts[0], datetime(2013, 3, 25, 12, 0))
+        self.assertEqual(dts[1], datetime(2013, 3, 25, 12, 10))
 
     def test_section_creation(self):
 
         # Get the top level section:
-
-        top_level = Section.objects.get(level=0)
+        top_level = Section.objects.get(title='Government Written Answers', level=0)
 
         all_sections = top_level.get_descendants(include_self=True)
 
@@ -73,10 +79,13 @@ class SectionTests(TestCase):
                          "The number of ministries was wrong")
 
         # Check that the sections are sorted by title:
+        all_ministries = [ a.title.replace('Ministry of ', '') for a in all_ministries ]
+        self.assertEqual(all_ministries, [ 'Aardvarks', 'Silly Walks', 'Something Else' ])
 
-        self.assertTrue("Aardvarks" in all_ministries[0].title,
-                        u"The first ministry should be Aardvarks; that wasn't found in '%s'" % (all_ministries[0].title,))
-        self.assertTrue("Silly Walk" in all_ministries[1].title,
-                        u"The second ministry should be Silly Walks; that wasn't found in '%s'" % (all_ministries[1].title,))
-        self.assertTrue("Something Else" in all_ministries[2].title,
-                        u"The last ministry should be Something Else; that wasn't found in '%s'" % (all_ministries[2].title,))
+        # Get all speeches under a section, where everything should be
+        # sorted by speech date:
+        top_level = Section.objects.get(title="Government Debates")
+        children = top_level.get_descendants_ordered_by_earliest_speech(include_self=False)
+        children = [ c.title for c in children ]
+        self.assertEqual(children, [ 'Monday 25th March', 'Oral Answers to Questions - Silly Walks', 'Bill on Silly Walks', 'Friday 29th March', 'Fixed Easter Bill', 'New Clause 1', 'Clause 1', 'Z Clause' ])
+

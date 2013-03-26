@@ -1,4 +1,5 @@
 import calendar
+import datetime
 import logging
 import os
 
@@ -148,6 +149,29 @@ class Section(MPTTModel, AuditedModel, InstanceMixin):
     def __unicode__(self):
         return u"%s (depth: %d)" % (self.title, self.level)
 
+    def speech_datetimes(self):
+        return (datetime.datetime.combine(s.start_date, s.start_time or datetime.time(0,0) )
+                for s in self.speech_set.all())
+
+    def get_descendants_ordered_by_earliest_speech(self, include_self=False):
+        from django.db import connection
+        dqs = self.get_descendants(include_self=include_self)
+        descendants_with_speeches = dqs.prefetch_related('speech_set')
+
+        earliest = {}
+        for d in descendants_with_speeches:
+            speeches = d.speech_datetimes()
+            try:
+                e = min(speeches)
+            except ValueError:
+                continue
+            parents = d.get_ancestors(ascending=True, include_self=True)
+            for parent in parents:
+                if parent.id not in earliest or e < earliest[parent.id]:
+                    earliest[parent.id] = e
+
+        return sorted( descendants_with_speeches, key=lambda s: earliest[s.id] )
+
     class MPTTMeta:
         order_insertion_by = ['title']
 
@@ -195,6 +219,7 @@ class Speech(InstanceMixin, AuditedModel):
 
     class Meta:
         verbose_name_plural = 'speeches'
+        ordering = ( 'start_date', 'start_time', 'id' )
 
     def __unicode__(self):
         out = 'Speech'
