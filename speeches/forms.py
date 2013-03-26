@@ -141,10 +141,10 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
                     supplied_time = int(recording_timestamp['timestamp']/1000)
                     # We also make it a UTC time!
                     timestamp = datetime.utcfromtimestamp(supplied_time).replace(tzinfo=pytz.utc)
-                    speaker = None
-                    if 'speaker' in recording_timestamp:
-                        speaker_url = recording_timestamp['speaker']
-                        speaker = Speaker.objects.get_or_create_from_popit_url(speaker_url, self.request.instance)
+                    try:
+                        speaker = Speaker.objects.get(pk=recording_timestamp['speaker'])
+                    except:
+                        speaker = None
                     timestamps.append(RecordingTimestamp.objects.create(speaker=speaker, timestamp=timestamp, instance=self.request.instance))
                 else:
                     # Timestamp is required

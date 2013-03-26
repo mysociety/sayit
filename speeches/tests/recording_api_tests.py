@@ -63,7 +63,7 @@ class RecordingAPITests(InstanceTestCase):
 
         resp = self.client.post('/api/v0.1/recording/', {
             'audio': audio,
-            'timestamps': '[{"speaker":"http://popit.mysociety.org/api/v1/person/abcd","timestamp":946684800000}]'
+            'timestamps': '[{"speaker":"1","timestamp":946684800000}]'
         })
 
         # Check response headers
@@ -90,9 +90,9 @@ class RecordingAPITests(InstanceTestCase):
 
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
 
-        timestamps = '[{"speaker":"http://popit.mysociety.org/api/v1/person/abcd","timestamp":946684800000},'
-        timestamps += '{"speaker":"http://popit.mysociety.org/api/v1/person/efgh","timestamp":946684803000},'
-        timestamps += '{"speaker":"http://popit.mysociety.org/api/v1/person/hijk","timestamp":946684804000}]'
+        timestamps = '[{"speaker":"' + str(speaker1.id) + '","timestamp":946684800000},'
+        timestamps += '{"speaker":"' + str(speaker2.id) + '","timestamp":946684803000},'
+        timestamps += '{"speaker":"' + str(speaker3.id) + '","timestamp":946684804000}]'
 
         expected_timestamp1 = datetime.utcfromtimestamp(946684800).replace(tzinfo=pytz.utc)
         expected_timestamp2 = datetime.utcfromtimestamp(946684803).replace(tzinfo=pytz.utc)
