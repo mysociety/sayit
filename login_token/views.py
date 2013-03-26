@@ -3,7 +3,7 @@ import re
 import sys
 
 from django.conf import settings
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -56,7 +56,7 @@ def check_login_token(request):
                 'title': i.title}
 
     user = authenticate(token=token)
-    if user is None:
+    if user is None or not user.is_active:
         return HttpResponse(json.dumps({'error': 'Unknown login token'}),
                             content_type='text/json',
                             status=401)
@@ -65,6 +65,7 @@ def check_login_token(request):
     other_instances = [i for i in lt.user.instances.all()
                        if i != lt.instance]
 
+    login(request, user)
     request.session['instance'] = lt.instance
 
     data = {'result': {'user': lt.user.username,
