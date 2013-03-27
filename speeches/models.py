@@ -31,10 +31,10 @@ class AuditedModel(models.Model):
         super(AuditedModel, self).save(*args, **kwargs)
 
 class SpeakerManager(InstanceManager):
-    def get_or_create_from_popit_url(self, popit_url):
+    def get_or_create_from_popit_url(self, popit_url, instance):
         speaker = None
         if popit_url:
-            speaker, created = self.get_or_create(popit_url=popit_url, defaults={ 'name': 'Unknown' })
+            speaker, created = self.get_or_create(popit_url=popit_url, instance=instance, defaults={ 'name': 'Unknown' })
         return speaker
 
 # Speaker - someone who gave a speech

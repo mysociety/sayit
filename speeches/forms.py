@@ -144,7 +144,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
                     speaker = None
                     if 'speaker' in recording_timestamp:
                         speaker_url = recording_timestamp['speaker']
-                        speaker = Speaker.objects.get_or_create_from_popit_url(speaker_url)
+                        speaker = Speaker.objects.get_or_create_from_popit_url(speaker_url, self.request.instance)
                     timestamps.append(RecordingTimestamp.objects.create(speaker=speaker, timestamp=timestamp, instance=self.request.instance))
                 else:
                     # Timestamp is required
