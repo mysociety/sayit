@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load url from future %}
+{% load mptt_tags %}
+
+{% block title %}View Section: {{ object.title}}{% endblock %}
+
+{% block content %}
+
+    <h1>{{ object.title }}</h1>
+
+    <p>
+        <a class="btn" href="{% url "section-add" %}?section={{ object.id }}">Add a new section in this section</a>
+        <a class="btn" href="{% url "speech-add" %}?section={{ object.id }}">Add a new speech in this section</a>
+    </p>
+
+    <h2>Sections</h2>
+
+    <ul class="unstyled">
+      {% recursetree section.get_descendants %}
+        <li>
+            <span class="section-title"><a href="{% url "section-view" node.id %}">{{ node.title }}</a></span>
+          {% if not node.is_leaf_node %}
+            <ul>
+                {{ children }}
+            </ul>
+          {% endif %}
+        </li>
+      {% endrecursetree %}
+    </ul>
+
+    <h2>Speeches</h2>
+
+    <ul class="unstyled">
+        {% if not speech_list %}
+            <li>{{ object.title }} doesn't contain any speeches yet.</li>
+        {% endif %}
+        {% for speech in speech_list %}
+            {% include "speeches/speech_list_item_with_speaker.html" with speech=speech only %}
+        {% endfor %}
+    </ul>
+
+    <p><a href="{{ object.get_edit_url }}">Edit</a></p>
+
+{% endblock %}
+

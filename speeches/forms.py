@@ -4,6 +4,7 @@ from datetime import datetime
 import pytz
 
 from django_select2.widgets import Select2Widget, Select2MultipleWidget
+from mptt.forms import TreeNodeChoiceField
 
 from django import forms
 from django.forms.forms import BoundField
@@ -11,7 +12,7 @@ from django.core.files.uploadedfile import UploadedFile
 from django.utils import simplejson
 
 # from speeches.fields import TagField
-from speeches.models import Speech, Speaker, Meeting, Debate, Recording, RecordingTimestamp, Tag
+from speeches.models import Speech, Speaker, Section, Recording, RecordingTimestamp, Tag
 from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
 from speeches.utils import GroupedModelChoiceField
 
@@ -51,9 +52,7 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             empty_label = '',
             widget = Select2Widget(select2_options={ 'placeholder':'Choose a speaker', 'width': 'resolve' }),
             required=False)
-    debate = GroupedModelChoiceField(queryset=Debate.objects.all().order_by('meeting'),
-            group_by_field='meeting',
-            required=False)
+    section = TreeNodeChoiceField(queryset=Section.objects.all(), required=False)
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],
             widget=BootstrapDateWidget,
             required=False)
@@ -166,19 +165,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
         exclude = 'instance'
 
 
-class MeetingForm(forms.ModelForm):
-    # Form for the meeting model
-    # Use a fancy bootstrap field for the date
-    date = forms.DateField(input_formats=['%d/%m/%Y'],
-            widget=BootstrapDateWidget,
-            required=False)
-
+class SectionForm(forms.ModelForm):
     class Meta:
-        model = Meeting
-        exclude = 'instance'
-
-class DebateForm(forms.ModelForm):
-    # Form for the debate model
-    class Meta:
-        model = Debate
+        model = Section
         exclude = 'instance'

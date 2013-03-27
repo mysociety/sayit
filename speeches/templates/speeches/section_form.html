@@ -4,27 +4,25 @@
 {% block extra_css %}
 {{ block.super }}
 <link href="{% static "css/speeches.css" %}" rel="stylesheet">
-<link rel="stylesheet" href="{% static "css/bootstrap-datepicker.css" %}" />
 {% endblock %}
 
 {% block extra_js %}
 {{ block.super }}
 <script src="{% static "js/speeches.js" %}"></script>
-<script src="{% static "js/bootstrap-datepicker.js" %}"></script>
 {% endblock %}
 
-{% block title %}{% if object %}Edit meeting {% else %}Add meeting{% endif %}{% endblock %}
+{% block title %}{% if object %}Edit section{% else %}Add section{% endif %}{% endblock %}
 
 {% block content2 %}
-<p class="lead {% if object %}edit{% else %}add{% endif %}-meeting">
+<p class="lead {% if object %}edit{% else %}add{% endif %}-section">
     {% if object %}
-        Here is where you can edit a meeting.
+        Here is where you can edit a section.
     {% else %}
-        Here is where you can add a new meeting.
+        Here is where you can add a new section.
     {% endif %}
 </p>
 
-<form id="meeting-form" class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
+<form id="section-form" class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
 
     {% if form.non_field_errors %}
         <div class="alert alert-error alert-block">
@@ -49,6 +47,6 @@
         </div>
     {% endfor %}
 
-<input type="submit" id="meeting_submit" class="btn" value="{% if object %}Update meeting{% else %}Add meeting{% endif %}">
+<input type="submit" id="section_submit" class="btn" value="{% if object %}Update section{% else %}Add section{% endif %}">
 </form>
 {% endblock %}

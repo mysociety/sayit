@@ -8,8 +8,8 @@ from django.db.models import Count
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
 
-from speeches.forms import SpeechForm, SpeechAudioForm, MeetingForm, DebateForm, RecordingAPIForm
-from speeches.models import Speech, Speaker, Meeting, Debate, Recording, Tag
+from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm
+from speeches.models import Speech, Speaker, Section, Recording, Tag
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
 
@@ -54,7 +54,7 @@ class SpeechMixin(InstanceFormMixin):
 
     def get_form(self, form_class):
         form = super(SpeechMixin, self).get_form(form_class)
-        form.fields['debate'].queryset = Debate.objects.for_instance(self.request.instance)
+        form.fields['section'].queryset = Section.objects.for_instance(self.request.instance).order_by('tree_id', 'lft')
         form.fields['speaker'].queryset = Speaker.objects.for_instance(self.request.instance)
         form.fields['tags'].queryset = Tag.objects.for_instance(self.request.instance)
         return form
@@ -71,11 +71,11 @@ class SpeechCreate(SpeechMixin, CreateView):
                 # TODO - would be good to tell the user that they don't exist but we need
                 # to enable the messages module or similar to make it work
                 pass
-        if "debate" in self.request.GET:
+        if "section" in self.request.GET:
             try:
-                initial['debate'] = Debate.objects.get(pk=self.request.GET["debate"])
-            except Debate.DoesNotExist:
-                # Ignore the supplied debate
+                initial['section'] = Section.objects.get(pk=self.request.GET["section"])
+            except Section.DoesNotExist:
+                # Ignore the supplied section
                 # TODO - would be good to tell the user that it doesn't exist but we need
                 # to enable the messages module or similar to make it work
                 pass
@@ -123,65 +123,47 @@ class SpeakerView(InstanceViewMixin, DetailView):
         context['speech_list'] = Speech.objects.filter(speaker=kwargs['object'].id)
         return context
 
-class MeetingCreate(InstanceFormMixin, CreateView):
-    model = Meeting
-    form_class = MeetingForm
+class SectionList(InstanceViewMixin, ListView):
+    model = Section
+    context_object_name = 'section_list'
 
-class MeetingUpdate(InstanceFormMixin, UpdateView):
-    model = Meeting
-    form_class = MeetingForm
+    #def get_queryset(self):
+    #    return super(SectionList, self).get_queryset().order_by("-created")
 
-class MeetingView(InstanceViewMixin, DetailView):
-    model = Meeting
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(MeetingView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the debates in this meeting
-        context['debate_list'] = Debate.objects.filter(meeting=kwargs['object'].id)
-        return context
-
-class MeetingList(InstanceViewMixin, ListView):
-    model = Meeting
-    context_object_name = 'meeting_list'
-
-    def get_queryset(self):
-        return super(MeetingList, self).get_queryset().order_by("-created")
-
-class DebateMixin(InstanceFormMixin):
-    model = Debate
-    form_class = DebateForm
+class SectionMixin(InstanceFormMixin):
+    model = Section
+    form_class = SectionForm
 
     def get_form(self, form_class):
-        form = super(DebateMixin, self).get_form(form_class)
-        form.fields['meeting'].queryset = Meeting.objects.for_instance(self.request.instance)
+        form = super(SectionMixin, self).get_form(form_class)
+        form.fields['parent'].queryset = Section.objects.for_instance(self.request.instance).order_by('tree_id', 'lft')
         return form
 
-class DebateCreate(DebateMixin, CreateView):
+class SectionCreate(SectionMixin, CreateView):
     def get_initial(self):
-        initial = super(DebateCreate, self).get_initial()
+        initial = super(SectionCreate, self).get_initial()
         initial = initial.copy()
-        if "meeting" in self.request.GET:
+        if "section" in self.request.GET:
             try:
-                initial['meeting'] = Meeting.objects.get(pk=self.request.GET["meeting"])
-            except Meeting.DoesNotExist:
-                # Ignore the supplied meeting
+                initial['parent'] = Section.objects.get(pk=self.request.GET["section"])
+            except Section.DoesNotExist:
+                # Ignore the supplied section
                 # TODO - would be good to tell the user that it doesn't exist but we need
                 # to enable the messages module or similar to make it work
                 pass
         return initial
 
-class DebateUpdate(DebateMixin, UpdateView):
+class SectionUpdate(SectionMixin, UpdateView):
     pass
 
-class DebateView(InstanceViewMixin, DetailView):
-    model = Debate
+class SectionView(InstanceViewMixin, DetailView):
+    model = Section
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(DebateView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the debates in this meeting
-        context['speech_list'] = Speech.objects.filter(debate=kwargs['object'].id)
+        context = super(SectionView, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the speeches in this section
+        context['speech_list'] = Speech.objects.filter(section=kwargs['object'].id)
         return context
 
 class RecordingView(InstanceViewMixin, DetailView):

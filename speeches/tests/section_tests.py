@@ -4,8 +4,9 @@ from django.test import TestCase
 
 from speeches.models import Section, Speech
 from instances.models import Instance
+from instances.tests import InstanceTestCase
 
-class SectionTests(TestCase):
+class SectionModelTests(TestCase):
 
     def create_sections(self, node, parent=None):
         if parent:
@@ -88,4 +89,66 @@ class SectionTests(TestCase):
         children = top_level.get_descendants_ordered_by_earliest_speech(include_self=False)
         children = [ c.title for c in children ]
         self.assertEqual(children, [ 'Monday 25th March', 'Oral Answers to Questions - Silly Walks', 'Bill on Silly Walks', 'Friday 29th March', 'Fixed Easter Bill', 'New Clause 1', 'Clause 1', 'Z Clause' ])
+
+
+class SectionSiteTests(InstanceTestCase):
+    """Tests for the section functionality"""
+
+    def test_add_section_fails_on_empty_form(self):
+        resp = self.client.post('/section/add')
+        self.assertFormError(resp, 'form', 'title', 'This field is required.')
+
+    def test_add_section_with_title(self):
+        resp = self.client.post('/section/add', {
+            'title': 'A test section'
+        })
+        self.assertRedirects(resp, 'section/1')
+        # Check in db
+        section = Section.objects.get(id=1)
+        self.assertEquals(section.title, 'A test section')
+
+    def test_add_section_in_section(self):
+        section = Section.objects.create(title='Test section', instance=self.instance)
+        resp = self.client.post('/section/add', {
+            'parent': 1,
+            'title': 'A test subsection'
+        })
+        self.assertRedirects(resp, 'section/2')
+        # Check in db
+        subsection = Section.objects.get(id=2)
+        self.assertEquals(subsection.title, 'A test subsection')
+        self.assertEquals(subsection.parent, section)
+
+    def test_section_page_lists_speeches(self):
+        section = Section.objects.create(title='A test section', instance=self.instance)
+        subsection = Section.objects.create(title='A test subsection', parent=section, instance=self.instance)
+
+        # Assert no speeches
+        resp = self.client.get('/section/2')
+        self.assertSequenceEqual([], resp.context['speech_list'])
+
+        speech = Speech.objects.create(text="A test speech", section=subsection, instance=self.instance)
+        resp = self.client.get('/section/2')
+        self.assertSequenceEqual([speech], resp.context['speech_list'])
+
+    def test_section_page_lists_subsections(self):
+        section = Section.objects.create(title='A test section', instance=self.instance)
+
+        # Assert no subsections
+        resp = self.client.get('/section/1')
+        self.assertSequenceEqual([], resp.context['section'].get_descendants())
+
+        subsection = Section.objects.create(title="A test subsection", parent=section, instance=self.instance)
+        resp = self.client.get('/section/1')
+        self.assertSequenceEqual([subsection], resp.context['section'].get_descendants())
+
+    def test_section_page_has_buttons_to_add(self):
+        # Add a section
+        section = Section.objects.create(title='A test section', instance=self.instance)
+
+        # Call the section's page
+        resp = self.client.get('/section/1')
+
+        self.assertContains(resp, '<a class="btn" href="/speech/add?section=1">Add a new speech in this section</a>', html=True)
+        self.assertContains(resp, '<a class="btn" href="/section/add?section=1">Add a new section in this section</a>', html=True)
 

@@ -19,14 +19,10 @@ urlpatterns = patterns('',
 
     url(r'^speaker/(?P<pk>\d+)$', SpeakerView.as_view(), name='speaker-view'),
 
-    url(r'^meeting/(?P<pk>\d+)$', MeetingView.as_view(), name='meeting-view'),
-    url(r'^meeting/add$', MeetingCreate.as_view(), name='meeting-add'),
-    url(r'^meeting/(?P<pk>\d+)/edit$', MeetingUpdate.as_view(), name='meeting-edit'),
-    url(r'^meetings$', MeetingList.as_view(), name='meeting-list'),
-
-    url(r'^debate/(?P<pk>\d+)$', DebateView.as_view(), name='debate-view'),
-    url(r'^debate/add$', DebateCreate.as_view(), name='debate-add'),
-    url(r'^debate/(?P<pk>\d+)/edit$', DebateUpdate.as_view(), name='debate-edit'),
+    url(r'^section/(?P<pk>\d+)$', SectionView.as_view(), name='section-view'),
+    url(r'^section/add$', SectionCreate.as_view(), name='section-add'),
+    url(r'^section/(?P<pk>\d+)/edit$', SectionUpdate.as_view(), name='section-edit'),
+    url(r'^sections$', SectionList.as_view(), name='section-list'),
 
     url(r'^recording/(?P<pk>\d+)$', RecordingView.as_view(), name='recording-view'),
     url(r'^api/v0.1/recording/$', csrf_exempt(RecordingAPICreate.as_view()), name='recording-api-add'),

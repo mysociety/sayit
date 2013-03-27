@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load url from future %}
+{% load mptt_tags %}
+
+{% block extra_css %}
+<link href="{% static "css/speeches.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Sections{% endblock %}
+
+{% block content %}
+<h1>Sections</h1>
+
+<ul class="unstyled">
+  {% recursetree section_list %}
+    <li>
+        <span class="section-title"><a href="{% url "section-view" node.id %}">{{ node.title }}</a></span>
+      {% if not node.is_leaf_node %}
+        <ul>
+            {{ children }}
+        </ul>
+      {% endif %}
+    </li>
+  {% endrecursetree %}
+</ul>
+
+{% endblock %}

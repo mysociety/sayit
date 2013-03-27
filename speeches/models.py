@@ -30,36 +30,6 @@ class AuditedModel(models.Model):
         self.modified = now
         super(AuditedModel, self).save(*args, **kwargs)
 
-class Meeting(InstanceMixin, AuditedModel):
-    title = models.CharField(max_length=255, blank=False, null=False)
-    date = models.DateField(blank=True, null=True, help_text='When date did the meeting happen?')
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ( 'meeting-view', (), { 'pk': self.id } )
-
-    @models.permalink
-    def get_edit_url(self):
-        return ( 'meeting-edit', (), { 'pk': self.id } )
-
-    def __unicode__(self):
-        return self.title
-
-class Debate(InstanceMixin, AuditedModel):
-    meeting = models.ForeignKey(Meeting, blank=True, null=True)
-    title = models.CharField(max_length=255, blank=False, null=False)
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ( 'debate-view', (), { 'pk': self.id } )
-
-    @models.permalink
-    def get_edit_url(self):
-        return ( 'debate-edit', (), { 'pk': self.id } )
-
-    def __unicode__(self):
-        return self.title
-
 class SpeakerManager(InstanceManager):
     def get_or_create_from_popit_url(self, popit_url):
         speaker = None
@@ -175,6 +145,13 @@ class Section(MPTTModel, AuditedModel, InstanceMixin):
     class MPTTMeta:
         order_insertion_by = ['title']
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ( 'section-view', (), { 'pk': self.id } )
+
+    @models.permalink
+    def get_edit_url(self):
+        return ( 'section-edit', (), { 'pk': self.id } )
 
 # Speech that a speaker gave
 class Speech(InstanceMixin, AuditedModel):
@@ -189,13 +166,10 @@ class Speech(InstanceMixin, AuditedModel):
     # the basic index completely for now.
     text = models.TextField(blank=True, db_index=False, help_text='The text of the speech')
 
-    # What the speech is part of.
-    debate = models.ForeignKey(Debate, blank=True, null=True)
-    # The section that this speech is part of - this is replacing
-    # debate, which will be removed after migration.
+    # The section that this speech is part of
     section = models.ForeignKey(Section, blank=True, null=True, help_text='The section that this speech is contained in')
     title = models.TextField(blank=True, help_text='The title of the speech, if relevant')
-    # The below two fields could be on the debate if we made it a required field of a speech
+    # The below two fields could be on the section if we made it a required field of a speech
     event = models.TextField(db_index=True, blank=True, help_text='Was the speech at a particular event?')
     location = models.TextField(db_index=True, blank=True, help_text='Where the speech took place')
 

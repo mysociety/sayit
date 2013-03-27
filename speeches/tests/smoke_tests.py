@@ -1,6 +1,6 @@
 from instances.tests import InstanceTestCase
 
-from speeches.models import Speech, Speaker, Meeting
+from speeches.models import Speech, Speaker, Section
 
 class SmokeTests(InstanceTestCase):
     """Simple smoke tests (is it up?) of all the urls on the site"""
@@ -29,16 +29,16 @@ class SmokeTests(InstanceTestCase):
         resp = self.client.get('/speech/add')
         self.assertEqual(resp.status_code, 200)
 
-    def test_a_meeting_page(self):
-        # Add a meeting first
-        meeting = Meeting.objects.create(title="A Meeting", instance=self.instance)
-        resp = self.client.get("/meeting/%s" % meeting.id)
+    def test_a_section_page(self):
+        # Add a section first
+        section = Section.objects.create(title="A Section", instance=self.instance)
+        resp = self.client.get("/section/%s" % section.id)
         self.assertEqual(resp.status_code, 200)
 
-    def test_add_meeting_page(self):
-        resp = self.client.get("/meeting/add")
+    def test_add_section_page(self):
+        resp = self.client.get("/section/add")
         self.assertEqual(resp.status_code, 200)
 
-    def test_meeting_list_page(self):
-        resp = self.client.get("/meetings")
+    def test_section_list_page(self):
+        resp = self.client.get("/sections")
         self.assertEqual(resp.status_code, 200)
