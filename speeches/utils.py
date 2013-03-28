@@ -282,9 +282,9 @@ class AudioHelper(object):
         start_time_relative = timestamp.utc - start_timestamp.utc
 
         # Work out the time this timestamp ends, in seconds from the start
-        end_time_relative = None
+        duration = None
         if next_timestamp is not None:
-            end_time_relative = next_timestamp.utc - start_timestamp.utc
+            duration = next_timestamp.utc - timestamp.utc
 
         (fd, out_filename) = tempfile.mkstemp(suffix=".mp3")
 
@@ -292,8 +292,8 @@ class AudioHelper(object):
         # Where to start from
         options.extend(["-ss", str(start_time_relative)])
         # Where to go to
-        if end_time_relative is not None:
-            options.extend(['-t', str(end_time_relative)])
+        if duration is not None:
+            options.extend(['-t', str(duration)])
         options.extend(self._build_ffmpeg_mp3_output_options(out_filename))
 
         with open(os.devnull, 'w') as dev_null:
