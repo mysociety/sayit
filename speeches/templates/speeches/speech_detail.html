@@ -1,6 +1,7 @@
 {% extends 'speeches/speech_audio.html' %}
 {% load staticfiles %}
 {% load url from future %}
+{% load mptt_tags %}
 
 {% block extra_headers %}
 {% if object.celery_task_id %}
@@ -9,7 +10,7 @@
 {% endblock %}
 
 {% block title %}
-    {%if object.title %}
+    {% if object.title %}
         {{ object.title }}
     {% else %}
         &#8220;{{ object.summary }}&#8221;
@@ -22,8 +23,15 @@
     <p class="lead">Please wait, audio is being transcribed. This page will automatically refresh in 5 seconds...</p>
 {% else %}
 
+{% if object.section %}
+{% drilldown_tree_for_node object.section as drilldown %}
+{% for n,s in drilldown|tree_info %}
+<a href="{{ n.get_absolute_url }}">{{ n.title }}</a> &rarr;
+{% endfor %}
+{% endif %}
+
     <h1>
-        {%if object.title %}
+        {% if object.title %}
             {{ object.title }}
         {% else %}
             &#8220;{{ object.summary }}&#8221;

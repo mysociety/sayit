@@ -3,44 +3,46 @@
 {% load url from future %}
 {% load mptt_tags %}
 
-{% block title %}View Section: {{ object.title}}{% endblock %}
+{% block title %}View Section: {{ section.title }}{% endblock %}
 
 {% block content %}
 
-    <h1>{{ object.title }}</h1>
+<a href="{% url 'section-list' %}">Sections</a> &rarr;
+{% for n in section.get_ancestors %}
+<a href="{{ n.get_absolute_url }}">{{ n.title }}</a> &rarr;
+{% endfor %}
+
+    <h1>{{ section.title }}</h1>
 
     <p>
-        <a class="btn" href="{% url "section-add" %}?section={{ object.id }}">Add a new section in this section</a>
-        <a class="btn" href="{% url "speech-add" %}?section={{ object.id }}">Add a new speech in this section</a>
+        <a class="btn" href="{% url "section-add" %}?section={{ section.id }}">Add a new section in this section</a>
+        <a class="btn" href="{% url "speech-add" %}?section={{ section.id }}">Add a new speech in this section</a>
     </p>
 
     <h2>Sections</h2>
 
-    <ul class="unstyled">
-      {% recursetree section.get_descendants %}
-        <li>
-            <span class="section-title"><a href="{% url "section-view" node.id %}">{{ node.title }}</a></span>
-          {% if not node.is_leaf_node %}
-            <ul>
-                {{ children }}
-            </ul>
-          {% endif %}
-        </li>
-      {% endrecursetree %}
-    </ul>
+    {% drilldown_tree_for_node section as drilldown count speeches.Speech.section in speech_count %}
+    {% for node, structure in drilldown|tree_info %}
+        {% if node.level > section.level %}
+            {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
+            <span class="section-title"><a href="{{ node.get_absolute_url }}">{{ node.title }}</a></span>
+            {% ifequal node.parent_id section.pk %}({{ node.speech_count }}){% endifequal %}
+            {% for level in structure.closed_levels %}{% if level > section.level %}</li></ul>{% endif %}{% endfor %}
+        {% endif %}
+    {% endfor %}
 
     <h2>Speeches</h2>
 
     <ul class="unstyled">
         {% if not speech_list %}
-            <li>{{ object.title }} doesn't contain any speeches yet.</li>
+            <li>{{ section.title }} doesn't contain any speeches yet.</li>
         {% endif %}
         {% for speech in speech_list %}
             {% include "speeches/speech_list_item_with_speaker.html" with speech=speech only %}
         {% endfor %}
     </ul>
 
-    <p><a href="{{ object.get_edit_url }}">Edit</a></p>
+    <p><a href="{{ section.get_edit_url }}">Edit</a></p>
 
 {% endblock %}
 
