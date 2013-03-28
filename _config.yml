@@ -1,0 +1,5 @@
+safe: true
+pygments: true
+baseurl: /sayit/
+permalink: pretty
+markdown: kramdown
