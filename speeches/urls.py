@@ -19,9 +19,9 @@ urlpatterns = patterns('',
 
     url(r'^speaker/(?P<pk>\d+)$', SpeakerView.as_view(), name='speaker-view'),
 
-    url(r'^section/(?P<pk>\d+)$', SectionView.as_view(), name='section-view'),
-    url(r'^section/add$', SectionCreate.as_view(), name='section-add'),
-    url(r'^section/(?P<pk>\d+)/edit$', SectionUpdate.as_view(), name='section-edit'),
+    url(r'^sections/(?P<pk>\d+)$', SectionView.as_view(), name='section-view'),
+    url(r'^sections/add$', SectionCreate.as_view(), name='section-add'),
+    url(r'^sections/(?P<pk>\d+)/edit$', SectionUpdate.as_view(), name='section-edit'),
     url(r'^sections$', SectionList.as_view(), name='section-list'),
 
     url(r'^recording/(?P<pk>\d+)$', RecordingView.as_view(), name='recording-view'),

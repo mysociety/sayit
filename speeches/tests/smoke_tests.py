@@ -32,11 +32,11 @@ class SmokeTests(InstanceTestCase):
     def test_a_section_page(self):
         # Add a section first
         section = Section.objects.create(title="A Section", instance=self.instance)
-        resp = self.client.get("/section/%s" % section.id)
+        resp = self.client.get("/sections/%s" % section.id)
         self.assertEqual(resp.status_code, 200)
 
     def test_add_section_page(self):
-        resp = self.client.get("/section/add")
+        resp = self.client.get("/sections/add")
         self.assertEqual(resp.status_code, 200)
 
     def test_section_list_page(self):
