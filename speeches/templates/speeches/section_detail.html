@@ -21,7 +21,7 @@
 
     <h2>Sections</h2>
 
-    {% drilldown_tree_for_node section as drilldown count speeches.Speech.section in speech_count %}
+    {% drilldown_tree_for_node section as drilldown cumulative count speeches.Speech.section in speech_count %}
     {% for node, structure in drilldown|tree_info %}
         {% if node.level > section.level %}
             {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
