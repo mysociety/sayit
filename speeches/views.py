@@ -63,17 +63,25 @@ class SpeechCreate(SpeechMixin, CreateView):
     def get_initial(self):
         initial = super(SpeechCreate, self).get_initial()
         initial = initial.copy()
-        if "speaker" in self.request.GET:
+        try:
+            speaker = int(self.request.GET['speaker'])
+        except:
+            speaker = None
+        if speaker:
             try:
-                initial['speaker'] = Speaker.objects.get(pk=self.request.GET["speaker"])
+                initial['speaker'] = Speaker.objects.get(pk=speaker)
             except Speaker.DoesNotExist:
                 # Ignore the supplied speaker
                 # TODO - would be good to tell the user that they don't exist but we need
                 # to enable the messages module or similar to make it work
                 pass
-        if "section" in self.request.GET:
+        try:
+            section = int(self.request.GET['section'])
+        except:
+            section = None
+        if section:
             try:
-                initial['section'] = Section.objects.get(pk=self.request.GET["section"])
+                initial['section'] = Section.objects.get(pk=section)
             except Section.DoesNotExist:
                 # Ignore the supplied section
                 # TODO - would be good to tell the user that it doesn't exist but we need
@@ -143,9 +151,13 @@ class SectionCreate(SectionMixin, CreateView):
     def get_initial(self):
         initial = super(SectionCreate, self).get_initial()
         initial = initial.copy()
-        if "section" in self.request.GET:
+        try:
+            section = int(self.request.GET['section'])
+        except:
+            section = None
+        if section:
             try:
-                initial['parent'] = Section.objects.get(pk=self.request.GET["section"])
+                initial['parent'] = Section.objects.get(pk=section)
             except Section.DoesNotExist:
                 # Ignore the supplied section
                 # TODO - would be good to tell the user that it doesn't exist but we need
