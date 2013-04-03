@@ -1,5 +1,4 @@
 import json
-import re
 import sys
 
 from django.conf import settings
@@ -9,7 +8,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from instances.models import Instance
-from login_token.models import LoginToken
+from login_token.models import LoginToken, clean_token
 
 from datetime import timedelta
 
@@ -49,7 +48,7 @@ def check_login_token(request):
                             content_type='text/json',
                             status=401)
     token = request.POST[key]
-    token = re.sub('\s+', ' ', token).strip()
+    token = clean_token(token)
 
     def instance_dict(i):
         return {'label': i.label,

@@ -18,6 +18,9 @@ with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'words')) as 
 def generate_token():
     return " ".join(random.sample(words, NUMBER_OF_TOKEN_WORDS))
 
+def clean_token(token):
+    return re.sub('\s+', ' ', token).strip().lower()
+
 class LoginToken(InstanceMixin, models.Model):
     '''Represents a readable login token for mobile devices
 

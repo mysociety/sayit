@@ -32,6 +32,12 @@ class LoginTokenTests(TestCase):
         # FIXME: complete
         pass
 
+    def test_login_token_auths(self):
+        lt = LoginToken.objects.create(user=self.user_a, instance=self.instance_a)
+        self.assertTrue( self.client.login(token=lt.token) )
+        self.assertTrue( self.client.login(token=lt.token.title()) )
+        self.assertTrue( self.client.login(token=lt.token.replace(' ', '  ')) )
+
     def test_instance_users_changes(self):
 
         self.assertTrue(0 == len(LoginToken.objects.all()),
