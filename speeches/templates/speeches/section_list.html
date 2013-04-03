@@ -3,13 +3,10 @@
 {% load url from future %}
 {% load mptt_tags %}
 
-{% block extra_css %}
-<link href="{% static "css/speeches.css" %}" rel="stylesheet">
-{% endblock %}
-
 {% block title %}Sections{% endblock %}
 
 {% block content %}
+
 <h1>Sections</h1>
 
 <ul class="unstyled">
@@ -24,5 +21,18 @@
     </li>
   {% endrecursetree %}
 </ul>
+
+    <h2>Speeches</h2>
+
+    <ul class="unstyled">
+        {% if not speech_list %}
+            <li>There are no un-sectioned speeches.</li>
+        {% endif %}
+        {% for speech in speech_list %}
+            {% include "speeches/speech_list_item_with_speaker.html" with speech=speech only %}
+        {% endfor %}
+    </ul>
+
+    <p><a href="{{ section.get_edit_url }}">Edit</a></p>
 
 {% endblock %}
