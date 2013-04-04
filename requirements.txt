@@ -48,4 +48,4 @@ PopIt-Python
 django-nose==1.1
 
 # For representing tree structures in Django models
-django-mptt
+-e git+https://github.com/mysociety/django-mptt#egg=django-mptt
