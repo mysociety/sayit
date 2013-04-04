@@ -101,6 +101,7 @@ class SpeechManager(InstanceManager):
 
             created_speeches.append(self.create(
                 instance = instance,
+                public = False,
                 audio=File(open(audio_file)),
                 speaker=speaker,
                 start_date=start_date,
@@ -181,6 +182,8 @@ class Speech(InstanceMixin, AuditedModel):
     end_date = models.DateField(blank=True, null=True, help_text='What date did the speech end?')
     end_time = models.TimeField(blank=True, null=True, help_text='What time did the speech end?')
     tags = models.ManyToManyField(Tag, blank=True, null=True)
+
+    public = models.BooleanField(default=True, help_text='Is this speech public?')
 
     # What if source material has multiple speeches, same timestamp - need a way of ordering them?
     # pos = models.IntegerField()
