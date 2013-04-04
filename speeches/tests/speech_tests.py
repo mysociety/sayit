@@ -9,7 +9,7 @@ from django.conf import settings
 from instances.tests import InstanceTestCase
 
 import speeches
-from speeches.models import Speech, Speaker
+from speeches.models import Speech, Speaker, Section
 
 TEMP_MEDIA_ROOT = tempfile.mkdtemp()
 
@@ -208,3 +208,18 @@ class SpeechTests(InstanceTestCase):
         speech = Speech.objects.get(id=1)
         self.assertIsNotNone(speech.audio)
         self.assertTrue(".mp3" in speech.audio.path)
+
+    def test_visible_speeches(self):
+        section = Section.objects.create(title='Test', instance=self.instance)
+        for i in range(3):
+            Speech.objects.create( text='Speech %d' % i, section=section, instance=self.instance, public=(i==2) )
+
+        resp = self.client.get('/sections/1')
+        self.assertEquals( [ x.public for x in resp.context['speech_list'] ], [ False, False, True ] )
+        self.assertContains( resp, 'Invisible', count=2 )
+
+        self.client.logout()
+        resp = self.client.get('/speech/3')
+        self.assertContains( resp, 'Speech 2' )
+        resp = self.client.get('/speech/1')
+        self.assertContains( resp, 'Not Found', status_code=404 )
