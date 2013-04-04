@@ -17,7 +17,10 @@ class InstanceClient(Client):
         kwargs['HTTP_HOST'] = FAKE_URL
         return super(InstanceClient, self).post(*args, **kwargs)
 
-@override_settings( BASE_HOST='example.org' )
+@override_settings(
+    BASE_HOST='example.org',
+    PASSWORD_HASHERS = ( 'django.contrib.auth.hashers.MD5PasswordHasher', ),
+)
 class InstanceTestCase(TestCase):
     client_class = InstanceClient
 
