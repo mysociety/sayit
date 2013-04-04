@@ -95,7 +95,7 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -106,7 +106,11 @@ MIDDLEWARE_CLASSES = (
     'spoke.middleware.WhoDidMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+]
+if DEBUG:
+    MIDDLEWARE_CLASSES.append( 'debug_toolbar.middleware.DebugToolbarMiddleware' )
+
+INTERNAL_IPS = ( '127.0.0.1', )
 
 ROOT_URLCONF = 'spoke.urls'
 ROOT_URLCONF_HOST = 'spoke.urls-host'
@@ -126,7 +130,7 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     "spoke.context_processors.add_settings",
 )
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -147,7 +151,9 @@ INSTALLED_APPS = (
     'tastypie',
     'login_token',
     'mptt',
-)
+]
+if DEBUG:
+    INSTALLED_APPS.append( 'debug_toolbar' )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 

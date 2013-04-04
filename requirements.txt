@@ -12,6 +12,8 @@ South
 django-pagination
 django_select2
 django-tastypie
+# Only for debugging, but very useful and easiest to just have it here
+django-debug-toolbar
 
 # Celery
 celery
