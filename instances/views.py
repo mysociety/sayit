@@ -12,7 +12,7 @@ def user_in_instance(view_func):
     orig_wrapped_func = user_passes_test(lambda u: u.is_superuser)(view_func)
     @wraps(orig_wrapped_func, assigned=available_attrs(orig_wrapped_func))
     def _wrapped_view(request, *args, **kwargs):
-        if request.user.is_authenticated() and request.instance in request.user.instances.all():
+        if request.is_user_instance:
             return view_func(request, *args, **kwargs)
         return orig_wrapped_func(request, *args, **kwargs)
     return _wrapped_view

@@ -7,6 +7,12 @@ from django.utils.cache import patch_vary_headers
 from .models import Instance
 
 class MultiInstanceMiddleware:
+    """
+    Check for a hostname of the form <instance>.BASE_HOST, or <instance>.127.0.0.1.xip.io;
+    if not given, use ROOT_URLCONF_HOST or instances.urls as the urlconf. If given, check
+    if it exists in the database; if not, redirect to BASE_HOST, if it does,
+    set request.instance and check if the logged in user has access to it
+    """
     def process_request(self, request):
         host = request.get_host().lower()
         domain = settings.BASE_HOST
@@ -28,6 +34,8 @@ class MultiInstanceMiddleware:
             if matches.group('port'):
                 url += ':' + matches.group('port')
             return HttpResponseRedirect(url)
+
+        request.is_user_instance = request.user.is_authenticated() and ( request.instance in request.user.instances.all() or request.user.is_superuser )
 
     def process_response(self, request, response):
         patch_vary_headers(response, ('Host',))
