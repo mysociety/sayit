@@ -12,6 +12,7 @@ South
 django-pagination
 django_select2
 django-tastypie
+django-qmethod
 # Only for debugging, but very useful and easiest to just have it here
 django-debug-toolbar
 

@@ -13,6 +13,7 @@ import speeches
 from speeches.utils import AudioHelper
 
 from mptt.models import MPTTModel, TreeForeignKey
+from djqmethod import Manager, querymethod
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +68,7 @@ class Tag(InstanceMixin, AuditedModel):
 
 
 # Speech manager
-class SpeechManager(InstanceManager):
+class SpeechManager(InstanceManager, Manager):
 
     def create_from_recording(self, recording, instance):
         """Create one or more speeches from a recording. If there's no audio"""
@@ -206,6 +207,16 @@ class Speech(InstanceMixin, AuditedModel):
         if self.text: out += ' (with text)'
         if self.audio: out += ' (with audio)'
         return out
+
+    @querymethod
+    def visible(query, request=None):
+        if not request.is_user_instance:
+            query = query.filter(public=True)
+        return query
+
+    @property
+    def is_public(self):
+        return self.public
 
     @property
     def summary(self):

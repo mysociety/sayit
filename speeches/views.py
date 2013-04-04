@@ -103,6 +103,9 @@ class SpeechUpdate(SpeechMixin, UpdateView):
 class SpeechView(InstanceViewMixin, DetailView):
     model = Speech
 
+    def get_queryset(self):
+        return super(SpeechView, self).get_queryset().visible(self.request)
+
 class SpeechList(InstanceViewMixin, ListView):
     model = Speech
     context_object_name = "speech_list"
@@ -110,7 +113,7 @@ class SpeechList(InstanceViewMixin, ListView):
     # The .annotate magic allows us to put things with a null start date
     # to the bottom of the list, otherwise they would naturally sort to the top
     def get_queryset(self):
-        return super(SpeechList, self).get_queryset().annotate(null_start_date=Count('start_date')).order_by("speaker__name", "-null_start_date", "-start_date", "-start_time")
+        return super(SpeechList, self).get_queryset().visible(self.request).annotate(null_start_date=Count('start_date')).order_by("speaker__name", "-null_start_date", "-start_date", "-start_time")
 
 class RecentSpeechList(InstanceViewMixin, ListView):
     model = Speech
@@ -119,7 +122,7 @@ class RecentSpeechList(InstanceViewMixin, ListView):
     template_name = "speeches/recent_speech_list.html"
 
     def get_queryset(self):
-        return super(RecentSpeechList, self).get_queryset().order_by("-created")[:50]
+        return super(RecentSpeechList, self).get_queryset().visible(self.request).order_by("-created")[:50]
 
 class SpeakerView(InstanceViewMixin, DetailView):
     model = Speaker
@@ -128,7 +131,7 @@ class SpeakerView(InstanceViewMixin, DetailView):
         # Call the base implementation first to get a context
         context = super(SpeakerView, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the speeches by this speaker
-        context['speech_list'] = Speech.objects.filter(speaker=kwargs['object'].id)
+        context['speech_list'] = Speech.objects.visible(self.request).filter(speaker=kwargs['object'].id)
         return context
 
 class SectionList(InstanceViewMixin, ListView):
@@ -139,7 +142,7 @@ class SectionList(InstanceViewMixin, ListView):
         # Call the base implementation first to get a context
         context = super(SectionList, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the speeches not in a section
-        context['speech_list'] = Speech.objects.for_instance(self.request.instance).filter(section=None)
+        context['speech_list'] = Speech.objects.for_instance(self.request.instance).visible(self.request).filter(section=None)
         return context
 
 class SectionMixin(InstanceFormMixin):
@@ -179,7 +182,7 @@ class SectionView(InstanceViewMixin, DetailView):
         # Call the base implementation first to get a context
         context = super(SectionView, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the speeches in this section
-        context['speech_list'] = Speech.objects.filter(section=kwargs['object'].id)
+        context['speech_list'] = Speech.objects.visible(self.request).filter(section=kwargs['object'].id)
         return context
 
 class RecordingView(InstanceViewMixin, DetailView):

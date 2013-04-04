@@ -1,5 +1,6 @@
 {% load url from future %}
 <li>
+    {% if not speech.is_public %}<span class="label label-info">Invisible</span>{% endif %}
 	<span class="speech-date muted"><small>{{ speech.start_date|default_if_none:"Undated" }} </small></span>
 	<span class="speech-speaker"> <strong>{{ speech.speaker|default_if_none:"Unknown Speaker" }}</strong></span>
 
