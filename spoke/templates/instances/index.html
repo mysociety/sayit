@@ -1,15 +1,18 @@
 {% extends 'base.html' %}
+{% load i18n %}
+
+{% block fulltitle %}{% trans "Welcome to SayIt" %}{% endblock %}
 
 {% block content %}
-<h1>Welcome to SayIt.</h1>
+<h1>{% trans "Welcome to SayIt" %}</h1>
 
-<p>A repository of speeches, written questions, dialogues, what have you. We're working on it.</p>
+<p>{% trans "A repository of speeches, written questions, dialogues, what have you. We're working on it." %}</p>
 
 <ul>
   {% for i in instances %}
     <li><a href="{{ i.get_absolute_url }}">{{ i }}</a></li>
   {% empty %}
-    <li>No instances present.</li>
+    <li>{% trans "No instances present." %}</li>
   {% endfor %}
 </ul>
 
