@@ -8,6 +8,7 @@ from mptt.forms import TreeNodeChoiceField
 
 from django import forms
 from django.forms.forms import BoundField
+from django.forms.widgets import Textarea
 from django.core.files.uploadedfile import UploadedFile
 from django.utils import simplejson
 
@@ -18,14 +19,16 @@ from speeches.utils import GroupedModelChoiceField
 
 logger = logging.getLogger(__name__)
 
-# For Bootstrap, which needs the label class, so monkey-patch
-def add_class(f):
-    def class_tag(self, contents=None, attrs=None):
-        if attrs is None: attrs = {}
-        attrs['class'] = 'control-label'
-        return f(self, contents, attrs)
+def add_class(f, cl):
+    def class_tag(self, *args, **kwargs):
+        kwargs.setdefault('attrs', {})['class'] = cl
+        return f(self, *args, **kwargs)
     return class_tag
-BoundField.label_tag = add_class(BoundField.label_tag)
+
+# For Bootstrap, which needs the label class, so monkey-patch
+BoundField.label_tag = add_class(BoundField.label_tag, 'control-label')
+# And make all textareas be block level 100% width
+Textarea.render = add_class(Textarea.render, 'input-block-level')
 
 class CleanAudioMixin(object):
     def clean_audio(self):
@@ -95,7 +98,6 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
         model = Speech
         widgets = {
             'audio': AudioFileInput,
-            'text': forms.Textarea(attrs={'class': 'input-block-level'}),
             'event': forms.TextInput(),
             'title': forms.TextInput(),
             'location': forms.TextInput(),
