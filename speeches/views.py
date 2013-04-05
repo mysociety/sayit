@@ -138,6 +138,10 @@ class SpeakerMixin(InstanceFormMixin):
     model = Speaker
     form_class = SpeakerForm
 
+class SpeakerList(InstanceViewMixin, ListView):
+    model = Speaker
+    context_object_name = 'speaker_list'
+
 class SpeakerCreate(SpeakerMixin, CreateView):
     pass
 

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% load i18n %}
+
+{% block title %}{% trans "All Speakers" %}{% endblock %}
+
+{% block content %}
+
+    <h1>All speakers</h1>
+
+    <ul>
+      {% for speaker in speaker_list %}
+        <li><a href="{{ speaker.get_absolute_url }}">{{ speaker }}</a></li>
+      {% endfor %}
+    </ul>
+
+{% endblock %}

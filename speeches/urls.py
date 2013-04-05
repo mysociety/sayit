@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^speech/(?P<pk>\d+)$', SpeechView.as_view(), name='speech-view'),
     url(r'^speech/(?P<pk>\d+)/edit$', SpeechUpdate.as_view(), name='speech-edit'),
 
+    url(r'^speakers$', SpeakerList.as_view(), name='speaker-list'),
     url(r'^speaker/add$', SpeakerCreate.as_view(), name='speaker-add'),
     url(r'^speaker/(?P<pk>\d+)$', SpeakerView.as_view(), name='speaker-view'),
     url(r'^speaker/(?P<pk>\d+)/edit$', SpeakerUpdate.as_view(), name='speaker-edit'),
