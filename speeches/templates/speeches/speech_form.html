@@ -27,11 +27,11 @@
     {% endif %}
 </p>
 
-<p id="question" style="display:none">
+<p id="question" class="hidden{% if not object and not form.non_field_errors %} visible-js{% endif %}">
     Do you have <a href="#" id="audio-link">Audio</a> to upload, <a href="#" id="text-link">Text</a> to enter, or <a href="#" id="both-link">Both</a>? 
 </p>
 
-<form id="speech-form" class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
+<form id="speech-form" class="form-horizontal{% if not object and not form.non_field_errors %} hidden-js{% endif %}" method="post" enctype="multipart/form-data">{% csrf_token %}
 
     {% if form.non_field_errors %}
         <div class="alert alert-error alert-block">

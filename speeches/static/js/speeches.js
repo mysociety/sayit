@@ -3,8 +3,6 @@ $(function(){
 
     // Make them answer an Audio/Text question first if it's a brand new speech
     if($("p.lead").hasClass("add-speech") && $("ul.errorlist").length == 0) {
-        $("form#speech-form").hide();
-        $("p#question").show();
         // Click handlers for the options
         $("a#audio-link").click(function(){
             selectFormOption("#id_text_controls");
@@ -24,8 +22,8 @@ $(function(){
     } 
 
     function selectFormOption(selectorsToHide) {
-        $("p#question").hide();
-        $("form#speech-form").show();
+        $("p#question").removeClass('visible-js');
+        $("form#speech-form").removeClass('hidden-js');
         if(typeof selectorsToHide !== "undefined") {
             $(selectorsToHide).hide()
         }

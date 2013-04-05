@@ -1,3 +1,11 @@
+.js .hidden-js {
+    display: none;
+}
+.js .visible-js {
+    display: block;
+    visibility: visible;
+}
+
 .fileinput-button span, .fileinput-button i {
     display: none;
 }
