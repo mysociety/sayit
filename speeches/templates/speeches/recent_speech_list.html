@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load url from future %}
+{% load speech_utils %}
 
 {% block extra_css %}
 <link href="{% static "css/speeches.css" %}" rel="stylesheet">
@@ -9,9 +10,11 @@
 {% block title %}{{ request.instance.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ request.instance.title }}</h1>
+<div class="page-header">
+    <h1>{{ request.instance.title }}</h1>
+    {{ request.instance.description|linebreaks_with_lead }}
+</div>
 
-{{ request.instance.description|linebreaks }}
 
 <h2>Recent Speeches</h2>
 
