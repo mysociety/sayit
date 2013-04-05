@@ -49,11 +49,20 @@
                         <li{% if request.path == '/speech/add' %} class="active"{% endif %}><a href="{% url 'speech-add' %}
                         ">Add speech</a>
                         <li{% if request.path == '/sections' %} class="active"{% endif %}><a href="{% url 'section-list' %}">Sections</a>
-                        <li{% if request.path == '/section/add' %} class="active"{% endif %}><a href="{% url 'section-add' %}">Add section</a>
+                        <li{% if request.path == '/sections/add' %} class="active"{% endif %}><a href="{% url 'section-add' %}">Add section</a>
                       {% endif %}
                       {% if request.user.is_authenticated %}
                         <li class="nav-header">User</li>
-                        <li><a href="{% url 'tokens' %}">{% if request.instance %}{% trans "Token" %}{% else %}{% trans "Tokens" %}{% endif %}</a></li>
+                        {% if request.is_user_instance %}
+                        <li{% if request.path == '/instance/edit' %} class="active"{% endif %}>
+                            <a href="{% url 'instance-edit' %}">{% trans "Edit instance" %}</a>
+                        </li>
+                        <li{% if request.path == '/instance/token' %} class="active"{% endif %}>
+                            <a href="{% url 'tokens' %}">{% trans "Token" %}</a>
+                        </li>
+                        {% elif not request.instance %}
+                        <li><a href="{% url 'tokens' %}">{% trans "Tokens" %}</a></li>
+                        {% endif %}
                         <li><a href="{% url 'django.contrib.auth.views.logout' %}?next=/">{% trans "Log out" %}</a></li>
                       {% endif %}
                     </ul>

@@ -6,6 +6,8 @@ from django.conf.urls.static import static
 from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+from instances.views import InstanceUpdate
+
 # Admin section
 from django.contrib import admin
 admin.autodiscover()
@@ -17,7 +19,8 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
 
-    url(r'^accounts/tokens/?$', 'login_token.views.login_tokens_for_user', name='tokens'),
+    url(r'^instance/edit$', InstanceUpdate.as_view(), name='instance-edit'),
+    url(r'^instance/token$', 'login_token.views.login_tokens_for_user', name='tokens'),
 )
 
 urlpatterns += staticfiles_urlpatterns()

@@ -2,6 +2,10 @@ from functools import wraps
 from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
 from django.utils.decorators import available_attrs
+from django.views.generic import UpdateView
+
+from .models import Instance
+from .forms import InstanceForm
 
 def user_in_instance(view_func):
     """
@@ -32,3 +36,9 @@ class InstanceFormMixin(InstanceViewMixin):
             form.instance.instance = self.request.instance
         return super(InstanceFormMixin, self).form_valid(form)
 
+class InstanceUpdate(InstanceFormMixin, UpdateView):
+    model = Instance
+    form_class = InstanceForm
+
+    def get_object(self):
+        return self.request.instance

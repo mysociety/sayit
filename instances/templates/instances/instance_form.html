@@ -1,0 +1,15 @@
+{% load i18n %}<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% trans "Edit instance" %}</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <h1>{% trans "Edit instance" %}</h1>
+
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <p><input type="submit" value="{% trans "Update instance" %}"></p>
+        </form>
+    </body>
+</html>
