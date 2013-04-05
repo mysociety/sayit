@@ -171,3 +171,12 @@ class SectionForm(forms.ModelForm):
     class Meta:
         model = Section
         exclude = 'instance'
+
+class SpeakerForm(forms.ModelForm):
+    class Meta:
+        model = Speaker
+        exclude = 'instance'
+        widgets = {
+            'name': forms.TextInput(),
+            'popit_url': forms.TextInput(),
+        }

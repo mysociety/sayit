@@ -49,6 +49,14 @@ class Speaker(InstanceMixin, AuditedModel):
             return self.name
         return "[no name]"
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ( 'speaker-view', (), { 'pk': self.id } )
+
+    @models.permalink
+    def get_edit_url(self):
+        return ( 'speaker-edit', (), { 'pk': self.id } )
+
     # http://stackoverflow.com/a/5772272/669631
     def save(self, *args, **kwargs):
         if self.popit_url != '':

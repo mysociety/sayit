@@ -10,14 +10,17 @@ v01_api.register(SpeakerResource())
 v01_api.register(SpeechResource())
 
 urlpatterns = patterns('',
-	url(r'^$', RecentSpeechList.as_view(), name='home'),
+    url(r'^$', RecentSpeechList.as_view(), name='home'),
+
     url(r'^speeches$', SpeechList.as_view(), name='speech-list'),
     url(r'^speech/add$', SpeechCreate.as_view(), name='speech-add'),
     url(r'^speech/ajax_audio$', SpeechAudioCreate.as_view(), name='speech-ajax-audio'),
     url(r'^speech/(?P<pk>\d+)$', SpeechView.as_view(), name='speech-view'),
     url(r'^speech/(?P<pk>\d+)/edit$', SpeechUpdate.as_view(), name='speech-edit'),
 
+    url(r'^speaker/add$', SpeakerCreate.as_view(), name='speaker-add'),
     url(r'^speaker/(?P<pk>\d+)$', SpeakerView.as_view(), name='speaker-view'),
+    url(r'^speaker/(?P<pk>\d+)/edit$', SpeakerUpdate.as_view(), name='speaker-edit'),
 
     url(r'^sections/(?P<pk>\d+)$', SectionView.as_view(), name='section-view'),
     url(r'^sections/add$', SectionCreate.as_view(), name='section-add'),

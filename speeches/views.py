@@ -8,7 +8,7 @@ from django.db.models import Count
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
 
-from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm
+from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm
 from speeches.models import Speech, Speaker, Section, Recording, Tag
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
@@ -133,6 +133,16 @@ class SpeakerView(InstanceViewMixin, DetailView):
         # Add in a QuerySet of all the speeches by this speaker
         context['speech_list'] = Speech.objects.visible(self.request).filter(speaker=kwargs['object'].id)
         return context
+
+class SpeakerMixin(InstanceFormMixin):
+    model = Speaker
+    form_class = SpeakerForm
+
+class SpeakerCreate(SpeakerMixin, CreateView):
+    pass
+
+class SpeakerUpdate(SpeakerMixin, UpdateView):
+    pass
 
 class SectionList(InstanceViewMixin, ListView):
     model = Section
