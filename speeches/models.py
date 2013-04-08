@@ -96,6 +96,7 @@ class SpeechManager(InstanceManager, Manager):
             end_time = None
 
             # Get the related timestamp, if any.
+            timestamp = None
             if sorted_timestamps and len(sorted_timestamps) > 0:
                 # We assume that the files are returned in order of timestamp
                 timestamp = sorted_timestamps[index]
@@ -108,7 +109,7 @@ class SpeechManager(InstanceManager, Manager):
                     end_date = next_timestamp.timestamp.date()
                     end_time = next_timestamp.timestamp.time()
 
-            created_speeches.append(self.create(
+            new_speech = self.create(
                 instance = instance,
                 public = False,
                 audio=File(open(audio_file)),
@@ -117,7 +118,11 @@ class SpeechManager(InstanceManager, Manager):
                 start_time=start_time,
                 end_date=end_date,
                 end_time=end_time
-            ))
+            )
+            created_speeches.append( new_speech )
+            if timestamp:
+                timestamp.speech = new_speech
+                timestamp.save()
 
         return created_speeches
 
@@ -284,6 +289,7 @@ class Speech(InstanceMixin, AuditedModel):
 class RecordingTimestamp(InstanceMixin, AuditedModel):
     speaker = models.ForeignKey(Speaker, blank=True, null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(db_index=True, blank=False)
+    speech = models.ForeignKey(Speech, blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
     def utc(self):
