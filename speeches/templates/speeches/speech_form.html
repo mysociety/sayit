@@ -31,41 +31,12 @@
     Do you have <a href="#" id="audio-link">Audio</a> to upload, <a href="#" id="text-link">Text</a> to enter, or <a href="#" id="both-link">Both</a>? 
 </p>
 
-<form id="speech-form" class="form-horizontal{% if not object and not form.non_field_errors %} hidden-js{% endif %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-
-    {% if form.non_field_errors %}
-        <div class="alert alert-error alert-block">
-            {{ form.non_field_errors }}
-        </div>
+<form id="speech-form" class="form-horizontal{% if not object and not form.non_field_errors %} hidden-js{% endif %}" method="post" enctype="multipart/form-data">
+    {% if object %}
+        {% include 'speeches/form.html' with type="speech" submit="Update speech" %}
+    {% else %}
+        {% include 'speeches/form.html' with type="speech" submit="Add speech" %}
     {% endif %}
-
-    {% for hidden in form.hidden_fields %}
-        {{ hidden }}
-    {% endfor %}
-
-    {% for field in form.visible_fields %}
-        <div class="control-group {% if field.errors %}error{% endif %}" id="{{ field.auto_id}}_controls">
-            {{ field.label_tag }}
-            <div class="controls">
-                {{ field }}
-                {% if field.errors %}
-                    <span class="help-inline">{{ field.errors }}</span>
-                {% endif %}
-                <span class="help-inline">{{ field.help_text }}</span>
-            </div>
-            {% if field.name == 'audio' %}
-            <div class="progress-result">
-            {% if form.audio_filename.value %}
-                Uploaded: {{ form.audio_filename.value }}
-            {% endif %}
-            </div>
-            <div class="progress">
-                <div class="bar" style="width: 0%;"></div>
-            </div>
-            {% endif %}
-        </div>
-    {% endfor %}
-
-<input type="submit" id="speech_submit" class="btn" value="{% if object %}Update speech{% else %}Add speech{% endif %}">
 </form>
+
 {% endblock %}

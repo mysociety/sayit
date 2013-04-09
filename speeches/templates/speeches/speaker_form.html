@@ -11,33 +11,11 @@
     {% endif %}
 </p>
 
-<form id="speaker-form" class="form-horizontal" method="post">{% csrf_token %}
-
-    {% if form.non_field_errors %}
-        <div class="alert alert-error alert-block">
-            {{ form.non_field_errors }}
-        </div>
+<form id="speaker-form" class="form-horizontal" method="post">
+    {% if object %}
+        {% include 'speeches/form.html' with type="speaker" submit="Update speaker" %}
+    {% else %}
+        {% include 'speeches/form.html' with type="speaker" submit="Add speaker" %}
     {% endif %}
-
-    {% for hidden in form.hidden_fields %}
-        {{ hidden }}
-    {% endfor %}
-
-    {% for field in form.visible_fields %}
-        <div class="control-group {% if field.errors %}error{% endif %}" id="{{ field.auto_id}}_controls">
-            {{ field.label_tag }}
-            <div class="controls">
-                {{ field }}
-                {% if field.errors %}
-                    <span class="help-inline">{{ field.errors }}</span>
-                {% endif %}
-                <span class="help-inline">{{ field.help_text }}</span>
-            </div>
-        </div>
-    {% endfor %}
-
-    <div class="form-actions">
-        <input type="submit" id="speaker_submit" class="btn" value="{% if object %}Update speaker{% else %}Add speaker{% endif %}">
-    </div>
 </form>
 {% endblock %}
