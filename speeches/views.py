@@ -14,7 +14,7 @@ from speeches.models import Speech, Speaker, Section, Recording, Tag
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
 
-from django.views.generic import View, CreateView, UpdateView, DetailView, ListView, FormView
+from django.views.generic import View, CreateView, UpdateView, DetailView, ListView, RedirectView, FormView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import BaseFormView
 
@@ -22,6 +22,16 @@ import celery
 import logging
 
 logger = logging.getLogger(__name__)
+
+class AddAnSRedirectView(RedirectView):
+    url = '/%(path)s%(suffix)s'
+    permanent = True
+    query_string = True
+    suffix = 's'
+
+    def get_redirect_url(self, **kwargs):
+        kwargs['suffix'] = self.suffix
+        return super(AddAnSRedirectView, self).get_redirect_url(**kwargs)
 
 class JSONResponseMixin(object):
     """Mixin for returning HTTPResponse of JSON data"""
