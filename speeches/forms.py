@@ -49,6 +49,9 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
             'audio': AudioFileInput,
         }
 
+class SectionPickForm(forms.Form):
+    section = TreeNodeChoiceField(label='Assign to section', queryset=Section.objects.all(), required=True)
+
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
     speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(),

@@ -300,3 +300,10 @@ class RecordingTimestamp(InstanceMixin, AuditedModel):
 class Recording(InstanceMixin, AuditedModel):
     audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=False)
     timestamps = models.ManyToManyField(RecordingTimestamp, blank=True, null=True)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ( 'recording-view', (), { 'pk': self.id } )
+
+    def add_speeches_to_section(self, section):
+        return Speech.objects.filter(recordingtimestamp__recording=self).update(section=section)

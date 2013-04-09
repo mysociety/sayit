@@ -3,17 +3,19 @@ from django.utils import simplejson as json
 from django.core.urlresolvers import reverse
 from django.core import serializers
 from django.conf import settings
+from django.contrib import messages
 
 from django.db.models import Count
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
 
-from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm
+from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm
 from speeches.models import Speech, Speaker, Section, Recording, Tag
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
 
-from django.views.generic import CreateView, UpdateView, DetailView, ListView
+from django.views.generic import View, CreateView, UpdateView, DetailView, ListView, FormView
+from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import BaseFormView
 
 import celery
@@ -72,8 +74,6 @@ class SpeechCreate(SpeechMixin, CreateView):
                 initial['speaker'] = Speaker.objects.get(pk=speaker)
             except Speaker.DoesNotExist:
                 # Ignore the supplied speaker
-                # TODO - would be good to tell the user that they don't exist but we need
-                # to enable the messages module or similar to make it work
                 pass
         try:
             section = int(self.request.GET['section'])
@@ -84,8 +84,6 @@ class SpeechCreate(SpeechMixin, CreateView):
                 initial['section'] = Section.objects.get(pk=section)
             except Section.DoesNotExist:
                 # Ignore the supplied section
-                # TODO - would be good to tell the user that it doesn't exist but we need
-                # to enable the messages module or similar to make it work
                 pass
         return initial
 
@@ -181,8 +179,6 @@ class SectionCreate(SectionMixin, CreateView):
                 initial['parent'] = Section.objects.get(pk=section)
             except Section.DoesNotExist:
                 # Ignore the supplied section
-                # TODO - would be good to tell the user that it doesn't exist but we need
-                # to enable the messages module or similar to make it work
                 pass
         return initial
 
@@ -199,8 +195,42 @@ class SectionView(InstanceViewMixin, DetailView):
         context['speech_list'] = Speech.objects.visible(self.request).filter(section=kwargs['object'].id)
         return context
 
-class RecordingView(InstanceViewMixin, DetailView):
+class BothObjectAndFormMixin(object):
+    def get_context_data(self, **kwargs):
+        context = super(BothObjectAndFormMixin, self).get_context_data(**kwargs)
+        if 'object' not in context:
+            context['object'] = self.get_object()
+        if 'form' not in context:
+            context['form'] = SectionPickForm()
+        # Restrict to request's instance (can we think of a nicer way to do this?)
+        context['form'].fields['section'].queryset = Section.objects.for_instance(self.request.instance).order_by('tree_id', 'lft')
+        return context
+
+class RecordingDisplay(BothObjectAndFormMixin, InstanceViewMixin, DetailView):
     model = Recording
+
+class RecordingSetSection(BothObjectAndFormMixin, InstanceFormMixin, FormView, SingleObjectMixin):
+    template_name = 'speeches/recording_detail.html'
+    form_class = SectionPickForm
+    model = Recording
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+    def form_valid(self, form):
+        self.object = self.get_object()
+        num = self.object.add_speeches_to_section(form.cleaned_data['section'])
+        messages.add_message(self.request, messages.SUCCESS, "Speeches assigned.")
+        return super(RecordingSetSection, self).form_valid(form)
+
+class RecordingView(View):
+    def get(self, request, *args, **kwargs):
+        view = RecordingDisplay.as_view()
+        return view(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        view = RecordingSetSection.as_view()
+        return view(request, *args, **kwargs)
 
 class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
     # View for RecordingAPIForm, to create a recording
