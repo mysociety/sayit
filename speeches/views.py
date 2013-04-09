@@ -216,6 +216,9 @@ class BothObjectAndFormMixin(object):
         context['form'].fields['section'].queryset = Section.objects.for_instance(self.request.instance).order_by('tree_id', 'lft')
         return context
 
+class RecordingList(InstanceViewMixin, ListView):
+    model = Recording
+
 class RecordingDisplay(BothObjectAndFormMixin, InstanceViewMixin, DetailView):
     model = Recording
 

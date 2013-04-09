@@ -33,6 +33,8 @@
 {% endfor %}
 </ul>
 
+<h2>Actions</h2>
+
 <form class="form-horizontal" method="post">{% csrf_token %}
 
     {% if form.non_field_errors %}
@@ -59,7 +61,7 @@
     {% endfor %}
 
     <div class="form-actions">
-        <input type="submit" id="section_submit" class="btn" value="{% trans "Assign to section" %}">
+        <input type="submit" id="section_submit" class="btn" value="{% trans "Update" %}">
     </div>
 </form>
 

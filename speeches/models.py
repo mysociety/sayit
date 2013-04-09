@@ -301,6 +301,9 @@ class Recording(InstanceMixin, AuditedModel):
     audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=False)
     timestamps = models.ManyToManyField(RecordingTimestamp, blank=True, null=True)
 
+    def __unicode__(self):
+        return u'Recording made on {date:%d %B %Y} at {date:%H:%M}'.format(date=self.created)
+
     @models.permalink
     def get_absolute_url(self):
         return ( 'recording-view', (), { 'pk': self.id } )

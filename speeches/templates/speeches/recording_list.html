@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load url from future %}
+
+{% block title %}Recordings{% endblock %}
+
+{% block content %}
+
+<h1>Recordings</h1>
+
+<p>Here is a list of recordings uploaded to this instance using the mobile app.</p>
+
+<ul>
+  {% for recording in recording_list %}
+    <li><a href="{{ recording.get_absolute_url }}">{{ recording }}</a></li>
+  {% empty %}
+    <li>There are no recordings.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

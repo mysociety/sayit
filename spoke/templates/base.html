@@ -45,9 +45,9 @@
                         <li class="nav-header">Basics</li>
                         <li{% if request.path == '/' %} class="active"{% endif %}><a href="/">Home</a>
                       {% if request.instance %}
-                        <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speaker-list' %}">All speakers</a>
-                        <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speech-list' %}">All speeches</a>
+                        <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speaker-list' %}">Speakers</a>
                         <li{% if request.path == '/speaker/add' %} class="active"{% endif %}><a href="{% url 'speaker-add' %}">Add speaker</a>
+                        <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speech-list' %}">Speeches</a>
                         <li{% if request.path == '/speech/add' %} class="active"{% endif %}><a href="{% url 'speech-add' %}
                         ">Add speech</a>
                         <li{% if request.path == '/sections' %} class="active"{% endif %}><a href="{% url 'section-list' %}">Sections</a>
@@ -59,6 +59,7 @@
                         <li{% if request.path == '/instance/edit' %} class="active"{% endif %}>
                             <a href="{% url 'instance-edit' %}">{% trans "Edit instance" %}</a>
                         </li>
+                        <li{% if request.path == '/recordings' %} class="active"{% endif %}><a href="{% url 'recording-list' %}">Recordings</a>
                         <li{% if request.path == '/instance/token' %} class="active"{% endif %}>
                             <a href="{% url 'tokens' %}">{% trans "Token" %}</a>
                         </li>
