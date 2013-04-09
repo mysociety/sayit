@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load url from future %}
+{% load humanize %}
+
+{% block title %}Recording #{{ object.id }}{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Recording #{{ object.id }}</h1>
+
+    <p>This recording was created {{ object.created|naturaltime }}.
+    It consists of {{ object.timestamps.count|apnumber }} timestamps.
+</div>
+
+<ul>
+{% for ts in object.timestamps.all %}
+    <li>{{ ts.timestamp }} &ndash;
+    {% if ts.speech %}
+      {% with ts.speech as speech %}
+        {% if not speech.is_public %}<span class="label label-info">Invisible</span>{% endif %}
+        <span class="speech-speaker"> <strong>{{ speech.speaker|default_if_none:"Unknown Speaker" }}</strong></span>
+        <span class="speech-summary"> said <a href="{%url "speech-view" speech.id%}"><em>&#8220;{{ speech.summary}}&#8221;</em></a></span>
+        <span class="speech-date muted"><small>{{ speech.start_date|default_if_none:"Undated" }} </small></span>
+      {% endwith %}
+    {% else %}
+        no attached speech.
+    {% endif %}
+{% empty %}
+    <li>This recording had no associated timestamps (normally shouldn't happen).</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
+
