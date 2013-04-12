@@ -145,12 +145,13 @@ INSTALLED_APPS = [
     'south',
     'pagination',
     'django_select2',
-    'instances',
-    'speeches',
     'django_nose',
     'tastypie',
-    'login_token',
     'mptt',
+    'popit',
+    'instances',
+    'speeches',
+    'login_token',
 ]
 if DEBUG:
     INSTALLED_APPS.append( 'debug_toolbar' )

@@ -7,7 +7,7 @@ class SpeakerTests(InstanceTestCase):
 
     def test_speaker_page_lists_speeches(self):
         # Add a speaker
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
+        speaker = Speaker.objects.create(name='Steve', instance=self.instance)
         
         # Call the speaker's page
         resp = self.client.get('/speaker/1')
@@ -25,7 +25,7 @@ class SpeakerTests(InstanceTestCase):
 
     def test_speaker_page_has_button_to_add_speech(self):
         # Add a speaker
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
+        speaker = Speaker.objects.create(name='Steve', instance=self.instance)
         
         # Call the speaker's page
         resp = self.client.get('/speaker/1')

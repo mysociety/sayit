@@ -14,6 +14,7 @@ from speeches.utils import AudioHelper
 
 from mptt.models import MPTTModel, TreeForeignKey
 from djqmethod import Manager, querymethod
+from popit.models import Person
 
 logger = logging.getLogger(__name__)
 
@@ -31,18 +32,10 @@ class AuditedModel(models.Model):
         self.modified = now
         super(AuditedModel, self).save(*args, **kwargs)
 
-class SpeakerManager(InstanceManager):
-    def get_or_create_from_popit_url(self, popit_url, instance):
-        speaker = None
-        if popit_url:
-            speaker, created = self.get_or_create(popit_url=popit_url, instance=instance, defaults={ 'name': 'Unknown' })
-        return speaker
-
 # Speaker - someone who gave a speech
 class Speaker(InstanceMixin, AuditedModel):
-    popit_url = models.TextField(blank=True)
+    person = models.ForeignKey(Person, blank=True, null=True, on_delete=models.PROTECT)
     name = models.TextField(db_index=True)
-    objects = SpeakerManager()
 
     def __unicode__(self):
         if self.name:
@@ -59,12 +52,12 @@ class Speaker(InstanceMixin, AuditedModel):
 
     # http://stackoverflow.com/a/5772272/669631
     def save(self, *args, **kwargs):
-        if self.popit_url != '':
-            conflicting_instance = Speaker.objects.filter(instance=self.instance, popit_url=self.popit_url)
+        if self.person:
+            conflicting_instance = Speaker.objects.filter(instance=self.instance, person=self.person)
             if self.id:
                 conflicting_instance = conflicting_instance.exclude(pk=self.id)
             if conflicting_instance.exists():
-                raise Exception('Speaker with this instance and popit id already exists.')
+                raise Exception('Speaker with this instance and popit person already exists.')
         super(Speaker, self).save(*args, **kwargs)
 
 

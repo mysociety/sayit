@@ -181,5 +181,4 @@ class SpeakerForm(forms.ModelForm):
         exclude = 'instance'
         widgets = {
             'name': forms.TextInput(),
-            'popit_url': forms.TextInput({'class': 'input-block-level', 'readonly':'readonly'}),
         }

@@ -49,7 +49,7 @@ class SpeechTests(InstanceTestCase):
 
     def test_add_speech_with_speaker(self):
         # Test form with speaker, we need to add a speaker first
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
+        speaker = Speaker.objects.create(name='Steve', instance=self.instance)
 
         resp = self.client.post('/speech/add', {
             'text': 'This is a Steve speech',

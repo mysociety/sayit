@@ -57,7 +57,7 @@ class RecordingAPITests(InstanceTestCase):
 
     def test_add_recording_with_timestamp(self):
         # Add two speakers
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
+        speaker = Speaker.objects.create(name='Steve', instance=self.instance)
 
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
 
@@ -89,7 +89,7 @@ class RecordingAPITests(InstanceTestCase):
         expected_timestamps = []
         timestamps = '['
         for i in range(SPEECHES):
-            s = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/' + str(i), name='Speaker ' + str(i), instance=self.instance)
+            s = Speaker.objects.create(name='Speaker ' + str(i), instance=self.instance)
             t = 946684800 + i*3
             speakers.append(s)
             expected_timestamps.append( datetime.utcfromtimestamp(t).replace(tzinfo=pytz.utc) )

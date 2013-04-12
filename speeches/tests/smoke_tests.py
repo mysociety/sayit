@@ -15,7 +15,7 @@ class SmokeTests(InstanceTestCase):
 
     def test_a_speaker_page(self):
         # Add a speaker first
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
+        speaker = Speaker.objects.create(name='Steve', instance=self.instance)
         resp = self.client.get('/speaker/%s' % speaker.id)
         self.assertEqual(resp.status_code, 200)
 

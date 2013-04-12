@@ -120,7 +120,7 @@ class SeleniumTests(InstanceLiveServerTestCase):
 
     def test_speaker_autocomplete(self):
         # Put a person in the db for the autocomplete to find
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcde', name='Name', instance=self.instance)
+        speaker = Speaker.objects.create(name='Name', instance=self.instance)
 
         # Type a name in and select it
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))

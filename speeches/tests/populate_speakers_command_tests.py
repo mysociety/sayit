@@ -1,75 +1,82 @@
 from mock import patch, Mock
 
-from popit import PopIt
-
 from django.core import management
 
+from popit.models import ApiInstance, Person
 from instances.tests import InstanceTestCase
-
-import speeches
 from speeches.models import Speaker
 
 class PopulateSpeakersCommandTests(InstanceTestCase):
 
     def test_populates_empty_db(self):
-        # Canned data to simulate a response from popit
+        api_url = 'http://popit.mysociety.org/api/v1/'
+        ai = ApiInstance.objects.create(url=api_url)
+
+        # Canned data to simulate a response from popit-api
         people = [
             {
-                '_id': 'abcde',
+                'id': 'abcde',
                 'name': 'Test 1',
-                'meta': {
-                    'api_url': 'http://popit.mysociety.org/api/v1/person/abcde',
-                },
+                'popit_url': 'abcde',
             },
             {
-                '_id': 'fghij',
+                'id': 'fghij',
                 'name': 'Test 2',
-                'meta': {
-                    'api_url': 'http://popit.mysociety.org/api/v1/person/fghij',
-                },
+                'popit_url': 'fghij',
             }
         ]
         # Mock out popit and then call our command
-        popit_config = { 'person': Mock(), 'person.get.return_value': {'results': people} }
-        with patch('speeches.management.commands.populatespeakers.PopIt', spec=PopIt, **popit_config) as patched_popit:
-            management.call_command('populatespeakers', instance='testing')
+        m = Mock()
+        m._store = { 'base_url': api_url + 'persons' }
+        m.get.return_value = { 'result': people }
+        with patch('popit.models.ApiInstance.api_client', return_value=m) as patched_popit:
+            management.call_command('popit_retrieve_all')
 
-        db_people = Speaker.objects.all()
-        self.assertTrue(len(db_people) == 2)
-        self.assertTrue(db_people[0].popit_url == 'http://popit.mysociety.org/api/v1/person/abcde')
-        self.assertTrue(db_people[0].name == 'Test 1')
-        self.assertTrue(db_people[1].popit_url == 'http://popit.mysociety.org/api/v1/person/fghij')
-        self.assertTrue(db_people[1].name == 'Test 2')
+        db_people = Person.objects.all()
+        self.assertEqual(len(db_people), 2)
+        self.assertEqual(db_people[0].popit_url, 'http://popit.mysociety.org/api/v1/persons/abcde')
+        self.assertEqual(db_people[0].name, 'Test 1')
+        self.assertEqual(db_people[0].api_instance, ai)
+        self.assertEqual(db_people[1].popit_url, 'http://popit.mysociety.org/api/v1/persons/fghij')
+        self.assertEqual(db_people[1].name, 'Test 2')
+        self.assertEqual(db_people[1].api_instance, ai)
 
     def test_updates_existing_records(self):
+        api_url = 'http://popit.mysociety.org/api/v1/'
+        ai = ApiInstance.objects.create(url=api_url)
+
         # Add a record into the db first
-        existing_person = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcde', name='test 1', instance=self.instance)
+        existing_person = Person.objects.create(popit_url='http://popit.mysociety.org/api/v1/persons/abcde', name='test 1', api_instance=ai)
+        existing_speaker = Speaker.objects.create(person=existing_person, name='Test Override', instance=self.instance)
 
         # Canned data to simulate a response from popit
         changed_people = [
             {
-                '_id': 'abcde',
+                'id': 'abcde',
                 'name': 'Test 3', # Note changed name
-                'meta': {
-                    'api_url': 'http://popit.mysociety.org/api/v1/person/abcde',
-                },
+                'popit_url': 'http://popit.mysociety.org/api/v1/persons/abcde',
             },
             {
-                '_id': 'fghij',
+                'id': 'fghij',
                 'name': 'Test 2',
-                'meta': {
-                    'api_url': 'http://popit.mysociety.org/api/v1/person/fghij',
-                },
+                'popit_url': 'http://popit.mysociety.org/api/v1/persons/fghij',
             }
         ]
         # Mock out popit and then call our command
-        popit_config = { 'person': Mock(), 'person.get.return_value': {'results': changed_people} }
-        with patch('speeches.management.commands.populatespeakers.PopIt', spec=PopIt, **popit_config) as new_patched_popit:
-            management.call_command('populatespeakers', instance='testing')
+        m = Mock()
+        m._store = { 'base_url': api_url + 'persons' }
+        m.get.return_value = { 'result': changed_people }
+        with patch('popit.models.ApiInstance.api_client', return_value=m) as patched_popit:
+            management.call_command('popit_retrieve_all')
 
-        db_people = Speaker.objects.all()
-        self.assertTrue(len(db_people) == 2)
-        self.assertTrue(db_people[0].popit_url == 'http://popit.mysociety.org/api/v1/person/abcde')
-        self.assertTrue(db_people[0].name == 'Test 3')
-        self.assertTrue(db_people[1].popit_url == 'http://popit.mysociety.org/api/v1/person/fghij')
-        self.assertTrue(db_people[1].name == 'Test 2')
+        db_people = Person.objects.all()
+        self.assertEqual(len(db_people), 2)
+        self.assertEqual(db_people[0].popit_url, 'http://popit.mysociety.org/api/v1/persons/abcde')
+        self.assertEqual(db_people[0].name, 'Test 3')
+        self.assertEqual(db_people[0].api_instance, ai)
+        self.assertEqual(db_people[1].popit_url, 'http://popit.mysociety.org/api/v1/persons/fghij')
+        self.assertEqual(db_people[1].name, 'Test 2')
+        self.assertEqual(db_people[1].api_instance, ai)
+
+        self.assertEqual(existing_speaker.name, 'Test Override')
+        self.assertEqual(existing_speaker.person, db_people[0])

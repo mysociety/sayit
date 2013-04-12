@@ -96,7 +96,7 @@ class AudioHelperTests(InstanceTestCase):
         self.assertSameAudioLength(files_created[0], self.expected_output_file('lamb_whole.mp3'))
 
     def test_recording_splitting_one_timestamp(self):
-        speaker = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
+        speaker = Speaker.objects.create(name='Steve', instance=self.instance)
         timestamp = RecordingTimestamp.objects.create(speaker=speaker, timestamp=timezone.now(), instance=self.instance)
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
         recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'), instance=self.instance)
@@ -109,25 +109,25 @@ class AudioHelperTests(InstanceTestCase):
         self.assertSameAudioLength(files_created[0], self.expected_output_file('lamb_whole.mp3'))
 
     def test_recording_splitting_several_timestamps(self):
-        speaker1 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/abcd', name='Steve', instance=self.instance)
-        speaker2 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/efgh', name='Dave', instance=self.instance)
-        speaker3 = Speaker.objects.create(popit_url='http://popit.mysociety.org/api/v1/person/ijkl', name='Struan', instance=self.instance)
+        speakers = []
+        for i in range(3):
+            speakers.append( Speaker.objects.create(name='Steve %d' % i, instance=self.instance) )
+
         start = timezone.now()
-        timestamp1 = RecordingTimestamp.objects.create(speaker=speaker1, timestamp=start, instance=self.instance)
-        start_plus_3_seconds = start + timedelta(seconds=3)
-        timestamp2 = RecordingTimestamp.objects.create(speaker=speaker2, timestamp=start_plus_3_seconds, instance=self.instance)
-        start_plus_4_seconds = start + timedelta(seconds=4)
-        timestamp3 = RecordingTimestamp.objects.create(speaker=speaker3, timestamp=start_plus_4_seconds, instance=self.instance)
+        timestamps = [ 0, 3, 4 ]
+        for i in range(3):
+            start_i = start + timedelta(seconds=timestamps[i])
+            timestamps[i] = RecordingTimestamp.objects.create(speaker=speakers[i], timestamp=start_i, instance=self.instance)
+
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
         recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'), instance=self.instance)
-        recording.timestamps.add(timestamp1)
-        recording.timestamps.add(timestamp2)
-        recording.timestamps.add(timestamp3)
+        for i in range(3):
+            recording.timestamps.add(timestamps[i])
         recording.save()
 
         files_created = self.helper.split_recording(recording)
 
         self.assertEquals(len(files_created), 3)
-        self.assertSameAudioLength(files_created[0], self.expected_output_file('lamb_first_three_seconds.mp3'))
-        self.assertSameAudioLength(files_created[1], self.expected_output_file('lamb_from_three_to_four_seconds.mp3'))
-        self.assertSameAudioLength(files_created[2], self.expected_output_file('lamb_from_four_seconds_onwards.mp3'))
+        files = [ 'lamb_first_three_seconds.mp3', 'lamb_from_three_to_four_seconds.mp3', 'lamb_from_four_seconds_onwards.mp3' ]
+        for i in range(3):
+            self.assertSameAudioLength(files_created[i], self.expected_output_file(files[i]))
