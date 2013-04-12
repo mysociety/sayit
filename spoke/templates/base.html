@@ -68,6 +68,11 @@
                         {% endif %}
                         <li><a href="{% url 'django.contrib.auth.views.logout' %}?next=/">{% trans "Log out" %}</a></li>
                       {% endif %}
+                        <li class="nav-header">Meta</li>
+                      {% if request.instance %}
+                        <li><a href="{{ settings.BASE_HOST }}">SayIt</a></li>
+                      {% endif %}
+                        <li><a href="http://www.mysociety.org/">mySociety</a></li>
                     </ul>
                     {% endblock %}
                 </div>
