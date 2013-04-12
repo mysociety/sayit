@@ -182,3 +182,6 @@ class SpeakerForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(),
         }
+
+class SpeakerPopitForm(forms.Form):
+    url = forms.URLField(label="PopIt URL")

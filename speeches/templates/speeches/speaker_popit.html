@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load url from future %}
+{% load humanize %}
+{% load i18n %}
+
+{% block title %}{% trans "Add new PopIt instance" %}{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>{% trans "Add new PopIt instance" %}</h1>
+    <p>{% trans "Provide a PopIt API URL below and all its speakers will be added locally." %}</p>
+</div>
+
+<form class="form-horizontal" method="post">
+    {% include 'speeches/form.html' with submit="Submit" type="speaker" %}
+</form>
+
+{% endblock %}
+

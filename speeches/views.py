@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson as json
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.core import serializers
 from django.conf import settings
 from django.contrib import messages
@@ -8,8 +8,9 @@ from django.contrib import messages
 from django.db.models import Count
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
+from popit.models import ApiInstance
 
-from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm
+from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, SpeakerPopitForm
 from speeches.models import Speech, Speaker, Section, Recording, Tag
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
@@ -155,6 +156,26 @@ class SpeakerCreate(SpeakerMixin, CreateView):
 
 class SpeakerUpdate(SpeakerMixin, UpdateView):
     pass
+
+class SpeakerPopit(InstanceFormMixin, FormView):
+    template_name = 'speeches/speaker_popit.html'
+    form_class = SpeakerPopitForm
+    success_url = reverse_lazy('speaker-popit')
+
+    def form_valid(self, form):
+        ai, _ = ApiInstance.objects.get_or_create(url=form.cleaned_data['url'])
+        ai.fetch_all_from_api()
+        new = 0
+        for person in ai.person_set.all():
+            speaker, created = Speaker.objects.get_or_create(
+                instance=self.request.instance,
+                person=person,
+                defaults={ 'name': person.name }
+            )
+            if created: new += 1
+
+        messages.add_message(self.request, messages.SUCCESS, "PopIt instance added, %d new speakers added." % new)
+        return super(SpeakerPopit, self).form_valid(form)
 
 class SectionList(InstanceViewMixin, ListView):
     model = Section
