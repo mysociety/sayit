@@ -26,7 +26,7 @@
 		</li>
 		<ul class="unstyled">
 			{% for speech in speech.list %}
-				{% include "speeches/speech_list_item_without_speaker.html" with speech=speech only %}
+				{% include "speeches/speech_list_item_with_speaker.html" with speech=speech nospeaker="1" only %}
 			{% endfor %}
 		</ul>
 	{% endfor %}

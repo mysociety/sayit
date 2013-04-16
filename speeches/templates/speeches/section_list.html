@@ -25,13 +25,13 @@
     <h2>Speeches</h2>
     <p>These are speeches not attached to a section.</p>
 
-    <ul class="unstyled">
+    <ol class="unstyled">
         {% if not speech_list %}
             <li>There are no un-sectioned speeches.</li>
         {% endif %}
         {% for speech in speech_list %}
             {% include "speeches/speech_list_item_with_speaker.html" with speech=speech only %}
         {% endfor %}
-    </ul>
+    </ol>
 
 {% endblock %}

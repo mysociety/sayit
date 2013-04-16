@@ -12,14 +12,21 @@
 <a href="{{ n.get_absolute_url }}">{{ n.title }}</a> &rarr;
 {% endfor %}
 
+    {% if user.is_authenticated %}
+    <div class="btn-group pull-right">
+      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        Actions
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="{{ section.get_edit_url }}">Edit section</a>
+        <li><a href="{% url "section-add" %}?section={{ section.id }}">Add a new subsection</a>
+        <li><a href="{% url "speech-add" %}?section={{ section.id }}">Add a new speech</a>
+      </ul>
+    </div>
+    {% endif %}
+
     <h1>{{ section.title }}</h1>
-
-    <p>
-        <a class="btn" href="{% url "section-add" %}?section={{ section.id }}">Add a new section in this section</a>
-        <a class="btn" href="{% url "speech-add" %}?section={{ section.id }}">Add a new speech in this section</a>
-    </p>
-
-    <h2>Sections</h2>
 
     {% drilldown_tree_for_node section as drilldown all cumulative count speeches.Speech.section in speech_count %}
     {% for node, structure in drilldown|tree_info %}
@@ -31,18 +38,11 @@
         {% endif %}
     {% endfor %}
 
-    <h2>Speeches</h2>
-
-    <ul class="unstyled">
-        {% if not speech_list %}
-            <li>{{ section.title }} doesn't contain any speeches yet.</li>
-        {% endif %}
+    <ol class="unstyled">
         {% for speech in speech_list %}
             {% include "speeches/speech_list_item_with_speaker.html" with speech=speech only %}
         {% endfor %}
-    </ul>
-
-    <p><a href="{{ section.get_edit_url }}">Edit</a></p>
+    </ol>
 
 {% endblock %}
 

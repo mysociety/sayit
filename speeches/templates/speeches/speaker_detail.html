@@ -15,7 +15,7 @@
             <li>{{ object.name }} has no recorded speeches yet.</li>
         {% endif %}
         {% for speech in speech_list %}
-            {% include "speeches/speech_list_item_without_speaker.html" with speech=speech only %}
+            {% include "speeches/speech_list_item_with_speaker.html" with speech=speech nospeaker="1" only %}
         {% endfor %}
     </ul>
 
