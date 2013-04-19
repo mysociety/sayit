@@ -13,6 +13,7 @@ django-pagination
 django_select2
 django-tastypie
 django-qmethod
+django-bleach
 # Only for debugging, but very useful and easiest to just have it here
 django-debug-toolbar
 

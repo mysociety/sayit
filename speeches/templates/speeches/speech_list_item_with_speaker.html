@@ -1,6 +1,7 @@
 {% load url from future %}
+{% load bleach_tags %}
 
-<li>
+<li id="s{{ speech.id }}">
     {% if not speech.is_public %}<span class="label label-info">Invisible</span>{% endif %}
     {% if not nospeaker %}
 	<span class="speech-speaker"> <strong>{{ speech.speaker|default_if_none:"Unknown Speaker" }}</strong></span>
@@ -28,7 +29,7 @@
   {% if speech.audio and not speech.text %}
     <p>[ recorded audio ]</p>
   {% else %}
-    {{ speech.text|linebreaks }}
+    {{ speech.text|bleach|linebreaks }}
   {% endif %}
 
 </li>
