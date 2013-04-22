@@ -7,10 +7,11 @@
 
 {% block content %}
 
+<div class="page-header">
     {% if user.is_authenticated %}
     <div class="btn-group pull-right">
       <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        Actions
+        {% trans "Actions" %}
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
@@ -21,6 +22,7 @@
     {% endif %}
 
     <h1>{{ speaker.name }}</h1>
+</div>
 
     <ul class="unstyled">
         {% if not page_obj %}

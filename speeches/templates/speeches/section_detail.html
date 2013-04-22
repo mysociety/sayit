@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load url from future %}
+{% load i18n %}
 {% load mptt_tags %}
 
-{% block title %}View Section: {{ section.title }}{% endblock %}
+{% block title %}{% blocktrans with title=section.title %}View Section: {{ title }}{% endblocktrans %}{% endblock %}
 
 {% block content %}
 
-<a href="{% url 'section-list' %}">Sections</a> &rarr;
+<div class="page-header">
+
+<a href="{% url 'section-list' %}">{% trans "Sections" %}</a> &rarr;
 {% for n in section.get_ancestors %}
 <a href="{{ n.get_absolute_url }}">{{ n.title }}</a> &rarr;
 {% endfor %}
@@ -15,18 +18,20 @@
     {% if user.is_authenticated %}
     <div class="btn-group pull-right">
       <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        Actions
+        {% trans "Actions" %}
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
-        <li><a href="{{ section.get_edit_url }}">Edit section</a>
-        <li><a href="{% url "section-add" %}?section={{ section.id }}">Add a new subsection</a>
-        <li><a href="{% url "speech-add" %}?section={{ section.id }}">Add a new speech</a>
+        <li><a href="{{ section.get_edit_url }}">{% trans "Edit section" %}</a>
+        <li><a href="{% url "section-add" %}?section={{ section.id }}">{% trans "Add a new subsection" %}</a>
+        <li><a href="{% url "speech-add" %}?section={{ section.id }}">{% trans "Add a new speech" %}</a>
       </ul>
     </div>
     {% endif %}
 
     <h1>{{ section.title }}</h1>
+
+</div>
 
 {% with next=section.get_next_node previous=section.get_previous_node %}
   {% if previous or next %}

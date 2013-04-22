@@ -9,7 +9,10 @@
 {% block title %}All Speakers{% endblock %}
 
 {% block content %}
-<h1>All speakers</h1>
+
+<div class="page-header">
+    <h1>All speakers</h1>
+</div>
 
 {% regroup speech_list by speaker as grouped_speech_list %}
 

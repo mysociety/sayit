@@ -4,12 +4,12 @@
 {% load humanize %}
 {% load i18n %}
 
-{% block title %}Recording #{{ object.id }}{% endblock %}
+{% block title %}{% blocktrans with id=object.id %}Recording #{{ id }}{% endblocktrans %}{% endblock %}
 
 {% block content %}
 
 <div class="page-header">
-    <h1>Recording #{{ object.id }}</h1>
+    <h1>{% blocktrans with id=object.id %}Recording #{{ id }}{% endblocktrans %}</h1>
 
     <p>This recording was created {{ object.created|naturaltime }}.
     It consists of {{ object.timestamps.count|apnumber }} timestamps.
@@ -33,7 +33,7 @@
 {% endfor %}
 </ul>
 
-<h2>Actions</h2>
+<h2>{% trans "Actions" %}</h2>
 
 <form class="form-horizontal" method="post">
     {% include 'speeches/form.html' with submit="Update" type="recording" %}
