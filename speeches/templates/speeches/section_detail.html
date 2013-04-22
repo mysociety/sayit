@@ -28,6 +28,19 @@
 
     <h1>{{ section.title }}</h1>
 
+{% with next=section.get_next_node previous=section.get_previous_node %}
+  {% if previous or next %}
+    <ul class="pager">
+      {% if previous %}
+        <li><a href="{% url "section-view" previous.id %}">&larr; {{ previous.title }}</a>
+      {% endif %}
+      {% if next %}
+        <li><a href="{% url "section-view" next.id %}">{{ next.title }} &rarr;</a>
+      {% endif %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
     {% drilldown_tree_for_node section as drilldown all cumulative count speeches.Speech.section in speech_count %}
     {% for node, structure in drilldown|tree_info %}
         {% if node.level > section.level %}

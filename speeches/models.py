@@ -164,6 +164,43 @@ class Section(MPTTModel, AuditedModel, InstanceMixin):
     def get_edit_url(self):
         return ( 'section-edit', (), { 'pk': self.id } )
 
+    # Override the sibling functions to restrict results to the same instance
+    def get_next_sibling(self, *args, **kwargs):
+        kwargs['instance'] = self.instance
+        return super(Section, self).get_next_sibling(*args, **kwargs)
+
+    def get_previous_sibling(self, *args, **kwargs):
+        kwargs['instance'] = self.instance
+        return super(Section, self).get_previous_sibling(*args, **kwargs)
+
+    def get_next_node(self):
+        """Fetch the next node in the tree, at the same level as this one.
+        Same as get_next_sibling except for a last sibling, when it'll find
+        something further away."""
+        qs = self._tree_manager.filter(instance=self.instance)
+        qs = self._tree_manager._mptt_filter(qs,
+            tree_id=self._mpttfield('tree_id'),
+            level = self._mpttfield('level'),
+            left__gt=self._mpttfield('right'),
+        )
+        siblings = qs[:1]
+        return siblings and siblings[0] or None
+
+    def get_previous_node(self):
+        """Fetch the previous node in the tree, at the same level as this one.
+        Same as get_previous_sibling except for a first sibling, when it'll find
+        something further away."""
+        opts = self._mptt_meta
+        qs = self._tree_manager.filter(instance=self.instance)
+        qs = self._tree_manager._mptt_filter(qs,
+            tree_id=self._mpttfield('tree_id'),
+            level = self._mpttfield('level'),
+            right__lt=self._mpttfield('left'),
+        )
+        qs = qs.order_by('-' + opts.right_attr)
+        siblings = qs[:1]
+        return siblings and siblings[0] or None
+
 # Speech that a speaker gave
 class Speech(InstanceMixin, AuditedModel):
     # Custom manager
