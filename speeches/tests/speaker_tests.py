@@ -30,4 +30,4 @@ class SpeakerTests(InstanceTestCase):
         # Call the speaker's page
         resp = self.client.get('/speaker/1')
 
-        self.assertContains(resp, '<a class="btn" href="/speech/add?speaker=1">Add a new speech by Steve</a>', html=True)
+        self.assertContains(resp, '<a href="/speech/add?speaker=1">Add a new speech</a>', html=True)

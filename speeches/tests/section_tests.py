@@ -149,6 +149,6 @@ class SectionSiteTests(InstanceTestCase):
         # Call the section's page
         resp = self.client.get('/sections/1')
 
-        self.assertContains(resp, '<a class="btn" href="/speech/add?section=1">Add a new speech in this section</a>', html=True)
-        self.assertContains(resp, '<a class="btn" href="/sections/add?section=1">Add a new section in this section</a>', html=True)
+        self.assertContains(resp, '<a href="/speech/add?section=1">Add a new speech</a>', html=True)
+        self.assertContains(resp, '<a href="/sections/add?section=1">Add a new subsection</a>', html=True)
 
