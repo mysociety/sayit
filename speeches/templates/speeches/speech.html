@@ -4,7 +4,7 @@
 {% load mptt_tags %}
 
 <li id="s{{ speech.id }}">
-    {% if speech.section and not nosection %}
+    {% if not nosection and speech.section_id %}
         {% drilldown_tree_for_node speech.section as drilldown %}
         {% for n,s in drilldown|tree_info %}
             <a href="{{ n.get_absolute_url }}">{{ n.title }}</a> &rarr;

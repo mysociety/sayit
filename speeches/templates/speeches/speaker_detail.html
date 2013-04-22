@@ -1,24 +1,54 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load url from future %}
+{% load i18n %}
 
-{% block title %}View Speaker: {{ object.name}}{% endblock %}
+{% block title %}{% blocktrans with speaker=speaker.name %}View Speaker: {{ speaker }}{% endblocktrans %}{% endblock %}
 
 {% block content %}
 
-    <h1>{{ object.name }}</h1>
+    {% if user.is_authenticated %}
+    <div class="btn-group pull-right">
+      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        Actions
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="{{ speaker.get_edit_url }}">{% trans "Edit speaker" %}</a>
+        <li><a href="{% url "speech-add" %}?speaker={{ speaker.id }}">{% trans "Add a new speech" %}</a>
+      </ul>
+    </div>
+    {% endif %}
 
-    <h3>Speeches</h3>
-    <p><a class="btn" href="{% url "speech-add" %}?speaker={{ object.id }}">Add a new speech by {{ object.name }}</a></p>
+    <h1>{{ speaker.name }}</h1>
+
     <ul class="unstyled">
-        {% if not speech_list %}
-            <li>{{ object.name }} has no recorded speeches yet.</li>
+        {% if not page_obj %}
+            <li>{% blocktrans with speaker=speaker.name %}{{ speaker }} has no recorded speeches yet.{% endblocktrans %}</li>
         {% endif %}
-        {% for speech in speech_list %}
+        {% for speech in page_obj %}
             {% include "speeches/speech.html" with speech=speech nospeaker="1" only %}
         {% endfor %}
     </ul>
 
-    <p><a href="{{ object.get_edit_url }}">Edit</a></p>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
+                &middot;
+            {% endif %}
+
+            <span class="current">
+              {% blocktrans with num=page_obj.number pages=paginator.num_pages %}
+                Page {{ num }} of {{ pages }}
+              {% endblocktrans %}
+            </span>
+
+            {% if page_obj.has_next %}
+                &middot;
+                <a href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
+            {% endif %}
+        </span>
+    </div>
 
 {% endblock %}

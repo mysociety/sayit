@@ -133,14 +133,21 @@ class RecentSpeechList(InstanceViewMixin, ListView):
     def get_queryset(self):
         return super(RecentSpeechList, self).get_queryset().visible(self.request).order_by("-created")[:50]
 
-class SpeakerView(InstanceViewMixin, DetailView):
+# This way around because of the 1.4 Django bugs with Mixins not calling super
+class SpeakerView(InstanceViewMixin, ListView, SingleObjectMixin):
     model = Speaker
+    paginate_by = 50
+    template_name = 'speeches/speaker_detail.html'
+
+    def get_queryset(self):
+        queryset = super(SpeakerView, self).get_queryset()
+        self.object = self.get_object(queryset)
+        return self.object.speech_set.all().visible(self.request).select_related('section').prefetch_related('tags')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
+        kwargs['speaker'] = self.object
         context = super(SpeakerView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the speeches by this speaker
-        context['speech_list'] = Speech.objects.visible(self.request).filter(speaker=kwargs['object'].id)
         return context
 
 class SpeakerMixin(InstanceFormMixin):
@@ -185,7 +192,7 @@ class SectionList(InstanceViewMixin, ListView):
         # Call the base implementation first to get a context
         context = super(SectionList, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the speeches not in a section
-        context['speech_list'] = Speech.objects.for_instance(self.request.instance).visible(self.request).filter(section=None)
+        context['speech_list'] = Speech.objects.for_instance(self.request.instance).visible(self.request).filter(section=None).select_related('speaker').prefetch_related('tags')
         return context
 
 class SectionMixin(InstanceFormMixin):
@@ -223,7 +230,7 @@ class SectionView(InstanceViewMixin, DetailView):
         # Call the base implementation first to get a context
         context = super(SectionView, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the speeches in this section
-        context['speech_list'] = Speech.objects.visible(self.request).filter(section=kwargs['object'].id)
+        context['speech_list'] = kwargs['object'].speech_set.all().visible(self.request).select_related('speaker').prefetch_related('tags')
         return context
 
 class BothObjectAndFormMixin(object):
