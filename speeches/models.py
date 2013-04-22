@@ -37,6 +37,9 @@ class Speaker(InstanceMixin, AuditedModel):
     person = models.ForeignKey(Person, blank=True, null=True, on_delete=models.PROTECT)
     name = models.TextField(db_index=True)
 
+    class Meta:
+        ordering = ('name',)
+
     def __unicode__(self):
         if self.name:
             return self.name
