@@ -40,7 +40,7 @@
 
     <ol class="unstyled">
         {% for speech in speech_list %}
-            {% include "speeches/speech_list_item_with_speaker.html" with speech=speech only %}
+            {% include "speeches/speech.html" with speech=speech nosection="1" only %}
         {% endfor %}
     </ol>
 

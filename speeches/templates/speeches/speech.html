@@ -1,7 +1,16 @@
 {% load url from future %}
 {% load bleach_tags %}
+{% load mptt_tags %}
 
 <li id="s{{ speech.id }}">
+    {% if speech.section and not nosection %}
+        {% drilldown_tree_for_node speech.section as drilldown %}
+        {% for n,s in drilldown|tree_info %}
+            <a href="{{ n.get_absolute_url }}">{{ n.title }}</a> &rarr;
+        {% endfor %}
+        <br>
+    {% endif %}
+
     {% if not speech.is_public %}<span class="label label-info">Invisible</span>{% endif %}
     {% if not nospeaker %}
 	<span class="speech-speaker"> <strong>{{ speech.speaker|default_if_none:"Unknown Speaker" }}</strong></span>

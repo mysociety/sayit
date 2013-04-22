@@ -20,7 +20,7 @@
 
 <ul class="unstyled">
 	{% for speech in recent_speeches %}
-		{% include "speeches/speech_list_item_with_speaker.html" with speech=speech only %}
+		{% include "speeches/speech.html" with speech=speech only %}
 	{% endfor %}
 </ul>
 
