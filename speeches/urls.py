@@ -10,7 +10,7 @@ v01_api.register(SpeakerResource())
 v01_api.register(SpeechResource())
 
 urlpatterns = patterns('',
-    url(r'^$', RecentSpeechList.as_view(), name='home'),
+    url(r'^$', InstanceView.as_view(), name='home'),
 
     url(r'^(?P<path>speaker|recording)/?$', AddAnSRedirectView.as_view()),
     url(r'^(?P<path>speech)/?$', AddAnSRedirectView.as_view(suffix='es')),

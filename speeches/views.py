@@ -124,14 +124,16 @@ class SpeechList(InstanceViewMixin, ListView):
     def get_queryset(self):
         return super(SpeechList, self).get_queryset().visible(self.request).annotate(null_start_date=Count('start_date')).order_by("speaker__name", "-null_start_date", "-start_date", "-start_time")
 
-class RecentSpeechList(InstanceViewMixin, ListView):
+class InstanceView(InstanceViewMixin, ListView):
+    """Done as a ListView on Speech to get recent speeches, we get instance for
+    free in the request."""
     model = Speech
     context_object_name = "recent_speeches"
     # Use a slightly different template
-    template_name = "speeches/recent_speech_list.html"
+    template_name = "speeches/instance_detail.html"
 
     def get_queryset(self):
-        return super(RecentSpeechList, self).get_queryset().visible(self.request).select_related('section', 'speaker').prefetch_related('tags').order_by("-created")[:50]
+        return super(InstanceView, self).get_queryset().visible(self.request).select_related('section', 'speaker').prefetch_related('tags').order_by("-created")[:50]
 
 # This way around because of the 1.4 Django bugs with Mixins not calling super
 class SpeakerView(InstanceViewMixin, ListView, SingleObjectMixin):
