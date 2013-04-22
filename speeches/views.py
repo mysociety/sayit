@@ -131,7 +131,7 @@ class RecentSpeechList(InstanceViewMixin, ListView):
     template_name = "speeches/recent_speech_list.html"
 
     def get_queryset(self):
-        return super(RecentSpeechList, self).get_queryset().visible(self.request).order_by("-created")[:50]
+        return super(RecentSpeechList, self).get_queryset().visible(self.request).select_related('section', 'speaker').prefetch_related('tags').order_by("-created")[:50]
 
 # This way around because of the 1.4 Django bugs with Mixins not calling super
 class SpeakerView(InstanceViewMixin, ListView, SingleObjectMixin):
