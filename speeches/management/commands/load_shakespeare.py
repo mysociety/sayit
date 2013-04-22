@@ -109,7 +109,9 @@ class Command(BaseCommand):
                         self.make(Speech, section=scene_section, text='<i>%s</i>' % sp.text)
                         continue
         
-                    if self.commit:
+                    if  not sp[0].text:
+                        speaker = None
+                    elif self.commit:
                         speaker, _ = Speaker.objects.get_or_create(name=sp[0].text, instance=self.instance)
                     else:
                         speaker = Speaker(name=sp[0].text, instance=self.instance)
