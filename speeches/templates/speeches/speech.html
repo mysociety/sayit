@@ -34,7 +34,8 @@
         <span class="label">{{ tag }}</span>
     {% endfor %}
 
-    <a href="{% url "speech-view" speech.id %}">#</a>
+    <a title="Permalink to this speech in context" href="#s{{ speech.id }}"><i class="icon-tags off-screen">Context permalink</i></a>
+    <a title="Permalink to this speech individually" href="{% url "speech-view" speech.id %}"><i class="icon-tag off-screen">Individual permalink</i></a>
 
   {% if speech.audio and not speech.text %}
     <p>[ recorded audio ]</p>

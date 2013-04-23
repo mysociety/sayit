@@ -45,3 +45,8 @@
 .datepicker .add-on {
     margin-top:1px;
 }
+
+.off-screen {
+    text-indent: -9999px;
+    opacity: 0.5;
+}
