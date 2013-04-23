@@ -10,7 +10,7 @@
     <h1>All speakers</h1>
 </div>
 
-{% regroup speech_list by speaker as grouped_speech_list %}
+{% regroup page_obj by speaker as grouped_speech_list %}
 
 <ul class="unstyled">
 	{% for speech in grouped_speech_list %}
@@ -30,4 +30,7 @@
 		</ul>
 	{% endfor %}
 </ul>
+
+{% include 'speeches/pagination.html' %}
+
 {% endblock %}

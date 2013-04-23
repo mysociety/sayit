@@ -117,12 +117,13 @@ class SpeechView(InstanceViewMixin, DetailView):
 
 class SpeechList(InstanceViewMixin, ListView):
     model = Speech
+    paginate_by = 50
     context_object_name = "speech_list"
 
     # The .annotate magic allows us to put things with a null start date
     # to the bottom of the list, otherwise they would naturally sort to the top
     def get_queryset(self):
-        return super(SpeechList, self).get_queryset().visible(self.request).annotate(null_start_date=Count('start_date')).order_by("speaker__name", "-null_start_date", "-start_date", "-start_time")
+        return super(SpeechList, self).get_queryset().visible(self.request).annotate(null_start_date=Count('start_date')).select_related('speaker', 'section').prefetch_related('tags').order_by("speaker__name", "-null_start_date", "-start_date", "-start_time")
 
 class InstanceView(InstanceViewMixin, ListView):
     """Done as a ListView on Speech to get recent speeches, we get instance for
