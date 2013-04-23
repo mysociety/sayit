@@ -17,7 +17,7 @@
     <span class="speech-speaker">
       {% if speech.speaker %}
         <a href="{{ speech.speaker.get_absolute_url }}">
-            <img src="{% static "i/a.png" %}" alt="" width=48 height=48 class="speaker-img">
+            <img src="{% static "i/a.png" %}" style="border: solid 2px #{{ speech.speaker.colour }}; margin-left: -0.5em; background-color: #{{ speech.speaker.colour }};" alt="" width=44 height=44 class="speaker-img">
             <strong>{{ speech.speaker }}</strong>
         </a>
       {% else %}
