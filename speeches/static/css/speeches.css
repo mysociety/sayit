@@ -50,3 +50,9 @@
     text-indent: -9999px;
     opacity: 0.5;
 }
+
+.speech-border {
+    border-left: solid 0.25em #fff;
+    padding-left: 0.25em;
+    margin-bottom: 0.25em;
+}

@@ -1,5 +1,6 @@
 import calendar
 import datetime
+import hashlib
 import logging
 import os
 
@@ -44,6 +45,9 @@ class Speaker(InstanceMixin, AuditedModel):
         if self.name:
             return self.name
         return "[no name]"
+
+    def colour(self):
+        return hashlib.sha1('%s' % (self.person_id or self.id)).hexdigest()[:6]
 
     @models.permalink
     def get_absolute_url(self):

@@ -10,9 +10,9 @@
     <h1>All speakers</h1>
 </div>
 
-    <ul>
+    <ul class="unstyled">
       {% for speaker in speaker_list %}
-        <li><a href="{{ speaker.get_absolute_url }}">{{ speaker }}</a></li>
+        <li class="speech-border" style="border-left-color: #{{ speaker.colour }};"><a href="{{ speaker.get_absolute_url }}">{{ speaker }}</a></li>
       {% endfor %}
     </ul>
 
