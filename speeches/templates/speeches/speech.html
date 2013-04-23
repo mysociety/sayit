@@ -4,7 +4,7 @@
 {% load bleach_tags %}
 {% load mptt_tags %}
 
-<li id="s{{ speech.id }}" class="speech-border" style="border-left-color: #{{ speech.speaker.colour }};">
+<li id="s{{ speech.id }}" class="speech speech-border" style="border-left-color: #{{ speech.speaker.colour }};">
   {% if not nosection and speech.section_id %}
     <a href="{{ speech.section.get_absolute_url }}">{{ speech.section.title }}</a> &rarr;
   {% endif %}
@@ -17,7 +17,7 @@
     <span class="speech-speaker">
       {% if speech.speaker %}
         <a href="{{ speech.speaker.get_absolute_url }}">
-            <img src="{% static "i/a.png" %}" style="border: solid 2px #{{ speech.speaker.colour }}; margin-left: -0.5em; background-color: #{{ speech.speaker.colour }};" alt="" width=44 height=44 class="speaker-img">
+            <img src="{% static "i/a.png" %}" style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt="" width=44 height=44 class="speaker-img">
             <strong>{{ speech.speaker }}</strong>
         </a>
       {% else %}

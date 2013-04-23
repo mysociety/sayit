@@ -13,7 +13,10 @@
 
     <ul class="unstyled">
       {% for speaker in speaker_list %}
-        <li class="speech-border" style="border-left-color: #{{ speaker.colour }};"><img src="{% static "i/a.png" %}" alt="" width=48 height=48> <a href="{{ speaker.get_absolute_url }}">{{ speaker }}</a></li>
+        <li class="speech-border" style="border-left-color: #{{ speaker.colour }};">
+            <img src="{% static "i/a.png" %}" style="border-color: #{{ speaker.colour }}; background-color: #{{ speaker.colour }};" alt="" width=44 height=44 class="speaker-img">
+            <a href="{{ speaker.get_absolute_url }}">{{ speaker }}</a>
+        </li>
       {% endfor %}
     </ul>
 

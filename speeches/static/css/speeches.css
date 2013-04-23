@@ -57,12 +57,18 @@
     margin-bottom: 0.25em;
 }
 
-.speaker-img {
+.speech-border .speaker-img {
+    margin-left: -0.5em;
+    border: solid 2px #cccccc;
+    background-color: #cccccc;
+}
+.speech .speaker-img {
     float: left;
     margin-right: 0.25em;
 }
 .speaker-right .speaker-img {
     float: right;
     margin-left: 0.25em;
+    margin-right: 0;
 }
 
