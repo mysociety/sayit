@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load url from future %}
+{% load i18n %}
 {% load speech_utils %}
 
 {% block title %}{{ request.instance.title }}{% endblock %}
@@ -11,13 +12,31 @@
     {{ request.instance.description|linebreaks_with_lead }}
 </div>
 
+<div class="row-fluid">
 
-<h2>Recent Speeches</h2>
+<div class="span6">
+<h2>{% trans "Recent Sections" %}</h2>
+
+<ul>
+  {% for section in recent_sections %}
+    <li>
+        <a href="{{ section.get_absolute_url }}">{{ section.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
+</div>
+
+<div class="span6">
+<h2>{% trans "Recent Speeches" %}</h2>
 
 <ul class="unstyled">
-	{% for speech in recent_speeches %}
-		{% include "speeches/speech.html" with speech=speech only %}
-	{% endfor %}
+  {% for speech in recent_speeches %}
+    {% include "speeches/speech.html" with speech=speech only %}
+  {% endfor %}
 </ul>
+
+</div>
+
+</div>
 
 {% endblock %}

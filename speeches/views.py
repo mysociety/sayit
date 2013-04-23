@@ -133,7 +133,13 @@ class InstanceView(InstanceViewMixin, ListView):
     template_name = "speeches/instance_detail.html"
 
     def get_queryset(self):
-        return super(InstanceView, self).get_queryset().visible(self.request).select_related('section', 'speaker').prefetch_related('tags').order_by("-created")[:50]
+        return super(InstanceView, self).get_queryset().visible(self.request).select_related('section', 'speaker').prefetch_related('tags').order_by('-created')[:5]
+
+    def get_context_data(self, **kwargs):
+        """Better done as a MultiListView somehow?"""
+        context = super(InstanceView, self).get_context_data(**kwargs)
+        context['recent_sections'] = self.request.instance.section_set.order_by('-created')[:20]
+        return context
 
 # This way around because of the 1.4 Django bugs with Mixins not calling super
 class SpeakerView(InstanceViewMixin, ListView, SingleObjectMixin):
