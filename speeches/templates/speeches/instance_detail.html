@@ -3,10 +3,6 @@
 {% load url from future %}
 {% load speech_utils %}
 
-{% block extra_css %}
-<link href="{% static "css/speeches.css" %}" rel="stylesheet">
-{% endblock %}
-
 {% block title %}{{ request.instance.title }}{% endblock %}
 
 {% block content %}
