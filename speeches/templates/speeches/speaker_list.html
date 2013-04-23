@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% load i18n %}
+{% load staticfiles %}
 
 {% block title %}{% trans "All Speakers" %}{% endblock %}
 
@@ -12,7 +13,7 @@
 
     <ul class="unstyled">
       {% for speaker in speaker_list %}
-        <li class="speech-border" style="border-left-color: #{{ speaker.colour }};"><a href="{{ speaker.get_absolute_url }}">{{ speaker }}</a></li>
+        <li class="speech-border" style="border-left-color: #{{ speaker.colour }};"><img src="{% static "i/a.png" %}" alt="" width=48 height=48> <a href="{{ speaker.get_absolute_url }}">{{ speaker }}</a></li>
       {% endfor %}
     </ul>
 

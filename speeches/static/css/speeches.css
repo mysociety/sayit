@@ -56,3 +56,13 @@
     padding-left: 0.25em;
     margin-bottom: 0.25em;
 }
+
+.speaker-img {
+    float: left;
+    margin-right: 0.25em;
+}
+.speaker-right .speaker-img {
+    float: right;
+    margin-left: 0.25em;
+}
+

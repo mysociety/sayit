@@ -1,5 +1,6 @@
 {% load url from future %}
 {% load i18n %}
+{% load staticfiles %}
 {% load bleach_tags %}
 {% load mptt_tags %}
 
@@ -14,7 +15,9 @@
 
     {% if not speech.is_public %}<span class="label label-info">Invisible</span>{% endif %}
     {% if not nospeaker %}
-	<span class="speech-speaker"> {% if speech.speaker %}<a href="{{ speech.speaker.get_absolute_url }}"><strong>{{ speech.speaker }}</strong></a>{% else %}<strong>{% trans "Unknown Speaker" %}</strong>{% endif %}</span>
+	<span class="speech-speaker"> {% if speech.speaker %}<a href="{{ speech.speaker.get_absolute_url }}">
+<img src="{% static "i/a.png" %}" alt="" width=48 height=48 class="speaker-img">
+<strong>{{ speech.speaker }}</strong></a>{% else %}<strong>{% trans "Unknown Speaker" %}</strong>{% endif %}</span>
     {% endif %}
 
     {% if speech.start_time or speech.start_date or speech.end_time or speech.end_date %}
