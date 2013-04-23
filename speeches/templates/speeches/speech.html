@@ -6,11 +6,7 @@
 
 <li id="s{{ speech.id }}" class="speech-border" style="border-left-color: #{{ speech.speaker.colour }};">
     {% if not nosection and speech.section_id %}
-        {% drilldown_tree_for_node speech.section as drilldown %}
-        {% for n,s in drilldown|tree_info %}
-            <a href="{{ n.get_absolute_url }}">{{ n.title }}</a> &rarr;
-        {% endfor %}
-        <br>
+        <a href="{{ speech.section.get_absolute_url }}">{{ speech.section.title }}</a> &rarr;
     {% endif %}
 
     {% if not speech.is_public %}<span class="label label-info">Invisible</span>{% endif %}
