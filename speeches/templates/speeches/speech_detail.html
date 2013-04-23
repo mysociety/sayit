@@ -3,6 +3,7 @@
 {% load url from future %}
 {% load i18n %}
 {% load mptt_tags %}
+{% load bleach_tags %}
 
 {% block extra_headers %}
 {% if object.celery_task_id %}
@@ -78,7 +79,7 @@
     {% endif %}
 
     {% if object.text %}
-        {{ object.text|linebreaks }}
+        {{ object.text|bleach|linebreaks }}
     {% endif %}
 
     {% if object.source_url %}
