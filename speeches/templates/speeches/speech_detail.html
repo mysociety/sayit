@@ -74,7 +74,18 @@
 </div>
 
     {% if object.audio %}
-        <p><audio src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio></p>
+        <p>
+            <audio id="the-audio" src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio>
+            <script>
+                var a = $('#the-audio'), ae = a[0];
+                if (ae.playbackRate) {
+                    $('<label><input type="checkbox" id="speed"> Play at half speed (experimental)</label>').insertAfter(a);
+                    $('#speed').click(function(){
+                        ae.playbackRate = 1.5 - ae.playbackRate;
+                    });
+                }
+            </script>
+        </p>
     {% endif %}
 
     {% if object.text %}
