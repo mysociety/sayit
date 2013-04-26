@@ -29,7 +29,7 @@
             <li>{% blocktrans with speaker=speaker.name %}{{ speaker }} has no recorded speeches yet.{% endblocktrans %}</li>
         {% endif %}
         {% for speech in page_obj %}
-            {% include "speeches/speech.html" with speech=speech nospeaker="1" only %}
+            {% include "speeches/speech.html" with speech=speech nospeaker="1" %}
         {% endfor %}
     </ul>
 

@@ -1,4 +1,4 @@
-{% extends 'speeches/speech_audio.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 {% block extra_css %}
@@ -8,7 +8,6 @@
 
 {% block extra_js %}
 {{ block.super }}
-<script src="{% static "js/speeches.js" %}"></script>
 <script src="{% static "jQuery-File-Upload/js/vendor/jquery.ui.widget.js" %}"></script>
 <script src="{% static "jQuery-File-Upload/js/jquery.iframe-transport.js" %}"></script>
 <script src="{% static "jQuery-File-Upload/js/jquery.fileupload.js" %}"></script>
@@ -17,7 +16,7 @@
 
 {% block title %}{% if object %}Edit speech {% else %}Add speech{% endif %}{% endblock %}
 
-{% block content2 %}
+{% block content %}
 <p class="lead {% if object %}edit{% else %}add{% endif %}-speech">
     {% if object %}
         Here is where you can edit a speech.

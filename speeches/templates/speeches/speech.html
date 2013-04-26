@@ -18,8 +18,7 @@
       {% if speech.speaker %}
         <a href="{{ speech.speaker.get_absolute_url }}">
             <img src="{% static "i/a.png" %}" style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt="" width=44 height=44 class="speaker-img">
-            <strong>{{ speech.speaker }}</strong>
-        </a>
+            <strong>{{ speech.speaker }}</strong></a>
       {% else %}
         <strong>{% trans "Unknown Speaker" %}</strong>
       {% endif %}
@@ -27,7 +26,7 @@
   {% endif %}
 
   {% if speech.start_time or speech.start_date or speech.end_time or speech.end_date %}
-    <span class="speech-date muted"><small>
+    <span class="speech-date muted"><small style="line-height:1">
         {{ speech.start_time }}{% if speech.start_date and speech.start_date != speech.end_date %},
         {{ speech.start_date }}
       {% endif %}
@@ -47,6 +46,13 @@
     <a title="{% trans "Permalink to this speech in context" %}" href="{% url 'section-view' speech.section_id %}#s{{ speech.id }}"><i class="icon-tags off-screen">{% trans "Permalink to this speech in context" %}</i></a>
   {% endif %}
     <a title="{% trans "Permalink to this speech individually" %}" href="{% url "speech-view" speech.id %}"><i class="icon-tag off-screen">{% trans "Permalink to this speech individually" %}</i></a>
+  {% if speech.audio %}
+    <i class="icon-volume-up off-screen">{% trans "This speech has audio" %}</i>
+    <audio class="audio-small" id="audio{{ speech.id }}" src="{{ MEDIA_URL }}{{ speech.audio }}" controls></audio>
+    <script>
+        $('#audio{{ speech.id }}').mediaelementplayer( { audioWidth: 100, audioHeight: 24, features: [ 'playpause', 'current', 'duration' ] } );
+    </script>
+  {% endif %}
 
   {% if speech.audio and not speech.text %}
     <p>{% trans "[ recorded audio ]" %}</p>

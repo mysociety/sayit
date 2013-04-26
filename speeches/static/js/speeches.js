@@ -1,23 +1,26 @@
-$(function(){
-    var submitTxt;
+$(function() {
+    sayit_add_speech_links();
+    sayit_ajax_file_uploads();
+    $('audio').not('.audio-small').mediaelementplayer();
+});
 
-    // Make them answer an Audio/Text question first if it's a brand new speech
-    if($("p.lead").hasClass("add-speech") && $("ul.errorlist").length == 0) {
+// Make them answer an Audio/Text question first if it's a brand new speech
+function sayit_add_speech_links() {
+    if ($("p.lead").hasClass("add-speech") && $("ul.errorlist").length == 0) {
         // Click handlers for the options
-        $("a#audio-link").click(function(){
+        $("a#audio-link").click(function() {
             selectFormOption("#id_text_controls");
             return false;
         });
-        $("a#text-link").click(function(){
+        $("a#text-link").click(function() {
             selectFormOption("#id_audio_controls");
             return false;
         }); 
-        $("a#both-link").click(function(){
+        $("a#both-link").click(function() {
             selectFormOption();
             return false;
         });
-    }
-    else {
+    } else {
         enableDatePickers();
     } 
 
@@ -30,9 +33,15 @@ $(function(){
         enableDatePickers();
     }
 
-    function enableDatePickers(){
-        // Datepickers
-        $("input.datepicker").datepicker({
+    function enableDatePickers() {
+        var datepickers = $("input.datepicker"),
+            l = datepickers.length;
+
+        if (!l) {
+            return;
+        }
+
+        datepickers.datepicker({
             format:'dd/mm/yyyy',
             weekStart: 1,
             autoclose: true,        
@@ -46,24 +55,33 @@ $(function(){
             $("#id_end_date").datepicker("setStartDate", dateString);
         });
     }
+}
 
-    // Ajax file uploads
-    $('#id_audio').fileupload({
+function sayit_ajax_file_uploads() {
+    var submitTxt,
+        audio = $('#id_audio'),
+        l = audio.length;
+
+    if (!l) {
+        return;
+    }
+
+    audio.fileupload({
         url: '/speech/ajax_audio',
         dataType: 'json',
         add: function(e, data) {
             var valid = true;
-            $.each(data.files, function(i, file){
+            $.each(data.files, function(i, file) {
                 if (!(/.(ogg|mp3|wav|3gp)$/.test(file.name) || /audio\//.test(file.type))) {
                     valid = false;
                 }
             });
             if (!valid) {
-                $('#id_audio').closest('div.control-group').addClass('error');
-                $('#id_audio').closest('div.control-group').find('.help-inline').html('Please pick an audio file');
+                audio.closest('div.control-group').addClass('error');
+                audio.closest('div.control-group').find('.help-inline').html('Please pick an audio file');
                 return;
             }
-            $('#id_audio').prop('disabled', true).parent().addClass('disabled');
+            audio.prop('disabled', true).parent().addClass('disabled');
             submitTxt = $('#speech_submit').val();
             $('#speech_submit').prop('disabled', true).val('Uploading audio...');
             $('.progress-result').hide();
@@ -80,7 +98,7 @@ $(function(){
         },
         show_failure: function(msg) {
             $('.progress-result').html('Something went wrong: ' + msg).show();
-            $('#id_audio').prop('disabled', false).parent().removeClass('disabled');
+            audio.prop('disabled', false).parent().removeClass('disabled');
         },
         fail: function(e, data) {
             return this.show_failure(data.errorThrown);
@@ -95,6 +113,5 @@ $(function(){
             $('#id_audio_filename').val(server_filename);
         }
     });
-
-});
+}
 

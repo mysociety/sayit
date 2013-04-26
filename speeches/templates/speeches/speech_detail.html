@@ -1,5 +1,4 @@
-{% extends 'speeches/speech_audio.html' %}
-{% load staticfiles %}
+{% extends 'base.html' %}
 {% load url from future %}
 {% load i18n %}
 {% load mptt_tags %}
@@ -19,7 +18,7 @@
     {% endif %}
 {% endblock %}
 
-{% block content2 %}
+{% block content %}
 
 <div class="page-header">
 {% if object.celery_task_id %}

@@ -1,14 +1,8 @@
-{% extends 'speeches/speech_audio.html' %}
-{% load staticfiles %}
-
-{% block extra_js %}
-{{ block.super }}
-<script src="{% static "js/speeches.js" %}"></script>
-{% endblock %}
+{% extends 'base.html' %}
 
 {% block title %}{% if object %}Edit section{% else %}Add section{% endif %}{% endblock %}
 
-{% block content2 %}
+{% block content %}
 <p class="lead {% if object %}edit{% else %}add{% endif %}-section">
     {% if object %}
         Here is where you can edit a section.
