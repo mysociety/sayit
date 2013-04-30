@@ -73,6 +73,19 @@
 
 </div>
 
+{% with next=speech.get_next_speech previous=speech.get_previous_speech %}
+  {% if previous or next %}
+    <ul class="pager">
+      {% if previous %}
+        <li><a href="{% url "speech-view" previous.id %}">&larr; {{ previous.summary }}</a>
+      {% endif %}
+      {% if next %}
+        <li><a href="{% url "speech-view" next.id %}">{{ next.summary }} &rarr;</a>
+      {% endif %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
     {% if object.audio %}
         <p>
             <audio id="the-audio" src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio>

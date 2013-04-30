@@ -5,6 +5,7 @@ import logging
 import os
 
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 from django.conf import settings
 from django.core.files import File
@@ -305,6 +306,70 @@ class Speech(InstanceMixin, AuditedModel):
 
         # Call the original model save to do everything
         super(Speech, self).save(*args, **kwargs)
+
+    def get_next_speech(self):
+        """Return the next speech to this one in the same section, in a start
+        date/time/ID ordering."""
+        if self.start_date:
+            # A later date, or no date present
+            q1 = Q(start_date__gt=self.start_date) | Q(start_date__isnull=True)
+            # Or, if on the same date...
+            q2 = Q(start_date=self.start_date)
+        else:
+            # No dates later than our unknown
+            q1 = Q()
+            # But in that case...
+            q2 = Q(start_date__isnull=True)
+        if self.start_time:
+            # If the time is later, or not present, or the same with a greater ID
+            q3 = Q(start_time__gt=self.start_time) | Q(start_time__isnull=True) | Q(start_time=self.start_time, id__gt=self.id)
+        else:
+            # If the time is not present and the ID is greater
+            q3 = Q(start_time__isnull=True, id__gt=self.id)
+        q = q1 | ( q2 & q3 )
+
+        if self.section:
+            s = list(Speech.objects.filter(q, section=self.section)[:1])
+        else:
+            s = list(Speech.objects.filter(q, instance=self.instance, section__isnull=True)[:1])
+        if s: return s[0]
+        if self.section:
+            next_section = self.section.get_next_node()
+            if next_section:
+                s = next_section.speech_set.all()[:1]
+        return s and s[0] or None
+
+    def get_previous_speech(self):
+        """Return the previous speech to this one in the same section,
+        in a start date/time/ID ordering."""
+        if self.start_date:
+            # A date less than ours
+            q1 = Q(start_date__lt=self.start_date)
+            # Or if the same date...
+            q2 = Q(start_date=self.start_date)
+        else:
+            # Any speech with a date is earlier
+            q1 = Q(start_date__isnull=False)
+            # And for those other speeches with no date...
+            q2 = Q(start_date__isnull=True)
+        if self.start_time:
+            # If the time is earlier, or the same and the ID is smaller
+            q3 = Q(start_time__lt=self.start_time) | Q(start_time=self.start_time, id__lt=self.id)
+        else:
+            # If there is a time, or there isn't but the ID is smaller
+            q3 = Q(start_time__isnull=False) | Q(start_time__isnull=True, id__lt=self.id)
+        q = q1 | ( q2 & q3 )
+
+        if self.section:
+            s = list(Speech.objects.filter(q, section=self.section).reverse()[:1])
+        else:
+            s = list(Speech.objects.filter(q, instance=self.instance, section__isnull=True).reverse()[:1])
+        if s: return s[0]
+        if self.section:
+            prev_section = self.section.get_previous_node()
+            if prev_section:
+                s = prev_section.speech_set.all().reverse()[:1]
+        return s and s[0] or None
 
     def start_transcribing(self):
         """Kick off a celery task to transcribe this speech"""

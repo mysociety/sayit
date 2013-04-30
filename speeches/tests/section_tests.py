@@ -51,10 +51,14 @@ class SectionModelTests(TestCase):
                     "Wednesday 6th of March": [ 1, date(2013, 3, 6), None ],
                     "Thursday 7th of March": [ 2, date(2013, 3, 7), None ],
                 },
-                "Ministry of Aardvarks": {},
+                "Ministry of Aardvarks": {
+                    "March": [ 3, None, None ],
+                },
                 "Ministry of Something Else": {},
             },
         })
+        # XXX It isn't right, otherwise :-/
+        Section._tree_manager.rebuild()
 
     def test_datetimes(self):
         section = Section.objects.get(title="Bill on Silly Walks")
@@ -70,7 +74,7 @@ class SectionModelTests(TestCase):
         all_sections = top_level.get_descendants(include_self=True)
 
         self.assertEqual(len(all_sections),
-                         6,
+                         7,
                          "The total number of sections was wrong")
 
         all_ministries = top_level.get_children()
@@ -90,6 +94,41 @@ class SectionModelTests(TestCase):
         children = [ c.title for c in children ]
         self.assertEqual(children, [ 'Monday 25th March', 'Oral Answers to Questions - Silly Walks', 'Bill on Silly Walks', 'Friday 29th March', 'Fixed Easter Bill', 'New Clause 1', 'Clause 1', 'Z Clause' ])
 
+    def test_section_next_previous(self):
+        # TODO: The get/next sections here are in tree order.
+        # Not testing/working for time order at present.
+        top_level = Section.objects.get(title='Government Written Answers', level=0)
+        depts = top_level.get_children()
+        self.assertEqual( depts[0].get_previous_node(), None )
+        self.assertEqual( depts[1].get_previous_node(), depts[0] )
+        self.assertEqual( depts[2].get_previous_node(), depts[1] )
+        self.assertEqual( depts[0].get_next_node(), depts[1] )
+        self.assertEqual( depts[1].get_next_node(), depts[2] )
+        self.assertEqual( depts[2].get_next_node(), None )
+
+        day = Section.objects.get(title='Monday 25th March', level=1)
+        e = Section.objects.get(title='Fixed Easter Bill', level=2)
+        debs = day.get_children()
+        self.assertEqual( debs[0].get_previous_node(), e)
+        self.assertEqual( debs[1].get_previous_node(), debs[0] )
+        self.assertEqual( debs[0].get_next_node(), debs[1] )
+        self.assertEqual( debs[1].get_next_node(), None )
+
+    def test_section_speech_next_previous(self):
+        last_prev = Section.objects.get(title='Bill on Silly Walks').speech_set.reverse()[0]
+        speeches = Section.objects.get(title='Oral Answers to Questions - Silly Walks').speech_set.all()
+        self.assertEqual( speeches[0].get_previous_speech(), last_prev )
+        self.assertEqual( speeches[0].get_next_speech(), speeches[1] )
+        self.assertEqual( speeches[1].get_next_speech(), speeches[2] )
+        self.assertEqual( speeches[2].get_next_speech(), speeches[3] )
+        self.assertEqual( speeches[3].get_next_speech(), None )
+
+        speeches = Section.objects.get(title='Ministry of Aardvarks').children.get(title='March').speech_set.all()
+        n = Speech.objects.filter(section=Section.objects.get(title='Thursday 7th of March'))[0]
+        self.assertEqual( speeches[0].get_previous_speech(), None )
+        self.assertEqual( speeches[0].get_next_speech(), speeches[1] )
+        self.assertEqual( speeches[1].get_next_speech(), speeches[2] )
+        self.assertEqual( speeches[2].get_next_speech(), n )
 
 class SectionSiteTests(InstanceTestCase):
     """Tests for the section functionality"""
