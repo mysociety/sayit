@@ -158,9 +158,6 @@ class Section(MPTTModel, AuditedModel, InstanceMixin):
 
         return sorted( descendants_with_speeches, key=lambda s: earliest[s.id] )
 
-    class MPTTMeta:
-        order_insertion_by = ['title']
-
     @models.permalink
     def get_absolute_url(self):
         return ( 'section-view', (), { 'pk': self.id } )

@@ -14,12 +14,12 @@ class SectionModelTests(TestCase):
         else:
             instance, _ = Instance.objects.get_or_create(label='whatever')
 
-        for key, item in node.items():
-            s = Section.objects.create( instance=instance, title=key, parent=parent )
-            if isinstance(item, dict):
-                self.create_sections(item, s)
-            else:
-                num, d, t = item
+        for item in node:
+            s = Section.objects.create( instance=instance, title=item['title'], parent=parent )
+            if 'items' in item:
+                self.create_sections(item['items'], s)
+            if 'speeches' in item:
+                num, d, t = item['speeches']
                 for i in range(0, num):
                     Speech.objects.create(
                         instance = instance,
@@ -32,31 +32,48 @@ class SectionModelTests(TestCase):
                         t = (datetime.combine(date.today(), t) + timedelta(minutes=10)).time()
 
     def setUp(self):
-        self.create_sections({
-            "Government Debates": {
-                "Monday 25th March": {
-                    "Oral Answers to Questions - Silly Walks": [ 4, date(2013, 3, 25), time(9, 0) ],
-                    "Bill on Silly Walks": [ 2, date(2013, 3, 25), time(12, 0) ],
-                },
-                "Friday 29th March": {
-                    "Fixed Easter Bill": {
-                        "New Clause 1": [ 3, date(2013, 3, 29), time(14, 0) ],
-                        "Clause 1": [ 3, date(2013, 3, 29), time(14, 30) ],
-                        "Z Clause": [ 2, date(2013, 3, 29), time(15, 00) ],
+        self.create_sections([
+            { 'title': "Government Debates", 'items': [
+                { 'title': "Monday 25th March", 'items': [
+                    { 'title': "Oral Answers to Questions - Silly Walks",
+                      'speeches': [ 4, date(2013, 3, 25), time(9, 0) ],
                     },
+                    { 'title': "Bill on Silly Walks",
+                      'speeches': [ 2, date(2013, 3, 25), time(12, 0) ],
+                    },
+                ] },
+                { 'title': "Friday 29th March", 'items': [
+                    { 'title': "Fixed Easter Bill", 'items': [
+                        { 'title': "New Clause 1",
+                          'speeches': [ 3, date(2013, 3, 29), time(14, 0) ],
+                        },
+                        { 'title': "Clause 1",
+                          'speeches': [ 3, date(2013, 3, 29), time(14, 30) ],
+                        },
+                        { 'title': "Z Clause",
+                          'speeches': [ 2, date(2013, 3, 29), time(15, 00) ],
+                        },
+                    ] },
+                ] },
+            ] },
+            { 'title': "Government Written Answers", 'items': [
+                { 'title': "Ministry of Aardvarks", 'items': [
+                    { 'title': "March",
+                      'speeches': [ 3, None, None ],
+                    },
+                ] },
+                { 'title': "Ministry of Silly Walks", 'items': [
+                    { 'title': "Wednesday 6th of March",
+                      'speeches': [ 1, date(2013, 3, 6), None ],
+                    },
+                    { 'title': "Thursday 7th of March",
+                      'speeches': [ 2, date(2013, 3, 7), None ],
+                    },
+                ] },
+                { 'title': "Ministry of Something Else"
                 },
-            },
-            "Government Written Answers": {
-                "Ministry of Silly Walks": {
-                    "Wednesday 6th of March": [ 1, date(2013, 3, 6), None ],
-                    "Thursday 7th of March": [ 2, date(2013, 3, 7), None ],
-                },
-                "Ministry of Aardvarks": {
-                    "March": [ 3, None, None ],
-                },
-                "Ministry of Something Else": {},
-            },
-        })
+            ] },
+        ])
         # XXX It isn't right, otherwise :-/
         Section._tree_manager.rebuild()
 
@@ -109,22 +126,22 @@ class SectionModelTests(TestCase):
         day = Section.objects.get(title='Monday 25th March', level=1)
         e = Section.objects.get(title='Fixed Easter Bill', level=2)
         debs = day.get_children()
-        self.assertEqual( debs[0].get_previous_node(), e)
+        self.assertEqual( debs[0].get_previous_node(), None )
         self.assertEqual( debs[1].get_previous_node(), debs[0] )
         self.assertEqual( debs[0].get_next_node(), debs[1] )
-        self.assertEqual( debs[1].get_next_node(), None )
+        self.assertEqual( debs[1].get_next_node(), e )
 
     def test_section_speech_next_previous(self):
-        last_prev = Section.objects.get(title='Bill on Silly Walks').speech_set.reverse()[0]
+        first_next = Section.objects.get(title='Bill on Silly Walks').speech_set.all()[0]
         speeches = Section.objects.get(title='Oral Answers to Questions - Silly Walks').speech_set.all()
-        self.assertEqual( speeches[0].get_previous_speech(), last_prev )
+        self.assertEqual( speeches[0].get_previous_speech(), None )
         self.assertEqual( speeches[0].get_next_speech(), speeches[1] )
         self.assertEqual( speeches[1].get_next_speech(), speeches[2] )
         self.assertEqual( speeches[2].get_next_speech(), speeches[3] )
-        self.assertEqual( speeches[3].get_next_speech(), None )
+        self.assertEqual( speeches[3].get_next_speech(), first_next )
 
         speeches = Section.objects.get(title='Ministry of Aardvarks').children.get(title='March').speech_set.all()
-        n = Speech.objects.filter(section=Section.objects.get(title='Thursday 7th of March'))[0]
+        n = Speech.objects.filter(section=Section.objects.get(title='Wednesday 6th of March'))[0]
         self.assertEqual( speeches[0].get_previous_speech(), None )
         self.assertEqual( speeches[0].get_next_speech(), speeches[1] )
         self.assertEqual( speeches[1].get_next_speech(), speeches[2] )
