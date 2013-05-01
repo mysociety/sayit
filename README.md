@@ -17,6 +17,8 @@ Something like the following, customised to your particular environment or set u
     cd sayit
     git clone https://github.com/mysociety/sayit.git
 
+    cd sayit
+
     # Install the required software packages
     Assuming you're on a debian/ubuntu server:
     grep -v '#' conf/packages | sudo xargs apt-get install -y
@@ -29,8 +31,11 @@ Something like the following, customised to your particular environment or set u
     CREATE DATABASE
 
     # Set up a python virtual environment, activate it
-    virtualenv --no-site-packages virtualenv-sayit
-    source virtualenv-sayit/bin/activate
+    # this assumes that you will set up the virtualenv in .. 
+    # (e.g. outside the repo.  
+    #  You can use ~/.virtualenvs/ etc. if you prefer)
+    virtualenv --no-site-packages ../virtualenv-sayit
+    source ../virtualenv-sayit/bin/activate
 
     # Install required python packages
     pip install --requirement requirements.txt
