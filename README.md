@@ -19,7 +19,7 @@ Something like the following, customised to your particular environment or set u
 
     # Install the required software packages
     Assuming you're on a debian/ubuntu server:
-    sudo xargs -a conf/packages apt-get install
+    grep -v '#' conf/packages | sudo xargs apt-get install -y
 
     # Create a postgres database and user
     sudo -u postgres psql
