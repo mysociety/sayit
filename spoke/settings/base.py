@@ -147,7 +147,6 @@ INSTALLED_APPS = [
     'django_select2',
     'django_nose',
     'tastypie',
-    'mptt',
     'django_bleach',
     'popit',
     'instances',

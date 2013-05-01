@@ -44,14 +44,14 @@ class SectionModelTests(TestCase):
                 ] },
                 { 'title': "Friday 29th March", 'items': [
                     { 'title': "Fixed Easter Bill", 'items': [
-                        { 'title': "New Clause 1",
-                          'speeches': [ 3, date(2013, 3, 29), time(14, 0) ],
+                        { 'title': "Z Clause",
+                          'speeches': [ 2, date(2013, 3, 29), time(15, 00) ],
                         },
                         { 'title': "Clause 1",
                           'speeches': [ 3, date(2013, 3, 29), time(14, 30) ],
                         },
-                        { 'title': "Z Clause",
-                          'speeches': [ 2, date(2013, 3, 29), time(15, 00) ],
+                        { 'title': "New Clause 1",
+                          'speeches': [ 3, date(2013, 3, 29), time(14, 0) ],
                         },
                     ] },
                 ] },
@@ -74,8 +74,6 @@ class SectionModelTests(TestCase):
                 },
             ] },
         ])
-        # XXX It isn't right, otherwise :-/
-        Section._tree_manager.rebuild()
 
     def test_datetimes(self):
         section = Section.objects.get(title="Bill on Silly Walks")
@@ -86,36 +84,34 @@ class SectionModelTests(TestCase):
     def test_section_creation(self):
 
         # Get the top level section:
-        top_level = Section.objects.get(title='Government Written Answers', level=0)
+        top_level = Section.objects.get(title='Government Written Answers')
 
-        all_sections = top_level.get_descendants(include_self=True)
+        all_sections = top_level.get_descendants
 
-        self.assertEqual(len(all_sections),
-                         7,
+        self.assertEqual(len(list(all_sections)),
+                         6,
                          "The total number of sections was wrong")
 
-        all_ministries = top_level.get_children()
+        all_ministries = top_level.get_children
 
         self.assertEqual(len(all_ministries),
                          3,
                          "The number of ministries was wrong")
 
-        # Check that the sections are sorted by title:
+        # Check that the sections are in insertion order:
         all_ministries = [ a.title.replace('Ministry of ', '') for a in all_ministries ]
-        self.assertEqual(all_ministries, [ 'Aardvarks', 'Silly Walks', 'Something Else' ])
+        self.assertEqual(all_ministries, [ 'Silly Walks', 'Aardvarks', 'Something Else' ])
 
         # Get all speeches under a section, where everything should be
         # sorted by speech date:
         top_level = Section.objects.get(title="Government Debates")
-        children = top_level.get_descendants_ordered_by_earliest_speech(include_self=False)
+        children = top_level.get_descendants
         children = [ c.title for c in children ]
         self.assertEqual(children, [ 'Monday 25th March', 'Oral Answers to Questions - Silly Walks', 'Bill on Silly Walks', 'Friday 29th March', 'Fixed Easter Bill', 'New Clause 1', 'Clause 1', 'Z Clause' ])
 
     def test_section_next_previous(self):
-        # TODO: The get/next sections here are in tree order.
-        # Not testing/working for time order at present.
-        top_level = Section.objects.get(title='Government Written Answers', level=0)
-        depts = top_level.get_children()
+        top_level = Section.objects.get(title='Government Written Answers')
+        depts = top_level.get_children
         self.assertEqual( depts[0].get_previous_node(), None )
         self.assertEqual( depts[1].get_previous_node(), depts[0] )
         self.assertEqual( depts[2].get_previous_node(), depts[1] )
@@ -123,9 +119,9 @@ class SectionModelTests(TestCase):
         self.assertEqual( depts[1].get_next_node(), depts[2] )
         self.assertEqual( depts[2].get_next_node(), None )
 
-        day = Section.objects.get(title='Monday 25th March', level=1)
-        e = Section.objects.get(title='Fixed Easter Bill', level=2)
-        debs = day.get_children()
+        day = Section.objects.get(title='Monday 25th March')
+        e = Section.objects.get(title='Fixed Easter Bill')
+        debs = day.get_children
         self.assertEqual( debs[0].get_previous_node(), None )
         self.assertEqual( debs[1].get_previous_node(), debs[0] )
         self.assertEqual( debs[0].get_next_node(), debs[1] )
@@ -141,11 +137,11 @@ class SectionModelTests(TestCase):
         self.assertEqual( speeches[3].get_next_speech(), first_next )
 
         speeches = Section.objects.get(title='Ministry of Aardvarks').children.get(title='March').speech_set.all()
-        n = Speech.objects.filter(section=Section.objects.get(title='Wednesday 6th of March'))[0]
-        self.assertEqual( speeches[0].get_previous_speech(), None )
+        p = Speech.objects.filter(section=Section.objects.get(title='Thursday 7th of March')).reverse()[0]
+        self.assertEqual( speeches[0].get_previous_speech(), p )
         self.assertEqual( speeches[0].get_next_speech(), speeches[1] )
         self.assertEqual( speeches[1].get_next_speech(), speeches[2] )
-        self.assertEqual( speeches[2].get_next_speech(), n )
+        self.assertEqual( speeches[2].get_next_speech(), None )
 
 class SectionSiteTests(InstanceTestCase):
     """Tests for the section functionality"""
@@ -194,11 +190,11 @@ class SectionSiteTests(InstanceTestCase):
 
         # Assert no subsections
         resp = self.client.get('/sections/%d' % section.id)
-        self.assertSequenceEqual([], resp.context['section'].get_descendants())
+        self.assertSequenceEqual([], resp.context['section'].get_descendants)
 
         subsection = Section.objects.create(title="A test subsection", parent=section, instance=self.instance)
         resp = self.client.get('/sections/%d' % section.id)
-        self.assertSequenceEqual([subsection], resp.context['section'].get_descendants())
+        self.assertSequenceEqual([subsection], resp.context['section'].get_descendants)
 
     def test_section_page_has_buttons_to_add(self):
         # Add a section

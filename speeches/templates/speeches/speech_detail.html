@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% load i18n %}
-{% load mptt_tags %}
 {% load bleach_tags %}
 
 {% block extra_headers %}
@@ -26,8 +25,7 @@
 {% else %}
 
 {% if object.section %}
-{% drilldown_tree_for_node object.section as drilldown %}
-{% for n,s in drilldown|tree_info %}
+{% for n in object.section.get_ancestors %}
 <a href="{{ n.get_absolute_url }}">{{ n.title }}</a> &rarr;
 {% endfor %}
 {% endif %}

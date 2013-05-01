@@ -2,7 +2,6 @@
 {% load staticfiles %}
 {% load url from future %}
 {% load i18n %}
-{% load mptt_tags %}
 
 {% block title %}{% blocktrans with title=section.title %}View Section: {{ title }}{% endblocktrans %}{% endblock %}
 
@@ -12,7 +11,9 @@
 
 <a href="{% url 'section-list' %}">{% trans "Sections" %}</a> &rarr;
 {% for n in section.get_ancestors %}
+{% if n.id != section.id %}
 <a href="{{ n.get_absolute_url }}">{{ n.title }}</a> &rarr;
+{% endif %}
 {% endfor %}
 
     {% if user.is_authenticated %}
@@ -46,14 +47,11 @@
   {% endif %}
 {% endwith %}
 
-    {% drilldown_tree_for_node section as drilldown all cumulative count speeches.Speech.section in speech_count %}
-    {% for node, structure in drilldown|tree_info %}
-        {% if node.level > section.level %}
-            {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
-            <span class="section-title"><a href="{{ node.get_absolute_url }}">{{ node.title }}</a></span>
-            {% if node.is_leaf_node %}({{ node.speech_count }}){% endif %}
-            {% for level in structure.closed_levels %}{% if level > section.level %}</li></ul>{% endif %}{% endfor %}
-        {% endif %}
+    {% for node, structure in section.get_descendants_tree %}
+        {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
+        <span class="section-title"><a href="{{ node.get_absolute_url }}">{{ node.title }}</a></span>
+        {% if node.is_leaf_node %}({{ node.speech_count }}){% endif %}
+        {% for level in structure.closed_levels %}</li></ul>{% endfor %}
     {% endfor %}
 
     <ol class="unstyled">

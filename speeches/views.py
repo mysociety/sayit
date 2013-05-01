@@ -67,7 +67,7 @@ class SpeechMixin(InstanceFormMixin):
 
     def get_form(self, form_class):
         form = super(SpeechMixin, self).get_form(form_class)
-        form.fields['section'].queryset = Section.objects.for_instance(self.request.instance).order_by('tree_id', 'lft')
+        form.fields['section'].queryset = Section.objects.for_instance(self.request.instance)
         form.fields['speaker'].queryset = Speaker.objects.for_instance(self.request.instance)
         form.fields['tags'].queryset = Tag.objects.for_instance(self.request.instance)
         return form
@@ -151,7 +151,7 @@ class SpeakerView(InstanceViewMixin, ListView, SingleObjectMixin):
     def get_queryset(self):
         queryset = super(SpeakerView, self).get_queryset()
         self.object = self.get_object(queryset)
-        return self.object.speech_set.all().visible(self.request).select_related('section').prefetch_related('tags')
+        return self.object.speech_set.all().visible(self.request).select_related('section', 'speaker').prefetch_related('tags')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -197,9 +197,16 @@ class SectionList(InstanceViewMixin, ListView):
     model = Section
     context_object_name = 'section_list'
 
+    def get_queryset(self):
+        qs = super(SectionList, self).get_queryset()
+        qs = qs.filter(parent=None)
+        return qs
+
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super(SectionList, self).get_context_data(**kwargs)
+        for obj in context['section_list']:
+            obj.descendants = obj.get_descendants_tree
+
         # Add in a QuerySet of all the speeches not in a section
         context['speech_list'] = Speech.objects.for_instance(self.request.instance).visible(self.request).filter(section=None).select_related('speaker').prefetch_related('tags')
         return context
@@ -210,7 +217,7 @@ class SectionMixin(InstanceFormMixin):
 
     def get_form(self, form_class):
         form = super(SectionMixin, self).get_form(form_class)
-        form.fields['parent'].queryset = Section.objects.for_instance(self.request.instance).order_by('tree_id', 'lft')
+        form.fields['parent'].queryset = Section.objects.for_instance(self.request.instance)
         return form
 
 class SectionCreate(SectionMixin, CreateView):
@@ -250,7 +257,7 @@ class BothObjectAndFormMixin(object):
         if 'form' not in context:
             context['form'] = SectionPickForm()
         # Restrict to request's instance (can we think of a nicer way to do this?)
-        context['form'].fields['section'].queryset = Section.objects.for_instance(self.request.instance).order_by('tree_id', 'lft')
+        context['form'].fields['section'].queryset = Section.objects.for_instance(self.request.instance)
         return context
 
 class RecordingList(InstanceViewMixin, ListView):

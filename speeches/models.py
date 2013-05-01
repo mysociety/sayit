@@ -14,11 +14,36 @@ from instances.models import InstanceMixin, InstanceManager
 import speeches
 from speeches.utils import AudioHelper
 
-from mptt.models import MPTTModel, TreeForeignKey
 from djqmethod import Manager, querymethod
 from popit.models import Person
 
 logger = logging.getLogger(__name__)
+
+class cache(object):
+    '''Computes attribute value and caches it in the instance.
+    Python Cookbook (Denis Otkidach) http://stackoverflow.com/users/168352/denis-otkidach
+    This decorator allows you to create a property which can be computed once and
+    accessed many times. Sort of like memoization.
+
+    '''
+    def __init__(self, method, name=None):
+        # record the unbound-method and the name
+        self.method = method
+        self.name = name or method.__name__
+        self.__doc__ = method.__doc__
+    def __get__(self, inst, cls):
+        # self: <__main__.cache object at 0xb781340c>
+        # inst: <__main__.Foo object at 0xb781348c>
+        # cls: <class '__main__.Foo'>
+        if inst is None:
+            # instance attribute accessed on class, return self
+            # You get here if you write `Foo.bar`
+            return self
+        # compute, cache and return the instance's attribute value
+        result = self.method(inst)
+        # setattr redefines the instance's attribute so this doesn't get called again
+        setattr(inst, self.name, result)
+        return result
 
 class AuditedModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -128,35 +153,119 @@ class SpeechManager(InstanceManager, Manager):
         return created_speeches
 
 
-class Section(MPTTModel, AuditedModel, InstanceMixin):
+class Section(AuditedModel, InstanceMixin):
     title = models.CharField(max_length=255, blank=False, null=False)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
+
+    class Meta:
+        ordering = ('id',)
 
     def __unicode__(self):
-        return u"%s (depth: %d)" % (self.title, self.level)
+        return self.title
 
     def speech_datetimes(self):
         return (datetime.datetime.combine(s.start_date, s.start_time or datetime.time(0,0) )
                 for s in self.speech_set.all())
 
-    def get_descendants_ordered_by_earliest_speech(self, include_self=False):
-        from django.db import connection
-        dqs = self.get_descendants(include_self=include_self)
-        descendants_with_speeches = dqs.prefetch_related('speech_set')
+    def is_leaf_node(self):
+        return not self.children.exists()
+
+    @cache
+    def get_children(self):
+        tree = self.get_descendants
+        try:
+            lvl = tree[0].level
+            return [ s for s in tree if s.level == lvl ]
+        except:
+            return []
+
+    @cache
+    def get_ancestors(self):
+        # Cached for now, so these aren't supplied as arguments
+        ascending = False
+        include_self = True
+        """Return the ancestors of the current Section, in either direction,
+        optionally including itself."""
+        dir = ascending and 'ASC' or 'DESC'
+        s = Section.objects.raw(
+            """WITH RECURSIVE cte AS (
+                SELECT speeches_section.*, 1 AS l FROM speeches_section WHERE id=%s
+                UNION ALL
+                SELECT s.*, l+1 FROM cte JOIN speeches_section s ON cte.parent_id = s.id
+            )
+            SELECT * FROM cte ORDER BY l """ + dir,
+            [ self.id ]
+        )
+        if not include_self:
+            s = ascending and s[1:] or s[:-1]
+        return list(s) # So it's evaluated and will be cached
+
+    def _get_descendants(self, include_self=False, include_count='', include_min='', max_depth=''):
+        """Return the descendants of the current Section, in depth-first order.
+        Optionally, include speech counts, minimum speech times, and only
+        descend a certain depth."""
+        select = [ '*' ]
+        if include_count:
+            select.append("(SELECT COUNT(*) FROM speeches_speech WHERE section_id = cte.id) AS speech_count")
+        if include_min:
+            select.append("(SELECT MIN( start_date + COALESCE(start_time, time '00:00') ) FROM speeches_speech WHERE section_id = cte.id) AS speech_min")
+        if max_depth:
+            max_depth = "WHERE array_upper(path, 1) < %d" % (max_depth+1)
+        s = Section.objects.raw(
+            """WITH RECURSIVE cte AS (
+                SELECT speeches_section.*, 0 AS level, ARRAY[id] AS path FROM speeches_section WHERE id=%s
+                UNION ALL
+                SELECT s.*, level+1, cte.path||s.id FROM cte JOIN speeches_section s ON cte.id = s.parent_id
+            """ + max_depth + """
+            )
+            SELECT """ + ','.join(select) + """ FROM cte ORDER BY path""",
+            [ self.id ]
+        )
+        if not include_self:
+            s = s[1:]
+        return s
+
+    @cache
+    def get_descendants_tree(self):
+        d = self._get_descendants_by_speech(include_count=True)
+        prev_level = 0
+        prev_path = None
+        out = []
+        for node in d:
+            s = {}
+            if node.level > prev_level:
+                s['new_level'] = True
+            elif node.level < prev_level:
+                out[-1][1]['closed_levels'] = range(prev_level, node.level, -1)
+            elif node.path[:-1] != prev_path[:-1]: # Swapping parentage in some way
+                sw = ( i for i in xrange(len(node.path)) if node.path[i] != prev_path[i] ).next()
+                out[-1][1]['closed_levels'] = range(node.level, node.level-sw, -1)
+                s = {}
+                for i in range(node.level-sw, node.level):
+                    out.append( (Section.objects.get(id=node.path[i]), s) )
+                    s = { 'new_level': True }
+            prev_level, prev_path = node.level, node.path
+            out.append( (node, s) )
+        if out:
+            out[-1][1]['closed_levels'] = range(prev_level, 0, -1)
+        return out
+
+    @cache
+    def get_descendants(self):
+        return self._get_descendants_by_speech()
+
+    def _get_descendants_by_speech(self, **kwargs):
+        dqs = self._get_descendants(include_min=True, **kwargs)
 
         earliest = {}
-        for d in descendants_with_speeches:
-            speeches = d.speech_datetimes()
-            try:
-                e = min(speeches)
-            except ValueError:
+        for d in dqs:
+            if not d.speech_min:
                 continue
-            parents = d.get_ancestors(ascending=True, include_self=True)
-            for parent in parents:
-                if parent.id not in earliest or e < earliest[parent.id]:
-                    earliest[parent.id] = e
+            for parent in reversed(d.path):
+                if parent not in earliest or d.speech_min < earliest[parent]:
+                    earliest[parent] = d.speech_min
 
-        return sorted( descendants_with_speeches, key=lambda s: earliest[s.id] )
+        return sorted( dqs, key=lambda s: earliest.get(s.id, datetime.datetime(datetime.MAXYEAR, 12, 31)) )
 
     @models.permalink
     def get_absolute_url(self):
@@ -166,42 +275,28 @@ class Section(MPTTModel, AuditedModel, InstanceMixin):
     def get_edit_url(self):
         return ( 'section-edit', (), { 'pk': self.id } )
 
-    # Override the sibling functions to restrict results to the same instance
-    def get_next_sibling(self, *args, **kwargs):
-        kwargs['instance'] = self.instance
-        return super(Section, self).get_next_sibling(*args, **kwargs)
-
-    def get_previous_sibling(self, *args, **kwargs):
-        kwargs['instance'] = self.instance
-        return super(Section, self).get_previous_sibling(*args, **kwargs)
+    def _get_next_previous_node(self, direction):
+        if not self.parent:
+            return None
+        root = self.get_ancestors[0]
+        tree = root.get_descendants
+        idx = tree.index(self)
+        lvl = tree[idx].level
+        same_level = [ s for s in tree if s.level == lvl ]
+        idx = same_level.index(self)
+        if direction == -1 and idx == 0: return None
+        try:
+            return same_level[idx+direction]
+        except:
+            return None
 
     def get_next_node(self):
-        """Fetch the next node in the tree, at the same level as this one.
-        Same as get_next_sibling except for a last sibling, when it'll find
-        something further away."""
-        qs = self._tree_manager.filter(instance=self.instance)
-        qs = self._tree_manager._mptt_filter(qs,
-            tree_id=self._mpttfield('tree_id'),
-            level = self._mpttfield('level'),
-            left__gt=self._mpttfield('right'),
-        )
-        siblings = qs[:1]
-        return siblings and siblings[0] or None
+        """Fetch the next node in the tree, at the same level as this one."""
+        return self._get_next_previous_node(1)
 
     def get_previous_node(self):
-        """Fetch the previous node in the tree, at the same level as this one.
-        Same as get_previous_sibling except for a first sibling, when it'll find
-        something further away."""
-        opts = self._mptt_meta
-        qs = self._tree_manager.filter(instance=self.instance)
-        qs = self._tree_manager._mptt_filter(qs,
-            tree_id=self._mpttfield('tree_id'),
-            level = self._mpttfield('level'),
-            right__lt=self._mpttfield('left'),
-        )
-        qs = qs.order_by('-' + opts.right_attr)
-        siblings = qs[:1]
-        return siblings and siblings[0] or None
+        """Fetch the previous node in the tree, at the same level as this one."""
+        return self._get_next_previous_node(-1)
 
 # Speech that a speaker gave
 class Speech(InstanceMixin, AuditedModel):

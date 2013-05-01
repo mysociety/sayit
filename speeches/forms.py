@@ -4,7 +4,6 @@ from datetime import datetime
 import pytz
 
 from django_select2.widgets import Select2Widget, Select2MultipleWidget
-from mptt.forms import TreeNodeChoiceField
 
 from django import forms
 from django.forms.forms import BoundField
@@ -50,7 +49,7 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
         }
 
 class SectionPickForm(forms.Form):
-    section = TreeNodeChoiceField(label='Assign to section', queryset=Section.objects.all(), required=True)
+    section = forms.ModelChoiceField(label='Assign to section', queryset=Section.objects.all(), required=True)
 
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
@@ -58,7 +57,7 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             empty_label = '',
             widget = Select2Widget(select2_options={ 'placeholder':'Choose a speaker', 'width': 'resolve' }),
             required=False)
-    section = TreeNodeChoiceField(queryset=Section.objects.all(), required=False)
+    section = forms.ModelChoiceField(queryset=Section.objects.all(), required=False)
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],
             widget=BootstrapDateWidget,
             required=False)
