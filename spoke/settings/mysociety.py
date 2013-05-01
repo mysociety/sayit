@@ -23,8 +23,6 @@ DATABASES = {
         'PORT': config.get('SAYIT_DB_PORT'),
     }
 }
-if 'test' in sys.argv:
-    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
 
 TIME_ZONE = config.get('TIME_ZONE')
 SECRET_KEY = config.get('DJANGO_SECRET_KEY')

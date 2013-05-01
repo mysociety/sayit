@@ -10,7 +10,7 @@ class SpeakerTests(InstanceTestCase):
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
         
         # Call the speaker's page
-        resp = self.client.get('/speaker/1')
+        resp = self.client.get('/speaker/%d' % speaker.id)
 
         # Assert no speeches
         self.assertSequenceEqual([], resp.context['speech_list'])
@@ -19,7 +19,7 @@ class SpeakerTests(InstanceTestCase):
         speech = Speech.objects.create(text="A test speech", speaker=speaker, instance=self.instance)
 
         # Call the speaker's page again
-        resp = self.client.get('/speaker/1')
+        resp = self.client.get('/speaker/%d' % speaker.id)
 
         self.assertSequenceEqual([speech], resp.context['speech_list'])
 
@@ -28,6 +28,6 @@ class SpeakerTests(InstanceTestCase):
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
         
         # Call the speaker's page
-        resp = self.client.get('/speaker/1')
+        resp = self.client.get('/speaker/%d' % speaker.id)
 
-        self.assertContains(resp, '<a href="/speech/add?speaker=1">Add a new speech</a>', html=True)
+        self.assertContains(resp, '<a href="/speech/add?speaker=%d">Add a new speech</a>' % speaker.id, html=True)

@@ -42,17 +42,18 @@ class RecordingAPITests(InstanceTestCase):
             'audio': audio
         })
 
+        recording = Recording.objects.order_by('-id')[0]
+
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertIn('/recording/1', resp['Location'])
+        self.assertIn('/recording/%d' % recording.id, resp['Location'])
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
         self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
-        recording = Recording.objects.get(id=1)
         self.assertIsNotNone(recording.audio)
 
     def test_add_recording_with_timestamp(self):
@@ -66,21 +67,22 @@ class RecordingAPITests(InstanceTestCase):
             'timestamps': '[{"speaker":"1","timestamp":946684800000}]'
         })
 
+        recording = Recording.objects.order_by('-id')[0]
+
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertIn('/recording/1', resp['Location'])
+        self.assertIn('/recording/%d' % recording.id, resp['Location'])
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
         self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
-        recording = Recording.objects.get(id=1)
         self.assertIsNotNone(recording.audio)
         self.assertEquals(recording.timestamps.count(), 1)
         expected_timestamp = datetime.utcfromtimestamp(946684800).replace(tzinfo=pytz.utc)
-        self.assertEquals(recording.timestamps.get(id=1).timestamp, expected_timestamp)
+        self.assertEquals(recording.timestamps.all()[0].timestamp, expected_timestamp)
 
     def test_add_recording_with_multiple_timestamps(self):
         SPEECHES = 3
@@ -104,10 +106,12 @@ class RecordingAPITests(InstanceTestCase):
             'timestamps': timestamps
         })
 
+        recording = Recording.objects.order_by('-id')[0]
+
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertIn('/recording/1', resp['Location'])
+        self.assertIn('/recording/%d' % recording.id, resp['Location'])
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
@@ -115,7 +119,6 @@ class RecordingAPITests(InstanceTestCase):
 
         # Check in db
         # Check the recording
-        recording = Recording.objects.get(id=1)
         self.assertIsNotNone(recording.audio)
 
         # Check the right number of timestamps and speeches were made
@@ -126,7 +129,7 @@ class RecordingAPITests(InstanceTestCase):
         ordered_timestamps = recording.timestamps.order_by("timestamp")
         for i in range(SPEECHES):
             self.assertEquals(ordered_timestamps[i].timestamp, expected_timestamps[i])
-            speech = Speech.objects.get(id=i+1)
+            speech = Speech.objects.all()[i]
             self.assertEquals(speech.speaker, speakers[i])
             self.assertEquals(speech.start_date, expected_timestamps[i].date())
             self.assertEquals(speech.start_time, expected_timestamps[i].time())
@@ -150,20 +153,21 @@ class RecordingAPITests(InstanceTestCase):
             'timestamps': '[{"speaker":"", "timestamp":946684800000}]'
         })
 
+        recording = Recording.objects.order_by('-id')[0]
+
         # Check response headers
         self.assertEquals(resp.status_code, 201)
         self.assertEquals(resp['Content-Type'], 'application/json')
-        self.assertIn('/recording/1', resp['Location'])
+        self.assertIn('/recording/%d' % recording.id, resp['Location'])
 
         # Check response JSON
         response_content = simplejson.loads(resp.content)
         self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
-        recording = Recording.objects.get(id=1)
         self.assertIsNotNone(recording.audio)
         self.assertEquals(recording.timestamps.all().count(), 1)
-        self.assertEquals(recording.timestamps.get(id=1).timestamp, expected_timestamp)
+        self.assertEquals(recording.timestamps.all()[0].timestamp, expected_timestamp)
 
     def test_add_recording_fails_with_unsupported_audio(self):
         # Load the .aiff fixture

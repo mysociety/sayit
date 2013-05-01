@@ -158,20 +158,22 @@ class SectionSiteTests(InstanceTestCase):
         resp = self.client.post('/sections/add', {
             'title': 'A test section'
         })
-        self.assertRedirects(resp, 'sections/1')
+        new_section = Section.objects.order_by('-id')[0]
+        self.assertRedirects(resp, 'sections/%d' % new_section.id)
         # Check in db
-        section = Section.objects.get(id=1)
+        section = Section.objects.get(id=new_section.id)
         self.assertEquals(section.title, 'A test section')
 
     def test_add_section_in_section(self):
         section = Section.objects.create(title='Test section', instance=self.instance)
         resp = self.client.post('/sections/add', {
-            'parent': 1,
+            'parent': section.id,
             'title': 'A test subsection'
         })
-        self.assertRedirects(resp, 'sections/2')
+        new_section = Section.objects.order_by('-id')[0]
+        self.assertRedirects(resp, 'sections/%d' % new_section.id)
         # Check in db
-        subsection = Section.objects.get(id=2)
+        subsection = Section.objects.get(id=new_section.id)
         self.assertEquals(subsection.title, 'A test subsection')
         self.assertEquals(subsection.parent, section)
 
@@ -180,22 +182,22 @@ class SectionSiteTests(InstanceTestCase):
         subsection = Section.objects.create(title='A test subsection', parent=section, instance=self.instance)
 
         # Assert no speeches
-        resp = self.client.get('/sections/2')
+        resp = self.client.get('/sections/%d' % subsection.id)
         self.assertSequenceEqual([], resp.context['speech_list'])
 
         speech = Speech.objects.create(text="A test speech", section=subsection, instance=self.instance)
-        resp = self.client.get('/sections/2')
+        resp = self.client.get('/sections/%d' % subsection.id)
         self.assertSequenceEqual([speech], resp.context['speech_list'])
 
     def test_section_page_lists_subsections(self):
         section = Section.objects.create(title='A test section', instance=self.instance)
 
         # Assert no subsections
-        resp = self.client.get('/sections/1')
+        resp = self.client.get('/sections/%d' % section.id)
         self.assertSequenceEqual([], resp.context['section'].get_descendants())
 
         subsection = Section.objects.create(title="A test subsection", parent=section, instance=self.instance)
-        resp = self.client.get('/sections/1')
+        resp = self.client.get('/sections/%d' % section.id)
         self.assertSequenceEqual([subsection], resp.context['section'].get_descendants())
 
     def test_section_page_has_buttons_to_add(self):
@@ -203,8 +205,8 @@ class SectionSiteTests(InstanceTestCase):
         section = Section.objects.create(title='A test section', instance=self.instance)
 
         # Call the section's page
-        resp = self.client.get('/sections/1')
+        resp = self.client.get('/sections/%d' % section.id)
 
-        self.assertContains(resp, '<a href="/speech/add?section=1">Add a new speech</a>', html=True)
-        self.assertContains(resp, '<a href="/sections/add?section=1">Add a new subsection</a>', html=True)
+        self.assertContains(resp, '<a href="/speech/add?section=%d">Add a new speech</a>' % section.id, html=True)
+        self.assertContains(resp, '<a href="/sections/add?section=%d">Add a new subsection</a>' % section.id, html=True)
 
