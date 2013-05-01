@@ -14,7 +14,7 @@
     {% if object.title %}
         {{ object.title }}
     {% else %}
-        &#8220;{{ object.summary }}&#8221;
+        &#8220;{{ object.summary|striptags }}&#8221;
     {% endif %}
 {% endblock %}
 
@@ -48,7 +48,7 @@
         {% if object.title %}
             {{ object.title }}
         {% else %}
-            &#8220;{{ object.summary }}&#8221;
+            &#8220;{{ object.summary|bleach }}&#8221;
         {% endif %}
     </h1>
     
@@ -77,10 +77,10 @@
   {% if previous or next %}
     <ul class="pager">
       {% if previous %}
-        <li><a href="{% url "speech-view" previous.id %}">&larr; {{ previous.summary }}</a>
+        <li><a href="{% url "speech-view" previous.id %}">&larr; {{ previous.summary|bleach }}</a>
       {% endif %}
       {% if next %}
-        <li><a href="{% url "speech-view" next.id %}">{{ next.summary }} &rarr;</a>
+        <li><a href="{% url "speech-view" next.id %}">{{ next.summary|bleach }} &rarr;</a>
       {% endif %}
     </ul>
   {% endif %}
