@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load url from future %}
+{% load i18n %}
 
-{% block title %}Sections{% endblock %}
+{% block title %}{% trans "Sections" %}{% endblock %}
 
 {% block content %}
 
 <div class="page-header">
-    <h1>Sections</h1>
+    <h1>{% trans "Sections" %}</h1>
 </div>
 
 <ul class="unstyled">

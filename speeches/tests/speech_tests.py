@@ -222,3 +222,12 @@ class SpeechTests(InstanceTestCase):
         self.assertContains( resp, 'Speech 2' )
         resp = self.client.get('/speech/%d' % speeches[0].id)
         self.assertContains( resp, 'Not Found', status_code=404 )
+
+    def test_speech_datetime_line(self):
+        section = Section.objects.create(title='Test', instance=self.instance)
+        Speech.objects.create( text='Speech', section=section, instance=self.instance,
+            public=True, start_date=datetime.date(2000, 1, 1), end_date=datetime.date(2000, 1, 2)
+        )
+
+        resp = self.client.get('/sections/%d' % section.id)
+        self.assertRegexpMatches( resp.content, '>\s+1 Jan 2000\s+&ndash;\s+2 Jan 2000\s+<' )
