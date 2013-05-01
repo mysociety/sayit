@@ -33,7 +33,6 @@ Something like the following, customised to your particular environment or set u
     source virtualenv-sayit/bin/activate
 
     # Install required python packages
-    cd sayit
     pip install --requirement requirements.txt
 
     cp conf/general.yml-example conf/general.yml
