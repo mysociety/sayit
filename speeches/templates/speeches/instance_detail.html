@@ -14,10 +14,22 @@
 
 <div class="row-fluid">
 
-<div class="span6">
+<div class="span4">
+    <h2>{% trans "Speakers" %}</h2>
+    <ul class="unstyled">
+      {% for speaker in speakers %}
+        <li class="sspeech-border" style="border-left-color: #{{ speaker.colour }};">
+            <img src="{% static "i/a.png" %}" style="border-color: #{{ speaker.colour }}; background-color: #{{ speaker.colour }};" alt="" width=24 height=24 class="speaker-img">
+            <a href="{{ speaker.get_absolute_url }}">{{ speaker }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+</div>
+
+<div class="span8">
 <h2>{% trans "Recent Sections" %}</h2>
 
-<ul>
+<ul style="column-count:2; -webkit-column-count:2">
   {% for section in recent_sections %}
     <li>
         <a href="{{ section.get_absolute_url }}">{{ section.title }}</a>
@@ -26,10 +38,10 @@
 </ul>
 </div>
 
-<div class="span6">
+<div class="span8">
 <h2>{% trans "Recent Speeches" %}</h2>
 
-<ul class="unstyled speaker-right">
+<ul class="unstyled">
   {% for speech in recent_speeches %}
     {% include "speeches/speech.html" with speech=speech %}
   {% endfor %}
