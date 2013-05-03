@@ -22,6 +22,14 @@
     {% endif %}
 
     <h1>{{ speaker.name }}</h1>
+
+    {% if speaker.person.image %}
+        <img src="{{ speaker.person.image }}" 
+             alt="Headshot of {{ speaker.name|escape}}" 
+             width="100">
+    {% endif %}
+    <p class="person-summary"> {{ speaker.person.summary }} </p>
+
 </div>
 
     <ul class="unstyled">
