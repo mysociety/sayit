@@ -1,7 +1,9 @@
 from instances.tests import InstanceTestCase
 
-from speeches.models import Speaker, Speech
+from speeches.models import Speaker, Speech, Section
 from popit.models import Person, ApiInstance
+
+import sys
 
 class SpeakerTests(InstanceTestCase):
     """Tests for the speaker functionality"""
@@ -41,3 +43,25 @@ class SpeakerTests(InstanceTestCase):
         resp = self.client.get('/speaker/1')
 
         self.assertContains(resp, '<a href="/speech/add?speaker=1">Add a new speech</a>', html=True)
+
+    def test_speaker_popit_headshots_in_speeches_section(self):
+        # Test that headshots vs default image work OK
+
+        api_url = 'http://popit.mysociety.org/api/v1/'
+        ai = ApiInstance.objects.create(url=api_url)
+
+        person1 = Person.objects.create(name='Marilyn', summary='movie star', image='http://example.com/image.jpg', api_instance=ai)
+        speaker1 = Speaker.objects.create(name='Marilyn', person=person1, instance=self.instance)
+        speaker2 = Speaker.objects.create(name='Salinger', instance=self.instance)
+
+        section = Section.objects.create(title='Test Section', instance=self.instance)
+
+        speech1 = Speech.objects.create( text="A girl doesn't need anyone that doesn't need her.", speaker=speaker1, section=section, instance=self.instance, public=True )
+
+        speech2 = Speech.objects.create( text="I'm sick of not having the courage to be an absolute nobody.", speaker=speaker2, section=section, instance=self.instance, public=True )
+
+        resp = self.client.get('/sections/' + str(section.id))
+
+        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/1">\s*<img src="\s*http:\/\/example.com\/image.jpg\s*"')
+
+        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/2">\s*<img src="\s*/static/i/a.\w+.png\s*"')
