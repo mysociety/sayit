@@ -23,11 +23,10 @@
 
     <h1>{{ speaker.name }}</h1>
 
-    {% if speaker.person.image %}
-        <img src="{{ speaker.person.image }}" 
-             alt="Headshot of {{ speaker.name|escape}}" 
-             width="100">
-    {% endif %}
+         <img src="{% if speaker.person.image %}
+                         {{ speaker.person.image }} {% else %} {% static "i/a.png" %} {% endif %}" style="border: 4px solid #{{ speaker.colour }}; background-color: #{{ speaker.colour }};"  width=128 height=128 
+             alt="Headshot of {{ speaker.name|escape}}">
+
     <p class="person-summary"> {{ speaker.person.summary }} </p>
 
 </div>
