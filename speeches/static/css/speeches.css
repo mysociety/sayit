@@ -51,10 +51,23 @@
     opacity: 0.5;
 }
 
+.speech {
+    position: relative;
+}
+
+.speech:after {
+    content: "";
+    position: absolute;
+    border-bottom: 1px solid #ccc;
+    width: 34%;
+    left: 33%;
+    bottom: -0.5em;
+}
+
 .speech-border {
     border-left: solid 0.25em #fff;
     padding-left: 0.25em;
-    margin-bottom: 0.25em;
+    margin-bottom: 1em;
 }
 
 .speech-border .speaker-img {
