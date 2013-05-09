@@ -14,7 +14,7 @@ class Migration(SchemaMigration):
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('parent', self.gf('mptt.fields.TreeForeignKey')(blank=True, related_name='children', null=True, to=orm['speeches.Section'])),
+            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='children', null=True, to=orm['speeches.Section'])),
             ('lft', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
             ('rght', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
             ('tree_id', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
@@ -117,7 +117,7 @@ class Migration(SchemaMigration):
             'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': "orm['speeches.Section']"}),
+            'parent': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': "orm['speeches.Section']"}),
             'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})

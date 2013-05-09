@@ -47,7 +47,7 @@ class Migration(SchemaMigration):
 
 
         # Changing field 'Section.parent'
-        db.alter_column('speeches_section', 'parent_id', self.gf('mptt.fields.TreeForeignKey')(null=True, to=orm['speeches.Section']))
+        db.alter_column('speeches_section', 'parent_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, to=orm['speeches.Section']))
 
     models = {
         'auth.group': {
