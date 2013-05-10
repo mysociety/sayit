@@ -62,6 +62,6 @@ class SpeakerTests(InstanceTestCase):
 
         resp = self.client.get('/sections/' + str(section.id))
 
-        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/1">\s*<img src="\s*http:\/\/example.com\/image.jpg\s*"')
+        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/%d">\s*<img src="\s*http:\/\/example.com\/image.jpg\s*"' % speaker1.id)
 
-        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/2">\s*<img src="\s*/static/i/a.\w+.png\s*"')
+        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/%d">\s*<img src="\s*/static/i/a.\w+.png\s*"' % speaker2.id)
