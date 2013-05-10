@@ -42,6 +42,15 @@ Something like the following, customised to your particular environment or set u
 
     cp conf/general.yml-example conf/general.yml
     # Alter conf/general.yml as per your set up
+    #    use the 'sayit' account as above for SAYIT_DB_{USER,NAME,PASS}
+    # 
+    # For *development* use only:
+    #    use recommendations for BASE_{HOST,PORT}
+    #    you don't need Google Analytics
+    #    for AT&T API details, you can use these 2 dummy values
+    #        ATT_OAUTH_URL: 'http://att.oauth.url.example.org/'
+    #        ATT_API_URL: 'http://att.api.url.example.org/'
+    #    DJANGO_SECRET_KEY isn't needed
 
     # Set up database
     ./manage.py syncdb

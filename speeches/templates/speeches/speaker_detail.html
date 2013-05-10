@@ -7,21 +7,32 @@
 
 {% block content %}
 
-<div class="page-header">
-    {% if user.is_authenticated %}
-    <div class="btn-group pull-right">
-      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        {% trans "Actions" %}
-        <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu">
-        <li><a href="{{ speaker.get_edit_url }}">{% trans "Edit speaker" %}</a>
-        <li><a href="{% url "speech-add" %}?speaker={{ speaker.id }}">{% trans "Add a new speech" %}</a>
-      </ul>
-    </div>
-    {% endif %}
+<div class="page-header clearfix">
+
+      <img src="{% if speaker.person.image %}{{ speaker.person.image }} {% else %} {% static "i/a.png" %} {% endif %}" 
+          style="border: 4px solid #{{ speaker.colour }}; background-color: #{{ speaker.colour }};"
+          width="128" height="128"
+          class="pull-right"
+          alt="Headshot of {{ speaker.name|escape}}">
+
+      {% if user.is_authenticated %}
+      <div class="btn-group pull-right" style="clear:both">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+          {% trans "Actions" %}
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{ speaker.get_edit_url }}">{% trans "Edit speaker" %}</a>
+          <li><a href="{% url "speech-add" %}?speaker={{ speaker.id }}">{% trans "Add a new speech" %}</a>
+        </ul>
+      </div>
+      {% endif %}
+
 
     <h1>{{ speaker.name }}</h1>
+
+    <p class="lead person-summary"> {{ speaker.person.summary }} </p>
+
 </div>
 
     <ul class="unstyled">
