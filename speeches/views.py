@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 
 from django.db.models import Count
+from django.core.files import File
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
 from popit.models import ApiInstance
@@ -301,6 +302,14 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
         logger.info("Processing recording")
 
         super(RecordingAPICreate, self).form_valid(form)
+
+        # Save upload into .mp3
+        # TODO: this section is cargo-culted from models.Speech, refactor
+        audio_helper = AudioHelper()
+        mp3_filename = audio_helper.make_mp3(self.object.audio.path)
+        mp3_file = open(mp3_filename, 'rb')
+        # retain the old file (for debugging use etc.?), but save mp3 as the new file
+        self.object.audio.save(mp3_file.name, File(mp3_file), save=True)
 
         # Create speeches from the recording
         speeches = Speech.objects.create_from_recording(self.object, self.request.instance)
