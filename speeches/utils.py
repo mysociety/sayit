@@ -294,7 +294,9 @@ class AudioHelper(object):
         # Where to go to
         if duration is not None:
             options.extend(['-t', str(duration)])
-        options.extend(self._build_ffmpeg_mp3_output_options(out_filename))
+
+        # because the partial files are built from an mp3, we can use the 'copy' pseudocodec
+        options.extend(self._build_ffmpeg_mp3_output_options(out_filename, 'copy'))
 
         with open(os.devnull, 'w') as dev_null:
             result = subprocess.call(options, stderr=dev_null)
@@ -321,14 +323,14 @@ class AudioHelper(object):
             in_filename
         ]
 
-    def _build_ffmpeg_mp3_output_options(self, out_filename):
+    def _build_ffmpeg_mp3_output_options(self, out_filename, encoder='libmp3lame'):
         return [
             # Output options
             # 128 kbps bitrate
             '-ab',
             '128k',
             '-acodec',
-            'libmp3lame',
+            encoder,
             # Output file
             out_filename
         ]
