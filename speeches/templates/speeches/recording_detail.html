@@ -13,6 +13,9 @@
 
     <p>This recording was created {{ object.created|naturaltime }}.
     It consists of {{ object.timestamps.count|apnumber }} timestamps.
+
+    <i class="icon-volume-up off-screen">{% trans "This speech has audio" %}</i>
+    <audio id="audio{{ object.id }}" src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio>
 </div>
 
 <ul>
@@ -24,6 +27,10 @@
         <span class="speech-speaker"> <strong>{{ speech.speaker|default_if_none:"Unknown Speaker" }}</strong></span>
         <span class="speech-summary"> said <a href="{%url "speech-view" speech.id%}"><em>&#8220;{{ speech.summary}}&#8221;</em></a></span>
         <span class="speech-date muted"><small>{{ speech.start_date|default_if_none:"Undated" }} </small></span>
+        <audio class="audio-small" id="audio-speech{{ speech.id }}" src="{{ MEDIA_URL }}{{ speech.audio }}" controls></audio>
+        <script>
+           $('#audio-speech{{ speech.id }}').mediaelementplayer( { audioWidth: 100, audioHeight: 24, features: [ 'playpause', 'current', 'duration' ] } ); 
+        </script>
       {% endwith %}
     {% else %}
         no attached speech.
