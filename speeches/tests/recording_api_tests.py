@@ -82,7 +82,10 @@ class RecordingAPITests(InstanceTestCase):
         expected_timestamp = datetime.utcfromtimestamp(946684800).replace(tzinfo=pytz.utc)
         self.assertEquals(recording.timestamps.get(id=1).timestamp, expected_timestamp)
 
-    def test_add_recording_with_multiple_timestamps(self):
+    def test_add_ogg_with_multiple_timestamps(self):
+        self.test_add_recording_with_multiple_timestamps('lamb.ogg')
+
+    def test_add_recording_with_multiple_timestamps(self, filename='lamb.mp3'):
         SPEECHES = 3
 
         speakers = []
@@ -98,7 +101,7 @@ class RecordingAPITests(InstanceTestCase):
                 timestamps += ','
         timestamps += ']'
 
-        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
+        audio = open(os.path.join(self._in_fixtures, filename), 'rb')
         resp = self.client.post('/api/v0.1/recording/', {
             'audio': audio,
             'timestamps': timestamps
@@ -117,6 +120,7 @@ class RecordingAPITests(InstanceTestCase):
         # Check the recording
         recording = Recording.objects.get(id=1)
         self.assertIsNotNone(recording.audio)
+        self.assertRegexpMatches(recording.audio.path, r'\.mp3$')
 
         # Check the right number of timestamps and speeches were made
         self.assertEquals(recording.timestamps.count(), SPEECHES)
@@ -138,6 +142,7 @@ class RecordingAPITests(InstanceTestCase):
                 self.assertEquals(speech.end_time, expected_timestamps[i+1].time())
             self.assertIsNotNone(speech.celery_task_id)
             self.assertIsNotNone(speech.audio.path)
+            self.assertRegexpMatches(speech.audio.path, r'\.mp3$')
             self.assertEquals(speech, ordered_timestamps[i].speech)
 
     def test_add_recording_with_unknown_speaker_timestamp(self):
