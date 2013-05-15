@@ -16,9 +16,6 @@
 
     <i class="icon-volume-up off-screen">{% trans "This speech has audio" %}</i>
     <audio id="audio{{ object.id }}" src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio>
-    <script>
-       $('#audio{{ object.id }}').mediaelementplayer();
-    </script>
 </div>
 
 <ul>
