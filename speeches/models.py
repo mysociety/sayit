@@ -484,16 +484,17 @@ class RecordingTimestamp(InstanceMixin, AuditedModel):
     speaker = models.ForeignKey(Speaker, blank=True, null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(db_index=True, blank=False)
     speech = models.ForeignKey(Speech, blank=True, null=True, on_delete=models.SET_NULL)
+    recording = models.ForeignKey('Recording',blank=False, null=False, related_name='timestamps', default=0) # kludge default 0, should not be used
 
     @property
     def utc(self):
         """Return our timestamp as a UTC long"""
         return calendar.timegm(self.timestamp.timetuple())
 
+
 # A raw recording, might be divided up into multiple speeches
 class Recording(InstanceMixin, AuditedModel):
     audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=False)
-    timestamps = models.ManyToManyField(RecordingTimestamp, blank=True, null=True)
 
     def __unicode__(self):
         return u'Recording made on {date:%d %B %Y} at {date:%H:%M}'.format(date=self.created)

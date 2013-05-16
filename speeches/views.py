@@ -317,7 +317,12 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
         mp3_filename = audio_helper.make_mp3(self.object.audio.path)
         mp3_file = open(mp3_filename, 'rb')
         # retain the old file (for debugging use etc.?), but save mp3 as the new file
-        self.object.audio.save(mp3_file.name, File(mp3_file), save=True)
+        recording = self.object
+        recording.audio.save(mp3_file.name, File(mp3_file), save=True)
+
+        for recording_timestamp in form.cleaned_data.get('timestamps', []):
+            recording_timestamp.recording = recording
+            recording_timestamp.save()
 
         # Create speeches from the recording
         speeches = Speech.objects.create_from_recording(self.object, self.request.instance)

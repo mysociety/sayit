@@ -149,7 +149,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
                         speaker = Speaker.objects.get(pk=recording_timestamp['speaker'])
                     except:
                         speaker = None
-                    timestamps.append(RecordingTimestamp.objects.create(speaker=speaker, timestamp=timestamp, instance=self.request.instance))
+                    timestamps.append(RecordingTimestamp(speaker=speaker, timestamp=timestamp, instance=self.request.instance))
                 else:
                     # Timestamp is required
                     logger.error("No timestamp supplied in request: {0}".format(recording_timestamp))
