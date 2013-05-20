@@ -15,6 +15,7 @@ class Migration(DataMigration):
                 title = debate.title,
                 parent = meeting_section,
                 instance = debate.instance,
+                level=0, lft=0, rght=0, tree_id=0,
             )
             for speech in debate.speech_set.all():
                 speech.section = debate_section
@@ -24,6 +25,7 @@ class Migration(DataMigration):
             meeting_section = orm.Section.objects.create(
                 title = meeting.title,
                 instance = meeting.instance,
+                level=0, lft=0, rght=0, tree_id=0,
             )
             for debate in meeting.debate_set.all():
                 deal_with_debate(debate, meeting_section)
