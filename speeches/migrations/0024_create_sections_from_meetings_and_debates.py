@@ -144,7 +144,7 @@ class Migration(DataMigration):
             'timestamp': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True'})
         },
         'speeches.section': {
-            'Meta': {'object_name': 'Section', '_bases': ('mptt.models.MPTTModel',)},
+            'Meta': {'object_name': 'Section'},
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'instance': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['instances.Instance']"}),
