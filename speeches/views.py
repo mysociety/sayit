@@ -11,8 +11,8 @@ from django.core.files import File
 from instances.views import InstanceFormMixin, InstanceViewMixin
 from popit.models import ApiInstance
 
-from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, SpeakerPopitForm
-from speeches.models import Speech, Speaker, Section, Recording, Tag
+from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, SpeakerPopitForm, RecordingForm, RecordingTimestampFormSet
+from speeches.models import Speech, Speaker, Section, Recording, Tag, RecordingTimestamp
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
 
@@ -262,6 +262,18 @@ class BothObjectAndFormMixin(object):
         context['form'].fields['section'].queryset = Section.objects.for_instance(self.request.instance)
         return context
 
+class RecordingMixin(InstanceFormMixin):
+    model = Recording
+    form_class = RecordingForm
+
+    def get_form(self, form_class):
+        form = super(RecordingMixin, self).get_form(form_class)
+        return form
+
+# this view isn't used directly, but is referred to by formset
+class RecordingCreate(RecordingMixin, CreateView):
+    pass
+
 class RecordingList(InstanceViewMixin, ListView):
     model = Recording
 
@@ -290,6 +302,25 @@ class RecordingView(View):
     def post(self, request, *args, **kwargs):
         view = RecordingSetSection.as_view()
         return view(request, *args, **kwargs)
+
+class RecordingUpdate(RecordingMixin, UpdateView):
+    def get_context_data(self, **kwargs):
+        context = super(RecordingUpdate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['recordingtimestamp_form'] = RecordingTimestampFormSet(self.request.POST, instance=self.object)
+        else:
+            context['recordingtimestamp_form'] = RecordingTimestampFormSet(instance=self.object)
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        recordingtimestamp_form = context['recordingtimestamp_form']
+        if recordingtimestamp_form.is_valid():
+            recordingtimestamp_form.instance = self.object
+            recordingtimestamp_form.save()
+            return HttpResponseRedirect( self.object.get_absolute_url() )
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
 class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
     # View for RecordingAPIForm, to create a recording

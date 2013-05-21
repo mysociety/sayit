@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load url from future %}
+{% load humanize %}
+{% load i18n %}
+
+{% block title %}{% blocktrans with id=object.id %}Recording #{{ id }}{% endblocktrans %}{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Edit {% blocktrans with id=object.id %}Recording #{{ id }}{% endblocktrans %}</h1>
+
+    <p>This recording was created {{ object.created|naturaltime }}.
+
+    <i class="icon-volume-up off-screen">{% trans "This speech has audio" %}</i>
+    <audio id="audio{{ object.id }}" src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio>
+</div>
+
+<h2>{% trans "Actions" %}</h2>
+
+    {% if recordingtimestamp_form.errors %}
+        {{ recordingtimestamp_form.non_form_errors }}
+    {% endif %}
+
+<form class="form-horizontal" method="post">
+    {{ recordingtimestamp_form.management_form }}
+
+    <table>
+    {% for ts in recordingtimestamp_form %}
+        {{ ts.as_table }}
+    {% endfor %}
+    </table>
+
+    {% include 'speeches/form.html' with submit="Update" type="recording" %}
+</form>
+
+{% endblock %}
+

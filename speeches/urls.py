@@ -34,6 +34,7 @@ urlpatterns = patterns('',
 
     url(r'^recordings$', RecordingList.as_view(), name='recording-list'),
     url(r'^recording/(?P<pk>\d+)$', RecordingView.as_view(), name='recording-view'),
+    url(r'^recording/(?P<pk>\d+)/edit$', RecordingUpdate.as_view(), name='recording-edit'),
     url(r'^api/v0.1/recording/$', csrf_exempt(RecordingAPICreate.as_view()), name='recording-api-add'),
 
     url(r'^api/', include(v01_api.urls))

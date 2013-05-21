@@ -7,6 +7,7 @@ from django_select2.widgets import Select2Widget, Select2MultipleWidget
 
 from django import forms
 from django.forms.forms import BoundField
+from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.forms.widgets import Textarea
 from django.core.files.uploadedfile import UploadedFile
 from django.utils import simplejson
@@ -168,6 +169,10 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
         model = Recording
         exclude = 'instance'
 
+class RecordingForm(forms.ModelForm):
+    class Meta:
+        model = Recording
+        exclude = ['instance', 'audio']
 
 class SectionForm(forms.ModelForm):
     class Meta:
@@ -184,3 +189,56 @@ class SpeakerForm(forms.ModelForm):
 
 class SpeakerPopitForm(forms.Form):
     url = forms.URLField(label="PopIt URL")
+
+class TimestampSecondsInput(forms.TextInput):
+
+    first_timestamp = None
+
+    def render(self, name, value, **kwargs):
+        self.first_timestamp = self.first_timestamp or value
+        delta = (value - self.first_timestamp).seconds
+        return super(forms.TextInput, self).render(
+            name, str(self.first_timestamp), **kwargs)
+
+
+class RecordingTimestampForm(forms.ModelForm):
+    # def clean(self):
+
+    class Meta:
+        model = RecordingTimestamp
+        exclude = ['instance','speech']
+        can_delete = False
+        widgets = {
+            # 'timestamp': TimestampSecondsInput()
+        }
+
+class BaseRecordingTimestampFormSet(BaseInlineFormSet):
+    def clean(self):
+        if any(self.errors):
+            return
+
+        # TODO: check that first timestamp isn't before start of speech?  
+        # or better to update speech start/end metadata if this happens?
+        # NB: I'm assuming that first timestamp will always be aligned with
+        # offset 0.  
+
+        # TODO: check that delta from first to last timestamp isn't longer
+        # than length of audio
+        # This is slightly complicated because we don't seem to cache this
+        # metadata anywhere?  Might make sense to add to Recording?
+
+        previous_timestamp = None
+        for i in range(0, self.total_form_count()):
+            form = self.forms[i]
+            timestamp = form.cleaned_data['timestamp']
+            if previous_timestamp:
+                if timestamp <= previous_timestamp:
+                    raise forms.ValidationError('Timestamps must be ordered')
+            previous_timestamp = timestamp
+
+RecordingTimestampFormSet = inlineformset_factory(Recording,
+    RecordingTimestamp,
+    formset=BaseRecordingTimestampFormSet,
+    form=RecordingTimestampForm,
+    fields=['speaker', 'timestamp'],
+    extra=0, can_delete=0)
