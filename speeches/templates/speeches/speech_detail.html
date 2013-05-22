@@ -19,16 +19,20 @@
 
 {% block content %}
 
-<div class="page-header">
 {% if object.celery_task_id %}
+<div class="page-header">
     <p class="lead">{% trans "Please wait, audio is being transcribed. This page will automatically refresh in 5 seconds..." %}</p>
+</div>
 {% else %}
 
-{% if object.section %}
-{% for n in object.section.get_ancestors %}
-<a href="{{ n.get_absolute_url }}">{{ n.title }}</a> &rarr;
-{% endfor %}
-{% endif %}
+<div class="page-header">
+    {% if object.section %}
+    <ul class="breadcrumbs">
+      {% for n in object.section.get_ancestors %}
+        <li><a href="{{ n.get_absolute_url }}">{{ n.title }}</a> <span class="divider">&rarr;</span></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
 
     {% if user.is_authenticated %}
     <div class="btn-group pull-right">
@@ -75,10 +79,10 @@
   {% if previous or next %}
     <ul class="pager">
       {% if previous %}
-        <li><a href="{% url "speech-view" previous.id %}">&larr; {{ previous.summary|bleach }}</a>
+        <li class="previous"><a href="{% url "speech-view" previous.id %}">&larr; {{ previous.summary|bleach }}</a>
       {% endif %}
       {% if next %}
-        <li><a href="{% url "speech-view" next.id %}">{{ next.summary|bleach }} &rarr;</a>
+        <li class="next"><a href="{% url "speech-view" next.id %}">{{ next.summary|bleach }} &rarr;</a>
       {% endif %}
     </ul>
   {% endif %}
