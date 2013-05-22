@@ -28,6 +28,12 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     max-width: 60em;
 }
 
+/* Heading typography */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Georgia, serif;
+}
+
 /* Nicer breadcrumb/pager */
 
 .breadcrumbs {
