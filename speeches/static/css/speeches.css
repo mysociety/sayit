@@ -2,6 +2,10 @@
 * {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+
+    /* Suppress it all */
+    border-radius: 0 !important;
+    text-shadow: none !important;
 }
 
 /* A couple of Bootstrap things assume content-box */
@@ -13,6 +17,9 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
+
+
+
 
 /* Maximum width */
 
