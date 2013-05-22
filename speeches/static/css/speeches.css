@@ -1,3 +1,10 @@
+/* Maximum width */
+
+.container-fluid {
+    margin: 0 auto;
+    max-width: 60em;
+}
+
 /* Nicer breadcrumb/pager */
 
 .breadcrumbs {
@@ -25,6 +32,8 @@
     border: none;
 }
 
+/* To allow better handling when JavaScript is not available */
+
 .js .hidden-js {
     display: none;
 }
@@ -32,6 +41,8 @@
     display: block;
     visibility: visible;
 }
+
+/* File upload with JavaScript */
 
 .fileinput-button span, .fileinput-button i {
     display: none;
@@ -69,6 +80,7 @@
 
 /* Datepicker lib gives a 1px margin to inputs to align
    the dropdown calendar, so add it to the add-on icon too */
+
 .datepicker .add-on {
     margin-top:1px;
 }
@@ -77,6 +89,8 @@
     text-indent: -9999px;
     opacity: 0.5;
 }
+
+/* Divider between speeches */
 
 .speech {
     position: relative;
@@ -90,6 +104,8 @@
     left: 33%;
     bottom: -0.5em;
 }
+
+/* Speaker default image and border - colour overridden per speaker in HTML */
 
 .speech-border {
     border-left: solid 0.25em #fff;
@@ -111,6 +127,8 @@
     margin-left: 0.25em;
     margin-right: 0;
 }
+
+/* Small audio control */
 
 .audio-small {
     display: inline-block;
