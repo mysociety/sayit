@@ -1,3 +1,19 @@
+/* apply a natural box layout model to all elements */
+* {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* A couple of Bootstrap things assume content-box */
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.input-append .add-on, .input-prepend .add-on {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
 /* Maximum width */
 
 .container-fluid {
@@ -107,25 +123,32 @@
 
 /* Speaker default image and border - colour overridden per speaker in HTML */
 
+.speaker-img {
+    border: solid 2px #cccccc;
+    background-color: #cccccc;
+}
+
 .speech-border {
-    border-left: solid 0.25em #fff;
-    padding-left: 0.25em;
+    border-left: solid 48px #fff;
+    padding-left: 16px;
     margin-bottom: 1em;
 }
 
 .speech-border .speaker-img {
-    margin-left: -0.5em;
-    border: solid 2px #cccccc;
-    background-color: #cccccc;
+    margin-left: -64px;
 }
 .speech .speaker-img {
     float: left;
-    margin-right: 0.25em;
 }
 .speaker-right .speaker-img {
     float: right;
-    margin-left: 0.25em;
-    margin-right: 0;
+    margin-left: 1em;
+}
+
+.three-up li {
+    float: left;
+    width: 33%;
+    margin-bottom: 1em;
 }
 
 /* Small audio control */

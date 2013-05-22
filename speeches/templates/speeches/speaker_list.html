@@ -11,11 +11,11 @@
     <h1>All speakers</h1>
 </div>
 
-    <ul class="unstyled">
+    <ul class="unstyled three-up">
       {% for speaker in speaker_list %}
-        <li class="speech-border" style="border-left-color: #{{ speaker.colour }};">
+        <li>
             <img src="{% if speaker.person.image %}
-                {{ speaker.person.image }} {% else %} {% static "i/a.png" %} {% endif %}" style="border-color: #{{ speaker.colour }}; background-color: #{{ speaker.colour }};" alt="" width=44 height=44 class="speaker-img">
+                {{ speaker.person.image }} {% else %} {% static "i/a.png" %} {% endif %}" style="border-color: #{{ speaker.colour }}; background-color: #{{ speaker.colour }};" alt="" width=48 height=48 class="speaker-img">
             <a href="{{ speaker.get_absolute_url }}">{{ speaker }}</a>
         </li>
       {% endfor %}
