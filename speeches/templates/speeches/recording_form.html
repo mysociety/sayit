@@ -19,18 +19,14 @@
 
 <h2>{% trans "Actions" %}</h2>
 
-    {% if recordingtimestamp_form.errors %}
-        {{ recordingtimestamp_form.non_form_errors }}
-    {% endif %}
+{{ recordingtimestamp_formset.non_form_errors }}
 
 <form class="form-horizontal" method="post">
-    {{ recordingtimestamp_form.management_form }}
+    {{ recordingtimestamp_formset.management_form }}
 
-    <table>
-    {% for ts in recordingtimestamp_form %}
-        {{ ts.as_table }}
+    {% for form in recordingtimestamp_formset %}
+        {% include 'speeches/form.html' %}
     {% endfor %}
-    </table>
 
     {% include 'speeches/form.html' with submit="Update" type="recording" %}
 </form>

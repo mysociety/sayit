@@ -34,6 +34,8 @@
     </div>
 {% endfor %}
 
+{% if submit %}
 <div class="form-actions">
     <input type="submit" id="{{ type }}_submit" class="btn" value="{% trans submit %}">
 </div>
+{% endif %}

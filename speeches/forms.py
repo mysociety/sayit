@@ -207,7 +207,6 @@ class RecordingTimestampForm(forms.ModelForm):
     class Meta:
         model = RecordingTimestamp
         exclude = ['instance','speech']
-        can_delete = False
         widgets = {
             # 'timestamp': TimestampSecondsInput()
         }
@@ -236,9 +235,11 @@ class BaseRecordingTimestampFormSet(BaseInlineFormSet):
                     raise forms.ValidationError('Timestamps must be ordered')
             previous_timestamp = timestamp
 
-RecordingTimestampFormSet = inlineformset_factory(Recording,
+RecordingTimestampFormSet = inlineformset_factory(
+    Recording,
     RecordingTimestamp,
-    formset=BaseRecordingTimestampFormSet,
-    form=RecordingTimestampForm,
-    fields=['speaker', 'timestamp'],
-    extra=0, can_delete=0)
+    formset = BaseRecordingTimestampFormSet,
+    form = RecordingTimestampForm,
+    extra = 0,
+    can_delete = 0,
+)
