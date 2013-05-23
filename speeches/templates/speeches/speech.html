@@ -47,9 +47,9 @@
   {% endfor %}
 
   {% if speech.section_id %}
-    <a title="{% trans "Permalink to this speech in context" %}" href="{% url 'section-view' speech.section_id %}#s{{ speech.id }}"><i class="icon-tags off-screen">{% trans "Permalink to this speech in context" %}</i></a>
+    <a class="hov" title="{% trans "Permalink to this speech in context" %}" href="{% url 'section-view' speech.section_id %}#s{{ speech.id }}"><i class="icon-tags off-screen">{% trans "Permalink to this speech in context" %}</i></a>
   {% endif %}
-    <a title="{% trans "Permalink to this speech individually" %}" href="{% url "speech-view" speech.id %}"><i class="icon-tag off-screen">{% trans "Permalink to this speech individually" %}</i></a>
+    <a class="hov" title="{% trans "Permalink to this speech individually" %}" href="{% url "speech-view" speech.id %}"><i class="icon-tag off-screen">{% trans "Permalink to this speech individually" %}</i></a>
   {% if speech.audio %}
     <i class="icon-volume-up off-screen">{% trans "This speech has audio" %}</i>
     <audio class="audio-small" id="audio{{ speech.id }}" src="{{ MEDIA_URL }}{{ speech.audio }}" controls></audio>

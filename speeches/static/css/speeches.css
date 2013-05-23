@@ -134,6 +134,16 @@ h1, h2, h3, h4, h5, h6 {
     bottom: -0.5em;
 }
 
+/* Permalink visibility */
+
+.speech .hov {
+    visibility: hidden;
+}
+
+.speech:hover .hov {
+    visibility: visible;
+}
+
 /* Speaker default image and border - colour overridden per speaker in HTML */
 
 .speaker-img {
