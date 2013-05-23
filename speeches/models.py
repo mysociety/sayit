@@ -486,6 +486,9 @@ class RecordingTimestamp(InstanceMixin, AuditedModel):
     speech = models.ForeignKey(Speech, blank=True, null=True, on_delete=models.SET_NULL)
     recording = models.ForeignKey('Recording',blank=False, null=False, related_name='timestamps', default=0) # kludge default 0, should not be used
 
+    class Meta:
+        ordering = ('timestamp',)
+
     @property
     def utc(self):
         """Return our timestamp as a UTC long"""
