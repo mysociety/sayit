@@ -37,67 +37,67 @@
     </head>
 
     <body>
-        <div class="navbar navbar-static-top">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-                    </a>
-
-                  {% if request.instance %}
-                    <a class="brand" href="/">{{ request.instance.label }}</a>
-                  {% else %}
-                    <a class="brand" href="{{ settings.base_HOST }}">SayIt</a>
-                  {% endif %}
-
-                    <div class="nav-collapse collapse">
-                        <ul class="nav">
-                          {% if request.instance %}
-                            <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speaker-list' %}">Speakers</a>
-                            <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speech-list' %}">Speeches</a>
-                            <li{% if request.path == '/sections' %} class="active"{% endif %}><a href="{% url 'section-list' %}">Sections</a>
-                          {% endif %}
-                        </ul>
-                        <ul class="nav pull-right">
-                            <li class="divider-vertical"></li>
-                          {% if request.user.is_authenticated %}
-                            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Instance <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                              {% if request.is_user_instance %}
-                                <li{% if request.path == '/speech/add' %} class="active"{% endif %}><a href="{% url 'speech-add' %}">Add speech</a>
-                                <li{% if request.path == '/sections/add' %} class="active"{% endif %}><a href="{% url 'section-add' %}">Add section</a>
-                                <li{% if request.path == '/speaker/add' %} class="active"{% endif %}><a href="{% url 'speaker-add' %}">Add speaker</a>
-                                <li{% if request.path == '/speaker/popit' %} class="active"{% endif %}><a href="{% url 'speaker-popit' %}">Add PopIt instance</a>
-                                <li{% if request.path == '/instance/edit' %} class="active"{% endif %}>
-                                    <a href="{% url 'instance-edit' %}">{% trans "Edit instance" %}</a>
-                                </li>
-                                <li{% if request.path == '/recordings' %} class="active"{% endif %}><a href="{% url 'recording-list' %}">Your recordings</a>
-                                <li{% if request.path == '/instance/token' %} class="active"{% endif %}>
-                                    <a href="{% url 'tokens' %}">{% trans "Your token" %}</a>
-                                </li>
-                              {% elif not request.instance %}
-                                <li><a href="{% url 'tokens' %}">{% trans "Tokens" %}</a></li>
-                              {% endif %}
-                                <li><a href="{% url 'django.contrib.auth.views.logout' %}?next=/">{% trans "Log out" %}</a></li>
-                            </ul>
-                          {% else %}
-                            <li><a href="{% url 'django.contrib.auth.views.login' %}?next=/">{% trans "Log in" %}</a></li>
-                          {% endif %}
-                          {% if request.instance %}
-                            <li><a href="{{ settings.BASE_HOST }}">SayIt</a></li>
-                          {% endif %}
-                            <li><a href="http://www.mysociety.org/">mySociety</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
 
       {% if settings.DEBUG %}
         <div class="alert alert-error" style="margin-bottom:0">
             {% trans "This is a staging site &ndash; any data saved here <strong>may be deleted</strong>." %}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
         </div>
       {% endif %}
+
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                </a>
+
+              {% if request.instance %}
+                <a class="brand" href="/">{{ request.instance.label }}</a>
+              {% else %}
+                <a class="brand" href="{{ settings.base_HOST }}">SayIt</a>
+              {% endif %}
+
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                      {% if request.instance %}
+                        <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speaker-list' %}">Speakers</a>
+                        <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speech-list' %}">Speeches</a>
+                        <li{% if request.path == '/sections' %} class="active"{% endif %}><a href="{% url 'section-list' %}">Sections</a>
+                      {% endif %}
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li class="divider-vertical"></li>
+                      {% if request.user.is_authenticated %}
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Instance <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                          {% if request.is_user_instance %}
+                            <li{% if request.path == '/speech/add' %} class="active"{% endif %}><a href="{% url 'speech-add' %}">Add speech</a>
+                            <li{% if request.path == '/sections/add' %} class="active"{% endif %}><a href="{% url 'section-add' %}">Add section</a>
+                            <li{% if request.path == '/speaker/add' %} class="active"{% endif %}><a href="{% url 'speaker-add' %}">Add speaker</a>
+                            <li{% if request.path == '/speaker/popit' %} class="active"{% endif %}><a href="{% url 'speaker-popit' %}">Add PopIt instance</a>
+                            <li{% if request.path == '/instance/edit' %} class="active"{% endif %}>
+                                <a href="{% url 'instance-edit' %}">{% trans "Edit instance" %}</a>
+                            </li>
+                            <li{% if request.path == '/recordings' %} class="active"{% endif %}><a href="{% url 'recording-list' %}">Your recordings</a>
+                            <li{% if request.path == '/instance/token' %} class="active"{% endif %}>
+                                <a href="{% url 'tokens' %}">{% trans "Your token" %}</a>
+                            </li>
+                          {% elif not request.instance %}
+                            <li><a href="{% url 'tokens' %}">{% trans "Tokens" %}</a></li>
+                          {% endif %}
+                            <li><a href="{% url 'django.contrib.auth.views.logout' %}?next=/">{% trans "Log out" %}</a></li>
+                        </ul>
+                      {% else %}
+                        <li><a href="{% url 'django.contrib.auth.views.login' %}?next=/">{% trans "Log in" %}</a></li>
+                      {% endif %}
+                      {% if request.instance %}
+                        <li><a href="{{ settings.BASE_HOST }}">SayIt</a></li>
+                      {% endif %}
+                        <li><a href="http://www.mysociety.org/">mySociety</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
         <div class="container-fluid">
             <div class="row-fluid">
