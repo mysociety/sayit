@@ -45,7 +45,7 @@
         </div>
       {% endif %}
 
-        <div class="navbar navbar-static-top">
+        <div class="navbar navbar-static-top navbar-inverse">
             <div class="navbar-inner">
                 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                     <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
@@ -60,9 +60,9 @@
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                       {% if request.instance %}
-                        <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speaker-list' %}">Speakers</a>
-                        <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speech-list' %}">Speeches</a>
-                        <li{% if request.path == '/sections' %} class="active"{% endif %}><a href="{% url 'section-list' %}">Sections</a>
+                        <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speaker-list' %}"><b>Speakers</b></a>
+                        <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speech-list' %}"><b>Speeches</b></a>
+                        <li{% if request.path == '/sections' %} class="active"{% endif %}><a href="{% url 'section-list' %}"><b>Sections</b></a>
                       {% endif %}
                     </ul>
                     <ul class="nav pull-right">
