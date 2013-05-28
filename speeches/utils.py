@@ -7,6 +7,7 @@ import calendar
 from itertools import groupby
 from operator import itemgetter
 from datetime import datetime
+import audioread.ffdec
 
 import requests
 import pytz
@@ -309,6 +310,8 @@ class AudioHelper(object):
 
         return out_filename
 
+    def get_audio_duration(self, in_filename):
+        return audioread.ffdec.FFmpegAudioFile(in_filename).duration
 
     def _build_ffmpeg_options(self, in_filename):
         return [

@@ -498,6 +498,8 @@ class RecordingTimestamp(InstanceMixin, AuditedModel):
 # A raw recording, might be divided up into multiple speeches
 class Recording(InstanceMixin, AuditedModel):
     audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=False)
+    start_datetime = models.DateTimeField(blank=True, null=True, help_text='Datetime of first timestamp associated with recording')
+    audio_duration = models.IntegerField(blank=True, null=False, default=0, help_text='Duration of recording, in seconds')
 
     def __unicode__(self):
         return u'Recording made on {date:%d %B %Y} at {date:%H:%M}'.format(date=self.created)

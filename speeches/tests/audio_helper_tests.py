@@ -131,3 +131,9 @@ class AudioHelperTests(InstanceTestCase):
         files = [ 'lamb_first_three_seconds.mp3', 'lamb_from_three_to_four_seconds.mp3', 'lamb_from_four_seconds_onwards.mp3' ]
         for i in range(3):
             self.assertSameAudioLength(files_created[i], self.expected_output_file(files[i]))
+
+    def test_audio_length(self):
+        audio_path = os.path.join(self._in_fixtures, 'lamb.mp3')
+        duration = self.helper.get_audio_duration(audio_path)
+        self.assertEquals( duration, 5 )
+        
