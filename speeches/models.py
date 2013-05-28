@@ -501,6 +501,19 @@ class Recording(InstanceMixin, AuditedModel):
     start_datetime = models.DateTimeField(blank=True, null=True, help_text='Datetime of first timestamp associated with recording')
     audio_duration = models.IntegerField(blank=True, null=False, default=0, help_text='Duration of recording, in seconds')
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            audio_helper = speeches.utils.AudioHelper()
+            self.audio.save(self.audio.name, self.audio, save=False)
+            # we leave the original where it was, but also save converted mp3
+            mp3_filename = audio_helper.make_mp3(self.audio.path)
+            self.audio_duration= audio_helper.get_audio_duration(mp3_filename)
+            # raise Exception("RARR! " + str(self.audio_duration) )
+            mp3_file = open(mp3_filename, 'rb')
+            self.audio.save(mp3_file.name, File(mp3_file), save=False)
+            
+        super(Recording, self).save(*args, **kwargs)
+
     def __unicode__(self):
         return u'Recording made on {date:%d %B %Y} at {date:%H:%M}'.format(date=self.created)
 

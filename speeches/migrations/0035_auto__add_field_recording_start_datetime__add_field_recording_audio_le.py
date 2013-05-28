@@ -15,7 +15,7 @@ class Migration(SchemaMigration):
 
         # Adding field 'Recording.audio_duration'
         db.add_column('speeches_recording', 'audio_duration',
-                      self.gf('django.db.models.fields.IntegerField')(default=0, blank=True),
+                      self.gf('django.db.models.fields.IntegerField')(null=False, default=0, blank=True),
                       keep_default=False)
 
 
@@ -90,7 +90,7 @@ class Migration(SchemaMigration):
         'speeches.recording': {
             'Meta': {'object_name': 'Recording'},
             'audio': ('django.db.models.fields.files.FileField', [], {'max_length': '255'}),
-            'audio_duration': ('django.db.models.fields.IntegerField', [], {'default': '0', 'blank': 'True'}),
+            'audio_duration': ('django.db.models.fields.IntegerField', [], {'default': '0', 'blank': 'True' }),
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'instance': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['instances.Instance']"}),
