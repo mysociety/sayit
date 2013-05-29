@@ -55,6 +55,7 @@ class RecordingAPITests(InstanceTestCase):
 
         # Check in db
         self.assertIsNotNone(recording.audio)
+        self.assertEquals(recording.audio_duration, 5)
 
     def test_add_recording_with_timestamp(self):
         # Add two speakers
@@ -83,6 +84,7 @@ class RecordingAPITests(InstanceTestCase):
         self.assertEquals(recording.timestamps.count(), 1)
         expected_timestamp = datetime.utcfromtimestamp(946684800).replace(tzinfo=pytz.utc)
         self.assertEquals(recording.timestamps.all()[0].timestamp, expected_timestamp)
+        self.assertEquals(recording.start_datetime, expected_timestamp)
 
     def test_add_ogg_with_multiple_timestamps(self):
         self.test_add_recording_with_multiple_timestamps('lamb.ogg')
