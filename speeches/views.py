@@ -23,6 +23,8 @@ from django.views.generic.edit import BaseFormView
 import celery
 import logging
 
+import os
+
 logger = logging.getLogger(__name__)
 
 class AddAnSRedirectView(RedirectView):
@@ -291,6 +293,8 @@ class RecordingView(View):
         view = RecordingSetSection.as_view()
         return view(request, *args, **kwargs)
 
+# NB: this is not an UpdateView, at least for now, as it only updates
+# RecordingTimestamp not the actual Recording class.
 class RecordingUpdate(InstanceFormMixin, DetailView):
     model = Recording
     template_name_suffix = "_form"
@@ -306,6 +310,27 @@ class RecordingUpdate(InstanceFormMixin, DetailView):
         recordingtimestamp_formset = context['recordingtimestamp_formset']
         if recordingtimestamp_formset.is_valid():
             recordingtimestamp_formset.save()
+
+            audio_helper = AudioHelper()
+            audio_files = audio_helper.split_recording(self.object)
+
+            for i in zip(audio_files, self.object.timestamps.all()):
+                (audio_filename, recording_timestamp) = i
+
+                try:
+                    os.remove(recording_timestamp.speech.audio.path)
+                except:
+                    pass
+                    # shouldn't happen, but we're going to recreate anyway
+                    # so not critical
+
+                audio_file = open(audio_filename, 'rb')
+
+                recording_timestamp.speech.audio.save(
+                    audio_file.name, 
+                    File(audio_file),
+                    save=True)
+
             return HttpResponseRedirect( self.object.get_absolute_url() )
         return self.render_to_response(context)
 
