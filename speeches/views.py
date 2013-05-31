@@ -310,40 +310,7 @@ class RecordingUpdate(InstanceFormMixin, DetailView):
         recordingtimestamp_formset = context['recordingtimestamp_formset']
         if recordingtimestamp_formset.is_valid():
             recordingtimestamp_formset.save()
-
-            audio_helper = AudioHelper()
-            audio_files = audio_helper.split_recording(self.object)
-
-            # XXX: Plenty of overlap between this and create_from_recording
-            sorted_timestamps = self.object.timestamps.order_by("timestamp")
-            for index, audio_file in enumerate(audio_files):
-                timestamp = sorted_timestamps[index]
-                if not timestamp.speech:
-                    continue
-                speech = timestamp.speech
-
-                speech.start_date = timestamp.timestamp.date()
-                speech.start_time = timestamp.timestamp.time()
-                # If there's another one we can work out the end too
-                if index < len(sorted_timestamps) - 1:
-                    next_timestamp = sorted_timestamps[index + 1]
-                    speech.end_date = next_timestamp.timestamp.date()
-                    speech.end_time = next_timestamp.timestamp.time()
-
-                try:
-                    os.remove(speech.audio.path)
-                except:
-                    pass
-                    # shouldn't happen, but we're going to recreate anyway
-                    # so not critical
-
-                audio_file = open(audio_file, 'rb')
-
-                speech.audio.save(
-                    audio_file.name, 
-                    File(audio_file),
-                    save=True)
-
+            self.object.create_or_update_speeches(self.request.instance)
             return HttpResponseRedirect( self.object.get_absolute_url() )
         return self.render_to_response(context)
 
@@ -379,7 +346,7 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
             recording.save()
 
         # Create speeches from the recording
-        speeches = Speech.objects.create_from_recording(self.object, self.request.instance)
+        speeches = self.object.create_or_update_speeches(self.request.instance)
 
         # Transcribe each speech
         for speech in speeches:

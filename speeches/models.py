@@ -103,55 +103,7 @@ class Tag(InstanceMixin, AuditedModel):
 
 # Speech manager
 class SpeechManager(InstanceManager, Manager):
-
-    def create_from_recording(self, recording, instance):
-        """Create one or more speeches from a recording. If there's no audio"""
-        created_speeches = []
-
-        # Split the recording's audio files
-        audio_helper = AudioHelper()
-        audio_files = audio_helper.split_recording(recording)
-
-        # Create a speech for each one of the audio files
-        sorted_timestamps = recording.timestamps.order_by("timestamp")
-        for index, audio_file in enumerate(audio_files):
-            speaker = None
-            start_date = None
-            start_time = None
-            end_date = None
-            end_time = None
-
-            # Get the related timestamp, if any.
-            timestamp = None
-            if sorted_timestamps and len(sorted_timestamps) > 0:
-                # We assume that the files are returned in order of timestamp
-                timestamp = sorted_timestamps[index]
-                speaker = timestamp.speaker
-                start_date = timestamp.timestamp.date()
-                start_time = timestamp.timestamp.time()
-                # If there's another one we can work out the end too
-                if index < len(sorted_timestamps) - 1:
-                    next_timestamp = sorted_timestamps[index + 1]
-                    end_date = next_timestamp.timestamp.date()
-                    end_time = next_timestamp.timestamp.time()
-
-            new_speech = self.create(
-                instance = instance,
-                public = False,
-                audio=File(open(audio_file)),
-                speaker=speaker,
-                start_date=start_date,
-                start_time=start_time,
-                end_date=end_date,
-                end_time=end_time
-            )
-            created_speeches.append( new_speech )
-            if timestamp:
-                timestamp.speech = new_speech
-                timestamp.save()
-
-        return created_speeches
-
+    pass
 
 class Section(AuditedModel, InstanceMixin):
     title = models.CharField(max_length=255, blank=False, null=False)
@@ -524,3 +476,52 @@ class Recording(InstanceMixin, AuditedModel):
 
     def add_speeches_to_section(self, section):
         return Speech.objects.filter(recordingtimestamp__recording=self).update(section=section)
+
+    def create_or_update_speeches(self, instance):
+        created_speeches = []
+
+        # Split the recording's audio files
+        audio_helper = AudioHelper()
+        audio_files = audio_helper.split_recording(self)
+        sorted_timestamps = self.timestamps.order_by("timestamp")
+
+        for index, audio_file in enumerate(audio_files):
+            new = True
+            speech = Speech(
+                instance = instance,
+                public = False,
+            )
+            timestamp = None
+            if sorted_timestamps and len(sorted_timestamps) > 0:
+                # We assume that the files are returned in order of timestamp
+                timestamp = sorted_timestamps[index]
+                if timestamp.speech:
+                    speech = timestamp.speech
+                    new = False
+                    try:
+                        speech.audio.delete(save=False)
+                    except:
+                        pass
+                        # shouldn't happen, but we're going to recreate anyway
+                        # so not critical
+
+                speech.speaker = timestamp.speaker
+                speech.start_date = timestamp.timestamp.date()
+                speech.start_time = timestamp.timestamp.time()
+                # If there's another one we can work out the end too
+                if index < len(sorted_timestamps) - 1:
+                    next_timestamp = sorted_timestamps[index + 1]
+                    speech.end_date = next_timestamp.timestamp.date()
+                    speech.end_time = next_timestamp.timestamp.time()
+
+            audio_file = open(audio_file, 'rb')
+            speech.audio = File(audio_file)
+            speech.save()
+
+            if new:
+                created_speeches.append( speech )
+                if timestamp:
+                    timestamp.speech = speech
+                    timestamp.save()
+
+        return created_speeches
