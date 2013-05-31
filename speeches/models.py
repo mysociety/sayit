@@ -250,8 +250,34 @@ class Section(AuditedModel, InstanceMixin):
         """Fetch the previous node in the tree, at the same level as this one."""
         return self._get_next_previous_node(-1)
 
+class AudioMP3Mixin(object):
+    def save(self, *args, **kwargs):
+        """Overriden save method to automatically convert the audio to an mp3"""
+        duration = kwargs.pop('duration', None)
+        needs_conversion = self.audio and not self.audio.name.lower().endswith('.mp3')
+
+        # If we have an audio file and it's not an mp3, make it one
+        if duration or needs_conversion:
+            if not os.path.exists(self.audio.path):
+                # If it doesn't already exist, save the old audio first so that we can re-encode it
+                # This is needed if it's newly uploaded
+                self.audio.save(self.audio.name, File(self.audio), save=False)
+
+            audio_helper = speeches.utils.AudioHelper()
+
+            if needs_conversion:
+                mp3_filename = audio_helper.make_mp3(self.audio.path)
+                mp3_file = open(mp3_filename, 'rb')
+                self.audio.save(mp3_file.name, File(mp3_file), save=False)
+
+            if duration:
+                self.audio_duration = audio_helper.get_audio_duration(self.audio.path)
+
+        # Call the original model save to do everything
+        super(AudioMP3Mixin, self).save(*args, **kwargs)
+
 # Speech that a speaker gave
-class Speech(InstanceMixin, AuditedModel):
+class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     # Custom manager
     objects = SpeechManager()
 
@@ -329,27 +355,6 @@ class Speech(InstanceMixin, AuditedModel):
     @models.permalink
     def get_edit_url(self):
         return ( 'speech-edit', (), { 'pk': self.id } )
-
-    def save(self, *args, **kwargs):
-        """Overriden save method to automatically convert the audio to an mp3"""
-
-        # If we have an audio file and it's not an mp3, make it one
-        if self.audio and not self.audio.name.lower().endswith('.mp3'):
-            if not os.path.exists(self.audio.path):
-                # If it doesn't already exist, save the old audio first so that we can re-encode it
-                # This is needed if it's newly uploaded
-                self.audio.save(self.audio.name, File(self.audio), False)
-            # Transcode the audio into mp3
-            audio_helper = speeches.utils.AudioHelper()
-            mp3_filename = audio_helper.make_mp3(self.audio.path)
-            mp3_file = open(mp3_filename, 'rb')
-            # Delete the old file
-            self.audio.delete(False)
-            # Save the mp3 as the new file
-            self.audio.save(mp3_file.name, File(mp3_file), False)
-
-        # Call the original model save to do everything
-        super(Speech, self).save(*args, **kwargs)
 
     def get_next_speech(self):
         """Return the next speech to this one in the same section, in a start
@@ -448,23 +453,14 @@ class RecordingTimestamp(InstanceMixin, AuditedModel):
 
 
 # A raw recording, might be divided up into multiple speeches
-class Recording(InstanceMixin, AuditedModel):
+class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
     audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=False)
     start_datetime = models.DateTimeField(blank=True, null=True, help_text='Datetime of first timestamp associated with recording')
     audio_duration = models.IntegerField(blank=True, null=False, default=0, help_text='Duration of recording, in seconds')
 
     # XXX: Speech has a similar save(), these should be factored in a mixin
     def save(self, *args, **kwargs):
-        if not self.id:
-            audio_helper = speeches.utils.AudioHelper()
-            self.audio.save(self.audio.name, self.audio, save=False)
-            # we leave the original where it was, but also save converted mp3
-            mp3_filename = audio_helper.make_mp3(self.audio.path)
-            self.audio_duration= audio_helper.get_audio_duration(mp3_filename)
-            # raise Exception("RARR! " + str(self.audio_duration) )
-            mp3_file = open(mp3_filename, 'rb')
-            self.audio.save(mp3_file.name, File(mp3_file), save=False)
-            
+        kwargs['duration'] = True
         super(Recording, self).save(*args, **kwargs)
 
     def __unicode__(self):
