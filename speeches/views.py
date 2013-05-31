@@ -314,19 +314,32 @@ class RecordingUpdate(InstanceFormMixin, DetailView):
             audio_helper = AudioHelper()
             audio_files = audio_helper.split_recording(self.object)
 
-            for i in zip(audio_files, self.object.timestamps.all()):
-                (audio_filename, recording_timestamp) = i
+            # XXX: Plenty of overlap between this and create_from_recording
+            sorted_timestamps = self.object.timestamps.order_by("timestamp")
+            for index, audio_file in enumerate(audio_files):
+                timestamp = sorted_timestamps[index]
+                if not timestamp.speech:
+                    continue
+                speech = timestamp.speech
+
+                speech.start_date = timestamp.timestamp.date()
+                speech.start_time = timestamp.timestamp.time()
+                # If there's another one we can work out the end too
+                if index < len(sorted_timestamps) - 1:
+                    next_timestamp = sorted_timestamps[index + 1]
+                    speech.end_date = next_timestamp.timestamp.date()
+                    speech.end_time = next_timestamp.timestamp.time()
 
                 try:
-                    os.remove(recording_timestamp.speech.audio.path)
+                    os.remove(speech.audio.path)
                 except:
                     pass
                     # shouldn't happen, but we're going to recreate anyway
                     # so not critical
 
-                audio_file = open(audio_filename, 'rb')
+                audio_file = open(audio_file, 'rb')
 
-                recording_timestamp.speech.audio.save(
+                speech.audio.save(
                     audio_file.name, 
                     File(audio_file),
                     save=True)
