@@ -501,6 +501,7 @@ class Recording(InstanceMixin, AuditedModel):
     start_datetime = models.DateTimeField(blank=True, null=True, help_text='Datetime of first timestamp associated with recording')
     audio_duration = models.IntegerField(blank=True, null=False, default=0, help_text='Duration of recording, in seconds')
 
+    # XXX: Speech has a similar save(), these should be factored in a mixin
     def save(self, *args, **kwargs):
         if not self.id:
             audio_helper = speeches.utils.AudioHelper()
