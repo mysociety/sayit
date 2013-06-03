@@ -227,15 +227,9 @@ class BaseRecordingTimestampFormSet(BaseInlineFormSet):
         last_timestamp = self.forms[-1].cleaned_data['timestamp']
 
         # TODO: check that first timestamp isn't before start of speech?  
-        # or better to update speech start/end metadata if this happens?
-        # NB: I'm assuming that first timestamp will always be aligned with
-        # offset 0.  
-        # The simplest thing is just to disallow changing the first
-        # timestamp for now, and work out what the required semantics are
-        # if any.
 
-        if first_timestamp != recording.start_datetime:
-            raise forms.ValidationError("Start time doesn't match recording start time!")
+        if first_timestamp < recording.start_datetime:
+            raise forms.ValidationError("Start time is before recording start time!")
 
         # TODO: check that delta from first to last timestamp isn't longer
         # than length of audio
@@ -261,5 +255,5 @@ RecordingTimestampFormSet = inlineformset_factory(
     formset = BaseRecordingTimestampFormSet,
     form = RecordingTimestampForm,
     extra = 0,
-    can_delete = 0,
+    can_delete = 1,
 )

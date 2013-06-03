@@ -256,15 +256,19 @@ class AudioHelper(object):
             return files
 
         # Do we have any timestamps to split it by?
-        if not recording.timestamps or recording.timestamps.count() <= 1:
-            # None, or one - just make an mp3 of the whole thing
-            logger.info("No timestamps in the recording: {0} or only one, so making an mp3 of all of it.".format(recording))
+        if not recording.timestamps:
+            # No timestamps, so just make an mp3 of the whole thing
+            # Though 1 timestamp also creates just a single speech, that
+            # timestamp may be offset, so not included here!
+            logger.info("No timestamps in the recording: {0}, so making an mp3 of all of it.".format(recording))
             files.append(self.make_mp3(recording.audio.path))
             return files
 
         # We have more than one timestamp
         sorted_timestamps = recording.timestamps.all().order_by("timestamp")
-        start_timestamp = sorted_timestamps[0]
+
+        # munge start_timestamp into the format that make_partial_mp3 expects
+        start_timestamp = calendar.timegm(recording.start_datetime.timetuple())
         for index, timestamp in enumerate(sorted_timestamps):
             next_timestamp = None
             if index < (len(sorted_timestamps) - 1):
@@ -280,7 +284,7 @@ class AudioHelper(object):
         # so we can then calculate the other offsets from there.
 
         # Work out the time this timestamp starts, in seconds from the start of the recording
-        start_time_relative = timestamp.utc - start_timestamp.utc
+        start_time_relative = timestamp.utc - start_timestamp
 
         # Work out the time this timestamp ends, in seconds from the start
         duration = None
