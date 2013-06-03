@@ -61,11 +61,11 @@ class RecordingTimestampTests(RecordingAPITests):
             'timestamps-0-recording': recording.id,
             'timestamps-0-id': timestamps[0].id,
             'timestamps-0-speaker': "",
-            'timestamps-0-timestamp': "1970-01-01 01:00:00",
+            'timestamps-0-timestamp': 0,
             'timestamps-1-recording': recording.id,
             'timestamps-1-id': timestamps[1].id,
             'timestamps-1-speaker': "",
-            'timestamps-1-timestamp': "1970-01-01 01:00:01", # 1 second
+            'timestamps-1-timestamp': 1,
         })
 
         recording = check_response(resp, 302, 'text/html; charset=utf-8')
