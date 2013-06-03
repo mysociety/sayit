@@ -12,7 +12,7 @@ from django.forms.widgets import Textarea
 from django.core.files.uploadedfile import UploadedFile
 from django.utils import simplejson
 
-# from speeches.fields import TagField
+from speeches.fields import FromStartIntegerField
 from speeches.models import Speech, Speaker, Section, Recording, RecordingTimestamp, Tag
 from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
 from speeches.utils import GroupedModelChoiceField
@@ -202,7 +202,12 @@ class TimestampSecondsInput(forms.TextInput):
 
 
 class RecordingTimestampForm(forms.ModelForm):
-    # def clean(self):
+    timestamp = FromStartIntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super(RecordingTimestampForm, self).__init__(*args, **kwargs)
+        # Each timestamp needs to know the recording start time
+        self.fields['timestamp'].recording_start = self.instance.recording.start_datetime
 
     class Meta:
         model = RecordingTimestamp

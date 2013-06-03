@@ -19,7 +19,11 @@
 
 <h2>{% trans "Actions" %}</h2>
 
-{{ recordingtimestamp_formset.non_form_errors }}
+{% if recordingtimestamp_formset.non_form_errors %}
+    <div class="alert alert-error alert-block">
+        {{ recordingtimestamp_formset.non_form_errors }}
+    </div>
+{% endif %}
 
 <form class="form-horizontal" method="post">
     {{ recordingtimestamp_formset.management_form }}

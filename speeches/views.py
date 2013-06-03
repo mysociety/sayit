@@ -310,27 +310,7 @@ class RecordingUpdate(InstanceFormMixin, DetailView):
         recordingtimestamp_formset = context['recordingtimestamp_formset']
         if recordingtimestamp_formset.is_valid():
             recordingtimestamp_formset.save()
-
-            audio_helper = AudioHelper()
-            audio_files = audio_helper.split_recording(self.object)
-
-            for i in zip(audio_files, self.object.timestamps.all()):
-                (audio_filename, recording_timestamp) = i
-
-                try:
-                    os.remove(recording_timestamp.speech.audio.path)
-                except:
-                    pass
-                    # shouldn't happen, but we're going to recreate anyway
-                    # so not critical
-
-                audio_file = open(audio_filename, 'rb')
-
-                recording_timestamp.speech.audio.save(
-                    audio_file.name, 
-                    File(audio_file),
-                    save=True)
-
+            self.object.create_or_update_speeches(self.request.instance)
             return HttpResponseRedirect( self.object.get_absolute_url() )
         return self.render_to_response(context)
 
@@ -366,7 +346,7 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
             recording.save()
 
         # Create speeches from the recording
-        speeches = Speech.objects.create_from_recording(self.object, self.request.instance)
+        speeches = self.object.create_or_update_speeches(self.request.instance)
 
         # Transcribe each speech
         for speech in speeches:

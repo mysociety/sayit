@@ -1,13 +1,8 @@
-# This is the unfinished start of getting a Select2 tags:... element to work,
-# so that you can add new tags within an edit form and have the server add them
-# automatically. The client side below works, displaying the tags currently
-# associated and allowing editing/adding, but server submission does not yet
-# work. TagField needs to add any tags that aren't already present in the
-# database.
-
+import datetime
 from itertools import chain
 
 from django import forms
+from django.core import validators
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
@@ -15,6 +10,35 @@ from django.forms.util import flatatt
 from django_select2.widgets import Select2MultipleWidget
 
 from speeches.models import Tag
+
+# prepare_value() is called by a form before sending to the widget for display.
+# clean() is called on form submission to validate it.
+class FromStartIntegerField(forms.IntegerField):
+    def __init__(self, *args, **kwargs):
+        kwargs['min_value'] = 0
+        super(FromStartIntegerField, self).__init__(*args, **kwargs)
+
+    def prepare_value(self, value):
+        if isinstance(value, datetime.datetime):
+            value = value - self.recording_start
+            value = value.total_seconds()
+            value = int(value)
+        return value
+
+    def clean(self, value):
+        value = super(FromStartIntegerField, self).clean(value)
+        if value in validators.EMPTY_VALUES:
+            return None
+        # Get the number of seconds back to a datetime
+        return datetime.timedelta(seconds=value) + self.recording_start
+
+
+# This is the unfinished start of getting a Select2 tags:... element to work,
+# so that you can add new tags within an edit form and have the server add them
+# automatically. The client side below works, displaying the tags currently
+# associated and allowing editing/adding, but server submission does not yet
+# work. TagField needs to add any tags that aren't already present in the
+# database.
 
 class TagWidget(forms.SelectMultiple):
     def render(self, name, value, attrs=None, choices=()):
