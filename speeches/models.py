@@ -7,6 +7,7 @@ import os
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+from django.template.defaultfilters import timesince
 from django.conf import settings
 from django.core.files import File
 
@@ -496,7 +497,7 @@ class Recording(InstanceMixin, AuditedModel):
     timestamps = models.ManyToManyField(RecordingTimestamp, blank=True, null=True)
 
     def __unicode__(self):
-        return u'Recording made on {date:%d %B %Y} at {date:%H:%M}'.format(date=self.created)
+        return u'Recording made %s ago' % timesince(self.created)
 
     @models.permalink
     def get_absolute_url(self):
