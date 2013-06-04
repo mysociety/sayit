@@ -110,3 +110,24 @@ class RecordingTimestampTests(InstanceTestCase):
             form_data)
         recording = check_response(resp, 302, 'text/html; charset=utf-8')
         check_audio_durations(recording, [4])
+
+    def test_can_get_form(self, filename='lamb.mp3'):
+        audio = open(os.path.join(self._in_fixtures, filename), 'rb')
+
+        # NOTE: this test is loosely cargo-culted from recording_api_tests,
+        # however here timestamps are hardcoded for simplicity
+        resp = self.client.post('/api/v0.1/recording/', {
+            'audio': audio,
+            'timestamps': '[{"timestamp":0},{"timestamp":2000},{"timestamp":4000}]'
+        })
+
+        recording = Recording.objects.order_by('-id')[0]
+        self.assertEquals(resp.status_code, 201)
+
+        resp = self.client.get('/recording/%d/edit' % recording.id)
+        self.assertEquals(resp.status_code, 201)
+
+
+
+
+
