@@ -63,10 +63,9 @@ class RecordingTimestampTests(InstanceTestCase):
 
         check_audio_durations(recording, [2,2,1])
 
-        resp = self.client.post('/recording/%d/edit' % recording.id, {
-            # csrfmiddlewaretoken ???
-            'timestamps-TOTAL_FORMS': 2,
-            'timestamps-INITIAL_FORMS': 2,
+        form_data = {
+            'timestamps-TOTAL_FORMS': 3,
+            'timestamps-INITIAL_FORMS': 3,
             'timestamps-MAX_NUM_FORMS': 1000,
             'timestamps-0-recording': recording.id,
             'timestamps-0-id': timestamps[0].id,
@@ -79,9 +78,35 @@ class RecordingTimestampTests(InstanceTestCase):
             'timestamps-2-recording': recording.id,
             'timestamps-2-id': timestamps[2].id,
             'timestamps-2-speaker': "",
-            'timestamps-2-timestamp': 4,
-        })
-
+            'timestamps-2-timestamp': 4
+        }
+        timestamps_2_id = timestamps[2].id
+        resp = self.client.post('/recording/%d/edit' % recording.id,
+            form_data)
         recording = check_response(resp, 302, 'text/html; charset=utf-8')
-
         check_audio_durations(recording, [3,1,1])
+
+        form_data['timestamps-1-DELETE'] = 'on'
+        resp = self.client.post('/recording/%d/edit' % recording.id,
+            form_data)
+        recording = check_response(resp, 302, 'text/html; charset=utf-8')
+        check_audio_durations(recording, [4,1])
+
+        form_data = {
+            'timestamps-TOTAL_FORMS': 2,
+            'timestamps-INITIAL_FORMS': 2,
+            'timestamps-MAX_NUM_FORMS': 1000,
+            'timestamps-0-DELETE': 'on',
+            'timestamps-0-recording': recording.id,
+            'timestamps-0-id': timestamps[0].id,
+            'timestamps-0-speaker': "",
+            'timestamps-0-timestamp': 0,
+            'timestamps-1-recording': recording.id,
+            'timestamps-1-id': timestamps_2_id,
+            'timestamps-1-speaker': "",
+            'timestamps-1-timestamp': 1,
+        }
+        resp = self.client.post('/recording/%d/edit' % recording.id,
+            form_data)
+        recording = check_response(resp, 302, 'text/html; charset=utf-8')
+        check_audio_durations(recording, [4])

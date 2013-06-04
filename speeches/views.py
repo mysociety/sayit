@@ -310,17 +310,18 @@ class RecordingUpdate(InstanceFormMixin, DetailView):
         recordingtimestamp_formset = context['recordingtimestamp_formset']
 
         if recordingtimestamp_formset.is_valid():
-            # first delete the associated speeches, as Django can't
+            recordingtimestamp_formset.save()
+
+            self.object.create_or_update_speeches(self.request.instance)
+
+            # then delete the associated speeches, as Django can't
             # infer a cascade here
             for form in recordingtimestamp_formset.deleted_forms:
                 try:
                     form.instance.speech.delete()
                 except:
                     logger.info("Timestamp isn't linked to speech")
-                
-            recordingtimestamp_formset.save()
 
-            self.object.create_or_update_speeches(self.request.instance)
             return HttpResponseRedirect( self.object.get_absolute_url() )
         return self.render_to_response(context)
 
