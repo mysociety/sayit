@@ -12,11 +12,21 @@ from instances.tests import InstanceTestCase
 
 import speeches
 from speeches.models import Speech, Speaker, Recording, RecordingTimestamp
-from speeches.tests.recording_api_tests import RecordingAPITests
 from speeches.utils import AudioHelper
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
-class RecordingTimestampTests(RecordingAPITests):
+class RecordingTimestampTests(InstanceTestCase):
+
+    # TODO refactor with RecordingAPITests
+    @classmethod
+    def setUpClass(cls):
+        cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
+
+    def tearDown(self):
+        # Clear the recordings folder if it exists
+        recordings_folder = os.path.join(settings.MEDIA_ROOT, 'recordings')
+        if(os.path.exists(recordings_folder)):
+            shutil.rmtree(recordings_folder)
 
     def test_modify_timestamps(self, filename='lamb.mp3'):
         audio = open(os.path.join(self._in_fixtures, filename), 'rb')
