@@ -256,7 +256,7 @@ class AudioHelper(object):
             return files
 
         # Do we have any timestamps to split it by?
-        if not recording.timestamps:
+        if not recording.timestamps.count():
             # No timestamps, so just make an mp3 of the whole thing
             # Though 1 timestamp also creates just a single speech, that
             # timestamp may be offset, so not included here!
