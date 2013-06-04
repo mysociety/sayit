@@ -574,32 +574,32 @@ a.muted:focus {
   color: #808080;
 }
 .text-warning {
-  color: #ffffff;
+  color: #f1c40f;
 }
 a.text-warning:hover,
 a.text-warning:focus {
-  color: #e6e6e6;
+  color: #c29d0b;
 }
 .text-error {
-  color: #ffffff;
+  color: #e74c3c;
 }
 a.text-error:hover,
 a.text-error:focus {
-  color: #e6e6e6;
+  color: #d62c1a;
 }
 .text-info {
-  color: #ffffff;
+  color: #3498db;
 }
 a.text-info:hover,
 a.text-info:focus {
-  color: #e6e6e6;
+  color: #217dbb;
 }
 .text-success {
-  color: #ffffff;
+  color: #2ecc71;
 }
 a.text-success:hover,
 a.text-success:focus {
-  color: #e6e6e6;
+  color: #25a25a;
 }
 .text-left {
   text-align: left;
@@ -617,7 +617,7 @@ h4,
 h5,
 h6 {
   margin: 12px 0;
-  font-family: inherit;
+  font-family: Georgia, serif;
   font-weight: bold;
   line-height: 24px;
   color: inherit;
@@ -895,11 +895,11 @@ a.badge:focus {
 }
 .label-important,
 .badge-important {
-  background-color: #ffffff;
+  background-color: #e74c3c;
 }
 .label-important[href],
 .badge-important[href] {
-  background-color: #e6e6e6;
+  background-color: #d62c1a;
 }
 .label-warning,
 .badge-warning {
@@ -911,19 +911,19 @@ a.badge:focus {
 }
 .label-success,
 .badge-success {
-  background-color: #ffffff;
+  background-color: #2ecc71;
 }
 .label-success[href],
 .badge-success[href] {
-  background-color: #e6e6e6;
+  background-color: #25a25a;
 }
 .label-info,
 .badge-info {
-  background-color: #ffffff;
+  background-color: #3498db;
 }
 .label-info[href],
 .badge-info[href] {
-  background-color: #e6e6e6;
+  background-color: #217dbb;
 }
 .label-inverse,
 .badge-inverse {
@@ -1155,28 +1155,28 @@ table th[class*="span"],
   margin-left: 0;
 }
 .table tbody tr.success > td {
-  background-color: #2ecc71;
+  background-color: #eeffee;
 }
 .table tbody tr.error > td {
-  background-color: #e74c3c;
+  background-color: #ffeeee;
 }
 .table tbody tr.warning > td {
-  background-color: #f1c40f;
+  background-color: #ffffee;
 }
 .table tbody tr.info > td {
-  background-color: #3498db;
+  background-color: #eeeeff;
 }
 .table-hover tbody tr.success:hover > td {
-  background-color: #29b765;
+  background-color: #d5ffd5;
 }
 .table-hover tbody tr.error:hover > td {
-  background-color: #e43725;
+  background-color: #ffd5d5;
 }
 .table-hover tbody tr.warning:hover > td {
-  background-color: #dab10d;
+  background-color: #ffffd5;
 }
 .table-hover tbody tr.info:hover > td {
-  background-color: #258cd1;
+  background-color: #d5d5ff;
 }
 form {
   margin: 0 0 24px;
@@ -1557,19 +1557,19 @@ input[type="checkbox"][readonly] {
 .control-group.warning .control-label,
 .control-group.warning .help-block,
 .control-group.warning .help-inline {
-  color: #ffffff;
+  color: #f1c40f;
 }
 .control-group.warning .checkbox,
 .control-group.warning .radio,
 .control-group.warning input,
 .control-group.warning select,
 .control-group.warning textarea {
-  color: #ffffff;
+  color: #f1c40f;
 }
 .control-group.warning input,
 .control-group.warning select,
 .control-group.warning textarea {
-  border-color: #ffffff;
+  border-color: #f1c40f;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -1577,33 +1577,33 @@ input[type="checkbox"][readonly] {
 .control-group.warning input:focus,
 .control-group.warning select:focus,
 .control-group.warning textarea:focus {
-  border-color: #e6e6e6;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
+  border-color: #c29d0b;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #f7dc6f;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #f7dc6f;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #f7dc6f;
 }
 .control-group.warning .input-prepend .add-on,
 .control-group.warning .input-append .add-on {
-  color: #ffffff;
-  background-color: #f1c40f;
-  border-color: #ffffff;
+  color: #f1c40f;
+  background-color: #ffffee;
+  border-color: #f1c40f;
 }
 .control-group.error .control-label,
 .control-group.error .help-block,
 .control-group.error .help-inline {
-  color: #ffffff;
+  color: #e74c3c;
 }
 .control-group.error .checkbox,
 .control-group.error .radio,
 .control-group.error input,
 .control-group.error select,
 .control-group.error textarea {
-  color: #ffffff;
+  color: #e74c3c;
 }
 .control-group.error input,
 .control-group.error select,
 .control-group.error textarea {
-  border-color: #ffffff;
+  border-color: #e74c3c;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -1611,33 +1611,33 @@ input[type="checkbox"][readonly] {
 .control-group.error input:focus,
 .control-group.error select:focus,
 .control-group.error textarea:focus {
-  border-color: #e6e6e6;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
+  border-color: #d62c1a;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #f29f97;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #f29f97;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #f29f97;
 }
 .control-group.error .input-prepend .add-on,
 .control-group.error .input-append .add-on {
-  color: #ffffff;
-  background-color: #e74c3c;
-  border-color: #ffffff;
+  color: #e74c3c;
+  background-color: #ffeeee;
+  border-color: #e74c3c;
 }
 .control-group.success .control-label,
 .control-group.success .help-block,
 .control-group.success .help-inline {
-  color: #ffffff;
+  color: #2ecc71;
 }
 .control-group.success .checkbox,
 .control-group.success .radio,
 .control-group.success input,
 .control-group.success select,
 .control-group.success textarea {
-  color: #ffffff;
+  color: #2ecc71;
 }
 .control-group.success input,
 .control-group.success select,
 .control-group.success textarea {
-  border-color: #ffffff;
+  border-color: #2ecc71;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -1645,33 +1645,33 @@ input[type="checkbox"][readonly] {
 .control-group.success input:focus,
 .control-group.success select:focus,
 .control-group.success textarea:focus {
-  border-color: #e6e6e6;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
+  border-color: #25a25a;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #7ee2a8;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #7ee2a8;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #7ee2a8;
 }
 .control-group.success .input-prepend .add-on,
 .control-group.success .input-append .add-on {
-  color: #ffffff;
-  background-color: #2ecc71;
-  border-color: #ffffff;
+  color: #2ecc71;
+  background-color: #eeffee;
+  border-color: #2ecc71;
 }
 .control-group.info .control-label,
 .control-group.info .help-block,
 .control-group.info .help-inline {
-  color: #ffffff;
+  color: #3498db;
 }
 .control-group.info .checkbox,
 .control-group.info .radio,
 .control-group.info input,
 .control-group.info select,
 .control-group.info textarea {
-  color: #ffffff;
+  color: #3498db;
 }
 .control-group.info input,
 .control-group.info select,
 .control-group.info textarea {
-  border-color: #ffffff;
+  border-color: #3498db;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -1679,16 +1679,16 @@ input[type="checkbox"][readonly] {
 .control-group.info input:focus,
 .control-group.info select:focus,
 .control-group.info textarea:focus {
-  border-color: #e6e6e6;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffffff;
+  border-color: #217dbb;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #8bc4ea;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #8bc4ea;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #8bc4ea;
 }
 .control-group.info .input-prepend .add-on,
 .control-group.info .input-append .add-on {
-  color: #ffffff;
-  background-color: #3498db;
-  border-color: #ffffff;
+  color: #3498db;
+  background-color: #eeeeff;
+  border-color: #3498db;
 }
 input:focus:invalid,
 textarea:focus:invalid,
@@ -4208,15 +4208,15 @@ a.thumbnail:focus {
   padding: 8px 35px 8px 14px;
   margin-bottom: 24px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  background-color: #f1c40f;
-  border: 1px solid #e3950d;
+  background-color: #ffffee;
+  border: 1px solid #fffadf;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
 }
 .alert,
 .alert h4 {
-  color: #ffffff;
+  color: #f1c40f;
 }
 .alert h4 {
   margin: 0;
@@ -4228,30 +4228,30 @@ a.thumbnail:focus {
   line-height: 24px;
 }
 .alert-success {
-  background-color: #2ecc71;
-  border-color: #29b74e;
-  color: #ffffff;
+  background-color: #eeffee;
+  border-color: #dcffd5;
+  color: #2ecc71;
 }
 .alert-success h4 {
-  color: #ffffff;
+  color: #2ecc71;
 }
 .alert-danger,
 .alert-error {
-  background-color: #e74c3c;
-  border-color: #e52e3c;
-  color: #ffffff;
+  background-color: #ffeeee;
+  border-color: #ffdfe4;
+  color: #e74c3c;
 }
 .alert-danger h4,
 .alert-error h4 {
-  color: #ffffff;
+  color: #e74c3c;
 }
 .alert-info {
-  background-color: #3498db;
-  border-color: #23a1c8;
-  color: #ffffff;
+  background-color: #eeeeff;
+  border-color: #cad3ff;
+  color: #3498db;
 }
 .alert-info h4 {
-  color: #ffffff;
+  color: #3498db;
 }
 .alert-block {
   padding-top: 14px;
