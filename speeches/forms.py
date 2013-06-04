@@ -172,9 +172,26 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
 
 
 class SectionForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SectionForm, self).__init__(*args, **kwargs)
+        if self.instance:
+            ids = [ self.instance.id ]
+            ids.extend( [ d.id for d in self.instance.get_descendants ] )
+            self.fields['parent'].queryset = Section.objects.exclude(id__in=ids)
+
     class Meta:
         model = Section
         exclude = 'instance'
+
+    def clean_parent(self):
+        parent = self.cleaned_data['parent']
+        if self.instance and parent:
+            if parent.id == self.instance.id:
+                raise forms.ValidationError('Something cannot be its own parent')
+            descendant_ids = [ d.id for d in self.instance.get_descendants ]
+            if parent.id in descendant_ids:
+                raise forms.ValidationError('Something cannot have a parent that is also a descendant')
+        return parent
 
 class SpeakerForm(forms.ModelForm):
     class Meta:

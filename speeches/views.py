@@ -219,7 +219,7 @@ class SectionMixin(InstanceFormMixin):
 
     def get_form(self, form_class):
         form = super(SectionMixin, self).get_form(form_class)
-        form.fields['parent'].queryset = Section.objects.for_instance(self.request.instance)
+        form.fields['parent'].queryset = form.fields['parent'].queryset.filter(instance=self.request.instance)
         return form
 
 class SectionCreate(SectionMixin, CreateView):
