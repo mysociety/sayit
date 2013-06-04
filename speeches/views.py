@@ -308,6 +308,7 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
 
     def form_valid(self, form):
         logger.info("Processing recording")
+        logger.info("  " + repr(form.cleaned_data))
 
         super(RecordingAPICreate, self).form_valid(form)
 

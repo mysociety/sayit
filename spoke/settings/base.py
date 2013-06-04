@@ -169,7 +169,7 @@ LOGGING = {
     },
     'handlers': {
         'console': {
-            'level': 'WARN',
+            'level': 'DEBUG',
             'class': 'logging.StreamHandler',
         },
         'mail_admins': {
@@ -186,7 +186,7 @@ LOGGING = {
         },
         'speeches': {
             'handlers': [ 'mail_admins', 'console' ],
-            'level': 'WARN',
+            'level': 'DEBUG',
             'propagate': True,  
         },
     }

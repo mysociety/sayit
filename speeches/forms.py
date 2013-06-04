@@ -130,8 +130,10 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
         timestamps = []
 
         if not 'timestamps' in self.cleaned_data or not self.cleaned_data['timestamps']:
+            logger.debug('No timestamps in cleaned_data')
             return timestamps
 
+        logger.debug('timestamps received = %s' % self.cleaned_data['timestamps'])
         timestamps_json = simplejson.loads(self.cleaned_data['timestamps'])
 
         if not isinstance(timestamps_json, list):
