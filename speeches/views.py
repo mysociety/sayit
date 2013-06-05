@@ -11,8 +11,8 @@ from django.core.files import File
 from instances.views import InstanceFormMixin, InstanceViewMixin
 from popit.models import ApiInstance
 
-from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, SpeakerPopitForm
-from speeches.models import Speech, Speaker, Section, Recording, Tag
+from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, SpeakerPopitForm, RecordingForm, RecordingTimestampFormSet
+from speeches.models import Speech, Speaker, Section, Recording, Tag, RecordingTimestamp
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
 
@@ -291,6 +291,38 @@ class RecordingView(View):
         view = RecordingSetSection.as_view()
         return view(request, *args, **kwargs)
 
+# NB: this is not an UpdateView, at least for now, as it only updates
+# RecordingTimestamp not the actual Recording class.
+class RecordingUpdate(InstanceFormMixin, DetailView):
+    model = Recording
+    template_name_suffix = "_form"
+
+    def get_context_data(self, **kwargs):
+        context = super(RecordingUpdate, self).get_context_data(**kwargs)
+        context['recordingtimestamp_formset'] = RecordingTimestampFormSet(self.request.POST or None, instance=self.object)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object) # Sigh
+        recordingtimestamp_formset = context['recordingtimestamp_formset']
+
+        if recordingtimestamp_formset.is_valid():
+            recordingtimestamp_formset.save()
+
+            self.object.create_or_update_speeches(self.request.instance)
+
+            # then delete the associated speeches, as Django can't
+            # infer a cascade here
+            for form in recordingtimestamp_formset.deleted_forms:
+                try:
+                    form.instance.speech.delete()
+                except:
+                    logger.info("Timestamp isn't linked to speech")
+
+            return HttpResponseRedirect( self.object.get_absolute_url() )
+        return self.render_to_response(context)
+
 class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
     # View for RecordingAPIForm, to create a recording
     model = Recording
@@ -312,16 +344,19 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
 
         super(RecordingAPICreate, self).form_valid(form)
 
-        # Save upload into .mp3
-        # TODO: this section is cargo-culted from models.Speech, refactor
-        audio_helper = AudioHelper()
-        mp3_filename = audio_helper.make_mp3(self.object.audio.path)
-        mp3_file = open(mp3_filename, 'rb')
-        # retain the old file (for debugging use etc.?), but save mp3 as the new file
-        self.object.audio.save(mp3_file.name, File(mp3_file), save=True)
+        recording = self.object
+
+        recording_timestamps = form.cleaned_data.get('timestamps', [])
+        for recording_timestamp in recording_timestamps:
+            recording_timestamp.recording = recording
+            recording_timestamp.save()
+
+        if len(recording_timestamps):
+            recording.start_datetime = recording_timestamps[0].timestamp
+            recording.save()
 
         # Create speeches from the recording
-        speeches = Speech.objects.create_from_recording(self.object, self.request.instance)
+        speeches = self.object.create_or_update_speeches(self.request.instance)
 
         # Transcribe each speech
         for speech in speeches:

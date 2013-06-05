@@ -7,11 +7,12 @@ from django_select2.widgets import Select2Widget, Select2MultipleWidget
 
 from django import forms
 from django.forms.forms import BoundField
+from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.forms.widgets import Textarea
 from django.core.files.uploadedfile import UploadedFile
 from django.utils import simplejson
 
-# from speeches.fields import TagField
+from speeches.fields import FromStartIntegerField
 from speeches.models import Speech, Speaker, Section, Recording, RecordingTimestamp, Tag
 from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
 from speeches.utils import GroupedModelChoiceField
@@ -151,7 +152,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
                         speaker = Speaker.objects.get(pk=recording_timestamp['speaker'])
                     except:
                         speaker = None
-                    timestamps.append(RecordingTimestamp.objects.create(speaker=speaker, timestamp=timestamp, instance=self.request.instance))
+                    timestamps.append(RecordingTimestamp(speaker=speaker, timestamp=timestamp, instance=self.request.instance))
                 else:
                     # Timestamp is required
                     logger.error("No timestamp supplied in request: {0}".format(recording_timestamp))
@@ -170,6 +171,10 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
         model = Recording
         exclude = 'instance'
 
+class RecordingForm(forms.ModelForm):
+    class Meta:
+        model = Recording
+        exclude = ['instance', 'audio']
 
 class SectionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -203,3 +208,57 @@ class SpeakerForm(forms.ModelForm):
 
 class SpeakerPopitForm(forms.Form):
     url = forms.URLField(label="PopIt URL")
+
+class RecordingTimestampForm(forms.ModelForm):
+    timestamp = FromStartIntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super(RecordingTimestampForm, self).__init__(*args, **kwargs)
+        # Each timestamp needs to know the recording start time
+        self.fields['timestamp'].recording_start = self.instance.recording.start_datetime
+
+    class Meta:
+        model = RecordingTimestamp
+        exclude = ['instance','speech']
+
+class BaseRecordingTimestampFormSet(BaseInlineFormSet):
+    def clean(self):
+        if any(self.errors):
+            return
+
+        recording = self.instance
+
+        first_timestamp = self.forms[0].cleaned_data['timestamp']
+        last_timestamp = self.forms[-1].cleaned_data['timestamp']
+
+        # TODO: check that first timestamp isn't before start of speech?  
+
+        if first_timestamp < recording.start_datetime:
+            raise forms.ValidationError("Start time is before recording start time!")
+
+        # TODO: check that delta from first to last timestamp isn't longer
+        # than length of audio
+        # This is slightly complicated because we don't seem to cache this
+        # metadata anywhere?  Might make sense to add to Recording?
+
+        delta = (last_timestamp - first_timestamp).seconds
+        if delta >= recording.audio_duration:
+            raise forms.ValidationError('Difference between timestamps is too long for the uploaded audio')
+
+        previous_timestamp = None
+        for i in range(0, self.total_form_count()):
+            form = self.forms[i]
+            timestamp = form.cleaned_data['timestamp']
+            if previous_timestamp:
+                if timestamp <= previous_timestamp:
+                    raise forms.ValidationError('Timestamps must be ordered')
+            previous_timestamp = timestamp
+
+RecordingTimestampFormSet = inlineformset_factory(
+    Recording,
+    RecordingTimestamp,
+    formset = BaseRecordingTimestampFormSet,
+    form = RecordingTimestampForm,
+    extra = 0,
+    can_delete = 1,
+)

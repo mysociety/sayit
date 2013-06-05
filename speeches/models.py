@@ -104,55 +104,7 @@ class Tag(InstanceMixin, AuditedModel):
 
 # Speech manager
 class SpeechManager(InstanceManager, Manager):
-
-    def create_from_recording(self, recording, instance):
-        """Create one or more speeches from a recording. If there's no audio"""
-        created_speeches = []
-
-        # Split the recording's audio files
-        audio_helper = AudioHelper()
-        audio_files = audio_helper.split_recording(recording)
-
-        # Create a speech for each one of the audio files
-        sorted_timestamps = recording.timestamps.order_by("timestamp")
-        for index, audio_file in enumerate(audio_files):
-            speaker = None
-            start_date = None
-            start_time = None
-            end_date = None
-            end_time = None
-
-            # Get the related timestamp, if any.
-            timestamp = None
-            if sorted_timestamps and len(sorted_timestamps) > 0:
-                # We assume that the files are returned in order of timestamp
-                timestamp = sorted_timestamps[index]
-                speaker = timestamp.speaker
-                start_date = timestamp.timestamp.date()
-                start_time = timestamp.timestamp.time()
-                # If there's another one we can work out the end too
-                if index < len(sorted_timestamps) - 1:
-                    next_timestamp = sorted_timestamps[index + 1]
-                    end_date = next_timestamp.timestamp.date()
-                    end_time = next_timestamp.timestamp.time()
-
-            new_speech = self.create(
-                instance = instance,
-                public = False,
-                audio=File(open(audio_file)),
-                speaker=speaker,
-                start_date=start_date,
-                start_time=start_time,
-                end_date=end_date,
-                end_time=end_time
-            )
-            created_speeches.append( new_speech )
-            if timestamp:
-                timestamp.speech = new_speech
-                timestamp.save()
-
-        return created_speeches
-
+    pass
 
 class Section(AuditedModel, InstanceMixin):
     title = models.CharField(max_length=255, blank=False, null=False)
@@ -299,8 +251,34 @@ class Section(AuditedModel, InstanceMixin):
         """Fetch the previous node in the tree, at the same level as this one."""
         return self._get_next_previous_node(-1)
 
+class AudioMP3Mixin(object):
+    def save(self, *args, **kwargs):
+        """Overriden save method to automatically convert the audio to an mp3"""
+        duration = kwargs.pop('duration', None)
+        needs_conversion = self.audio and not self.audio.name.lower().endswith('.mp3')
+
+        # If we have an audio file and it's not an mp3, make it one
+        if duration or needs_conversion:
+            if not os.path.exists(self.audio.path):
+                # If it doesn't already exist, save the old audio first so that we can re-encode it
+                # This is needed if it's newly uploaded
+                self.audio.save(self.audio.name, File(self.audio), save=False)
+
+            audio_helper = speeches.utils.AudioHelper()
+
+            if needs_conversion:
+                mp3_filename = audio_helper.make_mp3(self.audio.path)
+                mp3_file = open(mp3_filename, 'rb')
+                self.audio.save(mp3_file.name, File(mp3_file), save=False)
+
+            if duration:
+                self.audio_duration = audio_helper.get_audio_duration(self.audio.path)
+
+        # Call the original model save to do everything
+        super(AudioMP3Mixin, self).save(*args, **kwargs)
+
 # Speech that a speaker gave
-class Speech(InstanceMixin, AuditedModel):
+class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     # Custom manager
     objects = SpeechManager()
 
@@ -378,27 +356,6 @@ class Speech(InstanceMixin, AuditedModel):
     @models.permalink
     def get_edit_url(self):
         return ( 'speech-edit', (), { 'pk': self.id } )
-
-    def save(self, *args, **kwargs):
-        """Overriden save method to automatically convert the audio to an mp3"""
-
-        # If we have an audio file and it's not an mp3, make it one
-        if self.audio and not self.audio.name.lower().endswith('.mp3'):
-            if not os.path.exists(self.audio.path):
-                # If it doesn't already exist, save the old audio first so that we can re-encode it
-                # This is needed if it's newly uploaded
-                self.audio.save(self.audio.name, File(self.audio), False)
-            # Transcode the audio into mp3
-            audio_helper = speeches.utils.AudioHelper()
-            mp3_filename = audio_helper.make_mp3(self.audio.path)
-            mp3_file = open(mp3_filename, 'rb')
-            # Delete the old file
-            self.audio.delete(False)
-            # Save the mp3 as the new file
-            self.audio.save(mp3_file.name, File(mp3_file), False)
-
-        # Call the original model save to do everything
-        super(Speech, self).save(*args, **kwargs)
 
     def get_next_speech(self):
         """Return the next speech to this one in the same section, in a start
@@ -485,16 +442,26 @@ class RecordingTimestamp(InstanceMixin, AuditedModel):
     speaker = models.ForeignKey(Speaker, blank=True, null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(db_index=True, blank=False)
     speech = models.ForeignKey(Speech, blank=True, null=True, on_delete=models.SET_NULL)
+    recording = models.ForeignKey('Recording',blank=False, null=False, related_name='timestamps', default=0) # kludge default 0, should not be used
+
+    class Meta:
+        ordering = ('timestamp',)
 
     @property
     def utc(self):
         """Return our timestamp as a UTC long"""
         return calendar.timegm(self.timestamp.timetuple())
 
+
 # A raw recording, might be divided up into multiple speeches
-class Recording(InstanceMixin, AuditedModel):
+class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
     audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=False)
-    timestamps = models.ManyToManyField(RecordingTimestamp, blank=True, null=True)
+    start_datetime = models.DateTimeField(blank=True, null=True, help_text='Datetime of first timestamp associated with recording')
+    audio_duration = models.IntegerField(blank=True, null=False, default=0, help_text='Duration of recording, in seconds')
+
+    def save(self, *args, **kwargs):
+        kwargs['duration'] = True
+        super(Recording, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return u'Recording made %s ago' % timesince(self.created)
@@ -505,3 +472,52 @@ class Recording(InstanceMixin, AuditedModel):
 
     def add_speeches_to_section(self, section):
         return Speech.objects.filter(recordingtimestamp__recording=self).update(section=section)
+
+    def create_or_update_speeches(self, instance):
+        created_speeches = []
+
+        # Split the recording's audio files
+        audio_helper = AudioHelper()
+        audio_files = audio_helper.split_recording(self)
+        sorted_timestamps = self.timestamps.order_by("timestamp")
+
+        for index, audio_file in enumerate(audio_files):
+            new = True
+            speech = Speech(
+                instance = instance,
+                public = False,
+            )
+            timestamp = None
+            if sorted_timestamps and len(sorted_timestamps) > 0:
+                # We assume that the files are returned in order of timestamp
+                timestamp = sorted_timestamps[index]
+                if timestamp.speech:
+                    speech = timestamp.speech
+                    new = False
+                    try:
+                        speech.audio.delete(save=False)
+                    except:
+                        pass
+                        # shouldn't happen, but we're going to recreate anyway
+                        # so not critical
+
+                speech.speaker = timestamp.speaker
+                speech.start_date = timestamp.timestamp.date()
+                speech.start_time = timestamp.timestamp.time()
+                # If there's another one we can work out the end too
+                if index < len(sorted_timestamps) - 1:
+                    next_timestamp = sorted_timestamps[index + 1]
+                    speech.end_date = next_timestamp.timestamp.date()
+                    speech.end_time = next_timestamp.timestamp.time()
+
+            audio_file = open(audio_file, 'rb')
+            speech.audio = File(audio_file)
+            speech.save()
+
+            if new:
+                created_speeches.append( speech )
+                if timestamp:
+                    timestamp.speech = speech
+                    timestamp.save()
+
+        return created_speeches

@@ -42,6 +42,9 @@
 
 <h2>{% trans "Actions" %}</h2>
 
+    <input type="button" value="Edit Timestamps" id="edit-timestamps"
+        onClick="window.location='{%url "recording-edit" recording.id%}'">
+
 <form class="form-horizontal" method="post">
     {% include 'speeches/form.html' with submit="Update" type="recording" %}
 </form>

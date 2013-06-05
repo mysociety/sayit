@@ -99,7 +99,7 @@ class AudioHelperTests(InstanceTestCase):
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
         timestamp = RecordingTimestamp.objects.create(speaker=speaker, timestamp=timezone.now(), instance=self.instance)
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
-        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'), instance=self.instance)
+        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'), instance=self.instance, start_datetime=timestamp.timestamp)
         recording.timestamps.add(timestamp)
         recording.save()
 
@@ -120,7 +120,7 @@ class AudioHelperTests(InstanceTestCase):
             timestamps[i] = RecordingTimestamp.objects.create(speaker=speakers[i], timestamp=start_i, instance=self.instance)
 
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
-        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'), instance=self.instance)
+        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'), instance=self.instance, start_datetime=timestamps[0].timestamp)
         for i in range(3):
             recording.timestamps.add(timestamps[i])
         recording.save()
@@ -131,3 +131,9 @@ class AudioHelperTests(InstanceTestCase):
         files = [ 'lamb_first_three_seconds.mp3', 'lamb_from_three_to_four_seconds.mp3', 'lamb_from_four_seconds_onwards.mp3' ]
         for i in range(3):
             self.assertSameAudioLength(files_created[i], self.expected_output_file(files[i]))
+
+    def test_audio_length(self):
+        audio_path = os.path.join(self._in_fixtures, 'lamb.mp3')
+        duration = self.helper.get_audio_duration(audio_path)
+        self.assertEquals( duration, 5 )
+        
