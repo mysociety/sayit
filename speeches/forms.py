@@ -190,17 +190,6 @@ class SpeakerForm(forms.ModelForm):
 class SpeakerPopitForm(forms.Form):
     url = forms.URLField(label="PopIt URL")
 
-class TimestampSecondsInput(forms.TextInput):
-
-    first_timestamp = None
-
-    def render(self, name, value, **kwargs):
-        self.first_timestamp = self.first_timestamp or value
-        delta = (value - self.first_timestamp).seconds
-        return super(forms.TextInput, self).render(
-            name, str(self.first_timestamp), **kwargs)
-
-
 class RecordingTimestampForm(forms.ModelForm):
     timestamp = FromStartIntegerField()
 
@@ -212,9 +201,6 @@ class RecordingTimestampForm(forms.ModelForm):
     class Meta:
         model = RecordingTimestamp
         exclude = ['instance','speech']
-        widgets = {
-            # 'timestamp': TimestampSecondsInput()
-        }
 
 class BaseRecordingTimestampFormSet(BaseInlineFormSet):
     def clean(self):

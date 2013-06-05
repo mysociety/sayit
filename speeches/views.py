@@ -23,8 +23,6 @@ from django.views.generic.edit import BaseFormView
 import celery
 import logging
 
-import os
-
 logger = logging.getLogger(__name__)
 
 class AddAnSRedirectView(RedirectView):
