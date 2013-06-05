@@ -174,7 +174,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
 class SectionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SectionForm, self).__init__(*args, **kwargs)
-        if self.instance:
+        if self.instance.id:
             ids = [ self.instance.id ]
             ids.extend( [ d.id for d in self.instance.get_descendants ] )
             self.fields['parent'].queryset = Section.objects.exclude(id__in=ids)
