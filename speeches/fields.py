@@ -19,6 +19,8 @@ class FromStartIntegerField(forms.IntegerField):
         super(FromStartIntegerField, self).__init__(*args, **kwargs)
 
     def prepare_value(self, value):
+        if value in validators.EMPTY_VALUES:
+            return None
         if isinstance(value, datetime.datetime):
             value = value - self.recording_start
             value = value.total_seconds()

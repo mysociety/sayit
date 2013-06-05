@@ -214,8 +214,15 @@ class RecordingTimestampForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(RecordingTimestampForm, self).__init__(*args, **kwargs)
-        # Each timestamp needs to know the recording start time
-        self.fields['timestamp'].recording_start = self.instance.recording.start_datetime
+        # Each timestamp needs to know the recording start time if it
+        # is bound (e.g. not an extra, blank field)
+        if self.instance.recording_id:
+            self.fields['timestamp'].recording_start = self.instance.recording.start_datetime
+
+
+    def save(self, commit=True):
+        self.instance.instance_id = self.instance.recording.instance_id
+        return super(RecordingTimestampForm, self).save(commit)
 
     class Meta:
         model = RecordingTimestamp
@@ -228,8 +235,13 @@ class BaseRecordingTimestampFormSet(BaseInlineFormSet):
 
         recording = self.instance
 
-        first_timestamp = self.forms[0].cleaned_data['timestamp']
-        last_timestamp = self.forms[-1].cleaned_data['timestamp']
+        # we're using '_forms' to avoid clashing with forms import, e.g.
+        # for ValidationError
+        _forms = [f for f in self.forms 
+            if f.cleaned_data.get('start_recording', 
+               f.cleaned_data.get('timestamp', None))]
+        first_timestamp = _forms[0].cleaned_data['timestamp']
+        last_timestamp =  _forms[-1].cleaned_data['timestamp']
 
         # TODO: check that first timestamp isn't before start of speech?  
 
@@ -246,8 +258,7 @@ class BaseRecordingTimestampFormSet(BaseInlineFormSet):
             raise forms.ValidationError('Difference between timestamps is too long for the uploaded audio')
 
         previous_timestamp = None
-        for i in range(0, self.total_form_count()):
-            form = self.forms[i]
+        for form in _forms:
             timestamp = form.cleaned_data['timestamp']
             if previous_timestamp:
                 if timestamp <= previous_timestamp:
@@ -259,6 +270,6 @@ RecordingTimestampFormSet = inlineformset_factory(
     RecordingTimestamp,
     formset = BaseRecordingTimestampFormSet,
     form = RecordingTimestampForm,
-    extra = 0,
+    extra = 1,
     can_delete = 1,
 )

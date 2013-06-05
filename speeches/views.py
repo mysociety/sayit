@@ -307,6 +307,13 @@ class RecordingUpdate(InstanceFormMixin, DetailView):
         context = self.get_context_data(object=self.object) # Sigh
         recordingtimestamp_formset = context['recordingtimestamp_formset']
 
+        recording = self.object
+
+        for form in recordingtimestamp_formset:
+            # in case we are processing any extra fields, which don't have
+            # this set already
+            form.fields['timestamp'].recording_start = recording.start_datetime
+
         if recordingtimestamp_formset.is_valid():
             recordingtimestamp_formset.save()
 
