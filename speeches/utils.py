@@ -315,7 +315,7 @@ class AudioHelper(object):
         return out_filename
 
     def get_audio_duration(self, in_filename):
-        return audioread.ffdec.FFmpegAudioFile(in_filename).duration
+        return round(audioread.ffdec.FFmpegAudioFile(in_filename).duration)
 
     def _build_ffmpeg_options(self, in_filename):
         return [

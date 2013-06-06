@@ -64,7 +64,7 @@ class RecordingTimestampTests(InstanceTestCase):
         check_audio_durations(recording, [2,2,1])
 
         form_data = {
-            'timestamps-TOTAL_FORMS': 3,
+            'timestamps-TOTAL_FORMS': 4,
             'timestamps-INITIAL_FORMS': 3,
             'timestamps-MAX_NUM_FORMS': 1000,
             'timestamps-0-recording': recording.id,
@@ -78,7 +78,11 @@ class RecordingTimestampTests(InstanceTestCase):
             'timestamps-2-recording': recording.id,
             'timestamps-2-id': timestamps[2].id,
             'timestamps-2-speaker': "",
-            'timestamps-2-timestamp': 4
+            'timestamps-2-timestamp': 4,
+            'timestamps-3-recording': recording.id,
+            'timestamps-3-id': "",
+            'timestamps-3-speaker': "",
+            'timestamps-3-timestamp': "",
         }
         timestamps_2_id = timestamps[2].id
         resp = self.client.post('/recording/%d/edit' % recording.id,
@@ -111,6 +115,76 @@ class RecordingTimestampTests(InstanceTestCase):
         recording = check_response(resp, 302, 'text/html; charset=utf-8')
         check_audio_durations(recording, [4])
 
+        # test new timestamp AFTER
+        form_data = {
+            'timestamps-TOTAL_FORMS': 2,
+            'timestamps-INITIAL_FORMS': 1,
+            'timestamps-MAX_NUM_FORMS': 1000,
+            'timestamps-0-recording': recording.id,
+            'timestamps-0-id': timestamps_2_id,
+            'timestamps-0-speaker': "",
+            'timestamps-0-timestamp': 1,
+            'timestamps-1-recording': recording.id,
+            'timestamps-1-id': '',
+            'timestamps-1-speaker': "",
+            'timestamps-1-timestamp': 4,
+        }
+        resp = self.client.post('/recording/%d/edit' % recording.id,
+            form_data)
+        recording = check_response(resp, 302, 'text/html; charset=utf-8')
+        check_audio_durations(recording, [3,1])
+
+        # test new timestamp BETWEEN
+        form_data = {
+            'timestamps-TOTAL_FORMS': 3,
+            'timestamps-INITIAL_FORMS': 2,
+            'timestamps-MAX_NUM_FORMS': 1000,
+            'timestamps-0-recording': recording.id,
+            'timestamps-0-id': timestamps_2_id,
+            'timestamps-0-speaker': "",
+            'timestamps-0-timestamp': 1,
+            'timestamps-1-recording': recording.id,
+            'timestamps-1-id': recording.timestamps.all()[1].id,
+            'timestamps-1-speaker': "",
+            'timestamps-1-timestamp': 4,
+            'timestamps-2-recording': recording.id,
+            'timestamps-2-id': '',
+            'timestamps-2-speaker': "",
+            'timestamps-2-timestamp': 3,
+        }
+        resp = self.client.post('/recording/%d/edit' % recording.id,
+            form_data)
+        recording = check_response(resp, 302, 'text/html; charset=utf-8')
+        check_audio_durations(recording, [2,1,1])
+
+        # test new timestamp BEFORE
+        form_data = {
+            'timestamps-TOTAL_FORMS': 4,
+            'timestamps-INITIAL_FORMS': 3,
+            'timestamps-MAX_NUM_FORMS': 1000,
+            'timestamps-0-recording': recording.id,
+            'timestamps-0-id': timestamps_2_id,
+            'timestamps-0-speaker': "",
+            'timestamps-0-timestamp': 1,
+            'timestamps-1-recording': recording.id,
+            'timestamps-1-id': recording.timestamps.all()[1].id,
+            'timestamps-1-speaker': "",
+            'timestamps-1-timestamp': 3,
+            'timestamps-2-recording': recording.id,
+            'timestamps-2-id': recording.timestamps.all()[2].id,
+            'timestamps-2-speaker': "",
+            'timestamps-2-timestamp': 4,
+            'timestamps-3-recording': recording.id,
+            'timestamps-3-id': '',
+            'timestamps-3-speaker': "",
+            'timestamps-3-timestamp': 0,
+        }
+        resp = self.client.post('/recording/%d/edit' % recording.id,
+            form_data)
+        recording = check_response(resp, 302, 'text/html; charset=utf-8')
+        check_audio_durations(recording, [1,2,1,1])
+
+
     def test_can_get_form(self, filename='lamb.mp3'):
         audio = open(os.path.join(self._in_fixtures, filename), 'rb')
 
@@ -126,8 +200,3 @@ class RecordingTimestampTests(InstanceTestCase):
 
         resp = self.client.get('/recording/%d/edit' % recording.id)
         self.assertEquals(resp.status_code, 200)
-
-
-
-
-
