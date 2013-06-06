@@ -35,5 +35,16 @@
     {% include 'speeches/form.html' with submit="Update" type="recording" %}
 </form>
 
-{% endblock %}
+<script>
+$(function() {
+    var re = /^id_timestamps-(\d+)-id$/
+    $('input[type=hidden][value=]').each(function () {
+        var id = $(this).attr('id')
+        if (re.test(id)) {
+            $(id.replace(re, '#id_timestamps-$1-DELETE_controls')).hide()
+        }
+    })
+})
+</script>
 
+{% endblock %}
