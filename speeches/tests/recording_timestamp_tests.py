@@ -125,7 +125,7 @@ class RecordingTimestampTests(InstanceTestCase):
         self.assertEquals(resp.status_code, 201)
 
         resp = self.client.get('/recording/%d/edit' % recording.id)
-        self.assertEquals(resp.status_code, 201)
+        self.assertEquals(resp.status_code, 200)
 
 
 
