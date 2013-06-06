@@ -184,7 +184,6 @@ class RecordingTimestampTests(InstanceTestCase):
         recording = check_response(resp, 302, 'text/html; charset=utf-8')
         check_audio_durations(recording, [1,2,1,1])
 
-
     def test_can_get_form(self, filename='lamb.mp3'):
         audio = open(os.path.join(self._in_fixtures, filename), 'rb')
 
@@ -200,3 +199,45 @@ class RecordingTimestampTests(InstanceTestCase):
 
         resp = self.client.get('/recording/%d/edit' % recording.id)
         self.assertEquals(resp.status_code, 200)
+
+    def test_change_speaker(self, filename='lamb.mp3'):
+        audio = open(os.path.join(self._in_fixtures, filename), 'rb')
+
+        # NOTE: this test is loosely cargo-culted from recording_api_tests,
+        # however here timestamps are hardcoded for simplicity
+        resp = self.client.post('/api/v0.1/recording/', {
+            'audio': audio,
+            'timestamps': '[{"timestamp":0},{"timestamp":2000},{"timestamp":4000}]'
+        })
+
+        recording = Recording.objects.order_by('-id')[0]
+        self.assertEquals(resp.status_code, 201)
+
+        resp = self.client.get('/recording/%d/edit' % recording.id)
+        self.assertEquals(resp.status_code, 200)
+
+        speaker_1 = Speaker.objects.create(name='Steve', instance=self.instance)
+        speaker_2 = Speaker.objects.create(name='Yasmin', instance=self.instance)
+
+        timestamps = recording.timestamps.all()
+        
+        form_data = {
+            'timestamps-TOTAL_FORMS': 2,
+            'timestamps-INITIAL_FORMS': 2,
+            'timestamps-MAX_NUM_FORMS': 1000,
+            'timestamps-0-recording': recording.id,
+            'timestamps-0-id': timestamps[0].id,
+            'timestamps-0-speaker': speaker_1.id,
+            'timestamps-0-timestamp': 0,
+            'timestamps-1-recording': recording.id,
+            'timestamps-1-id': timestamps[1].id,
+            'timestamps-1-speaker': speaker_2.id,
+            'timestamps-1-timestamp': 1,
+        }
+        resp = self.client.post('/recording/%d/edit' % recording.id,
+            form_data)
+        recording = Recording.objects.order_by('-id')[0]
+
+        timestamps = recording.timestamps.all()
+        self.assertEquals(timestamps[0].speaker, speaker_1)
+        self.assertEquals(timestamps[1].speaker, speaker_2)
