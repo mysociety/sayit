@@ -10,7 +10,7 @@ from django.conf import settings
 from instances.tests import InstanceTestCase
 
 import speeches
-from speeches.models import Speech, Recording
+from speeches.models import Speech, Recording, Section
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class RecordingTests(InstanceTestCase):
@@ -59,6 +59,14 @@ class RecordingTests(InstanceTestCase):
             if last_start:
                 self.assertEqual(start - last_start, timedelta(seconds=1))
             last_start = start
+
+        # Test assignment of section
+        section = Section.objects.create(title='A Section', instance=self.instance)
+        self.assertEquals(Speech.objects.filter(section=section).count(), 0)
+        resp = self.client.get('/recording/%s' % recording.id)
+        self.assertContains(resp, 'A Section')
+        resp = self.client.post('/recording/%s' % recording.id, { 'section': section.id })
+        self.assertEquals(Speech.objects.filter(section=section).count(), SPEECHES)
 
         # XXX Perhaps django-webtest (which has form.submit()) or 
         # get things out of the view and test them independently.

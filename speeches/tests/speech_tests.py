@@ -89,6 +89,9 @@ class SpeechTests(InstanceTestCase):
         self.assertFalse('Please wait' in resp.content)
         self.assertTrue(text in resp.content)
 
+        # Test edit page
+        resp = self.client.get('/speech/%d/edit' % speech.id)
+
     def test_add_speech_fails_with_unsupported_audio(self):
         # Load the .aiff fixture
         audio = open(os.path.join(self._in_fixtures, 'lamb.aiff'), 'rb')
