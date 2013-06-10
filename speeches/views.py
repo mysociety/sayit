@@ -317,7 +317,7 @@ class RecordingUpdate(InstanceFormMixin, DetailView):
         if recordingtimestamp_formset.is_valid():
             recordingtimestamp_formset.save()
 
-            self.object.create_or_update_speeches(self.request.instance)
+            recording.create_or_update_speeches(self.request.instance)
 
             # then delete the associated speeches, as Django can't
             # infer a cascade here
@@ -327,7 +327,7 @@ class RecordingUpdate(InstanceFormMixin, DetailView):
                 except:
                     logger.info("Timestamp isn't linked to speech")
 
-            return HttpResponseRedirect( self.object.get_absolute_url() )
+            return HttpResponseRedirect( recording.get_absolute_url() )
         return self.render_to_response(context)
 
 class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
@@ -363,7 +363,7 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
             recording.save()
 
         # Create speeches from the recording
-        speeches = self.object.create_or_update_speeches(self.request.instance)
+        speeches = recording.create_or_update_speeches(self.request.instance)
 
         # Transcribe each speech
         for speech in speeches:
@@ -371,9 +371,9 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
 
         # Return a 201 response
         serialisable_fields = ('audio', 'timestamps')
-        serialised = serializers.serialize("json", [self.object], fields=serialisable_fields)
+        serialised = serializers.serialize("json", [recording], fields=serialisable_fields)
         serialised = serialised[1:-1]
-        return self.render_to_response(serialised, status=201, location=reverse("recording-view", args=[self.object.id]))
+        return self.render_to_response(serialised, status=201, location=reverse("recording-view", args=[recording.id]))
 
     def form_invalid(self, form):
         return self.render_to_response({ 'errors': json.dumps(form.errors) }, status=400)

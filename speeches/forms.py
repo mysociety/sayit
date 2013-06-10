@@ -238,10 +238,9 @@ class BaseRecordingTimestampFormSet(BaseInlineFormSet):
         # we're using '_forms' to avoid clashing with forms import, e.g.
         # for ValidationError
         _forms = sorted(
-            [f for f in self.forms 
-                if f.cleaned_data.get('start_recording', 
-                f.cleaned_data.get('timestamp', None))],
-            key = lambda f: f.cleaned_data['timestamp'])
+            [ f for f in self.forms if 'timestamp' in f.cleaned_data ],
+            key = lambda f: f.cleaned_data['timestamp']
+        )
 
         first_timestamp = _forms[0].cleaned_data['timestamp']
         last_timestamp =  _forms[-1].cleaned_data['timestamp']
