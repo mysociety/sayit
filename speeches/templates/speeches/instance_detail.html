@@ -14,6 +14,8 @@
 
 <div class="row-fluid">
 
+{% if speakers or recent_sections or recent_speeches %}
+
 <div class="span4">
     <h2>{% trans "Speakers" %}</h2>
     <ul class="unstyled">
@@ -48,6 +50,12 @@
 </ul>
 
 </div>
+
+{% else %}
+
+<p>{% trans "Nothing has been uploaded yet. Why not <a href='/speech/add'>add a speech</a> or a <a href='/sections/add'>section</a>?" %}</p>
+
+{% endif %}
 
 </div>
 

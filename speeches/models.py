@@ -62,7 +62,7 @@ class AuditedModel(models.Model):
 
 # Speaker - someone who gave a speech
 class Speaker(InstanceMixin, AuditedModel):
-    person = models.ForeignKey(Person, blank=True, null=True, on_delete=models.PROTECT)
+    person = models.ForeignKey(Person, blank=True, null=True, on_delete=models.PROTECT, help_text='Associated PopIt object, optional')
     name = models.TextField(db_index=True)
 
     class Meta:
