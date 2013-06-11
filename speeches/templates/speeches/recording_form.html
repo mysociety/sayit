@@ -29,6 +29,12 @@
     {{ recordingtimestamp_formset.management_form }}
 
     {% for form in recordingtimestamp_formset %}
+      {% if form.instance.speech %}
+        <audio class="audio-small" id="audio-speech{{ form.instance.speech.id }}" src="{{ MEDIA_URL }}{{ form.instance.speech.audio }}" controls></audio>
+        <script>
+           $('#audio-speech{{ form.instance.speech.id }}').mediaelementplayer( { audioWidth: 100, audioHeight: 24, features: [ 'playpause', 'current', 'duration' ] } ); 
+        </script>
+      {% endif %}
         {% include 'speeches/form.html' %}
     {% endfor %}
 
