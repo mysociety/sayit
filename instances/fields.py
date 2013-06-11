@@ -4,7 +4,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.utils.translation import ugettext as _
 
-label_re = re.compile(r'(?i)^[a-z0-9][a-z0-9-]+[a-z0-9]$')
+label_re = re.compile(r'(?i)^[a-z0-9][a-z0-9-]*[a-z0-9]$')
 validate_label = RegexValidator(label_re, _("Enter a valid instance label consisting of letters, numbers, or hyphens."), 'invalid')
 
 from south.modelsinspector import add_introspection_rules
