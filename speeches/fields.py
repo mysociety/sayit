@@ -23,7 +23,7 @@ class FromStartIntegerField(forms.IntegerField):
             return None
         if isinstance(value, datetime.datetime):
             value = value - self.recording_start
-            value = value.total_seconds()
+            value = value.seconds + value.days * 86400
             value = int(value)
         return value
 
