@@ -228,6 +228,10 @@ class Section(AuditedModel, InstanceMixin):
     def get_edit_url(self):
         return ( 'section-edit', (), { 'pk': self.id } )
 
+    @models.permalink
+    def get_delete_url(self):
+        return ( 'section-delete', (), { 'pk': self.id } )
+
     def _get_next_previous_node(self, direction):
         if not self.parent:
             return None
