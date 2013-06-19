@@ -16,7 +16,7 @@ from speeches.models import Speech, Speaker, Section, Recording, Tag, RecordingT
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
 
-from django.views.generic import View, CreateView, UpdateView, DetailView, ListView, RedirectView, FormView
+from django.views.generic import View, CreateView, UpdateView, DeleteView, DetailView, ListView, RedirectView, FormView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import BaseFormView
 
@@ -240,6 +240,9 @@ class SectionCreate(SectionMixin, CreateView):
 
 class SectionUpdate(SectionMixin, UpdateView):
     pass
+
+class SectionDelete(SectionMixin, DeleteView):
+    success_url = reverse_lazy('section-list')
 
 class SectionView(InstanceViewMixin, DetailView):
     model = Section
