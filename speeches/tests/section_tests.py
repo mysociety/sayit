@@ -196,7 +196,7 @@ class SectionSiteTests(InstanceTestCase):
         resp = self.client.get('/sections/%d' % section.id)
         self.assertSequenceEqual([subsection], resp.context['section'].get_descendants)
 
-    def test_section_page_has_buttons_to_add(self):
+    def test_section_page_has_buttons_to_edit(self):
         # Add a section
         section = Section.objects.create(title='A test section', instance=self.instance)
 
@@ -205,4 +205,7 @@ class SectionSiteTests(InstanceTestCase):
 
         self.assertContains(resp, '<a href="/speech/add?section=%d">Add a new speech</a>' % section.id, html=True)
         self.assertContains(resp, '<a href="/sections/add?section=%d">Add a new subsection</a>' % section.id, html=True)
+
+        self.assertContains(resp, '<a href="/sections/%d/edit">Edit section</a>' % section.id, html=True)
+        self.assertContains(resp, '<a href="/sections/%d/delete">Delete section</a>' % section.id, html=True)
 
