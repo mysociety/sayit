@@ -209,3 +209,29 @@ class SectionSiteTests(InstanceTestCase):
         self.assertContains(resp, '<a href="/sections/%d/edit">Edit section</a>' % section.id, html=True)
         self.assertContains(resp, '<a href="/sections/%d/delete">Delete section</a>' % section.id, html=True)
 
+    def test_section_deletion(self):
+        # Set up the section
+        section = Section.objects.create(title='A test section', instance=self.instance)
+        speech = Speech.objects.create(text="A test speech", section=section, instance=self.instance)
+        resp = self.client.get('/sections/%d' % section.id)
+        self.assertSequenceEqual([speech], resp.context['speech_list'])
+
+        # GET form (confirmation page)
+        resp = self.client.get(section.get_delete_url())
+        self.assertContains(resp, '<input type="submit" value="Confirm delete?">')
+
+        section_db = Section.objects.get(id=section.id)
+        self.assertEqual(section, section_db)
+
+        speech_db = Speech.objects.get(id=speech.id)
+        self.assertEqual(speech_db.section_id, section.id)
+
+        # POST form (do the deletion)
+        resp = self.client.post(section.get_delete_url())
+
+        self.assertEqual(resp['Location'], 'http://testing.example.org:8000/sections')
+
+        self.assertEqual(Section.objects.filter(id=section.id).count(), 0)
+
+        speech_db = Speech.objects.get(id=speech.id)
+        self.assertEqual(speech_db.section_id, None)
