@@ -228,6 +228,10 @@ class Section(AuditedModel, InstanceMixin):
     def get_edit_url(self):
         return ( 'section-edit', (), { 'pk': self.id } )
 
+    @models.permalink
+    def get_delete_url(self):
+        return ( 'section-delete', (), { 'pk': self.id } )
+
     def _get_next_previous_node(self, direction):
         if not self.parent:
             return None
@@ -291,7 +295,8 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     text = models.TextField(blank=True, db_index=False, help_text='The text of the speech')
 
     # The section that this speech is part of
-    section = models.ForeignKey(Section, blank=True, null=True, help_text='The section that this speech is contained in')
+    section = models.ForeignKey(Section, blank=True, null=True, on_delete=models.SET_NULL,
+            help_text='The section that this speech is contained in',)
     title = models.TextField(blank=True, help_text='The title of the speech, if relevant')
     # The below two fields could be on the section if we made it a required field of a speech
     event = models.TextField(db_index=True, blank=True, help_text='Was the speech at a particular event?')

@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^sections/(?P<pk>\d+)$', SectionView.as_view(), name='section-view'),
     url(r'^sections/add$', SectionCreate.as_view(), name='section-add'),
     url(r'^sections/(?P<pk>\d+)/edit$', SectionUpdate.as_view(), name='section-edit'),
+    url(r'^sections/(?P<pk>\d+)/delete$', SectionDelete.as_view(), name='section-delete'),
     url(r'^sections$', SectionList.as_view(), name='section-list'),
 
     url(r'^recordings$', RecordingList.as_view(), name='recording-list'),

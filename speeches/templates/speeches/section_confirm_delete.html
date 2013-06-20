@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% if object %}
+{% block title %}{% trans "Delete section" %}{% endblock %}
+
+{% block content %}
+
+<form id="section-confirm-delete-form" class="form-horizontal" method="post">
+{% csrf_token %}
+<input type="submit" value="{% trans "Confirm delete?" %}">
+</form>
+
+{% endblock %}
+
+{% endif %}

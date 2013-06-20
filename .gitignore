@@ -7,3 +7,5 @@
 chromedriver.log
 *~
 .noseids
+*.swp
+*.swo

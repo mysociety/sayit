@@ -26,6 +26,7 @@
       </a>
       <ul class="dropdown-menu">
         <li><a href="{{ section.get_edit_url }}">{% trans "Edit section" %}</a>
+        <li><a href="{{ section.get_delete_url }}">{% trans "Delete section" %}</a>
         <li><a href="{% url "section-add" %}?section={{ section.id }}">{% trans "Add a new subsection" %}</a>
         <li><a href="{% url "speech-add" %}?section={{ section.id }}">{% trans "Add a new speech" %}</a>
       </ul>
