@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load staticfiles %}
 
 {% block extra_css %}
@@ -14,19 +15,25 @@
 <script src="{% static "js/bootstrap-datepicker.js" %}"></script>
 {% endblock %}
 
-{% block title %}{% if object %}Edit speech {% else %}Add speech{% endif %}{% endblock %}
+{% block title %}{% if object %}{% trans "Edit speech" %} {% else %}{% trans "Add speech" %}{% endif %}{% endblock %}
 
 {% block content %}
 <p class="lead {% if object %}edit{% else %}add{% endif %}-speech">
     {% if object %}
-        Here is where you can edit a speech.
+        {% trans "Here is where you can edit a speech." %}
     {% else %}
-        Here is where you can add a new speech.
+        {% trans "Here is where you can add a new speech." %}
     {% endif %}
 </p>
 
 <p id="question" class="hidden{% if not object and not form.non_field_errors %} visible-js{% endif %}">
-    Do you have <a href="#" id="audio-link">Audio</a> to upload, <a href="#" id="text-link">Text</a> to enter, or <a href="#" id="both-link">Both</a>? 
+
+    {% trans "Do you have" %}
+    <a href="#" id="audio-link">{% trans "Audio" %}</a> 
+    {% trans "to upload," %}
+    <a href="#" id="text-link">{% trans "Text" %}</a> 
+    {% trans "to enter, or" %}
+    <a href="#" id="both-link">{% trans "Both" %}</a>? 
 </p>
 
 <form id="speech-form" class="form-horizontal{% if not object and not form.non_field_errors %} hidden-js{% endif %}" method="post" enctype="multipart/form-data">
