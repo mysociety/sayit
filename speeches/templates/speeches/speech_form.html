@@ -40,8 +40,26 @@
     {% if object %}
         {% include 'speeches/form.html' with type="speech" submit="Update speech" %}
     {% else %}
-        {% include 'speeches/form.html' with type="speech" submit="Add speech" %}
+        {% include 'speeches/form.html' with type="speech" submit="Add speech" alt_submit="Save and add another speech" %}
     {% endif %}
 </form>
+
+<script>
+    function check_enable_save_and_add_another (event) {
+        var id_section = $(this)
+        if (id_section.val()) {
+            $('#speech_alt_submit').attr({ disabled:false })
+        } else {
+            $('#speech_alt_submit').attr({ disabled:true })
+        }
+    }
+
+    $(function() {
+        $('#id_section').on('change', check_enable_save_and_add_another)
+    })
+
+    check_enable_save_and_add_another.apply($('#id_section'))
+</script>
+
 
 {% endblock %}
