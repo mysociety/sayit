@@ -59,6 +59,11 @@
     })
 
     check_enable_save_and_add_another.apply($('#id_section'))
+
+    $('#speech_alt_submit').on('click', function () {
+        $('#id_add_another').val(1)
+        $('#speech-form').submit()
+    })
 </script>
 
 

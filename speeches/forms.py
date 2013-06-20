@@ -75,6 +75,7 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
     tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
             widget = Select2MultipleWidget(select2_options={ 'placeholder':'Choose tags', 'width': 'resolve' }),
             required=False)
+    add_another = forms.CharField(widget=forms.HiddenInput, required=False)
 
     def clean(self):
         cleaned_data = self.cleaned_data

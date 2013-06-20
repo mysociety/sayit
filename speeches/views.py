@@ -105,7 +105,10 @@ class SpeechCreate(SpeechMixin, CreateView):
         # Now set off a Celery task to transcribe the audio for this speech
         self.object.start_transcribing()
 
-        return resp
+        if form.cleaned_data['add_another']:
+            return HttpResponseRedirect( reverse('speech-add') + '?section=%d' % self.object.section_id )
+        else:
+            return resp
 
 class SpeechUpdate(SpeechMixin, UpdateView):
     pass
