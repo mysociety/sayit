@@ -26,17 +26,7 @@
     {% endif %}
 </p>
 
-<p id="question" class="hidden{% if not object and not form.non_field_errors %} visible-js{% endif %}">
-
-    {% trans "Do you have" %}
-    <a href="#" id="audio-link">{% trans "Audio" %}</a> 
-    {% trans "to upload," %}
-    <a href="#" id="text-link">{% trans "Text" %}</a> 
-    {% trans "to enter, or" %}
-    <a href="#" id="both-link">{% trans "Both" %}</a>? 
-</p>
-
-<form id="speech-form" class="form-horizontal{% if not object and not form.non_field_errors %} hidden-js{% endif %}" method="post" enctype="multipart/form-data">
+<form id="speech-form" class="form-horizontal{% if not object and not form.non_field_errors %} {% endif %}" method="post" enctype="multipart/form-data">
     {% if object %}
         {% include 'speeches/form.html' with type="speech" submit="Update speech" %}
     {% else %}
