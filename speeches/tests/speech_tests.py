@@ -91,7 +91,7 @@ class SpeechTests(InstanceTestCase):
 
             test.assertEqual(initial['section'], section)
             test.assertEqual(initial['speaker'], speaker)
-            for x in ['title', 'event', 'location']:
+            for x in ['title', 'event', 'location', 'public', 'source_url']:
                 test.assertEqual(initial[x], speech_data[x])
 
         resp = self.client.post('/speech/add', speech_data)
@@ -99,6 +99,16 @@ class SpeechTests(InstanceTestCase):
         form_url = '/speech/add?section=%d' % section.id
         resp = self.client.get(form_url)
         _check_initial(self, resp, speakers[0])
+
+        speech_data['speaker'] = speakers[1].id
+        resp = self.client.post('/speech/add', speech_data)
+        resp = self.client.get(form_url)
+        _check_initial(self, resp, speakers[0])
+
+        speech_data['speaker'] = speakers[2].id
+        resp = self.client.post('/speech/add', speech_data)
+        resp = self.client.get(form_url)
+        _check_initial(self, resp, speakers[1])
 
         # TAGS
         # TIME

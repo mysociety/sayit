@@ -103,6 +103,8 @@ class SpeechCreate(SpeechMixin, CreateView):
                     initial['location'] = speech.location
                     initial['title'] = speech.title
                     initial['event'] = speech.event
+                    initial['public'] = speech.public
+                    initial['source_url'] = speech.source_url
 
                     # unlike the above, it makes more sense to default speaker to the
                     # *penultimate* speech, if that exists
