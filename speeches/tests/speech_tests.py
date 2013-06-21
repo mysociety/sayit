@@ -46,6 +46,27 @@ class SpeechTests(InstanceTestCase):
         self.assertRedirects(resp, '/speech/%d' % speech.id)
         self.assertEqual(speech.text, 'This is a speech')
 
+    def test_add_speech_and_add_another(self):
+        # Test form without speaker
+        resp = self.client.post('/speech/add', {
+            'text': 'This is a speech',
+            'add_another': 1,
+        })
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertEqual(speech.text, 'This is a speech')
+        self.assertRedirects(resp, '/speech/%d' % speech.id)
+
+        section = Section.objects.create(title='Test', instance=self.instance)
+        resp = self.client.post('/speech/add', {
+            'text': 'This is a speech',
+            'section': section.id,
+            'add_another': 1,
+        })
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertEqual(speech.text, 'This is a speech')
+        self.assertEqual(speech.section_id, section.id)
+        self.assertRedirects(resp, '/speech/add?section=%d' % section.id)
+
     def test_add_speech_with_speaker(self):
         # Test form with speaker, we need to add a speaker first
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
