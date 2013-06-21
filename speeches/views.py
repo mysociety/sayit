@@ -93,7 +93,30 @@ class SpeechCreate(SpeechMixin, CreateView):
             section = None
         if section:
             try:
-                initial['section'] = Section.objects.get(pk=section)
+                section_object = Section.objects.get(pk=section)
+                initial['section'] = section_object
+
+                # default things to last speech in section
+                try:
+                    speech = section_object.speech_set.reverse()[0]
+
+                    initial['location'] = speech.location
+                    initial['title'] = speech.title
+                    initial['event'] = speech.event
+
+                    # unlike the above, it makes more sense to default speaker to the
+                    # *penultimate* speech, if that exists
+                    if not speaker:
+                        try:
+                            penultimate_speech = section_object.speech_set.reverse()[1]
+                            initial['speaker'] = penultimate_speech.speaker
+                        except IndexError:
+                            initial['speaker'] = speech.speaker
+
+                except IndexError:
+                    # don't attempt to default anything
+                    pass
+
             except Section.DoesNotExist:
                 # Ignore the supplied section
                 pass

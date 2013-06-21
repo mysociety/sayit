@@ -68,6 +68,41 @@ class SpeechTests(InstanceTestCase):
         self.assertEqual(speech.section_id, section.id)
         self.assertRedirects(resp, '/speech/add?section=%d' % section.id)
 
+    def test_add_speech_metadata_in_section(self):
+        section = Section.objects.create(title='Test', instance=self.instance)
+
+        speakers = [Speaker.objects.create(name='Speaker %d' % i, instance=self.instance) for i in range(3)]
+
+        speech_data = {
+            'text':        'This is a speech',
+            'section':     section.id,
+            'title':       'Title',
+            'event':       'Event',
+            'location':    'Location',
+            'speaker':     speakers[0].id,
+            'public':      True,
+            'source_url': 'http://example.com/speeches/1',
+        }
+
+        def _check_initial(test, response, speaker):
+            initial = response.context['form'].initial
+
+            test.assertTrue('text' not in initial)
+
+            test.assertEqual(initial['section'], section)
+            test.assertEqual(initial['speaker'], speaker)
+            for x in ['title', 'event', 'location']:
+                test.assertEqual(initial[x], speech_data[x])
+
+        resp = self.client.post('/speech/add', speech_data)
+
+        form_url = '/speech/add?section=%d' % section.id
+        resp = self.client.get(form_url)
+        _check_initial(self, resp, speakers[0])
+
+        # TAGS
+        # TIME
+
     def test_add_speech_with_speaker(self):
         # Test form with speaker, we need to add a speaker first
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
