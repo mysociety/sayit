@@ -40,7 +40,7 @@
     {% if object %}
         {% include 'speeches/form.html' with type="speech" submit="Update speech" %}
     {% else %}
-        {% include 'speeches/form.html' with type="speech" submit="Add speech" alt_submit="Save and add another speech" %}
+    {% include 'speeches/form.html' with type="speech" submit="Add speech" alt_submit_name="add_another" alt_submit_text="Save and add another speech" %}
     {% endif %}
 </form>
 
@@ -60,10 +60,6 @@
 
     check_enable_save_and_add_another.apply($('#id_section'))
 
-    $('#speech_alt_submit').on('click', function () {
-        $('#id_add_another').val(1)
-        $('#speech-form').submit()
-    })
 </script>
 
 
