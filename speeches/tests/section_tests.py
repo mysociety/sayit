@@ -229,7 +229,7 @@ class SectionSiteTests(InstanceTestCase):
         # POST form (do the deletion)
         resp = self.client.post(section.get_delete_url())
 
-        self.assertEqual(resp['Location'], 'http://testing.example.org:8000/sections')
+        self.assertRedirects(resp, 'sections')
 
         self.assertEqual(Section.objects.filter(id=section.id).count(), 0)
 
