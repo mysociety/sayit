@@ -36,9 +36,12 @@
 
 {% if submit %}
 <div class="form-actions">
+    {% if pre_submit_name %}
+    <input type="submit" name="{{ pre_submit_name }}" id="id_{{ pre_submit_name }}" class="btn" value="{% trans pre_submit_text %}">
+    {% endif %}
     <input type="submit" id="{{ type }}_submit" class="btn" value="{% trans submit %}">
-    {% if alt_submit_name %}
-    <input type="submit" name="{{ alt_submit_name }}" id="id_{{ alt_submit_name }}" class="btn" value="{% trans alt_submit_text %}">
+    {% if post_submit_name %}
+    <input type="submit" name="{{ post_submit_name }}" id="id_{{ post_submit_name }}" class="btn" value="{% trans post_submit_text %}">
     {% endif %}
 </div>
 {% endif %}

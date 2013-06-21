@@ -55,7 +55,7 @@ class SpeechTests(InstanceTestCase):
         })
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(speech.text, 'This is a speech')
-        self.assertRedirects(resp, '/speech/%d' % speech.id)
+        self.assertRedirects(resp, '/speech/add')
 
         section = Section.objects.create(title='Test', instance=self.instance)
         resp = self.client.post('/speech/add', {
