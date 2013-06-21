@@ -47,7 +47,8 @@ class SpeechTests(InstanceTestCase):
         self.assertEqual(speech.text, 'This is a speech')
 
     def test_add_speech_and_add_another(self):
-        # Test form without speaker
+        # Test form with 'add_another' but without a section
+        # (client JS will prevent this case from happening, in general)
         resp = self.client.post('/speech/add', {
             'text': 'This is a speech',
             'add_another': 1,
