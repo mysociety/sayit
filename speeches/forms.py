@@ -4,7 +4,6 @@ from datetime import datetime
 import pytz
 
 from django_select2.widgets import Select2Widget, Select2MultipleWidget
-from django.forms.widgets import Widget
 
 from django import forms
 from django.forms.forms import BoundField
@@ -53,10 +52,6 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
 class SectionPickForm(forms.Form):
     section = forms.ModelChoiceField(label='Assign to section', queryset=Section.objects.all(), required=True)
 
-class NoWidget(Widget):
-    def render(self, *args, **kwargs):
-        return u''
-
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
     speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(),
@@ -80,7 +75,6 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
     tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
             widget = Select2MultipleWidget(select2_options={ 'placeholder':'Choose tags', 'width': 'resolve' }),
             required=False)
-    add_another = forms.CharField(widget=NoWidget, required=False, label='')
 
     def clean(self):
         cleaned_data = self.cleaned_data
