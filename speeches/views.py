@@ -20,6 +20,8 @@ from django.views.generic import View, CreateView, UpdateView, DeleteView, Detai
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import BaseFormView
 
+from datetime import datetime, timedelta
+
 import celery
 import logging
 
@@ -100,20 +102,36 @@ class SpeechCreate(SpeechMixin, CreateView):
                 try:
                     speech = section_object.speech_set.reverse()[0]
 
+                    # Basic data is just defaulted from the last speech
                     initial['location'] = speech.location
                     initial['title'] = speech.title
                     initial['event'] = speech.event
                     initial['public'] = speech.public
                     initial['source_url'] = speech.source_url
 
-                    # unlike the above, it makes more sense to default speaker to the
-                    # *penultimate* speech, if that exists
+                    # For speaker, to make it simpler to transcribe a dialogue between A -> B -> A -> B
+                    # we default to the speaker of the *penultimate* speech, if that exists, or latest one
+                    # otherwise.
                     if not speaker:
                         try:
                             penultimate_speech = section_object.speech_set.reverse()[1]
                             initial['speaker'] = penultimate_speech.speaker
                         except IndexError:
                             initial['speaker'] = speech.speaker
+
+                    # We attempt to do vaguely clever things with the end or start time of previous speech.
+                    if speech.end_date:
+                        speech_start_datetime = datetime.combine(speech.start_date, speech.start_time)
+                        speech_end_datetime = datetime.combine(speech.end_date, speech.end_time)
+                        if speech_start_datetime == speech_end_datetime:
+                            speech_end_datetime = speech_end_datetime + timedelta(seconds=1)
+                        initial['start_date'] = speech_end_datetime.date()
+                        initial['start_time'] = speech_end_datetime.time()
+                    elif speech.start_date:
+                        speech_start_datetime = datetime.combine(speech.start_date, speech.start_time)
+                        speech_start_datetime = speech_start_datetime + timedelta(seconds=10)
+                        initial['start_date'] = speech_start_datetime.date()
+                        initial['start_time'] = speech_start_datetime.time()
 
                 except IndexError:
                     # don't attempt to default anything

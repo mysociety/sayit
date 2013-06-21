@@ -88,7 +88,7 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
         return cleaned_data
 
     def clean_start_time(self):
-        if self.cleaned_data['start_time'] and not self.cleaned_data['start_date']:
+        if self.cleaned_data['start_time'] and not self.cleaned_data.get('start_date'):
             raise forms.ValidationError('If you provide a start time you must give a start date too')
         return self.cleaned_data['start_time']
 
