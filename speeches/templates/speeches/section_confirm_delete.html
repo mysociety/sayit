@@ -8,7 +8,7 @@
 
 <form id="section-confirm-delete-form" class="form-horizontal" method="post">
 {% csrf_token %}
-<input type="submit" value="{% trans "Confirm delete?" %}">
+<input type="submit" value="{% trans "Confirm delete?" %}" class="btn btn-danger">
 </form>
 
 {% endblock %}

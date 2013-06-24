@@ -362,6 +362,10 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     def get_edit_url(self):
         return ( 'speech-edit', (), { 'pk': self.id } )
 
+    @models.permalink
+    def get_delete_url(self):
+        return ( 'speech-delete', (), { 'pk': self.id } )
+
     def get_next_speech(self):
         """Return the next speech to this one in the same section, in a start
         date/time/ID ordering."""

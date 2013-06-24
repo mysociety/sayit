@@ -75,6 +75,9 @@ class SpeechMixin(InstanceFormMixin):
         form.fields['tags'].queryset = Tag.objects.for_instance(self.request.instance)
         return form
 
+class SpeechDelete(SpeechMixin, DeleteView):
+    success_url = reverse_lazy('speech-list')
+
 class SpeechCreate(SpeechMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(SpeechCreate, self).get_context_data(**kwargs)

@@ -384,3 +384,32 @@ class SpeechTests(InstanceTestCase):
 
         resp = self.client.get('/sections/%d' % section.id)
         self.assertRegexpMatches( resp.content, '>\s+1 Jan 2000\s+&ndash;\s+2 Jan 2000\s+<' )
+
+    def test_speech_page_has_buttons_to_edit(self):
+        # Add a section
+        speech = Speech.objects.create(text="A test speech", instance=self.instance)
+
+        # Call the speech's page
+        resp = self.client.get('/speech/%d' % speech.id)
+
+        self.assertContains(resp, '<a href="/speech/%d/edit">Edit speech</a>' % speech.id, html=True)
+        self.assertContains(resp, '<a href="/speech/%d/delete">Delete speech</a>' % speech.id, html=True)
+
+    def test_speech_deletion(self):
+        # Set up the section
+        speech = Speech.objects.create(text="A test speech", instance=self.instance)
+        resp = self.client.get('/speech/%d' % speech.id)
+
+        # GET form (confirmation page)
+        resp = self.client.get(speech.get_delete_url())
+        self.assertContains(resp, '<input type="submit" value="Confirm delete?"')
+
+        speech_db = Speech.objects.get(id=speech.id)
+        self.assertEqual(speech_db.id, speech.id)
+
+        # POST form (do the deletion)
+        resp = self.client.post(speech.get_delete_url())
+
+        self.assertRedirects(resp, 'speeches')
+
+        self.assertEqual(Speech.objects.filter(id=speech.id).count(), 0)
