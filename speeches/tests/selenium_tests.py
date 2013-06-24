@@ -38,63 +38,16 @@ class SeleniumTests(InstanceLiveServerTestCase):
         url = super(SeleniumTests, self).live_server_url
         return url.replace('localhost', 'testing.127.0.0.1.xip.io')
 
-    def test_select_text_only(self):
-        self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-
-        # Assert question is shown and form is hidden
-        self.assertTrue(self.selenium.find_element_by_id("question").is_displayed())
-        self.assertFalse(self.selenium.find_element_by_id("speech-form").is_displayed())
-
-        # Select text
-        self.selenium.find_element_by_id("text-link").click()
-
-        # Assert form is show with text input
-        self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
-        self.assertTrue(self.selenium.find_element_by_id("id_text_controls").is_displayed())
-
-        # Assert audio and question are hidden
-        self.assertFalse(self.selenium.find_element_by_id("id_audio_controls").is_displayed())
-        self.assertFalse(self.selenium.find_element_by_id("question").is_displayed())
-
-    def test_select_audio_only(self):
-        self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-
-        # Assert question is shown and form is hidden
-        self.assertTrue(self.selenium.find_element_by_id("question").is_displayed())
-        self.assertFalse(self.selenium.find_element_by_id("speech-form").is_displayed())
-
-        # Select audio
-        self.selenium.find_element_by_id("audio-link").click()
-
-        # Assert form is shown with audio input
-        self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
-        self.assertTrue(self.selenium.find_element_by_id("id_audio_controls").is_displayed())
-
-        # Assert text and question are hidden
-        self.assertFalse(self.selenium.find_element_by_id("id_text_controls").is_displayed())
-        self.assertFalse(self.selenium.find_element_by_id("question").is_displayed())
-
     def test_select_text_and_audio(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-
-        # Assert question is shown and form is hidden
-        self.assertTrue(self.selenium.find_element_by_id("question").is_displayed())
-        self.assertFalse(self.selenium.find_element_by_id("speech-form").is_displayed())
-
-        # Select both
-        self.selenium.find_element_by_id("both-link").click()
 
         # Assert form is shown with audio input and text input
         self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
         self.assertTrue(self.selenium.find_element_by_id("id_audio_controls").is_displayed())
         self.assertTrue(self.selenium.find_element_by_id("id_text_controls").is_displayed())
 
-        # Assert Question is hidden
-        self.assertFalse(self.selenium.find_element_by_id("question").is_displayed())
-
     def test_add_speech(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-        self.selenium.find_element_by_id("text-link").click()
         text_input = self.selenium.find_element_by_name('text')
         text_input.send_keys('This is a speech')
         self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
@@ -102,7 +55,6 @@ class SeleniumTests(InstanceLiveServerTestCase):
 
     def test_upload_audio(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-        self.selenium.find_element_by_id("audio-link").click()
         audio_file_input = self.selenium.find_element_by_name("audio")
         
         # The file input is covered by the button. This javascript takes the
@@ -124,7 +76,6 @@ class SeleniumTests(InstanceLiveServerTestCase):
 
         # Type a name in and select it
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-        self.selenium.find_element_by_id("text-link").click()
         speaker_input = self.selenium.find_element_by_xpath("//div[@id='s2id_id_speaker']/child::a").click()
         self.selenium.find_element_by_xpath('//div[@class="select2-result-label"]').click()
         # Check it is selected
