@@ -68,6 +68,27 @@ class SpeechTests(InstanceTestCase):
         self.assertEqual(speech.section_id, section.id)
         self.assertRedirects(resp, '/speech/add?section=%d' % section.id)
 
+    def _post_speech(test, section, speech_data):
+        post_data = speech_data.copy()
+        try:
+            post_data['start_date'] = speech_data['start_date'].strftime('%d/%m/%Y')
+            post_data['end_date'] = speech_data['end_date'].strftime('%d/%m/%Y')
+        except KeyError:
+            pass
+        resp = test.client.post('/speech/add', post_data)
+        test.assertRedirects(resp, '/speech/add?section=%d' % section.id)
+        return resp
+
+    def _check_initial_speech_data(test, response, section, speaker, speech_data):
+        initial = response.context['form'].initial
+
+        test.assertTrue('text' not in initial)
+
+        test.assertEqual(initial['section'], section)
+        test.assertEqual(initial['speaker'], speaker)
+        for x in ['title', 'event', 'location', 'public', 'source_url', 'start_date', 'start_time']:
+            test.assertEqual(initial.get(x, None), speech_data.get(x, None))
+
     def test_add_speech_metadata_in_section(self):
         section = Section.objects.create(title='Test', instance=self.instance)
 
@@ -87,53 +108,35 @@ class SpeechTests(InstanceTestCase):
             'add_another': 1,
         }
 
-        def _post(test, speech_data):
-            post_data = speech_data.copy()
-            try:
-                post_data['start_date'] = speech_data['start_date'].strftime('%d/%m/%Y')
-                post_data['end_date'] = speech_data['end_date'].strftime('%d/%m/%Y')
-            except KeyError:
-                pass
-            resp = self.client.post('/speech/add', post_data)
-            test.assertRedirects(resp, '/speech/add?section=%d' % section.id)
-            return resp
-
-        def _check_initial(test, response, speaker, speech_data):
-            initial = response.context['form'].initial
-
-            test.assertTrue('text' not in initial)
-
-            test.assertEqual(initial['section'], section)
-            test.assertEqual(initial['speaker'], speaker)
-            for x in ['title', 'event', 'location', 'public', 'source_url', 'start_date', 'start_time']:
-                test.assertEqual(initial.get(x, None), speech_data.get(x, None))
-
-        resp = _post(self, speech_data)
-
+        _post = SpeechTests._post_speech
+        _check_initial = SpeechTests._check_initial_speech_data
         form_url = '/speech/add?section=%d' % section.id
+
+        resp = _post(self, section, speech_data)
+
         resp = self.client.get(form_url)
         speech_data['start_time'] = datetime.time(hour=12, minute=0, second=10)
-        _check_initial(self, resp, speakers[0], speech_data)
+        _check_initial(self, resp, section, speakers[0], speech_data)
 
         speech_data['speaker'] = speakers[1].id
         speech_data['end_date'] = speech_data['start_date']
         speech_data['end_time'] = datetime.time(hour=12, minute=0, second=30)
-        resp = _post(self, speech_data)
+        resp = _post(self, section, speech_data)
 
         resp = self.client.get(form_url)
         speech_data['start_time'] = datetime.time(hour=12, minute=0, second=30)
-        _check_initial(self, resp, speakers[0], speech_data)
+        _check_initial(self, resp, section, speakers[0], speech_data)
 
         speech_data['speaker'] = speakers[2].id
         speech_data['start_time'] = datetime.time(hour=12, minute=0, second=30)
         speech_data['end_date'] = speech_data['start_date']
         speech_data['end_time'] = datetime.time(hour=12, minute=0, second=30)
-        resp = _post(self, speech_data)
+        resp = _post(self, section, speech_data)
 
         resp = self.client.get(form_url)
 
         speech_data['start_time'] = datetime.time(hour=12, minute=0, second=31)
-        _check_initial(self, resp, speakers[1], speech_data)
+        _check_initial(self, resp, section, speakers[1], speech_data)
 
         # Test without start/end times
         del speech_data['start_date']
@@ -141,12 +144,51 @@ class SpeechTests(InstanceTestCase):
         del speech_data['end_date']
         del speech_data['end_time']
         speech_data['speaker'] = speakers[1].id
-        resp = _post(self, speech_data)
+        resp = _post(self, section, speech_data)
 
         resp = self.client.get(form_url)
-        _check_initial(self, resp, speakers[2], speech_data)
+        _check_initial(self, resp, section, speakers[2], speech_data)
 
         # TODO: also default Tags
+
+    def test_add_speech_metadata_start_date_but_no_time(self):
+        section = Section.objects.create(title='Test', instance=self.instance)
+
+        speakers = [Speaker.objects.create(name='Speaker %d' % i, instance=self.instance) for i in range(3)]
+
+        speech_data = {
+            'text':        'This is a speech',
+            'section':     section.id,
+            'title':       'Title',
+            'event':       'Event',
+            'location':    'Location',
+            'speaker':     speakers[0].id,
+            'public':      True,
+            'source_url': 'http://example.com/speeches/1',
+            'start_date': datetime.date(year=2000,month=1,day=15),
+            'add_another': 1,
+        }
+
+        _post = SpeechTests._post_speech
+        _check_initial = SpeechTests._check_initial_speech_data
+        form_url = '/speech/add?section=%d' % section.id
+
+        resp = _post(self, section, speech_data)
+
+        resp = self.client.get(form_url)
+        _check_initial(self, resp, section, speakers[0], speech_data)
+
+        speech_data['speaker'] = speakers[1].id
+        resp = _post(self, section, speech_data)
+
+        resp = self.client.get(form_url)
+        _check_initial(self, resp, section, speakers[0], speech_data)
+
+        speech_data['speaker'] = speakers[0].id
+        resp = _post(self, section, speech_data)
+
+        resp = self.client.get(form_url)
+        _check_initial(self, resp, section, speakers[1], speech_data)
 
     def test_add_speech_with_speaker(self):
         # Test form with speaker, we need to add a speaker first
