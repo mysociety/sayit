@@ -94,7 +94,6 @@ class SpeechTests(InstanceTestCase):
                 post_data['end_date'] = speech_data['end_date'].strftime('%d/%m/%Y')
             except KeyError:
                 pass
-            print post_data
             resp = self.client.post('/speech/add', post_data)
             test.assertRedirects(resp, '/speech/add?section=%d' % section.id)
             return resp
@@ -303,7 +302,6 @@ class SpeechTests(InstanceTestCase):
         })
 
         # Assert that it uploads and we're told to wait
-        print(resp.content)
 
         speech = Speech.objects.order_by('-id')[0]
         resp = self.client.get('/speech/%d' % speech.id)
