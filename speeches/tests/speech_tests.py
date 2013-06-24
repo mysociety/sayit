@@ -66,7 +66,13 @@ class SpeechTests(InstanceTestCase):
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(speech.text, 'This is a speech')
         self.assertEqual(speech.section_id, section.id)
-        self.assertRedirects(resp, '/speech/add?section=%d' % section.id)
+        get_url = '/speech/add?section=%d&added=%d' % (section.id, speech.id)
+        self.assertRedirects(resp, get_url)
+
+        resp = self.client.get(get_url)
+        self.assertContains( resp, 'Your speech has been <a href="/speech/%d">created</a>' % speech.id)
+        self.assertContains( resp, 'in the section <a href="/sections/%d#s%d">%s</a>!' % (
+            section.id, speech.id, section.title))
 
     def _post_speech(test, section, speech_data):
         post_data = speech_data.copy()
@@ -76,7 +82,8 @@ class SpeechTests(InstanceTestCase):
         except KeyError:
             pass
         resp = test.client.post('/speech/add', post_data)
-        test.assertRedirects(resp, '/speech/add?section=%d' % section.id)
+        speech = Speech.objects.order_by('-id')[0]
+        test.assertRedirects(resp, '/speech/add?section=%d&added=%d' % (section.id, speech.id))
         return resp
 
     def _check_initial_speech_data(test, response, section, speaker, speech_data):
