@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load staticfiles %}
+{% load url from future %}
 
 {% block extra_css %}
 {{ block.super }}
@@ -18,6 +19,14 @@
 {% block title %}{% if object %}{% trans "Edit speech" %} {% else %}{% trans "Add speech" %}{% endif %}{% endblock %}
 
 {% block content %}
+
+{% if added %}
+<div class="alert alert-success"> 
+    Your speech has been <a href="{% url "speech-view" added %}">created</a>
+    in the section <a href="{% url "section-view" section.id %}#s{{ added }}">{{ section.title }}</a>!
+</div>
+{% endif %}
+
 <p class="lead {% if object %}edit{% else %}add{% endif %}-speech">
     {% if object %}
         {% trans "Here is where you can edit a speech." %}

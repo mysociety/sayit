@@ -76,6 +76,17 @@ class SpeechMixin(InstanceFormMixin):
         return form
 
 class SpeechCreate(SpeechMixin, CreateView):
+    def get_context_data(self, **kwargs):
+        context = super(SpeechCreate, self).get_context_data(**kwargs)
+        added = self.request.GET.get('added', None)
+        section = self.request.GET.get('section', None)
+        if added and section:
+            section_object = Section.objects.get(pk=section)
+            if section_object:
+                context['added'] = added
+                context['section'] = section_object
+        return context
+
     def get_initial(self):
         initial = super(SpeechCreate, self).get_initial()
         initial = initial.copy()
@@ -156,8 +167,9 @@ class SpeechCreate(SpeechMixin, CreateView):
 
         if 'add_another' in self.request.POST:
             url = reverse('speech-add')
-            if self.object.section_id:
-                url = url + '?section=%d' % self.object.section_id
+            speech = self.object
+            if speech.section_id:
+                url = url + '?section=%d&added=%d' % (speech.section_id, speech.id)
             return HttpResponseRedirect( url )
         else:
             return resp
