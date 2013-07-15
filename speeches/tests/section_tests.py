@@ -218,7 +218,7 @@ class SectionSiteTests(InstanceTestCase):
 
         # GET form (confirmation page)
         resp = self.client.get(section.get_delete_url())
-        self.assertContains(resp, '<input type="submit" value="Confirm delete?">')
+        self.assertContains(resp, '<input type="submit" value="Confirm delete?"')
 
         section_db = Section.objects.get(id=section.id)
         self.assertEqual(section, section_db)

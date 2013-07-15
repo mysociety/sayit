@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% if object %}
+{% block title %}{% trans "Delete speech" %}{% endblock %}
+
+{% block content %}
+
+<form id="speech-confirm-delete-form" class="form-horizontal" method="post">
+{% csrf_token %}
+<input type="submit" value="{% trans "Confirm delete?" %}" class="btn btn-danger">
+</form>
+
+{% endblock %}
+
+{% endif %}
