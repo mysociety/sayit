@@ -1,7 +1,7 @@
 import calendar
 import datetime
 import logging
-import os
+import os, sys
 
 from lxml import etree
 from lxml import objectify
@@ -19,8 +19,17 @@ class SpeechImportException (Exception):
 
 class ImportAkomaNtoso (object):
 
-    def __init__(self, instance=None):
+    def __init__(self, instance=None, commit=True):
         self.instance = instance
+        self.commit = commit
+
+    def make(self, cls, **kwargs):
+        s = cls(instance=self.instance, **kwargs)
+        if self.commit:
+            s.save()
+        elif s.title:
+            print s.title
+        return s
 
     def import_xml(self, document_path):
         # try:
@@ -34,7 +43,7 @@ class ImportAkomaNtoso (object):
                 mainSection.heading.text, 
                 etree.tostring(xml.debate.preface.p, method='text'))
 
-        section = Section.objects.create(instance=self.instance, title=title)
+        section = self.make(Section, title=title)
 
         self.visit(mainSection, section)
 
@@ -44,17 +53,25 @@ class ImportAkomaNtoso (object):
             #'raise e
             # raise SpeechImportException(str(e))
 
+    def make(self, cls, **kwargs):
+        s = cls(instance=self.instance, **kwargs)
+        if self.commit:
+            s.save()
+        elif s.title:
+            print >> sys.stderr, s.title
+        return s
+
     def visit(self, node, section):
        for child in node.iterchildren():
             tagname = etree.QName(child.tag).localname
             if tagname == 'debateSection':
                 title = child.heading.text
-                childSection = section.children.create(instance=self.instance, title=title)
+                childSection = self.make(Section, parent=section, title=title)
                 self.visit(child, childSection)
             elif tagname == 'speech':
                 text = etree.tostring(child, method='text')
-                speech = section.speech_set.create(
-                        instance = self.instance,
+                speech = self.make(Speech,
+                        section = section,
                         # title
                         # event
                         # location
@@ -66,8 +83,8 @@ class ImportAkomaNtoso (object):
                         )
             else:
                 text = etree.tostring(child, method='text')
-                speech = section.speech_set.create(
-                        instance = self.instance,
+                speech = self.make(Speech,
+                        section = section,
                         # title
                         # event
                         # location
