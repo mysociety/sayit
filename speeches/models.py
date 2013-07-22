@@ -107,7 +107,7 @@ class SpeechManager(InstanceManager, Manager):
     pass
 
 class Section(AuditedModel, InstanceMixin):
-    title = models.CharField(max_length=255, blank=False, null=False)
+    title = models.CharField(max_length=1024, blank=False, null=False)
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
 
     class Meta:

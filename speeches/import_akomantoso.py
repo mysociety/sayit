@@ -1,5 +1,5 @@
 import calendar
-import datetime
+from datetime import datetime
 import logging
 import os, sys
 
@@ -22,9 +22,16 @@ class ImportAkomaNtoso (object):
     def __init__(self, instance=None, commit=True):
         self.instance = instance
         self.commit = commit
+        self.start_date = None
+        self.title = '(untitled)'
 
     def make(self, cls, **kwargs):
-        s = cls(instance=self.instance, **kwargs)
+        args = kwargs
+        if cls == Speech:
+            args['title'] = self.title
+            args['start_date'] = self.start_date
+
+        s = cls(instance=self.instance, **args)
         if self.commit:
             s.save()
         elif s.title:
@@ -39,11 +46,18 @@ class ImportAkomaNtoso (object):
             debateBody = xml.debate.debateBody
             mainSection = debateBody.debateSection 
 
-            title = '%s (%s)' % (
+            self.title = '%s (%s)' % (
                     mainSection.heading.text, 
                     etree.tostring(xml.debate.preface.p, method='text'))
 
-            section = self.make(Section, title=title)
+            section = self.make(Section, title=self.title)
+
+            try:
+                start_date = xml.debate.preface.p.docDate.get('date')
+                self.start_date = datetime.strptime(start_date, '%Y-%m-%d')
+            except Exception as e:
+                raise e
+                # pass
 
             self.visit(mainSection, section)
 
