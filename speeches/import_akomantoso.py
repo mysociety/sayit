@@ -3,6 +3,7 @@ from datetime import datetime
 import logging
 import os, sys
 import pickle
+import re
 
 from lxml import etree
 from lxml import objectify
@@ -10,7 +11,7 @@ from lxml import objectify
 from django.db import models
 from django.utils import timezone
 
-from popit.models import Person
+from popit.models import Person, ApiInstance
 from speeches.models import Section, Speech, Speaker
 
 logger = logging.getLogger(__name__)
@@ -31,7 +32,11 @@ class ImportAkomaNtoso (object):
         self.ai, _ = ApiInstance.objects.get_or_create(url=popit_url)
         self.use_cache = True
 
-    def init_popit_data(self, date):
+        self.person_cache = {}
+        self.speakers_count   = 0
+        self.speakers_matched = 0
+
+    def init_popit_data(self, date_string):
         # TODO this should be in popit-django.  Will try to structure things so that this
         # code can be reused there if possible!
 
@@ -42,7 +47,6 @@ class ImportAkomaNtoso (object):
             return collection
 
         # Stringy comparison is sufficient here
-        date_string = date.strftime('%Y-%m-%d')
         def date_valid(collection, api_client):
             def _date_valid(doc):
                 if doc['start_date']:
@@ -55,16 +59,16 @@ class ImportAkomaNtoso (object):
 
             return filter(_date_valid, collection)
 
-        persons = self.get_collection(ai, 'persons', add_url)
-        organizations = self.get_collection(ai, 'organizations')
-        memberships = self.get_collection(ai, 'memberships')
+        persons = self.get_collection('persons', add_url)
+        organizations = self.get_collection('organizations')
+        memberships = self.get_collection('memberships')
 
-        for m in memberships:
+        for m in memberships.values():
             person = persons[m['person_id']]
             person.setdefault('memberships', [])
             person['memberships'].append(m)
 
-            organization = persons[m['organization_id']]
+            organization = organizations[m['organization_id']]
             organization.setdefault('memberships', [])
             organization['memberships'].append(m)
 
@@ -73,27 +77,26 @@ class ImportAkomaNtoso (object):
         self.memberships = memberships
         self.already_spoken = []
 
-    def get_collection(self, ai, collection, fn):
+    def get_collection(self, collection, fn=None):
 
         pickle_path = '.' # TODO, where is sanest place to put this?
-        pickle_file = os.path.jon(pickle_path, collection)
+        pickle_file = os.path.join(pickle_path, '%s.pickle' % collection)
 
         if self.use_cache:
             try:
-                collection = pickle.load(pickle_file)
-                print "RARR! returning"
+                collection = pickle.load( open(pickle_file, 'r') )
                 return collection
             except:
                 pass
 
-        api_client = ai.api_client(collection)
+        api_client = self.ai.api_client(collection)
         objects = api_client.get()['result']
         if fn:
-            objects = fn(objects)
+            objects = fn(objects, api_client)
 
-        objects = dict([ (doc[id], doc) for doc in objects ])
+        objects = dict([ (doc['id'], doc) for doc in objects ])
 
-        pickle.dump(objects, pickle_file, -1)
+        pickle.dump(objects, open(pickle_file, 'w'), -1)
 
         return objects
 
@@ -111,35 +114,35 @@ class ImportAkomaNtoso (object):
         return s
 
     def import_xml(self, document_path):
-        try:
-            tree = objectify.parse(document_path)
-            xml = tree.getroot()
+        #try:
+        tree = objectify.parse(document_path)
+        xml = tree.getroot()
 
-            debateBody = xml.debate.debateBody
-            mainSection = debateBody.debateSection 
+        debateBody = xml.debate.debateBody
+        mainSection = debateBody.debateSection 
 
-            self.title = '%s (%s)' % (
-                    mainSection.heading.text, 
-                    etree.tostring(xml.debate.preface.p, method='text'))
+        self.title = '%s (%s)' % (
+                mainSection.heading.text, 
+                etree.tostring(xml.debate.preface.p, method='text'))
 
-            section = self.make(Section, title=self.title)
+        section = self.make(Section, title=self.title)
 
-            try:
-                start_date = xml.debate.preface.p.docDate.get('date')
-                self.init_popit_data(start_date)
+        #try:
+        start_date = xml.debate.preface.p.docDate.get('date')
+        self.init_popit_data(start_date)
 
-                self.start_date = datetime.strptime(start_date, '%Y-%m-%d')
+        self.start_date = datetime.strptime(start_date, '%Y-%m-%d')
 
-            except Exception as e:
-                raise e
-                # pass
+        #except Exception as e:
+            #raise e
+            # pass
 
-            self.visit(mainSection, section)
+        self.visit(mainSection, section)
 
-            return section
+        return section
 
-        except Exception as e:
-            raise e
+        #except Exception as e:
+            #raise e
             # raise SpeechImportException(str(e))
 
     def make(self, cls, **kwargs):
@@ -159,41 +162,91 @@ class ImportAkomaNtoso (object):
                 if self.get_tag(child) != 'from']
         return '\n\n'.join(paras)
 
-    def name_display(name):
+    def name_display(self, name):
         return name.title()
 
     def get_person(self, name):
+        cached = self.person_cache.get(name, None)
+        if cached:
+            return cached
 
+        display_name = self.name_display(name) if name else '(narrative)'
+
+        speaker = None
         popit_person = None
+
         if name:
-            name = name_display(name)
-            popit_person = self.get_popit_person(name)
-        else:
-            name = '(narrative)'
+            self.speakers_count += 1
+            popit_person = self.get_popit_person(display_name)
 
-        speaker, _ = Speaker.objects.get_or_create(instance = self.instance, name = name)
-        if popit_person:
-            speaker.person = popit_person
-            speaker.save()
+            if popit_person:
+                self.speakers_matched += 1
+                try:
+                    speaker = Speaker.objects.get(
+                        instance = self.instance, 
+                        person = popit_person)
+                except Speaker.DoesNotExist:
+                    pass
+            else:
+                print >> sys.stderr, " - Failed to get user %s" % display_name
 
+        if not speaker:
+            speaker, _ = Speaker.objects.get_or_create(
+                instance = self.instance, 
+                name = display_name)
+
+            if popit_person:
+                speaker.person = popit_person
+                speaker.save()
+
+        self.person_cache[name] = speaker
         return speaker
 
     def get_popit_person(self, name):
-        person = get_best_popit_match(name, self.already_spoken, 0.75)
-        if person:
-            return person
 
-        person = get_best_popit_match(name, self.persons, 0.85)
+        def _get_popit_person(name):
+            person = self.get_best_popit_match(name, self.already_spoken, 0.75)
+            if person:
+                return person
+
+            person = self.get_best_popit_match(name, self.persons.values(), 0.85)
+            if person:
+                self.already_spoken.append(person)
+                return person
+
+        person = _get_popit_person(name)
         if person:
-            self.already_spoken.append(person)
-            return person
+            ret = Person.update_from_api_results(instance=self.instance, doc=person)
+            return ret
+            # return Person.update_from_api_results(instance=self.instance, doc="HELLO")
         
         return None
 
     def get_best_popit_match(self, name, possible, threshold):
         #TODO: here
-        return None
+        honorific = ''
+        party = ''
+        rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
+        match = rx.match(name)
 
+        if match:
+            honorific, name, _, party = match.groups()
+
+        def _match(record):
+            if name == record.get('name', ''):
+                return 1.0
+
+            if name == '%s %s' % (record.get('initials', ''), record.get('family_name', '')):
+                return 0.9
+
+            return 0
+
+        for p in possible:
+            score = _match(p)
+            if score > threshold:
+                return p
+
+        return None
 
     def visit(self, node, section):
        for child in node.iterchildren():
@@ -207,7 +260,8 @@ class ImportAkomaNtoso (object):
                 self.visit(child, childSection)
             elif tagname == 'speech':
                 text = self.get_text(child)
-                speaker = self.get_person( child['from'].text )
+                name = child['from'].text
+                speaker = self.get_person( name )
                 speech = self.make(Speech,
                         section = section,
                         # title

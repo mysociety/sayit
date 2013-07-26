@@ -29,7 +29,17 @@ class Command(BaseCommand):
         except:
             raise CommandError("Instance specified not found")
 
+        self.stdout.write("Starting import!\n\n")
+
         an = ImportAkomaNtoso(instance = instance, commit = options['commit'])
         section = an.import_xml(path)
+
+        if section and section.id:
+            self.stdout.write("Imported section %d\n\n" % section.id)
+
+        self.stdout.write("    % 3d matched\n" % an.speakers_matched)
+        self.stdout.write(" of % 3d persons\n" % an.speakers_count)
+
+
 
         
