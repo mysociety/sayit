@@ -46,6 +46,7 @@ audioread
 
 # mySociety modules
 -e git+https://github.com/mysociety/popit-django#egg=popit-django
+-e git+https://github.com/mysociety/django-subdomain-instances#egg=django-subdomain-instances
 
 # We use nose to run the tests, which gets around various limitations
 # with the built-in test runner:
