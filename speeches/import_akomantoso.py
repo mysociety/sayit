@@ -15,6 +15,7 @@ from popit.models import Person, ApiInstance
 from speeches.models import Section, Speech, Speaker
 
 logger = logging.getLogger(__name__)
+name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 
 class SpeechImportException (Exception):
     pass
@@ -27,7 +28,7 @@ class ImportAkomaNtoso (object):
         self.start_date = None
         self.title = '(untitled)'
 
-        # TODO get this url from the AN document, if relevant
+        # TODO get this url from the AN document, or from config/parameter
         popit_url = 'http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
         self.ai, _ = ApiInstance.objects.get_or_create(url=popit_url)
         self.use_cache = True
@@ -163,7 +164,13 @@ class ImportAkomaNtoso (object):
         return '\n\n'.join(paras)
 
     def name_display(self, name):
-        return name.title()
+        match = name_rx.match(name)
+        if match:
+            honorific, fname, party, _ = match.groups()
+            display_name = '%s %s%s' % (honorific, fname.title(), party if party else '')
+            return display_name
+        else:
+            return name.title()
 
     def get_person(self, name):
         cached = self.person_cache.get(name, None)
@@ -226,7 +233,6 @@ class ImportAkomaNtoso (object):
         #TODO: here
         honorific = ''
         party = ''
-        name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
         match = name_rx.match(name)
 
         if match:
@@ -276,7 +282,7 @@ class ImportAkomaNtoso (object):
                 # this will already have been extracted
                 continue
             if tagname == 'debateSection':
-                title = child.heading.text
+                title = child.heading.text.title()
                 childSection = self.make(Section, parent=section, title=title)
                 self.visit(child, childSection)
             elif tagname == 'speech':
@@ -294,6 +300,7 @@ class ImportAkomaNtoso (object):
                         # source_url
                         text = text,
                         speaker = speaker,
+                        speaker_display = self.name_display(name),
                         )
             else:
                 text = etree.tostring(child, method='text')

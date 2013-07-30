@@ -21,7 +21,7 @@
             <img src="{% if speech.speaker.person.image %}
                 {{ speech.speaker.person.image }} {% else %} {% static "i/a.png" %} {% endif %}"
                 style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt="" width=48 height=48 class="speaker-img">
-            <strong>{{ speech.speaker }}</strong></a>
+            <strong>{% firstof speech.speaker_display speech.speaker %}</strong></a>
       {% else %}
         <strong>{% trans "Unknown Speaker" %}</strong>
       {% endif %}
