@@ -24,6 +24,9 @@ DJANGO_SECRET_KEY: ''
 BASE_HOST: ''
 BASE_PORT: ''
 
+# Popit API URL
+POPIT_API_URL: 'http://popit.example.com/api/v0.1/'
+
 # create an account and then put the 'UA-123456-1' bit here. If present it will
 # be used in the templates.
 GOOGLE_ANALYTICS_ACCOUNT: ''

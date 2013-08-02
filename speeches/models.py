@@ -305,6 +305,9 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     # Metadata on the speech
     # type = models.ChoiceField() # speech, scene, narrative, summary, etc.
     speaker = models.ForeignKey(Speaker, blank=True, null=True, help_text='Who gave this speech?', on_delete=models.SET_NULL)
+    # may be null, in which case we simply use current strategy to get name
+    speaker_display = models.CharField(max_length=256, null=True, blank=True)
+
     start_date = models.DateField(blank=True, null=True, help_text='What date did the speech start?')
     start_time = models.TimeField(blank=True, null=True, help_text='What time did the speech start?')
     end_date = models.DateField(blank=True, null=True, help_text='What date did the speech end?')
