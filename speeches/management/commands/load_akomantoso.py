@@ -15,6 +15,7 @@ class Command(BaseCommand):
         make_option('--instance', action='store', default='default', help='Label of instance to add data to'),
         make_option('--file', action='store', help='XML akomantoso document to import'),
         make_option('--dir',  action='store', help='directory of XML akomantoso documents to import'),
+        make_option('--start-date',  action='store', default='', help='earliest date to process, in yyyy-mm-dd format'),
     )
 
     def handle(self, *args, **options):
@@ -27,14 +28,22 @@ class Command(BaseCommand):
             self.stdout.write(" of % 3d persons\n" % speakers_count)
         elif options['dir']:
             dir = options['dir']
+
+            start_date = options['start_date']
+            valid = lambda f: f > start_date if start_date else lambda _: True
+
             files = [ os.path.join(root, filename) 
                     for (root, _, files)
                     in os.walk(dir)
                     for filename in files
-                    if filename[-4:] == '.xml']
+                    if filename[-4:] == '.xml'
+                    and valid(filename)]
+
             if not len(files):
                 raise CommandError("No xml files found in directory")
+
             imports = [self.import_document(f, **options) for f in files]
+
             if options['commit']:
                 sections = [a for a,_,_ in imports]
                 self.stdout.write("Imported sections %s\n\n" % str(sections))
