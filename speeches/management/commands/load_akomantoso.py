@@ -49,7 +49,7 @@ class Command(BaseCommand):
                 self.stdout.write("Imported sections %s\n\n" % str(sections))
 
             (speakers_matched, speakers_count) = reduce(
-                lambda (m1,c1), (m2,c2): (m1+m2, c1+c2), imports)
+                lambda (s1,m1,c1), (s2,m2,c2): (m1+m2, c1+c2), imports)
             self.stdout.write("    % 5d matched\n" % speakers_matched)
             self.stdout.write(" of % 5d persons\n" % speakers_count)
         else:
@@ -68,7 +68,12 @@ class Command(BaseCommand):
         self.stdout.write("Starting import: %s\n" % path)
 
         an = ImportAkomaNtoso(instance = instance, commit = options['commit'])
-        section = an.import_xml(path)
+
+        try:
+            section = an.import_xml(path)
+        except Exception as e:
+            self.stderr.write(str(e))
+            return (None, 0, 0)
 
         self.stdout.write('%d / %d\n' % (an.speakers_matched, an.speakers_count))
 
