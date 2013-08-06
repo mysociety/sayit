@@ -140,6 +140,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'haystack',
     'djcelery',
     'kombu.transport.django',
     'south',
@@ -216,4 +217,12 @@ from .mysociety import *
 # Cookies, after because we need BASE_HOST from mysociety.py
 SESSION_COOKIE_DOMAIN = BASE_HOST
 SESSION_COOKIE_NAME = 's'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
 

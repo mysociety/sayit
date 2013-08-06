@@ -42,7 +42,9 @@ audioread
 ### '--enable-site-packages' argument to the pip install command in
 ### 'post_deploy_actions.bash'
 # xapian-haystack
-# django-haystack
+### NB: trying elasticsearch instead, as per Matthew
+pyelasticsearch
+django-haystack
 
 # mySociety modules
 -e git+https://github.com/mysociety/popit-django#egg=popit-django
