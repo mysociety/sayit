@@ -11,7 +11,7 @@ Django>=1.4,<1.5
 South
 django-pagination
 django_select2
-django-tastypie
+django-tastypie==0.9.16
 django-qmethod
 django-bleach
 # Only for debugging, but very useful and easiest to just have it here
@@ -48,7 +48,7 @@ django-haystack
 
 # mySociety modules
 -e git+https://github.com/mysociety/popit-django#egg=popit-django
--e git+https://github.com/mysociety/django-subdomain-instances#egg=django-subdomain-instances
+django-subdomain-instances
 
 # We use nose to run the tests, which gets around various limitations
 # with the built-in test runner:
