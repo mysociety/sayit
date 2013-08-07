@@ -19,16 +19,19 @@ from speeches.utils import GroupedModelChoiceField
 
 logger = logging.getLogger(__name__)
 
-def add_class(f, cl):
+def add_class(f, cl, attr_num):
     def class_tag(self, *args, **kwargs):
-        kwargs.setdefault('attrs', {})['class'] = cl
+        if len(args) > attr_num:
+            args[attr_num]['class'] = cl
+        else:
+            kwargs.setdefault('attrs', {})['class'] = cl
         return f(self, *args, **kwargs)
     return class_tag
 
 # For Bootstrap, which needs the label class, so monkey-patch
-BoundField.label_tag = add_class(BoundField.label_tag, 'control-label')
+BoundField.label_tag = add_class(BoundField.label_tag, 'control-label', 1)
 # And make all textareas be block level 100% width
-Textarea.render = add_class(Textarea.render, 'input-block-level')
+Textarea.render = add_class(Textarea.render, 'input-block-level', 2)
 
 class CleanAudioMixin(object):
     def clean_audio(self):
