@@ -223,7 +223,7 @@ class ImportAkomaNtoso (object):
 
         person = _get_popit_person(name)
         if person:
-            ret = Person.update_from_api_results(instance=self.instance, doc=person)
+            ret = Person.update_from_api_results(instance=self.ai, doc=person)
             return ret
             # return Person.update_from_api_results(instance=self.instance, doc="HELLO")
         
