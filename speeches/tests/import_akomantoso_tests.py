@@ -1,4 +1,4 @@
-import os
+import os, sys
 import tempfile
 import shutil
 
@@ -7,7 +7,7 @@ import requests
 from instances.tests import InstanceTestCase
 
 import speeches
-from speeches.models import Speech
+from speeches.models import Speech, Speaker
 from speeches.import_akomantoso import ImportAkomaNtoso
 
 class ImportAkomaNtosoTests(InstanceTestCase):
@@ -21,9 +21,17 @@ class ImportAkomaNtosoTests(InstanceTestCase):
         pass
 
     def test_import(self):
-        document_path = os.path.join(self._in_fixtures, '502914_1.xml')
+        document_path = os.path.join(self._in_fixtures, 'NA200912.xml')
 
         an = ImportAkomaNtoso(instance=self.instance, commit=False)
         section = an.import_xml(document_path)
 
         self.assertTrue(section is not None)
+
+        speakers = Speaker.objects.all()
+        resolved = filter(lambda s: s.person != None, speakers)
+        THRESHOLD=48
+        self.assertTrue(
+                len(resolved) >= THRESHOLD, 
+                "%d above threshold %d/%d" 
+                % (len(resolved), THRESHOLD, len(speakers)))
