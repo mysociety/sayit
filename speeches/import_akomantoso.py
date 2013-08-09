@@ -101,19 +101,6 @@ class ImportAkomaNtoso (object):
 
         return objects
 
-    def make(self, cls, **kwargs):
-        args = kwargs
-        if cls == Speech:
-            args['title'] = self.title
-            args['start_date'] = self.start_date
-
-        s = cls(instance=self.instance, **args)
-        if self.commit:
-            s.save()
-        elif s.title:
-            print s.title
-        return s
-
     def import_xml(self, document_path):
         #try:
         tree = objectify.parse(document_path)
@@ -147,7 +134,12 @@ class ImportAkomaNtoso (object):
             # raise SpeechImportException(str(e))
 
     def make(self, cls, **kwargs):
-        s = cls(instance=self.instance, **kwargs)
+        args = kwargs
+        if cls == Speech:
+            args['title'] = self.title
+            args['start_date'] = self.start_date
+
+        s = cls(instance=self.instance, **args)
         if self.commit:
             s.save()
         elif s.title:
@@ -238,11 +230,23 @@ class ImportAkomaNtoso (object):
         if match:
             honorific, name, _, party = match.groups()
 
+        def _get_initials(record):
+            initials = record.get('initials', None)
+            if initials:
+                return initials
+            given_names = record.get('given_names', None)
+            if given_names:
+                initials = [a[:1] for a in given_names.split()]
+                return ' '.join(initials)
+            return ''
+
         def _match(record):
             if name == record.get('name', ''):
                 return 1.0
 
-            name_with_initials = '%s %s' % (record.get('initials', ''), record.get('family_name', ''))
+            name_with_initials = '%s %s' % (
+                _get_initials(record),
+                record.get('family_name', ''))
             if name.lower() == name_with_initials.lower():
                 return 0.9
 

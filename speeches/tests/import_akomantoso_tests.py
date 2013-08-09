@@ -31,6 +31,11 @@ class ImportAkomaNtosoTests(InstanceTestCase):
         speakers = Speaker.objects.all()
         resolved = filter(lambda s: s.person != None, speakers)
         THRESHOLD=48
+
+        print >> sys.stderr, (
+                "%d above threshold %d/%d?" 
+                % (len(resolved), THRESHOLD, len(speakers)))
+
         self.assertTrue(
                 len(resolved) >= THRESHOLD, 
                 "%d above threshold %d/%d" 
