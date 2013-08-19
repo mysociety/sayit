@@ -36,6 +36,7 @@ class ImportAkomaNtoso (object):
         self.person_cache = {}
         self.speakers_count   = 0
         self.speakers_matched = 0
+        self.speakers     = {}
 
     def init_popit_data(self, date_string):
         # TODO this should be in popit-django.  Will try to structure things so that this
@@ -215,11 +216,13 @@ class ImportAkomaNtoso (object):
 
         person = _get_popit_person(name)
         if person:
+            self.speakers[name] = person['id']
             ret = Person.update_from_api_results(instance=self.ai, doc=person)
             return ret
             # return Person.update_from_api_results(instance=self.instance, doc="HELLO")
-        
-        return None
+        else:
+            self.speakers[name] = None
+            return None
 
     def get_best_popit_match(self, name, possible, threshold):
         #TODO: here
