@@ -63,6 +63,8 @@ class ImportAkomaNtoso (ImporterBase):
         return '\n\n'.join(paras)
 
     def name_display(self, name):
+        if not name:
+            return '(narrative)'
         match = name_rx.match(name)
         if match:
             honorific, fname, party, _ = match.groups()
@@ -84,7 +86,7 @@ class ImportAkomaNtoso (ImporterBase):
             elif tagname == 'speech':
                 text = self.get_text(child)
                 name = child['from'].text
-                speaker = self.get_person( name )
+                speaker = self.get_person( self.name_display(name) )
                 speech = self.make(Speech,
                         section = section,
                         # title
