@@ -153,6 +153,7 @@ INSTALLED_APPS = [
     'instances',
     'speeches',
     'login_token',
+    'popit_resolver',
 ]
 if DEBUG:
     INSTALLED_APPS.append( 'debug_toolbar' )

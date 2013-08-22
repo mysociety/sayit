@@ -20,7 +20,7 @@ name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 class SpeechImportException (Exception):
     pass
 
-class ImportAkomaNtoso (object):
+class ImporterBase (object):
 
     def __init__(self, instance=None, commit=True):
         self.instance = instance
@@ -102,38 +102,6 @@ class ImportAkomaNtoso (object):
 
         return objects
 
-    def import_xml(self, document_path):
-        #try:
-        tree = objectify.parse(document_path)
-        xml = tree.getroot()
-
-        debateBody = xml.debate.debateBody
-        mainSection = debateBody.debateSection 
-
-        self.title = '%s (%s)' % (
-                mainSection.heading.text, 
-                etree.tostring(xml.debate.preface.p, method='text'))
-
-        section = self.make(Section, title=self.title)
-
-        #try:
-        start_date = xml.debate.preface.p.docDate.get('date')
-        self.init_popit_data(start_date)
-
-        self.start_date = datetime.strptime(start_date, '%Y-%m-%d')
-
-        #except Exception as e:
-            #raise e
-            # pass
-
-        self.visit(mainSection, section)
-
-        return section
-
-        #except Exception as e:
-            #raise e
-            # raise SpeechImportException(str(e))
-
     def make(self, cls, **kwargs):
         args = kwargs
         if cls == Speech:
@@ -146,24 +114,6 @@ class ImportAkomaNtoso (object):
         elif s.title:
             print >> sys.stderr, s.title
         return s
-
-    def get_tag(self, node):
-        return etree.QName(node.tag).localname
-
-    def get_text(self, node):
-        paras = [etree.tostring(child, method='text') 
-                for child in node.iterchildren() 
-                if self.get_tag(child) != 'from']
-        return '\n\n'.join(paras)
-
-    def name_display(self, name):
-        match = name_rx.match(name)
-        if match:
-            honorific, fname, party, _ = match.groups()
-            display_name = '%s %s%s' % (honorific, fname.title(), party if party else '')
-            return display_name
-        else:
-            return name.title()
 
     def get_person(self, name):
         cached = self.person_cache.get(name, None)
@@ -281,46 +231,3 @@ class ImportAkomaNtoso (object):
                 return p
 
         return None
-
-    def visit(self, node, section):
-       for child in node.iterchildren():
-            tagname = self.get_tag(child)
-            if tagname == 'heading':
-                # this will already have been extracted
-                continue
-            if tagname == 'debateSection':
-                title = child.heading.text.title()
-                childSection = self.make(Section, parent=section, title=title)
-                self.visit(child, childSection)
-            elif tagname == 'speech':
-                text = self.get_text(child)
-                name = child['from'].text
-                speaker = self.get_person( name )
-                speech = self.make(Speech,
-                        section = section,
-                        # title
-                        # event
-                        # location
-                        # speaker
-                        # {start,end}_{date,time}
-                        # tags
-                        # source_url
-                        text = text,
-                        speaker = speaker,
-                        speaker_display = self.name_display(name),
-                        )
-            else:
-                text = etree.tostring(child, method='text')
-                speaker = self.get_person(None)
-                speech = self.make(Speech,
-                        section = section,
-                        # title
-                        # event
-                        # location
-                        # speaker # UNKNOWN
-                        # {start,end}_{date,time}
-                        # tags
-                        # source_url
-                        text = text,
-                        speaker = speaker,
-                        )

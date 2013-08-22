@@ -8,7 +8,7 @@ from instances.tests import InstanceTestCase
 
 import speeches
 from speeches.models import Speech, Speaker
-from speeches.import_akomantoso import ImportAkomaNtoso
+from speeches.importers.import_akomantoso import ImportAkomaNtoso
 
 class ImportAkomaNtosoTests(InstanceTestCase):
 
