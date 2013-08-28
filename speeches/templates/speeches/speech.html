@@ -19,7 +19,7 @@
       {% if speech.speaker %}
         <a href="{{ speech.speaker.get_absolute_url }}">
             <img src="{% if speech.speaker.person.image %}
-                {{ speech.speaker.person.image }} {% else %} {% static "i/a.png" %} {% endif %}"
+                {{ speech.speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
                 style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt="" width=48 height=48 class="speaker-img">
             <strong>{% firstof speech.speaker_display speech.speaker %}</strong></a>
       {% else %}

@@ -4,7 +4,7 @@
 
 {% block extrastyle %}
 {{ block.super }}
-<link href="{% static "mediaelement/mediaelementplayer.min.css" %}" rel="stylesheet">
+<link href="{% static "speeches/mediaelement/mediaelementplayer.min.css" %}" rel="stylesheet">
 <style>
 .mejs-container { display: inline-block; }
 label.checkbox.inline { float: none; display: inline; }
@@ -14,7 +14,7 @@ label.checkbox.inline { float: none; display: inline; }
 {% block extrahead %}
 {{ block.super }}
 <script src="{% static "js/jquery-1.8.2.min.js" %}"></script>
-<script src="{% static "mediaelement/mediaelement-and-player.min.js" %}"></script>
+<script src="{% static "speeches/mediaelement/mediaelement-and-player.min.js" %}"></script>
 <!-- <script src="{% static "soundmanager2/script/soundmanager2.js" %}"></script> -->
 <script>
 $(function(){

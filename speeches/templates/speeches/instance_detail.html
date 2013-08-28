@@ -21,7 +21,7 @@
     <ul class="unstyled">
       {% for speaker in speakers %}
         <li>
-            <img src="{% static "i/a.png" %}" style="border-color: #{{ speaker.colour }}; background-color: #{{ speaker.colour }};" alt="" width=24 height=24 class="speaker-img">
+            <img src="{% static "speeches/i/a.png" %}" style="border-color: #{{ speaker.colour }}; background-color: #{{ speaker.colour }};" alt="" width=24 height=24 class="speaker-img">
             <a href="{{ speaker.get_absolute_url }}">{{ speaker }}</a>
         </li>
       {% endfor %}

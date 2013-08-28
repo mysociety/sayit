@@ -5,7 +5,7 @@ A project to upload and store audio and text of speeches.
 
 Documentation
 -------------
-Documentation (a work in progress) can be found at: http://mysociety.github.com/sayit/
+Documentation (a work in progress) can be found at: http://mysociety.github.io/sayit/
 
 Installation
 ------------

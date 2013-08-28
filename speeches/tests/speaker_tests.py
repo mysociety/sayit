@@ -64,4 +64,4 @@ class SpeakerTests(InstanceTestCase):
 
         self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/%d">\s*<img src="\s*http:\/\/example.com\/image.jpg\s*"' % speaker1.id)
 
-        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/%d">\s*<img src="\s*/static/i/a.\w+.png\s*"' % speaker2.id)
+        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/%d">\s*<img src="\s*/static/speeches/i/a.\w+.png\s*"' % speaker2.id)
