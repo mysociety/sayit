@@ -1,0 +1,111 @@
+/* apply a natural box layout model to all elements */
+* {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    /* Suppress it all */
+    border-radius: 0 !important;
+    text-shadow: none !important;
+}
+
+/* A couple of Bootstrap things assume content-box */
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.input-append .add-on, .input-prepend .add-on {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+/* Maximum width, body layout */
+
+body {
+    background-color: #fafafa;
+}
+@media (max-width: 767px) {
+    body {
+        background-color: #fff;
+    }
+}
+
+.navbar-inner {
+    position: relative;
+    z-index: 1;
+}
+.container-fluid {
+    position: relative;
+    z-index: 0;
+    background-color: #fff;
+    margin: 0 auto;
+    max-width: 60em;
+    -webkit-box-shadow: 0px 0 4px 4px rgba(0, 0, 0, 0.065);
+    -moz-box-shadow: 0px 0 4px 4px rgba(0, 0, 0, 0.065);
+    box-shadow: 0px 0 4px 4px rgba(0, 0, 0, 0.065);
+}
+@media (max-width: 767px) {
+    .container-fluid {
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+}
+
+/* Navbar colour changes */
+
+.navbar-inverse .navbar-inner {
+    background-image: none;
+    background-color: #2C3E50;
+    border-color: #2980B9;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 5px 10 rgba(0, 0, 0, 0.4);
+}
+
+.navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
+    border-width: 0 0 4px;
+}
+
+.navbar-inverse .brand, .navbar-inverse .nav > li > a {
+    color: #ccc;
+}
+.navbar-inverse .navbar-text, .navbar-inverse .navbar-link {
+    color: #ccc;
+}
+.navbar-inverse .nav li.dropdown > .dropdown-toggle .caret {
+    border-top-color: #ccc;
+    border-bottom-color: #ccc;
+}
+
+.navbar-inverse .divider-vertical {
+    border-left-color: #223344;
+    border-right-color: #334455;
+}
+
+.navbar-inverse .nav .active > a, .navbar-inverse .nav .active > a:hover, .navbar-inverse .nav .active > a:focus {
+    background-color: #2980B9;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.navbar-inverse .nav li.dropdown.open > .dropdown-toggle, .navbar-inverse .nav li.dropdown.active > .dropdown-toggle, .navbar-inverse .nav li.dropdown.open.active > .dropdown-toggle {
+    background-color: #2980B9;
+}
+
+.navbar-inverse .btn-navbar {
+    background-image: none;
+    background-color: #2C3E50;
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+@media (max-width: 979px) {
+    .navbar-inverse .nav-collapse .nav > li > a,
+    .navbar-inverse .nav-collapse .dropdown-menu a {
+        color: #fff;
+    }
+}
+
