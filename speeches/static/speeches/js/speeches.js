@@ -37,7 +37,7 @@ function sayit_add_speech_links() {
         var datepickers = $("input.datepicker"),
             l = datepickers.length;
 
-        if (!l) {
+        if (!l || !datepickers.datepicker) {
             return;
         }
 
