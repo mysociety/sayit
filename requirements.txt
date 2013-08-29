@@ -47,7 +47,7 @@ pyelasticsearch
 django-haystack
 
 # mySociety modules
--e git+https://github.com/mysociety/popit-django#egg=popit-django
+popit-django
 django-subdomain-instances
 
 # We use nose to run the tests, which gets around various limitations
