@@ -21,7 +21,7 @@ name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 
 class ImportAkomaNtoso (ImporterBase):
 
-    def import_xml(self, document_path):
+    def import_document(self, document_path):
         #try:
         tree = objectify.parse(document_path)
         xml = tree.getroot()
@@ -37,7 +37,7 @@ class ImportAkomaNtoso (ImporterBase):
 
         #try:
         start_date = xml.debate.preface.p.docDate.get('date')
-        self.init_popit_data(start_date)
+        self.init_popit_data(date_string = start_date)
 
         self.start_date = datetime.strptime(start_date, '%Y-%m-%d')
 

@@ -24,7 +24,7 @@ class ImportAkomaNtosoTests(InstanceTestCase):
         document_path = os.path.join(self._in_fixtures, 'NA200912.xml')
 
         an = ImportAkomaNtoso(instance=self.instance, commit=False)
-        section = an.import_xml(document_path)
+        section = an.import_document(document_path)
 
         self.assertTrue(section is not None)
 
