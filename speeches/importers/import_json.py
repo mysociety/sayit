@@ -51,11 +51,12 @@ class ImportJson (ImporterBase):
         for s in data.get( 'speeches', [] ):
 
             display_name = s['personname']
+            speaker = self.get_person( display_name )
+
             party = s.get('party', '')
             if party:
                 display_name += ' (%s)' % party
 
-            speaker = self.get_person( display_name )
             speech = self.make(Speech, 
                     text = s['text'],
                     section = section,

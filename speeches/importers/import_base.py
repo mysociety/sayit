@@ -41,9 +41,10 @@ class ImporterBase (object):
 
         self.resolver = None
 
-    def init_popit_data(self, date_string):
+    def init_popit_data(self, date_string='', date=None):
         self.resolver = ResolvePopitName(
                 popit_url = self.popit_url,
+                date = date,
                 date_string = date_string)
 
     def make(self, cls, **kwargs):

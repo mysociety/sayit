@@ -88,7 +88,7 @@ class ImportCommand(BaseCommand):
         importer = self.importer_class(instance = instance, commit = options['commit'])
 
         try:
-            section = importer.import_xml(path)
+            section = importer.import_document(path)
         except Exception as e:
             self.stderr.write(str(e))
             return (None, 0, 0, {})
