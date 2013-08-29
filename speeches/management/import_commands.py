@@ -47,7 +47,7 @@ class ImportCommand(BaseCommand):
             imports = [self.import_document(f, **options) for f in files]
 
             if options['commit']:
-                sections = [a for a,_,_ in imports]
+                sections = [a for a,_,_,_ in imports]
                 self.stdout.write("Imported sections %s\n\n" % str(sections))
 
             (_, speakers_matched, speakers_count, _) = reduce(
