@@ -10,6 +10,7 @@ from instances.models import Instance
 class ImportCommand(BaseCommand):
 
     importer_class = None
+    document_extension = ''
 
     option_list = BaseCommand.option_list + (
         make_option('--commit', action='store_true', help='Whether to commit to the database or not'),
@@ -38,11 +39,11 @@ class ImportCommand(BaseCommand):
                     for (root, _, files)
                     in os.walk(dir)
                     for filename in files
-                    if filename[-4:] == '.xml'
+                    if filename[-4:] == '.%s' % self.document_extension
                     and valid(filename)]
 
             if not len(files):
-                raise CommandError("No xml files found in directory")
+                raise CommandError("No .%s files found in directory" % self.document_extension)
 
             imports = [self.import_document(f, **options) for f in files]
 
