@@ -1,2 +1,3 @@
-echo "CREATE USER sayit WITH password 'sayit';" | psql
-echo "CREATE DATABASE sayit WITH OWNER sayit;"  | psql
+CREATE USER sayit WITH password 'sayit';
+CREATE DATABASE sayit WITH OWNER sayit;
+ALTER ROLE sayit WITH CREATEDB;

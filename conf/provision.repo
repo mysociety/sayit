@@ -22,4 +22,11 @@ for ex in conf/*-example; do
 	cp --no-clobber $ex ${ex/-example/}
 done
 
-python manage.py test
+python manage.py syncdb --noinput
+python manage.py migrate
+python manage.py collectstatic --noinput
+
+Xvfb :99 -ac &
+export DISPLAY=:99
+
+python manage.py test --noinput
