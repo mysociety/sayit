@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+BOX_NAME = ENV['BOX_NAME']  || "ubuntu"
+BOX_URI = ENV['BOX_URI']    || "http://files.vagrantup.com/precise64.box"
+# VF_BOX_URI = ENV['BOX_URI'] || "http://files.vagrantup.com/precise64_vmware_fusion.box"
+
+Vagrant.configure("2") do |config|
+  # Setup virtual machine box. This VM configuration code is always executed.
+  config.vm.box = BOX_NAME
+  config.vm.box_url = BOX_URI
+  config.vm.network :public_network
+
+  config.vm.provision :shell, :inline => <<-EOS
+  	if ! test -f done.update; then
+		apt-get update
+		touch done.update
+	fi
+
+	if ! test -f done.repo; then
+		apt-get install -q -y git
+		# sudo -H -u vagrant sh -c 'cd; mkdir -p sayit; cd sayit; git clone -b vagrant https://github.com/mysociety/sayit.git'
+		sudo -H -u vagrant sh -c 'cd; mkdir -p sayit; cd sayit; git clone -b vagrant ssh://hakim@git.mysociety.org/data/git/public/sayit.git'
+		touch done.repo
+	fi
+
+	grep -h -v '#' /home/vagrant/sayit/sayit/conf/packages* | xargs apt-get install -q -y
+
+	if ! test -f done.db; then
+		cat /home/vagrant/sayit/sayit/conf/provision.sql | sudo -u postgres psql
+		touch done.db
+	fi
+
+	sudo -H -u vagrant bash /home/vagrant/sayit/sayit/conf/provision.repo
+  EOS
+
+end

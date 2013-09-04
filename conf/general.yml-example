@@ -10,19 +10,19 @@
 
 SAYIT_DB_HOST: 'localhost'
 SAYIT_DB_PORT: '5432'
-SAYIT_DB_USER: ''
-SAYIT_DB_NAME: ''
-SAYIT_DB_PASS: ''
+SAYIT_DB_USER: 'sayit'
+SAYIT_DB_NAME: 'sayit'
+# for production please use a more secure password
+SAYIT_DB_PASS: 'sayit'
 
 STAGING: '1'
 
 TIME_ZONE: 'Europe/London'
 DJANGO_SECRET_KEY: ''
 
-# For local development, a good choice here is to set BASE_HOST
-# to '127.0.0.1.xip.io' and BASE_PORT to 8000
-BASE_HOST: ''
-BASE_PORT: ''
+# The following values are useful for local development
+BASE_HOST: '127.0.0.1.xip.io'
+BASE_PORT: '8000'
 
 # Popit API URL
 POPIT_API_URL: 'http://popit.example.com/api/v0.1/'

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+whoami
+cd
+
+mkdir -p sayit
+cd sayit
+
+if ! test -d sayit; then
+	git clone https://github.com/mysociety/sayit.git
+fi
+cd sayit
+
+if ! hash workon 2>/dev/null; then
+	source /etc/bash_completion.d/virtualenvwrapper
+fi
+workon sayit || mkvirtualenv sayit
+
+pip install -r requirements.txt
+
+for ex in conf/*-example; do 
+	cp --no-clobber $ex ${ex/-example/}
+done
+
+python manage.py test

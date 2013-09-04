@@ -3,14 +3,14 @@ python-dev
 python-pip
 python-virtualenv
 
-# Some dependencies in requirements.txt are listed as repos, so we need the
-# various repo management tools to fetch them
-# mercurial
-
 # Database stuff
 postgresql
 python-psycopg2
 libpq-dev
+
+# xml stuff
+libxml2-dev 
+libxslt-dev
 
 # MPG/OGG/3GP -> WAV conversion tools
 # Note that these both need to be relatively recent versions
