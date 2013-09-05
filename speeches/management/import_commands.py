@@ -1,4 +1,4 @@
-import os
+import os, sys
 from optparse import make_option
 import urllib
 
@@ -6,11 +6,15 @@ from django.core.management.base import BaseCommand, CommandError
 
 from speeches.models import Section, Speech, Speaker
 from instances.models import Instance
+from popit.models import ApiInstance
 
 class ImportCommand(BaseCommand):
 
     importer_class = None
     document_extension = ''
+
+    # TODO configure this
+    popit_url = 'http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
 
     option_list = BaseCommand.option_list + (
         make_option('--commit', action='store_true', help='Whether to commit to the database or not'),
@@ -22,6 +26,15 @@ class ImportCommand(BaseCommand):
     )
 
     def handle(self, *args, **options):
+
+        instance = None
+        try:
+            instance = Instance.objects.get(label=options['instance'])
+        except Instance.NotFound:
+            raise CommandError("Instance specified not found (%s)" % options['instance'])
+        options['instance'] = instance
+
+        self.ai, _ = ApiInstance.objects.get_or_create(url=self.popit_url)
 
         if options['file']:
             (section, speakers_matched, speakers_count, speakers) = self.import_document(options['file'], **options)
@@ -49,7 +62,8 @@ class ImportCommand(BaseCommand):
 
             if options['commit']:
                 sections = [a for a,_,_,_ in imports]
-                self.stdout.write("Imported sections %s\n\n" % str(sections))
+                self.stdout.write("Imported sections %s\n\n" 
+                    % str( [s.id for s in sections]))
 
             (_, speakers_matched, speakers_count, _) = reduce(
                 lambda (s1,m1,c1,d1), (s2,m2,c2,d2): (None, m1+m2, c1+c2, None), imports)
@@ -76,17 +90,14 @@ class ImportCommand(BaseCommand):
         if not os.path.isfile(path):
             raise CommandError("No document found")
 
-        try:
-            instance = Instance.objects.get(label=options['instance'])
-        except:
-            raise CommandError("Instance specified not found")
-
         self.stdout.write("Starting import: %s\n" % path)
 
         if self.importer_class == None:
             raise CommandError("No importer_class specified!")
 
-        importer = self.importer_class(instance = instance, commit = options['commit'])
+        importer = self.importer_class(
+            ai = self.ai,
+            **options)
 
         try:
             section = importer.import_document(path)

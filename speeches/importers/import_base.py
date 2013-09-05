@@ -23,15 +23,18 @@ class SpeechImportException (Exception):
 
 class ImporterBase (object):
 
-    def __init__(self, instance=None, commit=True):
+    def __init__(self, instance=None, commit=True, ai = None, **kwargs):
         self.instance = instance
         self.commit = commit
         self.start_date = None
         self.title = '(untitled)'
+        self.popit_url = 'http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
 
         # TODO get this url from the AN document, or from config/parameter
-        self.popit_url = 'http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
-        self.ai, _ = ApiInstance.objects.get_or_create(url=self.popit_url)
+        if ai:
+            self.ai = ai
+        else:
+            self.ai, _ = ApiInstance.objects.get_or_create(url=self.popit_url)
         self.use_cache = True
 
         self.person_cache = {}

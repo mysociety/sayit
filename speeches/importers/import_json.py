@@ -34,6 +34,10 @@ name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 #}
 
 class ImportJson (ImporterBase):
+    def __init__(self, **kwargs):
+        ImporterBase.__init__(self, **kwargs)
+        self.toplevel = kwargs.get('toplevel', None)
+        self.category_field = kwargs.get('category_field', None)
 
     def import_document(self, document_path):
 
@@ -46,7 +50,16 @@ class ImportJson (ImporterBase):
 
         self.title = data.get( 'report', data.get('committeename', '') )
 
-        section = self.make(Section, title=self.title)
+        section = None
+        if self.toplevel:
+            section = self.get_or_make_section(title=self.toplevel)
+        if self.category_field:
+            section = self.get_or_make_section(
+                title  = data.get(self.category_field, '(unknown)'),
+                parent = section)
+        section = self.make(Section,
+            title  = self.title,
+            parent = section)
 
         for s in data.get( 'speeches', [] ):
 
@@ -72,3 +85,15 @@ class ImportJson (ImporterBase):
             )
 
         return section
+
+    def get_or_make_section(self, **kwargs):
+        args = kwargs
+
+        if self.commit:
+            s, _ = Section.objects.get_or_create(instance=self.instance, **args)
+            return s
+        else:
+            # can't use get_or_create as this actually creates the objects, bah
+            # (django doesn't have get_or_new?)
+            s = Section(instance=self.instance, **kwargs)
+            return s
