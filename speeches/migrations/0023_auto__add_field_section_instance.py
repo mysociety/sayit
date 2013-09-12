@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ("instances", "0004_auto__add_field_instance_created_by"),
+    )
+
     def forwards(self, orm):
         # Adding field 'Section.instance'
         instance = orm['instances.Instance'].objects.get(label='default')
