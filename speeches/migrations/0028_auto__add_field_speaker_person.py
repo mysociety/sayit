@@ -6,6 +6,9 @@ from django.db import models
 
 
 class Migration(SchemaMigration):
+    depends_on = (
+        ("popit", "0004_auto__add_field_person_image__add_field_person_summary"),
+    )
 
     def forwards(self, orm):
         # Adding field 'Speaker.person'
