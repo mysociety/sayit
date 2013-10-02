@@ -87,7 +87,7 @@ class ImporterBase (object):
                 except Speaker.DoesNotExist:
                     pass
             else:
-                print >> sys.stderr, " - Failed to get user %s" % display_name
+                print " - Failed to get user %s" % display_name
 
         if not speaker:
             speaker, _ = Speaker.objects.get_or_create(
