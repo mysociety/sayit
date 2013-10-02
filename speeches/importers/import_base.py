@@ -10,6 +10,7 @@ from lxml import objectify
 
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 from popit.models import Person, ApiInstance
 from speeches.models import Section, Speech, Speaker
@@ -28,7 +29,7 @@ class ImporterBase (object):
         self.commit = commit
         self.start_date = None
         self.title = '(untitled)'
-        self.popit_url = 'http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
+        self.popit_url = settings.POPIT_API_URL
 
         # TODO get this url from the AN document, or from config/parameter
         if ai:
