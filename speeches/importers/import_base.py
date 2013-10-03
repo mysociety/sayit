@@ -54,7 +54,7 @@ class ImporterBase (object):
     def make(self, cls, **kwargs):
         args = kwargs
         if cls == Speech:
-            args['title'] = self.title
+            args['title'] = args['title'] or self.title
             args['start_date'] = self.start_date
 
         s = cls(instance=self.instance, **args)
