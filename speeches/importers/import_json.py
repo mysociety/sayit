@@ -36,7 +36,6 @@ name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 class ImportJson (ImporterBase):
     def __init__(self, **kwargs):
         ImporterBase.__init__(self, **kwargs)
-        self.category_field = kwargs.get('category_field', None)
 
     def import_document(self, document_path):
 
@@ -52,10 +51,6 @@ class ImportJson (ImporterBase):
         self.title = data.get( 'title', data.get('organization', '') )
 
         section = None
-        if self.category_field:
-            section = self.get_or_make_section(
-                title  = data.get(self.category_field, '(unknown)'),
-                parent = section)
         section = self.make(Section,
             title  = self.title,
             parent = section)
