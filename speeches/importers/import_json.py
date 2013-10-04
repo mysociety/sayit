@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 
 #{
-# "parent_path": [
+# "parent_section_titles": [
 #  "Top Section",
 #  "Middle Section",
 #  "Bottom Section"
@@ -55,11 +55,11 @@ class ImportJson (ImporterBase):
 
         self.title = data.get( 'title', data.get('organization', '') )
 
-        # Create parents as needed using parent_path
-        parent_path = data.get('parent_path', [])
-        parent_path.append(self.title)
+        # Create parents as needed using parent_section_titles
+        parent_section_titles = data.get('parent_section_titles', [])
+        parent_section_titles.append(self.title)
         section = None
-        for parent_to_create in parent_path:
+        for parent_to_create in parent_section_titles:
             section = self.make(Section,
                 title  = parent_to_create,
                 parent = section)

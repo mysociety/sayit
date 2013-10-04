@@ -1,5 +1,5 @@
 {
- "parent_path": [
+ "parent_section_titles": [
   "Top Section",
   "Middle Section",
   "Bottom Section"
