@@ -1,4 +1,9 @@
 {
+ "parent_path": [
+  "Top Section",
+  "Middle Section",
+  "Bottom Section"
+ ],
  "speeches": [
   {
    "personname": "M Johnson",

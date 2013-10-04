@@ -50,10 +50,14 @@ class ImportJson (ImporterBase):
 
         self.title = data.get( 'title', data.get('organization', '') )
 
+        # Create parents as needed using parent_path
+        parent_path = data.get('parent_path', [])
+        parent_path.append(self.title)
         section = None
-        section = self.make(Section,
-            title  = self.title,
-            parent = section)
+        for parent_to_create in parent_path:
+            section = self.make(Section,
+                title  = parent_to_create,
+                parent = section)
 
         for s in data.get( 'speeches', [] ):
 

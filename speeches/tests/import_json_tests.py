@@ -25,7 +25,8 @@ class ImportJsonTests(InstanceTestCase):
 
     def test_import(self):
         files = [
-                ('1.txt', 8, 0),
+                # filename, speech count, resolved count, section title, section parent titles
+                ('1.txt', 8, 0, "Agriculture, Forestry and Fisheries", ["Top Section", "Middle Section", "Bottom Section"]),
                 #('2.txt', 6, 0),
                 #('3.txt', 8, 0),
                 #('4.txt', 5, 0),
@@ -36,13 +37,21 @@ class ImportJsonTests(InstanceTestCase):
                 #('9.txt', 7, 0)
                 ]
 
-        for (f, exp_speeches, exp_resolved) in files:
+        for (f, exp_speeches, exp_resolved, exp_section_name, exp_section_parents) in files:
             document_path = os.path.join(self._in_fixtures, f)
 
-            aj = ImportJson(instance=self.instance, commit=True)
+            aj = ImportJson(instance=self.instance, category_field="title", commit=True)
             section = aj.import_document(document_path)
 
             self.assertTrue(section is not None)
+
+            # Check sections created as expected
+            self.assertEqual(section.title, exp_section_name)
+            parent_to_test = section.parent
+            for exp_parent in reversed(exp_section_parents):
+                self.assertEqual(parent_to_test.title, exp_parent)
+                parent_to_test = parent_to_test.parent
+            self.assertEqual(parent_to_test, None)
 
             speeches = section.speech_set.all()
 
