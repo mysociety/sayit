@@ -18,6 +18,11 @@ logger = logging.getLogger(__name__)
 name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 
 #{
+# "parent_path": [
+#  "Top Section",
+#  "Middle Section",
+#  "Bottom Section"
+# ],
 # "speeches": [
 #  {
 #   "personname": "M Johnson",
