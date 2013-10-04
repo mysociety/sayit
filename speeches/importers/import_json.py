@@ -72,7 +72,7 @@ class ImportJson (ImporterBase):
             if party:
                 display_name += ' (%s)' % party
 
-            speech = self.make(Speech, 
+            speech = self.make(Speech,
                     text = s['text'],
                     section = section,
 

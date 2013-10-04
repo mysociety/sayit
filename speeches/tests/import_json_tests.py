@@ -35,7 +35,7 @@ class ImportJsonTests(InstanceTestCase):
                 #('8.txt', 6, 0),
                 #('9.txt', 7, 0)
                 ]
-        
+
         for (f, exp_speeches, exp_resolved) in files:
             document_path = os.path.join(self._in_fixtures, f)
 
@@ -48,9 +48,9 @@ class ImportJsonTests(InstanceTestCase):
 
             resolved = filter(lambda s: s.speaker.person != None, speeches)
 
-            self.assertEquals( len(speeches), exp_speeches, 
-                   'Speeches %d == %d (%s)' % 
+            self.assertEquals( len(speeches), exp_speeches,
+                   'Speeches %d == %d (%s)' %
                    (len(speeches), exp_speeches, f) )
             self.assertEquals( len(resolved), exp_resolved,
-                   'Resolved %d == %d (%s)' % 
+                   'Resolved %d == %d (%s)' %
                    (len(resolved), exp_resolved, f) )
