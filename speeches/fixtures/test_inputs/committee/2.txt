@@ -1,4 +1,9 @@
 {
+ "parent_section_titles": [
+ "Top Section",
+ "Middle Section",
+ "Other Bottom Section"
+ ],
  "speeches": [
   {
    "personname": "M Johnson", 
@@ -31,9 +36,9 @@
    "text": "Mr R Cebekhulu (IFP) asked if SAFCOL was seeking available land in the traditional/communal areas, or land previously owned by Mondi or Sappi. There were communities living on mountains which had soil suitable for planting. He asked what the Council was doing to assist communities with planting on that land, whether water licences were a limiting factor and if rain water could be channelled to the plantations."
   }
  ], 
- "meetingdate": "19 Jun 2013", 
- "committeename": "Agriculture, Forestry and Fisheries", 
- "reporturl": "http://www.pmg.org.za/report/20130619-transformation-in-forestry-sector-briefings-department-agriculture-forestry-and-fisheries-safcol", 
+ "date": "2013-06-19",
+ "title": "Agriculture, Forestry and Fisheries",
+ "source_url": "http://www.pmg.org.za/report/20130619-transformation-in-forestry-sector-briefings-department-agriculture-forestry-and-fisheries-safcol", 
  "report": "Transformation in the Forestry Sector: briefings by Department of Agriculture, Forestry and Fisheries & SAFCOL", 
  "committeeurl": "http://www.pmg.org.za/committees/Agriculture,%20Forestry%20and%20Fisheries"
 }
