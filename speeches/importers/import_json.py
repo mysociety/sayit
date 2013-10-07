@@ -60,7 +60,7 @@ class ImportJson (ImporterBase):
         parent_section_titles.append(self.title)
         section = None
         for parent_to_create in parent_section_titles:
-            section = self.make(Section,
+            section = self.get_or_make_section(
                 title  = parent_to_create,
                 parent = section)
 
