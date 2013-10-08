@@ -189,15 +189,25 @@ def parse_transcript(text, date):
             continue
 
         # Messages about lunch/adjournments
-        m = re.match('[\([].*[]\)]$', line.strip())
+        if date.isoformat() == '2008-05-19':
+            if re.match(' *\[Lunch break taken at 1.30 p.m.\] *\[Upon', line):
+                line = line.replace('[Upon', '')
+            if re.match(' *resuming at 2.30 p.m.\]', line):
+                line = line.replace('resuming', '[Upon resuming')
+
+        m = re.match('(?:\^ )?[\([].*[]\)]\.?$', line.strip())
         if m:
             yield speech
             speech = Speech( speaker=None, text=line.strip() )
             continue
 
         # Multiline messages
-        # TODO Any other cases?
-        m = re.match(' *\[(Whereupon|At this point|Proceedings adjourned)(?i)', line)
+        if re.match(' *Monday. *\[Whereupon the hearing adjourned at', line):
+            speech.add_text('Monday.')
+            line = line.replace('Monday. ', '')
+        m1 = re.match(' *\[(Due to|Whereupon|At this point|Proceedings adjourned)(?i)', line)
+        m2 = re.match(' *(Whereupon the hearing adjourned at |Whereupon commencing at )', line)
+        m = m1 or m2
         if m:
             yield speech
             state = 'adjournment'
