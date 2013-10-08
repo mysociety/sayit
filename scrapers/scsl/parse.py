@@ -215,7 +215,9 @@ def parse_transcript(text, date):
             continue
 
         # Questions
-        m = re.match('(?:FURTHER )?(?:EXAMINATION-IN-CHIEF|CROSS-EXAMINATION|CROSS-EXAMINED|RE-EXAMINATION) BY ([A-Z ]*):?(?: *\[Cont(?:(?:inue|\')d|\.)\])?:?$', line.strip())
+        m1 = re.match('(?i)(?:FURTHER )?(?:EXAMINATION(?:-| )IN-CHIEF|CROSS-EXAMINATION|CROSS-EXAMINED|RE-EXAMINATION) BY ([A-Z ]*):?(?: *\[Cont(?:(?:inue|\')d|\.|)\])?:?\.?$', line.strip())
+        m2 = re.match('QUESTIONS BY (THE BENCH):$', line.strip())
+        m = m1 or m2
         if m:
             interviewer = fix_name(m.group(1))
             continue
@@ -245,6 +247,13 @@ def parse_transcript(text, date):
                 assert Speech.witness, line
                 speaker = Speech.witness
             else:
+                # Couple of post-private session fixes
+                # Could possibly be done spotting ":" at end of previous speech, but only a few
+                if not interviewer:
+                    if date.isoformat() == '2010-05-21': interviewer = 'MS HOLLIS'
+                    if date.isoformat() in ('2010-04-21', '2008-11-26'): interviewer = 'MR KOUMJIAN'
+                    if date.isoformat() == '2008-08-26': interviewer = 'MR MUNYARD'
+                    if date.isoformat() == '2008-06-13': interviewer = 'MR BANGURA'
                 assert interviewer, line
                 speaker = interviewer
             speech = Speech( speaker=speaker, text=m.group(2) )
