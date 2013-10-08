@@ -211,7 +211,7 @@ def parse_transcript(text, date):
             continue
 
         # Witness arriving
-        m = re.match("(DANKPANNAH DR CHARLES GHANKAY TAYLOR):$", line.strip())
+        m = re.match("(DANKPANNAH DR CHARLES GHANKAY TAYLOR):(?: \[Affirmed\])?$", line.strip())
         if m:
             Speech.witness = fix_name(m.group(1))
             Speech.current_section = Section( title=line.strip() )
