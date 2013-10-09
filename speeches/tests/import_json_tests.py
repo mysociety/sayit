@@ -68,8 +68,14 @@ class ImportJsonTests(InstanceTestCase):
                    'Resolved %d == %d (%s)' %
                    (len(resolved), exp_resolved, f) )
 
-        s0_grandparent = sections[0].parent.parent.parent
-        s1_grandparent = sections[1].parent.parent.parent
+        s0 = sections[0]
+        s1 = sections[1]
+
+        self.assertEquals( s0.title, s1.title )
+        self.assertNotEquals( s0.id, s1.id )
+
+        s0_grandparent = s0.parent.parent.parent
+        s1_grandparent = s1.parent.parent.parent
         self.assertEquals( s0_grandparent.title, 'Top Section' )
         self.assertEquals( s1_grandparent.title, 'Top Section' )
         self.assertEquals( s0_grandparent.id, s1_grandparent.id )
