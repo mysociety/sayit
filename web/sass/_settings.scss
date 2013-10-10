@@ -1,3 +1,6 @@
+
+
+
 //
 // Foundation Variables
 //
@@ -51,9 +54,9 @@ $em-base: 16 !default;
 
 $default-float: left;
 
-// $body-bg: #fff;
-// $body-font-color: #222;
-// $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+$body-bg: #222222;
+$body-font-color: #333;
+$body-font-family: "Source Sans Pro", "Helvetica Neue", Arial, "Helvetica", Helvetica, sans-serif;
 // $body-font-weight: normal;
 // $body-font-style: normal;
 
@@ -113,9 +116,9 @@ $default-float: left;
 
 // Media Queries
 
-// $small-screen: 768px;
-// $medium-screen: 1280px;
-// $large-screen: 1440px;
+$small-screen: 37.5em;
+$medium-screen: 48em;
+$large-screen: 60em;
 
 // $screen: "only screen";
 // $small: "only screen and (min-width: #{$small-screen})";
@@ -137,8 +140,8 @@ $default-float: left;
 // Grid Variables
 //
 
-// $row-width: emCalc(1000);
-// $column-gutter: emCalc(30);
+$row-width: emCalc(1280);
+$column-gutter: emCalc(24);
 // $total-columns: 12;
 
 //
@@ -160,8 +163,8 @@ $default-float: left;
 
 // Control header font styles
 
-// $header-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-// $header-font-weight: bold;
+$header-font-family: inherit;
+$header-font-weight: 300;
 // $header-font-style: normal;
 // $header-font-color: #222;
 // $header-line-height: 1.4;
@@ -171,12 +174,12 @@ $default-float: left;
 
 // Control header font sizes
 
-// $h1-font-size: emCalc(44);
-// $h2-font-size: emCalc(37);
-// $h3-font-size: emCalc(27);
-// $h4-font-size: emCalc(23);
-// $h5-font-size: emCalc(18);
-// $h6-font-size: 1em;
+$h1-font-size: emCalc(48);
+$h2-font-size: emCalc(32);
+$h3-font-size: emCalc(21);
+$h4-font-size: emCalc(18);
+$h5-font-size: 1em;
+$h6-font-size: .875em;
 
 // Control how subheaders are styled.
 
@@ -506,7 +509,7 @@ $default-float: left;
 // $alert-close-color: #333;
 // $alert-close-position: emCalc(5);
 // $alert-close-font-size: emCalc(22);
-// $alert-close-opacity: 0.3;
+ $alert-close-opacity: 0.5;
 // $alert-close-opacity-hover: 0.5;
 // $alert-close-padding: 5px 4px 4px;
 
@@ -1234,12 +1237,12 @@ $default-float: left;
 
 // Background color for the top bar
 
-// $topbar-bg: #111;
+//$topbar-bg: #fff;
 
 // Height and margin
 
-// $topbar-height: 45px;
-// $topbar-margin-bottom: emCalc(30);
+// $topbar-height: 1em;
+// $topbar-margin-bottom: 0;
 
 // Control Input height for top bar
 
@@ -1253,7 +1256,7 @@ $default-float: left;
 // Style the top bar dropdown elements
 
 // $topbar-dropdown-bg: #222;
-// $topbar-dropdown-link-color: #fff;
+// $topbar-dropdown-link-color: $colour_dark_grey;
 // $topbar-dropdown-link-bg: lighten($topbar-bg, 5%);
 // $topbar-dropdown-toggle-size: 5px;
 // $topbar-dropdown-toggle-color: #fff;
@@ -1261,14 +1264,14 @@ $default-float: left;
 
 // Set the link colors and styles for top-level nav
 
-// $topbar-link-color: #fff;
-// $topbar-link-color-hover: #fff;
-// $topbar-link-color-active: #fff;
-// $topbar-link-weight: bold;
-// $topbar-link-font-size: emCalc(13);
+// $topbar-link-color: #666361;
+// $topbar-link-color-hover: #222;
+// $topbar-link-color-active: #222;
+// $topbar-link-weight: 700;
+// $topbar-link-font-size: emCalc(15);
 // $topbar-link-hover-lightness: -30%; // Darken by 30%
 // $topbar-link-bg-hover: darken($topbar-bg, 3%);
-// $topbar-link-bg-active: darken($topbar-bg, 3%);
+// $topbar-link-bg-active: transparent;
 
 // $topbar-dropdown-label-color: #555;
 // $topbar-dropdown-label-text-transform: uppercase;
@@ -1299,3 +1302,5 @@ $default-float: left;
 // Sticky Class
 
 // $topbar-sticky-class: ".sticky";
+
+

@@ -54,114 +54,175 @@
 // @import "foundation/components/tooltips";
 // @import "foundation/components/dropdown";
 
-/* apply a natural box layout model to all elements */
-* {
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+@import "compass/css3";
 
-    /* Suppress it all */
-    border-radius: 0 !important;
-    text-shadow: none !important;
+/* Custom variables */
+$colour_black: #222222;
+$colour_dark_grey: #666361;
+$colour_mid_grey: #ccc7c3;
+$colour_light_grey: #e9e7e4;
+
+$weight_light: 300;
+$weight_bold: 700;
+
+
+/* Custom mixins */
+@mixin unstyled-list {
+    li {
+       list-style: none outside none;
+    }
+
 }
 
-/* A couple of Bootstrap things assume content-box */
-select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-}
-.input-append .add-on, .input-prepend .add-on {
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-}
-
-/* Maximum width, body layout */
-
+html,
 body {
-    background-color: #fafafa;
-}
-@media (max-width: 767px) {
-    body {
-        background-color: #fff;
-    }
+    height: 100%;
+    background: #222;
 }
 
-.navbar-inner {
-    position: relative;
-    z-index: 1;
-}
-.container-fluid {
-    position: relative;
-    z-index: 0;
-    background-color: #fff;
-    margin: 0 auto;
-    max-width: 60em;
-    -webkit-box-shadow: 0px 0 4px 4px rgba(0, 0, 0, 0.065);
-    -moz-box-shadow: 0px 0 4px 4px rgba(0, 0, 0, 0.065);
-    box-shadow: 0px 0 4px 4px rgba(0, 0, 0, 0.065);
-}
-@media (max-width: 767px) {
-    .container-fluid {
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-    }
+.full-page {
+    background: #fff;
 }
 
-/* Navbar colour changes */
-
-.navbar-inverse .navbar-inner {
-    background-image: none;
-    background-color: #2C3E50;
-    border-color: #2980B9;
-    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
-    box-shadow: 0 5px 10 rgba(0, 0, 0, 0.4);
+/* Base typography */
+h1, h2 {
+    letter-spacing: 0.02em;
 }
 
-.navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
-    border-width: 0 0 4px;
+h3 {
+    font-weight: $weight_bold;
 }
 
-.navbar-inverse .brand, .navbar-inverse .nav > li > a {
-    color: #ccc;
-}
-.navbar-inverse .navbar-text, .navbar-inverse .navbar-link {
-    color: #ccc;
-}
-.navbar-inverse .nav li.dropdown > .dropdown-toggle .caret {
-    border-top-color: #ccc;
-    border-bottom-color: #ccc;
+.body-text {
+    font-size: emCalc(15);
 }
 
-.navbar-inverse .divider-vertical {
-    border-left-color: #223344;
-    border-right-color: #334455;
+/* Buttons */
+.button {
+    @include box-shadow(none);
 }
 
-.navbar-inverse .nav .active > a, .navbar-inverse .nav .active > a:hover, .navbar-inverse .nav .active > a:focus {
-    background-color: #2980B9;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-
-.navbar-inverse .nav li.dropdown.open > .dropdown-toggle, .navbar-inverse .nav li.dropdown.active > .dropdown-toggle, .navbar-inverse .nav li.dropdown.open.active > .dropdown-toggle {
-    background-color: #2980B9;
-}
-
-.navbar-inverse .btn-navbar {
-    background-image: none;
-    background-color: #2C3E50;
+/* Staging alert-box */
+.alert-box--header {
+    margin-bottom: 0;
     border: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
 }
 
-@media (max-width: 979px) {
-    .navbar-inverse .nav-collapse .nav > li > a,
-    .navbar-inverse .nav-collapse .dropdown-menu a {
-        color: #fff;
+/* Brand header */
+.brand-header {
+    background: $colour_black;
+}
+
+.brand-header__title {
+    color: #fff;
+    font-size: emCalc(24);
+    font-weight: $weight_bold;
+    letter-spacing: 0;
+    .subtitle {
+        font-size: .583333333em; /* 14px */
+        font-weight: $weight_light;
     }
 }
 
+.admin-menu-container {
+    text-align: right;
+}
+
+.admin-menu-button {
+    margin-top: 1.1em;
+    /* show at all? */
+    &.button.secondary {
+        /* Override some Foundation stuff */
+        background: transparent;
+        color: #fff;
+        border-color: #333;
+        @include box-shadow(none);
+        &:before {
+            border-color: rgba(255,255,255,0.8) transparent transparent transparent;
+        }
+    }
+}
+
+/* Brand footer */
+.brand-footer {
+    padding: 3em 0;
+}
+
+/* Instance header */
+.instance-header {
+    border-bottom: 1px solid $colour_light_grey;
+    padding-top: emCalc(24);
+    background: #fff;
+}
+
+.instance-header__title {
+    font-weight: $weight_bold;
+    font-size: emCalc(32);
+    margin-bottom: 0.15em;
+    margin-top: 0;
+    line-height: 1em;
+    a {
+        &:link,
+        &:visited {
+            color: $colour_black;
+        }
+        &:hover,
+        &:active,
+        &:focus {
+            color: $primary-color;
+        }
+    }
+}
+
+.instance-header__subtitle {
+    font-size: emCalc(13);
+    color: $colour_dark_grey;
+    max-width: 29em;
+    line-height: 1.461538462em;
+}
+
+.site-search {
+    margin-top: 0.75em;
+}
+
+.site-search__input {
+    -webkit-appearance: none;
+}
+
+.primary-navigation-bar {
+    /* Not using Foundation's .topbar, because it was too hard to customise :( */
+    .inline-list {
+        margin-bottom: 0;
+        margin-left: -0.5em;
+        > li {
+            margin-left: 0.5em;
+        }
+    }
+    a {
+        font-size: emCalc(15);
+        letter-spacing: 0.02em;
+
+        border-bottom: .375em solid transparent;
+        padding: 0 0.5em 0.37em;
+        &:link,
+        &:visited {
+            color: $colour_dark_grey;
+        }
+        &:hover,
+        &:active,
+        &:focus {
+            color: $colour_black;
+        }
+    }
+    .active {
+        a {
+            border-color: $colour_light_grey;
+            color: $colour_black;
+        }
+    }
+}
+
+/* forms */
+.errorlist {
+    @include unstyled-list();
+}
