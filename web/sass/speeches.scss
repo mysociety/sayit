@@ -1,0 +1,38 @@
+/* Speeches stylesheet */
+@import "_sayit-mixins.scss";
+
+/* breadcrumb
+ * Foundation puts the breadcrumb divider before the link, we want it afterwards
+ */
+.breadcrumbs {
+    margin-bottom: 0;
+     > *:before {
+        content: " ";
+        margin: 0;
+    }
+     > *:after {
+       content: "/";
+       color: #ccc7c3;
+       margin: 0 0;
+       position: relative;
+       top: 1px;
+       padding: 0 0.5em;
+    }
+}
+
+.page-header {
+    position: relative;
+    padding: 2em 0;
+    border-bottom: 1px solid $colour_light_grey;
+    .action-button {
+        position: absolute;
+        top: 4em;
+        right: 0;
+    }
+    h1 {
+        margin: 0;
+        @media (min-width: $small-screen) {
+            line-height: 1em;
+        }
+    }
+}

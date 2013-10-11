@@ -1,0 +1,17 @@
+$small-screen: 37.5em;
+$medium-screen: 48em;
+$large-screen: 60em;
+
+$colour_black: #222222;
+$colour_dark_grey: #666361;
+$colour_mid_grey: #ccc7c3;
+$colour_light_grey: #e9e7e4;
+
+$weight_light: 300;
+$weight_bold: 700;
+
+@mixin unstyled-list {
+    li {
+       list-style: none outside none;
+    }
+}

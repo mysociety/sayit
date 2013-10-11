@@ -55,24 +55,9 @@
 // @import "foundation/components/dropdown";
 
 @import "compass/css3";
-
-/* Custom variables */
-$colour_black: #222222;
-$colour_dark_grey: #666361;
-$colour_mid_grey: #ccc7c3;
-$colour_light_grey: #e9e7e4;
-
-$weight_light: 300;
-$weight_bold: 700;
+@import "_sayit-mixins.scss";
 
 
-/* Custom mixins */
-@mixin unstyled-list {
-    li {
-       list-style: none outside none;
-    }
-
-}
 
 html,
 body {
@@ -119,7 +104,11 @@ h3 {
     font-weight: $weight_bold;
     letter-spacing: 0;
     .subtitle {
-        font-size: .583333333em; /* 14px */
+        font-size: .458333333em; /* 11px */
+        @media (min-width: $small-screen) {
+            font-size: .583333333em; /* 14px */
+        }
+
         font-weight: $weight_light;
     }
 }
