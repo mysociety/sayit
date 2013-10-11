@@ -23,7 +23,7 @@
         <a href="{% url 'speeches:speaker-view' speech.speaker.id %}">
             <img src="{% if speech.speaker.person.image %}
                 {{ speech.speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
-                style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt="" width=48 height=48 class="speaker-img">
+                style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-img">
             <strong>{% firstof speech.speaker_display speech.speaker %}</strong></a>
       {% else %}
         <strong>{% trans "Unknown Speaker" %}</strong>
@@ -32,7 +32,7 @@
   {% endif %}
 
   {% if speech.start_time or speech.start_date or speech.end_time or speech.end_date %}
-    <span class="speech-date muted"><small style="line-height:1">
+    <span class="speech-date">
       {{ speech.start_time|default:"" }}{% if speech.start_time and speech.start_date and speech.start_date != speech.end_date %},{% endif %}
       {% if speech.start_date and speech.start_date != speech.end_date %}
         {{ speech.start_date }}
@@ -42,7 +42,7 @@
         {{ speech.end_time|default:"" }}{% if speech.end_time and speech.end_date %},{% endif %}
         {{ speech.end_date }}
       {% endif %}
-    </small></span>
+    </span>
   {% endif %}
 
   {% for tag in speech.tags.all %}
@@ -50,9 +50,9 @@
   {% endfor %}
 
   {% if speech.section_id %}
-    <a class="hov" title="{% trans "Permalink to this speech in context" %}" href="{% if section %}{% url 'speeches:section-view' section.get_path %}{% else %}{% url 'speeches:section-view' speech.section.get_path %}{% endif %}#s{{ speech.id }}"><i class="icon-tags off-screen">{% trans "Permalink to this speech in context" %}</i></a>
+    <a title="{% trans "Link in context" %}" href="{% if section %}{% url 'speeches:section-view' section.get_path %}{% else %}{% url 'speeches:section-view' speech.section.get_path %}{% endif %}#s{{ speech.id }}">{% trans "Link in context" %}</a>
   {% endif %}
-    <a class="hov" title="{% trans "Permalink to this speech individually" %}" href="{% url "speeches:speech-view" speech.id %}"><i class="icon-tag off-screen">{% trans "Permalink to this speech individually" %}</i></a>
+    <a title="{% trans "Link" %}" href="{% url "speeches:speech-view" speech.id %}">{% trans "Link" %}</a>
   {% if speech.audio %}
     <i class="icon-volume-up off-screen">{% trans "This speech has audio" %}</i>
     <audio class="audio-small" id="audio{{ speech.id }}" src="{{ MEDIA_URL }}{{ speech.audio }}" controls></audio>
