@@ -2,12 +2,12 @@
 {% load i18n %}
 
 {% block content %}
-
+<div class="small-12 small-centered columns large-4">
 <h1>{% trans "Log in" %}</h1>
 
 <form class="form-horizontal" method="post">
     <input type="hidden" name="next" value="{{ next }}">
     {% include "speeches/form.html" with type="login" submit="Log in" %}
 </form>
-
+</div>
 {% endblock %}
