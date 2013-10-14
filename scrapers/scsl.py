@@ -27,13 +27,6 @@ instance = get_or_create(Instance, label='charles-taylor')
 for date, url, text in get_transcripts():
     date_section = get_or_create(Section, instance=instance, title='Hearing, %s' % date.strftime('%d %B %Y').lstrip('0'))
 
-    if date.isoformat() == '2010-05-19': continue # Is 2010-03-19 transcript
-    if date.isoformat() == '2010-05-10': continue # Is 2010-04-19 transcript
-    if date.isoformat() == '2009-08-17': continue # Is 2009-08-11 transcript
-    if date.isoformat() == '2009-02-19': continue # Is 2009-01-19 transcript
-    if date.isoformat() == '2008-12-04': continue # Is 2008-12-03 transcript
-    if date.isoformat() == '2008-10-03': continue # Is not a transcript
-    if date.isoformat() == '2008-06-25': continue # Is 2007-06-25 transcript
     if date.isoformat() == '2006-07-21': continue # Is garbled
 
     for speech in parse_transcript(text, date):

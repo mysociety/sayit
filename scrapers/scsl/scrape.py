@@ -4,17 +4,18 @@ import re
 import subprocess
 
 import bs4
-import requests
 import requests_cache
 
 BASE_DIR = os.path.dirname(__file__)
-requests_cache.install_cache(os.path.join(BASE_DIR, 'taylor'))
 
-def get_url(url, type='none'):
+session = requests_cache.core.CachedSession(os.path.join(BASE_DIR, 'taylor'))
+session_day = requests_cache.core.CachedSession(os.path.join(BASE_DIR, 'taylor'), expire_after=86400)
+
+def get_url(url, type='none', session=session):
     """Fetches a URL from the SC-SL website, and returns either its
        text, soup or content."""
     if url[0] == '/': url = 'http://www.sc-sl.org' + url
-    resp = requests.get(url)
+    resp = session.get(url)
     if resp.status_code != 200:
         raise Exception
     if type == 'binary':
@@ -40,7 +41,7 @@ def get_transcript(url, date):
     return re.split('\r?\n', text)
 
 def get_transcripts():
-    transcripts = get_url('/CASES/ProsecutorvsCharlesTaylor/Transcripts/tabid/160/Default.aspx', 'html')
+    transcripts = get_url('/CASES/ProsecutorvsCharlesTaylor/Transcripts/tabid/160/Default.aspx', 'html', session=session_day)
     # Loop through the rows in reverse order (so oldest first)
     for row in transcripts('p'):
         for thing in row.findAll(text=re.compile('\d')):
