@@ -25,6 +25,7 @@
     position: relative;
     padding: 2em 0;
     border-bottom: 1px solid $colour_light_grey;
+    margin-bottom: 1em;
     .action-button {
         position: absolute;
         top: 4em;
@@ -38,18 +39,101 @@
     }
 }
 
+.pager {
+    @include unstyled-list;
+    margin: 1em 0;
+    border-top: 1px solid $colour_light_grey;
+  a {
+    display: block;
+    padding: .5em 2em;
+    border: 1px solid $colour_light_grey;
+    border-top: none;
+    text-align: center;
+    &:hover,
+    &:focus,
+    &:active {
+      border-color: $colour_primary;
+      background: $colour_primary;
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+}
+
 .speech {
-  margin-bottom: 3em;
-  padding-bottom: 1.5em;
-  border-bottom: 1px solid $colour_light_grey;
+  margin-bottom: 2em;
   position: relative;
+  @include clearfix;
+}
+
+.speaker-portrait-wrapper {
+  @media (max-width: $small-screen) {
+    display: inline;
+    width: auto;
+    padding: 0;
+    float: none;
+  }
+}
+
+.speech-wrapper {
+  @media (max-width: $small-screen) {
+    display: inline;
+    width: auto;
+    padding: 0;
+    float: none !important;
+  }
+}
+
+.speaker-portrait {
+  float: left;
+  margin-top: -.33em;
+  @media (min-width: $small-screen) {
+    margin-top: 1em;
+  }
+  max-width: 100%;
+}
+
+.speaker-portrait--small {
+  width: 72px;
+}
+
+.speaker-portrait--medium {
+  width: 64px;
+  @media (min-width: $small-screen) {
+      width: 96px;
+  }
+}
+
+.speaker-portrait--large {
+  width: 120px;
+}
+
+.speech__meta-data {
+  margin-left: 5em;
+  span {
+    display: block;
+  }
+
+  @media (min-width: $small-screen) {
+    margin-left: 0;
+    margin-top: 1em;
+    span {
+      display: inline;
+    }
+  }
+}
+
+.speech__meta-data__speaker-name {
+  margin-right: .5em;
 }
 
 .speech__content {
-  font-family: Georgia, Times, "Times New Roman", Serif;
+  font-family: Georgia, Times, 'Times New Roman', Serif;
   font-size: 1.0625em; /* 17px */
   clear: both;
   margin-top: 1em;
+  padding-bottom: .5em;
+  border-bottom: 1px solid $colour_light_grey;
   @media (min-width: $small-screen) {
       font-size:  1.1875em; /* 19px */
   }
@@ -58,45 +142,10 @@
   }
 }
 
-.speaker-portrait {
-  float: left;
-  margin-top: -.33em;
-}
-
-.speaker-portrait--small {
-  height: 72px;
-  width: 72px;
-}
-
-.speaker-portrait--medium {
-  height: 64px;
-  width: 64px;
-  @media (min-width: $small-screen) {
-      height: 96px;
-      width: 96px;
-  }
-}
-
-.speaker-portrait--large {
-  height: 120px;
-  width: 120px;
-}
-
-.speech__meta-data {
-  margin-left: 5em;
-  margin-top: 1em;
-  span {
-    display: block;
-    @media (min-width: $small-screen) {
-      display: inline;
-    }
-  }
-}
-
 .speech__links {
   background: #fff;
   position: absolute;
-  bottom: -1em;
+  bottom: -1.1em;
   right: 0;
   padding: .5em 1em .5em 0;
   a {
@@ -112,6 +161,25 @@
     }
   }
 }
+
+/* Hide speech__links on devices capable of hover, reveal on hover or focus of speech */
+.no-touch {
+  .speech__links {
+    display: none;
+  }
+
+  .speech:hover,
+  .speech:focus,
+  .speech *:hover,
+  .speech *:focus {
+    .speech__links {
+     display: block;
+    }
+
+  }
+}
+
+
 
 .round-image {
   @include border-radius(100%);

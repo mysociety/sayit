@@ -82,9 +82,21 @@ h3 {
     font-size: emCalc(15);
 }
 
+.skinny-type {
+    font-weight: $weight_light;
+}
+
+a:hover,
+a:focus {
+    text-decoration: underline;
+}
+
 /* Buttons */
 .button {
     @include box-shadow(none);
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 /* Staging alert-box */
@@ -159,6 +171,7 @@ h3 {
         &:active,
         &:focus {
             color: $primary-color;
+            text-decoration: none;
         }
     }
 }
@@ -174,7 +187,8 @@ h3 {
     margin-top: 0.75em;
 }
 
-.site-search__input {
+.site-search__input,
+.site-search__input[type="search"] {
     -webkit-appearance: none;
 }
 
@@ -201,6 +215,8 @@ h3 {
         &:active,
         &:focus {
             color: $colour_black;
+            text-decoration: none;
+            border-color: $colour_light_grey;
         }
     }
     .active {

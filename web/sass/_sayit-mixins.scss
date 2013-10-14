@@ -1,4 +1,7 @@
-$small-screen: 37.5em;
+
+@import "compass/css3";
+
+$small-screen: 48em;
 $medium-screen: 48em;
 $large-screen: 60em;
 
@@ -14,6 +17,26 @@ $weight_bold: 700;
 @mixin unstyled-list {
     li {
        list-style: none outside none;
+    }
+}
+
+@mixin clearfix {
+    &:before,
+    &:after {
+        content: " "; /* 1 */
+        display: table; /* 2 */
+    }
+
+    &:after {
+        clear: both;
+    }
+
+    /**
+     * For IE 6/7 only
+     * Include this rule to trigger hasLayout and contain floats.
+     */
+    &{
+        *zoom: 1;
     }
 }
 

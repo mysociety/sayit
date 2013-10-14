@@ -4,7 +4,7 @@
 {% load bleach_tags %}
 
 {% if not noli %}
-<li id="s{{ speech.id }}" class="row speech speech--with-portrait speech--border"{% if speech.speaker.colour %} style="border-left-color: #{{ speech.speaker.colour }};"{% endif %}>
+<li id="s{{ speech.id }}" class="row speech {% if speech.speaker %}speech--with-portrait{% endif %} speech--border"{% if speech.speaker.colour %} style="border-left-color: #{{ speech.speaker.colour }};"{% endif %}>
 {% endif %}
 
   {% if not nosection and speech.section_id %}
@@ -17,21 +17,27 @@
     <span class="label label-info">{% trans "Invisible" %}</span>
   {% endif %}
   {% if speech.speaker %}
+  <div class="speaker-portrait-wrapper large-2 columns">
   <img src="{% if speech.speaker.person.image %}
       {{ speech.speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
       style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-portrait round-image speaker-portrait--medium">
+  </div>
   {% endif %}
-<div class="speech__meta-data">
-  {% if not nospeaker %}
-    <span class="speech__meta-data__speaker">
 
-        <a href="{% url 'speeches:speaker-view' speech.speaker.id %}">
-
-            <strong>{% firstof speech.speaker_display speech.speaker %}</strong></a>
+  <div class="speech-wrapper large-10 columns">
+    <div class="speech__meta-data">
+      {% if not nospeaker %}
+        <span class="speech__meta-data__speaker-name">
+          <a href="{% url 'speeches:speaker-view' speech.speaker.id %}">
+              <strong>{% firstof speech.speaker_display speech.speaker %}</strong>
+          </a>
+        </span>
       {% else %}
-        <strong>{% trans "Unknown Speaker" %}</strong>
+        <span class="speech__meta-data__speaker">
+          <strong>{% trans "Unknown Speaker" %}</strong>
+        </span>
       {% endif %}
-    </span>
+
 
 
   {% if speech.start_time or speech.start_date or speech.end_time or speech.end_date %}
@@ -78,6 +84,7 @@
     <a title="{% trans "Link in context" %}" href="{% if section %}{% url 'speeches:section-view' section.get_path %}{% else %}{% url 'speeches:section-view' speech.section.get_path %}{% endif %}#s{{ speech.id }}">{% trans "Link in context" %}</a>
   {% endif %}
     <a title="{% trans "Link" %}" href="{% url "speeches:speech-view" speech.id %}">{% trans "Link" %}</a>
+</div>
 </div>
 {% if not noli %}
 </li>

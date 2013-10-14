@@ -7,12 +7,6 @@
 {% block title %}{{ request.instance.title }}{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>{{ request.instance.title }}</h1>
-    {% if request.instance.description %}
-      {{ request.instance.description|linebreaks_with_lead }}
-    {% endif %}
-</div>
 
 <div class="row-fluid">
 
