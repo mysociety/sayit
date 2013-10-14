@@ -1,5 +1,6 @@
 /* Speeches stylesheet */
 @import "_sayit-mixins.scss";
+@import "compass/css3";
 
 /* breadcrumb
  * Foundation puts the breadcrumb divider before the link, we want it afterwards
@@ -36,3 +37,86 @@
         }
     }
 }
+
+.speech {
+  margin-bottom: 3em;
+  padding-bottom: 1.5em;
+  border-bottom: 1px solid $colour_light_grey;
+  position: relative;
+}
+
+.speech__content {
+  font-family: Georgia, Times, "Times New Roman", Serif;
+  font-size: 1.0625em; /* 17px */
+  clear: both;
+  margin-top: 1em;
+  @media (min-width: $small-screen) {
+      font-size:  1.1875em; /* 19px */
+  }
+  p {
+    margin-bottom: 1em;
+  }
+}
+
+.speaker-portrait {
+  float: left;
+  margin-top: -.33em;
+}
+
+.speaker-portrait--small {
+  height: 72px;
+  width: 72px;
+}
+
+.speaker-portrait--medium {
+  height: 64px;
+  width: 64px;
+  @media (min-width: $small-screen) {
+      height: 96px;
+      width: 96px;
+  }
+}
+
+.speaker-portrait--large {
+  height: 120px;
+  width: 120px;
+}
+
+.speech__meta-data {
+  margin-left: 5em;
+  margin-top: 1em;
+  span {
+    display: block;
+    @media (min-width: $small-screen) {
+      display: inline;
+    }
+  }
+}
+
+.speech__links {
+  background: #fff;
+  position: absolute;
+  bottom: -1em;
+  right: 0;
+  padding: .5em 1em .5em 0;
+  a {
+    text-transform: uppercase;
+    font-weight: $weight_bold;
+    color: $colour_dark_grey;
+    font-size: 0.6875em;
+    margin-left: 1em;
+    &:hover,
+    &:active,
+    &:focus {
+      color: $colour_primary;
+    }
+  }
+}
+
+.round-image {
+  @include border-radius(100%);
+}
+
+
+
+
