@@ -26,7 +26,7 @@ class SpeechResource(ModelResource):
         return super(SpeechResource, self).get_object_list(request).filter(instance=request.instance)
 
     class Meta:
-        queryset = Speech.objects.all()
+        queryset = Speech.objects.filter(public=True)
         resource_name = 'speech'
         excludes = ['celery_task_id']
         allowed_methods = ['get', 'post']
