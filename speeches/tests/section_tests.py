@@ -143,6 +143,19 @@ class SectionModelTests(TestCase):
         self.assertEqual( speeches[1].get_next_speech(), speeches[2] )
         self.assertEqual( speeches[2].get_next_speech(), None )
 
+    def test_section_descendant_speeches_queryset(self):
+        top_level = Section.objects.get(title='Government Written Answers')
+
+        # Get all speeches
+        speeches = top_level.descendant_speeches()
+        self.assertEqual(speeches.count(), 6)
+
+        # Check that filtering works as expected
+        test_date = date(2013, 3, 7)
+        on_test_date = speeches.filter(start_date=test_date)
+        self.assertEqual(on_test_date.count(), 2)
+
+
 class SectionSiteTests(InstanceTestCase):
     """Tests for the section functionality"""
 

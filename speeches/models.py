@@ -255,6 +255,13 @@ class Section(AuditedModel, InstanceMixin):
         """Fetch the previous node in the tree, at the same level as this one."""
         return self._get_next_previous_node(-1)
 
+    def descendant_speeches(self):
+        """Return a queryset of all speeches that belong to this section, or any of its descendants."""
+        section_descendants = self._get_descendants(include_self=True)
+        section_descendants_ids = [x.id for x in section_descendants]
+        return Speech.objects.filter(section__in=section_descendants_ids)
+
+
 class AudioMP3Mixin(object):
     def save(self, *args, **kwargs):
         """Overriden save method to automatically convert the audio to an mp3"""
