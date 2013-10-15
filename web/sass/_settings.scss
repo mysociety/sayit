@@ -77,7 +77,8 @@ $body-font-family: "Source Sans Pro", "Helvetica Neue", Arial, "Helvetica", Helv
 
 // Make sure border radius matches unless we want it different.
 
-// $global-radius: 3px;
+$global-radius: 3px;
+
 // $global-rounded: 1000px;
 
 // Inset shadow shiny edges and depressions.
@@ -116,8 +117,8 @@ $body-font-family: "Source Sans Pro", "Helvetica Neue", Arial, "Helvetica", Helv
 
 // Media Queries
 
-$small-screen: 48em;
-$medium-screen: 48em;
+$small-screen: 0;
+$medium-screen: 40em;
 $large-screen: 60em;
 
 // $screen: "only screen";

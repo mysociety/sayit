@@ -21,11 +21,23 @@
     }
 }
 
+.breadcrumbs__date {
+  color: $colour_dark_grey;
+
+}
+
+.no-content-after {
+  &:after {
+    content: none;
+  }
+}
+
 .page-header {
     position: relative;
     padding: 2em 0;
     border-bottom: 1px solid $colour_light_grey;
     margin-bottom: 1em;
+    @include clearfix();
     .action-button {
         position: absolute;
         top: 4em;
@@ -36,6 +48,23 @@
         @media (min-width: $small-screen) {
             line-height: 1em;
         }
+    }
+}
+
+.page-header--with-portrait {
+    h1 {
+      margin-left: 130px;
+    }
+    .lead {
+      margin-left: 130px;
+      margin-top: 1em;
+      margin-bottom: 0;
+      font-weight: $weight_light;
+    }
+
+    .speaker-portrait {
+      margin-right: 2em;
+      margin-top: 0;
     }
 }
 
@@ -67,7 +96,7 @@
 }
 
 .speaker-portrait-wrapper {
-  @media (max-width: $small-screen) {
+  @media (max-width: $medium-screen) {
     display: inline;
     width: auto;
     padding: 0;
@@ -76,7 +105,7 @@
 }
 
 .speech-wrapper {
-  @media (max-width: $small-screen) {
+  @media (max-width: $medium-screen) {
     display: inline;
     width: auto;
     padding: 0;
@@ -87,7 +116,7 @@
 .speaker-portrait {
   float: left;
   margin-top: -.33em;
-  @media (min-width: $small-screen) {
+  @media (min-width: $medium-screen) {
     margin-top: 1em;
   }
   max-width: 100%;
@@ -99,7 +128,7 @@
 
 .speaker-portrait--medium {
   width: 64px;
-  @media (min-width: $small-screen) {
+  @media (min-width: $medium-screen) {
       width: 96px;
   }
 }

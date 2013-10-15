@@ -5,29 +5,29 @@
 @import "normalize";
 
 // Comment out this import if you are customizing you imports below
-@import "foundation";
+// @import "foundation";
 
 // Import specific parts of Foundation by commenting the import "foundation"
 // and uncommenting what you want below. You must uncomment the following if customizing
 
 @import "foundation/components/global"; // *always required
-@import "foundation/components/grid";
+//@import "foundation/components/grid";
 
 //
 // Use this grid if you want to start using the new Foundation 5 grid early.
 // It will change breakpoints to min-width: 640px and 1024px.
 //
-// @import "foundation/components/grid-5";
+@import "foundation/components/grid-5";
 //
 
 // @import "foundation/components/visibility";
 // @import "foundation/components/block-grid";
-// @import "foundation/components/type";
-// @import "foundation/components/buttons";
-// @import "foundation/components/forms"; // *requires components/buttons
+@import "foundation/components/type";
+@import "foundation/components/buttons";
+@import "foundation/components/forms"; // *requires components/buttons
 // @import "foundation/components/custom-forms"; // *requires components/buttons, components/forms
 // @import "foundation/components/button-groups"; // *requires components/buttons
-// @import "foundation/components/dropdown-buttons"; // *requires components/buttons
+@import "foundation/components/dropdown-buttons"; // *requires components/buttons
 // @import "foundation/components/split-buttons"; // *requires components/buttons
 // @import "foundation/components/flex-video";
 // @import "foundation/components/section";
@@ -36,11 +36,11 @@
 // @import "foundation/components/reveal";
 // @import "foundation/components/joyride";
 // @import "foundation/components/clearing";
-// @import "foundation/components/alert-boxes";
-// @import "foundation/components/breadcrumbs";
+@import "foundation/components/alert-boxes";
+@import "foundation/components/breadcrumbs";
 // @import "foundation/components/keystrokes";
 // @import "foundation/components/labels";
-// @import "foundation/components/inline-lists";
+@import "foundation/components/inline-lists";
 // @import "foundation/components/pagination";
 // @import "foundation/components/panels";
 // @import "foundation/components/pricing-tables";
@@ -86,6 +86,18 @@ h3 {
     font-weight: $weight_light;
 }
 
+a {
+    -ms-word-break: break-all;
+         word-break: break-all;
+
+         // Non standard for webkit
+         word-break: break-word;
+
+    -webkit-hyphens: auto;
+       -moz-hyphens: auto;
+            hyphens: auto;
+}
+
 a:hover,
 a:focus {
     text-decoration: underline;
@@ -117,7 +129,7 @@ a:focus {
     letter-spacing: 0;
     .subtitle {
         font-size: .458333333em; /* 11px */
-        @media (min-width: $small-screen) {
+        @media (min-width: $medium-screen) {
             font-size: .583333333em; /* 14px */
         }
 
@@ -154,6 +166,7 @@ a:focus {
     border-bottom: 1px solid $colour_light_grey;
     padding-top: emCalc(24);
     background: #fff;
+    position: relative;
 }
 
 .instance-header__title {
@@ -194,19 +207,27 @@ a:focus {
 
 .primary-navigation-bar {
     /* Not using Foundation's .topbar, because it was too hard to customise :( */
-    .inline-list {
-        margin-bottom: 0;
-        margin-left: -0.5em;
-        > li {
-            margin-left: 0.5em;
+    .menu-dropdown {
+        display: none;
+        @media (max-width: $medium-screen) {
+            display: block;
+        }
+        line-height: 1.6;
+    }
+    .nav-menu {
+        @include unstyled-list;
+        @media (min-width: $medium-screen) {
+            display: block;
+            @include inline-list;
         }
     }
+
     a {
         font-size: emCalc(15);
         letter-spacing: 0.02em;
-
-        border-bottom: .375em solid transparent;
-        padding: 0 0.5em 0.37em;
+        display: block;
+        padding: 0.25em;
+        border-bottom: 1px solid $colour_light_grey;
         &:link,
         &:visited {
             color: $colour_dark_grey;
@@ -216,7 +237,16 @@ a:focus {
         &:focus {
             color: $colour_black;
             text-decoration: none;
-            border-color: $colour_light_grey;
+        }
+        @media (min-width: $medium-screen) {
+            border-bottom: .375em solid transparent;
+            display: inline-block;
+            padding: 0 0.5em 0.37em;
+            &:hover,
+            &:active,
+            &:focus {
+                border-color: $colour_light_grey;
+            }
         }
     }
     .active {

@@ -1,8 +1,8 @@
 
 @import "compass/css3";
 
-$small-screen: 48em;
-$medium-screen: 48em;
+$small-screen: 0;
+$medium-screen: 40em;
 $large-screen: 60em;
 
 $colour_primary: #e14a55;
@@ -17,6 +17,15 @@ $weight_bold: 700;
 @mixin unstyled-list {
     li {
        list-style: none outside none;
+    }
+}
+
+@mixin inline-list {
+    margin-left: -0.5em;
+    margin-bottom: 0;
+    li {
+        display: inline-block;
+        margin-left: 0.5em;
     }
 }
 
@@ -37,6 +46,33 @@ $weight_bold: 700;
      */
     &{
         *zoom: 1;
+    }
+}
+
+.hide-on-small {
+    display: none !important;
+    visibility: hidden !important;
+    @media (min-width: $medium-screen) {
+        display: block;
+        visibility: visible;
+    }
+}
+
+.hide-medium-upwards {
+    display: inline-block;
+    visibility: visible;
+    @media (min-width: $medium-screen) {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+.hide-large-upwards {
+    display: inline-block;
+    visibility: visible;
+    @media (min-width: $large-screen) {
+        display: none;
+        visibility: hidden;
     }
 }
 

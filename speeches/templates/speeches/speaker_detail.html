@@ -7,25 +7,26 @@
 
 {% block content %}
 
-<div class="page-header">
+<div class="page-header page-header--with-portrait">
 
     {% include "speeches/_speaker_user_actions.html" %}
 
     <img src="{% if speaker.person.image %}{{ speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
           style="border-color #{{ speaker.colour }}; background-color: #{{ speaker.colour }};"
 
-
+          class="speaker-portrait speaker-portrait--medium round-image"
           alt="Headshot of {{ speaker.name|escape}}">
 
     <h1>{{ speaker.name }}</h1>
 
-
-
     {% if speaker.person.summary %}
-    <p class="lead person-summary"> {{ speaker.person.summary }} </p>
+    <p class="lead person-summary"> {{ speaker.person.summary }}
+
+    </p>
     {% endif %}
 </div>
-
+<div class="row">
+  <div class="small-12 large-9 columns">
     <ul class="unstyled">
         {% if not page_obj %}
             <li>{% blocktrans with speaker=speaker.name %}{{ speaker }} has no recorded speeches yet.{% endblocktrans %}</li>
@@ -36,5 +37,7 @@
     </ul>
 
     {% include 'speeches/pagination.html' %}
-
+</div>
+<div class="small-12 large-3 columns">
+</div>
 {% endblock %}
