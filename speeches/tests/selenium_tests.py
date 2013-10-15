@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from django.test import LiveServerTestCase
 from django.test.utils import override_settings
+from django.utils import unittest
 from django.conf import settings
 
 from instances.tests import InstanceLiveServerTestCase
@@ -14,16 +15,23 @@ from instances.tests import InstanceLiveServerTestCase
 import speeches
 from speeches.models import Speaker, Speech
 
+skip_selenium = not os.environ.get('SELENIUM_TESTS', False)
+
+@unittest.skipIf(skip_selenium, 'Selenium tests not requested')
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class SeleniumTests(InstanceLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
+        if getattr(cls, "__unittest_skip__", False):
+            return
         cls.selenium = webdriver.Firefox()
         cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
         super(SeleniumTests, cls).setUpClass()
 
     @classmethod
     def tearDownClass(cls):
+        if getattr(cls, "__unittest_skip__", False):
+            return
         cls.selenium.quit()
         super(SeleniumTests, cls).tearDownClass()
 
