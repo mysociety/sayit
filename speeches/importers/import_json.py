@@ -30,7 +30,8 @@ name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 #   "text": "Mr M Johnson (ANC) chaired the meeting."
 #  },
 #  ...
-#  ],
+# ],
+# "public": true,
 # "date": "2013-06-21",
 # "organization": "Agriculture, Forestry and Fisheries",
 # "reporturl": "http://www.pmg.org.za/report/20130621-report-back-from-departments-health-trade-and-industry-and-agriculture-forestry-and-fisheries-meat-inspection",
@@ -54,6 +55,9 @@ class ImportJson (ImporterBase):
         self.init_popit_data(date=meetingdate)
 
         self.title = data.get( 'title', data.get('organization', '') )
+        
+        # Determine if speeches should be public
+        speeches_public = data.get('public', True)
 
         # Create parents as needed using parent_section_titles
         parent_section_titles = data.get('parent_section_titles', [])
@@ -79,6 +83,8 @@ class ImportJson (ImporterBase):
 
                     speaker = speaker,
                     speaker_display = display_name,
+
+                    public = speeches_public,
 
                     location = s.get('location', ''),
                     title    = s.get('title', ''),

@@ -25,9 +25,9 @@ class ImportJsonTests(InstanceTestCase):
 
     def test_import(self):
         files = [
-                # filename, speech count, resolved count, section title, section parent titles
-                ('1.txt', 8, 0, "Agriculture, Forestry and Fisheries", ["Top Section", "Middle Section", "Bottom Section"]),
-                ('2.txt', 6, 0, "Agriculture, Forestry and Fisheries", ["Top Section", "Middle Section", "Other Bottom Section"]),
+                # filename, speech count, resolved count, section title, section parent titles, is_public
+                ('1.txt', 8, 0, "Agriculture, Forestry and Fisheries", ["Top Section", "Middle Section", "Bottom Section"], True),
+                ('2.txt', 6, 0, "Agriculture, Forestry and Fisheries", ["Top Section", "Middle Section", "Other Bottom Section"], False),
                 #('3.txt', 8, 0),
                 #('4.txt', 5, 0),
                 #('5.txt', 8, 0),
@@ -39,7 +39,7 @@ class ImportJsonTests(InstanceTestCase):
 
         sections = []
 
-        for (f, exp_speeches, exp_resolved, exp_section_name, exp_section_parents) in files:
+        for (f, exp_speeches, exp_resolved, exp_section_name, exp_section_parents, is_public) in files:
             document_path = os.path.join(self._in_fixtures, f)
 
             aj = ImportJson(instance=self.instance, category_field="title", commit=True)
@@ -58,6 +58,10 @@ class ImportJsonTests(InstanceTestCase):
             self.assertEqual(parent_to_test, None)
 
             speeches = section.speech_set.all()
+
+            # Check that all speeches have the correct privacy setting
+            for speech in speeches:
+                self.assertEqual(speech.public, is_public)
 
             resolved = filter(lambda s: s.speaker.person != None, speeches)
 

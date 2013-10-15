@@ -37,6 +37,7 @@
   }
  ], 
  "date": "2013-06-19",
+ "public": false,
  "title": "Agriculture, Forestry and Fisheries",
  "source_url": "http://www.pmg.org.za/report/20130619-transformation-in-forestry-sector-briefings-department-agriculture-forestry-and-fisheries-safcol", 
  "report": "Transformation in the Forestry Sector: briefings by Department of Agriculture, Forestry and Fisheries & SAFCOL", 
