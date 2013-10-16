@@ -62,11 +62,7 @@ class ImportJson (ImporterBase):
         # Create parents as needed using parent_section_titles
         parent_section_titles = data.get('parent_section_titles', [])
         parent_section_titles.append(self.title)
-        section = None
-        for parent_to_create in parent_section_titles:
-            section = self.get_or_make_section(
-                title  = parent_to_create,
-                parent = section)
+        section = Section.objects.get_or_create_with_parents(instance=self.instance, titles=parent_section_titles)
 
         for s in data.get( 'speeches', [] ):
 
