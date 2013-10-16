@@ -228,7 +228,7 @@ class Section(AuditedModel, InstanceMixin):
         # Get the descendants tree of sections
         tree = self.get_descendants_tree
         # Create a sorting key for each entry of the tree
-        tree_with_key = [ ( (d[0].speech_min, '', str(i)), d ) for i, d in enumerate(tree) ]
+        tree_with_key = [ ( (d[0].speech_min, '', i), d ) for i, d in enumerate(tree) ]
 
         # Fetch all speeches in this section
         speech_list = self.speech_set.all().visible(request).select_related('speaker').prefetch_related('tags')
