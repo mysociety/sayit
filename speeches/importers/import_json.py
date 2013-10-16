@@ -96,10 +96,9 @@ class ImportJson (ImporterBase):
         return section
 
     def get_or_make_section(self, **kwargs):
-        args = kwargs
 
         if self.commit:
-            s, _ = Section.objects.get_or_create(instance=self.instance, **args)
+            s, _ = Section.objects.get_or_create(instance=self.instance, **kwargs)
             return s
         else:
             # can't use get_or_create as this actually creates the objects, bah
