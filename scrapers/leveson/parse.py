@@ -147,7 +147,7 @@ def parse_transcript(text, url):
             continue
 
         # Witness arriving
-        m = re.match(" *((?:[A-Z]|Mr)(?:[A-Z' ,-]|Mc|Mr|and)+) \((.*)\)$", line)
+        m = re.match(" *((?:[A-Z]|Mr)(?:[A-Z' ,-]|Mc|Mr|and)+) (\(.*\))$", line)
         if m:
             Speech.witness = fix_name(m.group(1))
             if Speech.witness == 'DR GERALD PATRICK MCCANN AND DR KATE MARIE MCCANN':
@@ -158,9 +158,12 @@ def parse_transcript(text, url):
                 # The one A. is actually him from the following session
                 Speech.witness = 'MR PIERS STEFAN PUGHE-MORGAN'
             if state == 'witness':
-                Speech.current_section.title += ' / ' + line.strip()
+                Speech.current_section.title += ' / ' + m.group(1)
+                speech.add_text( line.strip() + '.' )
             else:
-                Speech.current_section = Section( title=line.strip() )
+                yield speech
+                Speech.current_section = Section( title=m.group(1) )
+                speech = Speech( speaker=None, text=line.strip() + '.' )
                 state = 'witness'
             continue
         else:
