@@ -102,10 +102,6 @@ class Tag(InstanceMixin, AuditedModel):
         return self.name
 
 
-# Speech manager
-class SpeechManager(InstanceManager, Manager):
-    pass
-
 class Section(AuditedModel, InstanceMixin):
     title = models.TextField(blank=False, null=False, help_text='The title of the section')
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
@@ -287,6 +283,12 @@ class AudioMP3Mixin(object):
 
         # Call the original model save to do everything
         super(AudioMP3Mixin, self).save(*args, **kwargs)
+
+
+# Speech manager
+class SpeechManager(InstanceManager, Manager):
+    pass
+
 
 # Speech that a speaker gave
 class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
