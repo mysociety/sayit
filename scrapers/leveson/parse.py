@@ -187,6 +187,10 @@ def parse_transcript(text, url):
                 assert interviewer
                 speaker = interviewer
             speech = Speech( speaker=speaker, text=m.group(2) )
+            # Put the correction alongside the speech
+            if '2011-12-06am' in url and m.group(2).strip() == 'Sort of blagging.  I mean, I was trying, as I said, not':
+                speech.add_para(speech.text[0][0])
+                speech.text[0][0] = "[Mr Leigh's references on page 72 below to \"arms company \" was a slip and Mr Leigh has subsequently corrected this to \"a construction company \" as he intended at the time.]"
             continue
 
         # New speaker
