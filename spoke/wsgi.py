@@ -14,12 +14,13 @@ framework.
 
 """
 import os
+import sys
 import yaml
 
 config_path = os.path.abspath( os.path.join( os.path.dirname(__file__), '..', 'conf', 'general.yml' ) )
 config = yaml.load(open(config_path))
 
-if int(config.get('STAGING')):
+if int(config.get('STAGING')) and sys.argv[1:2] != ['runserver']:
     import spoke.wsgi_monitor
     spoke.wsgi_monitor.start(interval=1.0)
     spoke.wsgi_monitor.track(config_path)
