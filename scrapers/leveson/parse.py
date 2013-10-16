@@ -26,9 +26,12 @@ class Speech(object):
         self.text[-1].append(text)
 
     @classmethod
-    def reset(cls):
+    def reset(cls, morning):
         cls.current_time = None
         cls.current_section = None
+        if morning:
+            cls.witness = None
+
 
 def parse_transcript(text, url):
     print "PARSING %s" % url
@@ -46,7 +49,7 @@ def parse_transcript(text, url):
     interviewer = None
     state = 'text'
     speech = None
-    Speech.reset()
+    Speech.reset('am' in url)
     for line in text:
         # Page break
         if '\014' in line:
@@ -176,6 +179,8 @@ def parse_transcript(text, url):
         if m:
             yield speech
             if m.group(1) == 'A':
+                if '2011-12-08am' in url and not Speech.witness:
+                    Speech.witness = 'PROFESSOR BARNETT'
                 assert Speech.witness
                 speaker = Speech.witness
             else:
