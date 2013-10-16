@@ -210,7 +210,11 @@ class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
     model = Speech
     context_object_name = "recent_speeches"
     # Use a slightly different template
-    template_name = "speeches/instance_detail.html"
+    def get_template_names(self):
+        return [
+            "speeches/%s/instance_detail.html" % self.request.instance.label,
+            "speeches/instance_detail.html"
+        ]
 
     def get_queryset(self):
         return super(InstanceView, self).get_queryset().visible(self.request).select_related('section', 'speaker').prefetch_related('tags').order_by('-created')[:20]
