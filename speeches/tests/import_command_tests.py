@@ -8,7 +8,11 @@ from instances.tests import InstanceTestCase
 
 import speeches
 from speeches.models import Section
+from speeches.importers.import_akomantoso import ImportAkomaNtoso
+
 from django.core.management import call_command
+from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 
 class ImportCommandTests(InstanceTestCase):
 
@@ -37,3 +41,17 @@ class ImportCommandTests(InstanceTestCase):
 
         self.assertEquals( pre_count + 1, post_count, 'New section was created' )
 
+    def test_bad_config(self):
+
+        # is there equiv of perl's 'local' in Python?
+        old_POPIT_API_URL = settings.POPIT_API_URL
+
+        settings.POPIT_API_URL = None
+
+        self.assertRaises(
+                ImproperlyConfigured, 
+                ImportAkomaNtoso, 
+                instance=self.instance, 
+                commit=False)
+
+        settings.POPIT_API_URL = old_POPIT_API_URL

@@ -15,6 +15,7 @@ from django.conf import settings
 from popit.models import Person, ApiInstance
 from speeches.models import Section, Speech, Speaker
 from popit_resolver.resolve import ResolvePopitName
+from django.core.exceptions import ImproperlyConfigured
 
 logger = logging.getLogger(__name__)
 name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
@@ -30,6 +31,9 @@ class ImporterBase (object):
         self.start_date = None
         self.title = '(untitled)'
         self.popit_url = settings.POPIT_API_URL
+
+        if not self.popit_url:
+            raise ImproperlyConfigured("POPIT_API_URL was not set")
 
         # TODO get this url from the AN document, or from config/parameter
         if ai:
