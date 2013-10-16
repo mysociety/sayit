@@ -155,6 +155,31 @@ class SectionModelTests(TestCase):
         on_test_date = speeches.filter(start_date=test_date)
         self.assertEqual(on_test_date.count(), 2)
 
+    def test_section_get_or_create_with_parents(self):
+
+        instance, _ = Instance.objects.get_or_create(label='get-or-create-with-parents')
+
+        # Test that not passing an instance leads to an exception
+        self.assertRaises(Exception, Section.objects.get_or_create_with_parents, {"titles": ("Foo", "Bar", "Baz")} )
+
+        # Create an initial set of sections
+        baz_section = Section.objects.get_or_create_with_parents(instance=instance, titles=("Foo", "Bar", "Baz"))
+        bar_section = baz_section.parent
+        foo_section = bar_section.parent
+        self.assertEqual(baz_section.title, "Baz")
+        self.assertEqual(baz_section.instance, instance)
+        self.assertEqual(foo_section.parent, None)
+        self.assertEqual(foo_section.instance, instance)
+
+        # Create the same ones again, check same child section returned
+        baz_again_section = Section.objects.get_or_create_with_parents(instance=instance, titles=("Foo", "Bar", "Baz"))
+        self.assertEqual(baz_again_section, baz_section)
+
+        # Create a similar set and check only new ones created
+        bundy_section = Section.objects.get_or_create_with_parents(instance=instance, titles=("Foo", "Bar", "Bundy"))
+        self.assertEqual(bundy_section.title, "Bundy")
+        self.assertEqual(bundy_section.parent, bar_section)
+
 
 class SectionSiteTests(InstanceTestCase):
     """Tests for the section functionality"""

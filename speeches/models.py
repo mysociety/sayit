@@ -102,7 +102,29 @@ class Tag(InstanceMixin, AuditedModel):
         return self.name
 
 
+class SectionManager(InstanceManager, Manager):
+
+    def get_or_create_with_parents(self, instance, titles):
+        """Get or create the entire hierarchy of sections given, returning the bottom one."""
+
+        # If there are no titles to create we just return None
+        if not len(titles):
+            return None
+
+        # Get the title to create, the rest and get the parent
+        title = titles[-1]
+        rest = titles[:-1]
+        parent = self.get_or_create_with_parents(instance, rest)
+        
+        section, created = self.get_or_create(instance=instance, title=title, parent=parent)
+
+        return section
+
+
 class Section(AuditedModel, InstanceMixin):
+    # Custom manager
+    objects = SectionManager()
+
     title = models.TextField(blank=False, null=False, help_text='The title of the section')
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
 
