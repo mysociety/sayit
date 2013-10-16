@@ -4,6 +4,7 @@
 $small-screen: 0;
 $medium-screen: 40em;
 $large-screen: 60em;
+$huge-screen: 71.25em;
 
 $colour_primary: #e14a55;
 $colour_black: #222222;
@@ -46,6 +47,27 @@ $weight_bold: 700;
      */
     &{
         *zoom: 1;
+    }
+}
+
+@mixin grid-layout {
+    @include clearfix;
+    @media (min-width: $medium-screen) {
+
+    }
+    li {
+        width: 100%;
+        float: left;
+        @media (min-width: $medium-screen) {
+            width: 33.333333333%;
+        }
+
+        @media (min-width: $large-screen) {
+           width: 25%;
+        }
+        @media (min-width: $huge-screen) {
+           width: 20%;
+        }
     }
 }
 

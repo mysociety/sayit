@@ -15,7 +15,7 @@
     <div class="speaker-portrait-wrapper medium-2 columns">
     <img src="{% if speech.speaker.person.image %}
         {{ speech.speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
-        style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-portrait round-image speaker-portrait--medium">
+        style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-portrait speaker-portrait--left round-image speaker-portrait--medium">
     </div>
     {% endif %}
   {% endif %}

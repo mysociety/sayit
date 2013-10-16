@@ -21,7 +21,7 @@
 //
 
 // @import "foundation/components/visibility";
-// @import "foundation/components/block-grid";
+@import "foundation/components/block-grid";
 @import "foundation/components/type";
 @import "foundation/components/buttons";
 @import "foundation/components/forms"; // *requires components/buttons
@@ -256,6 +256,7 @@ a:focus {
         }
     }
 }
+
 
 /* forms */
 .errorlist {
