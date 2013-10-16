@@ -120,6 +120,7 @@
     border-left: solid 48px #fff;
     padding-left: 16px;
     margin-bottom: 1em;
+    list-style: none;
 }
 
 .speech-border .speaker-img {

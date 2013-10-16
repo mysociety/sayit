@@ -50,18 +50,17 @@
   {% endif %}
 {% endwith %}
 
-    {% for node, structure in section.get_descendants_tree %}
-        {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
-        <span class="section-title"><a href="{{ node.get_absolute_url }}">{{ node.title }}</a></span>
+    {% for node, structure in section_tree %}
+      {% if structure.new_level %}<ul>{% else %}</li>{% endif %}
+      {% if structure.speech %}
+        <li id="s{{ node.id }}" class="speech speech-border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
+        {% include "speeches/speech.html" with speech=node nosection="1" noli=1 %}
+      {% else %}
+        <li><span class="section-title"><a href="{{ node.get_absolute_url }}">{{ node.title }}</a></span>
         {% if node.is_leaf_node %}({{ node.speech_count }}){% endif %}
-        {% for level in structure.closed_levels %}</li></ul>{% endfor %}
+      {% endif %}
+      {% for level in structure.closed_levels %}</li></ul>{% endfor %}
     {% endfor %}
-
-    <ol class="unstyled">
-        {% for speech in speech_list %}
-            {% include "speeches/speech.html" with speech=speech nosection="1" %}
-        {% endfor %}
-    </ol>
 
 {% with next=section.get_next_node previous=section.get_previous_node %}
   {% if previous or next %}

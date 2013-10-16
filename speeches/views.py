@@ -321,7 +321,7 @@ class SectionView(InstanceViewMixin, DetailView):
         # Call the base implementation first to get a context
         context = super(SectionView, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the speeches in this section
-        context['speech_list'] = kwargs['object'].speech_set.all().visible(self.request).select_related('speaker').prefetch_related('tags')
+        context['section_tree'] = kwargs['object'].get_descendants_tree_with_speeches(self.request)
         return context
 
 class BothObjectAndFormMixin(object):

@@ -217,11 +217,11 @@ class SectionSiteTests(InstanceTestCase):
 
         # Assert no speeches
         resp = self.client.get('/sections/%d' % subsection.id)
-        self.assertSequenceEqual([], resp.context['speech_list'])
+        self.assertSequenceEqual([], list(resp.context['section_tree']))
 
         speech = Speech.objects.create(text="A test speech", section=subsection, instance=self.instance)
         resp = self.client.get('/sections/%d' % subsection.id)
-        self.assertSequenceEqual([speech], resp.context['speech_list'])
+        self.assertSequenceEqual([(speech, {'speech':True, 'new_level': True, 'closed_levels': [1]})], list(resp.context['section_tree']))
 
     def test_section_page_lists_subsections(self):
         section = Section.objects.create(title='A test section', instance=self.instance)
@@ -252,7 +252,7 @@ class SectionSiteTests(InstanceTestCase):
         section = Section.objects.create(title='A test section', instance=self.instance)
         speech = Speech.objects.create(text="A test speech", section=section, instance=self.instance)
         resp = self.client.get('/sections/%d' % section.id)
-        self.assertSequenceEqual([speech], resp.context['speech_list'])
+        self.assertSequenceEqual([(speech, {'speech':True, 'new_level': True, 'closed_levels': [1]})], list(resp.context['section_tree']))
 
         # GET form (confirmation page)
         resp = self.client.get(section.get_delete_url())

@@ -367,7 +367,7 @@ class SpeechTests(InstanceTestCase):
             speeches.append(s)
 
         resp = self.client.get('/sections/%d' % section.id)
-        self.assertEquals( [ x.public for x in resp.context['speech_list'] ], [ False, False, True ] )
+        self.assertEquals( [ x[0].public for x in resp.context['section_tree'] ], [ False, False, True ] )
         self.assertContains( resp, 'Invisible', count=2 )
 
         self.client.logout()

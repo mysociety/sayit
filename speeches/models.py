@@ -221,6 +221,54 @@ class Section(AuditedModel, InstanceMixin):
             out[-1][1]['closed_levels'] = range(prev_level, 0, -1)
         return out
 
+    def get_descendants_tree_with_speeches(self, request):
+        min_date = datetime.date(datetime.MINYEAR, 1, 1)
+        min_time = datetime.time(0,0)
+
+        # Get the descendants tree of sections
+        tree = self.get_descendants_tree
+        # Create a sorting key for each entry of the tree
+        tree_with_key = [ ( (d[0].speech_min, '', str(i)), d ) for i, d in enumerate(tree) ]
+
+        # Fetch all speeches in this section
+        speech_list = self.speech_set.all().visible(request).select_related('speaker').prefetch_related('tags')
+        # Create a sorting key for each speech
+        speech_list_with_key = [ ( ( datetime.datetime.combine(s.start_date or min_date, s.start_time or min_time ), s.id ), ( s, { 'speech': True } ) ) for s in speech_list ]
+
+        # Sort by our sorting keys to interleave the two
+        tree_sorted = [ s[1] for s in sorted( tree_with_key + speech_list_with_key ) ]
+
+        # Finally, work out the out/indenting of start/end speeches
+        tree_final = []
+        if tree:
+            first_section = tree_sorted.index(tree[0])
+            last_section = tree_sorted.index(tree[-1])
+        for i, t in enumerate(tree_sorted):
+            if t[1].get('speech'):
+                # If the first item is a speech, it must start the hierarchy
+                if i == 0:
+                    t[1]['new_level'] = True
+                # If the last item is a speech, it wants to do the closing of the hierarchy
+                if i == len(tree_sorted)-1:
+                    if tree:
+                        t[1]['closed_levels'] = tree[-1][1]['closed_levels']
+                        del tree[-1][1]['closed_levels']
+                    else:
+                        t[1]['closed_levels'] = [1]
+            else:
+                # If the first section isn't the first item, then we did this already in the first speech
+                if i == first_section and i != 0:
+                    del t[1]['new_level']
+            tree_final.append(t)
+
+        # Return an iterator because otherwise passing this down in context to
+        # subtemplates is really slow. I mean, upwards of 30 seconds slow.
+        # As a class so it can be reused after use (e.g. by the tests).
+        class _iterable(object):
+            def __iter__(self):
+                return iter(tree_final)
+        return _iterable()
+
     @cache
     def get_descendants(self):
         return self._get_descendants_by_speech()
@@ -235,6 +283,11 @@ class Section(AuditedModel, InstanceMixin):
             for parent in reversed(d.path):
                 if parent not in earliest or d.speech_min < earliest[parent]:
                     earliest[parent] = d.speech_min
+
+        # Set the speech_min to all the earliests
+        for d in dqs:
+            if d.id in earliest:
+                d.speech_min = earliest[d.id]
 
         return sorted( dqs, key=lambda s: earliest.get(s.id, datetime.datetime(datetime.MAXYEAR, 12, 31)) )
 
