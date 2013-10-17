@@ -21,7 +21,7 @@
 //
 
 // @import "foundation/components/visibility";
-@import "foundation/components/block-grid";
+// @import "foundation/components/block-grid";
 @import "foundation/components/type";
 @import "foundation/components/buttons";
 @import "foundation/components/forms"; // *requires components/buttons
@@ -257,6 +257,72 @@ a:focus {
     }
 }
 
+.grey-section {
+    border-top: 1px solid $colour_light_grey;
+    background-color: #f4f4f4;
+    padding: 1em 0;
+    @media (min-width: $medium-screen) {
+        padding: 4em 0;
+    }
+}
+
+.homepage-search {
+    margin: 1em 0;
+    .site-search__input,
+    .site-search__button {
+        font-size: 1.125em;
+    }
+    @media (min-width: $medium-screen) {
+        margin: 4em 0;
+    }
+    h2 {
+        @media (min-width: $large-screen) {
+            font-size: 3em;
+        }
+        text-align: center;
+    }
+}
+.featured-block {
+    background-color: transparent;
+    border: 1px solid darken($colour_light_grey, 5%);
+    @include border-radius(3px);
+    text-align: center;
+    padding: 3em 1.5em 4em;
+    display: block;
+    margin: .75em 0;
+    position: relative;
+    &:hover {
+        text-decoration: none;
+        @include box-shadow(0 0 2px 1px rgba(0, 0, 0, 0.1));
+        h3 {
+            color: $colour_primary;
+        }
+
+    }
+    h3 {
+        font-weight: $weight_light;
+    }
+}
+
+.featured-block__date {
+    position: absolute;
+    width: 100%;
+    border-top: 1px solid darken($colour_light_grey, 5%);
+    bottom: 0;
+    left: 0;
+    color: $colour_dark_grey;
+    line-height: 3em;
+    height: 3em;
+    font-size: 0.75em;
+    text-transform: uppercase;
+}
+.nothing-here-yet-message {
+    text-align: center;
+    margin: 1em 0;
+    @media (min-width: $medium-screen) {
+        margin: 4em 0;
+    }
+}
 
 /* forms */
 .errorlist {

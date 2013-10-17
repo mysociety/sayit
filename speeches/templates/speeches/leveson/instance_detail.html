@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load url from future %}
+{% load i18n %}
+{% load speech_utils %}
+
+{% block title %}{{ request.instance.title }}{% endblock %}
+
+{% block content %}
+{% if request.path != '/' %}
+<div class="page-header">
+    <h1>{{ request.instance.title }}</h1>
+    {% if request.instance.description %}
+      {{ request.instance.description|linebreaks_with_lead }}
+    {% endif %}
+</div>
+{% endif %}
+<div class="row">
+
+{% if speakers or recent_sections or recent_speeches %}
+
+  <div class="small-12 medium-8 medium-centered columns homepage-search">
+    <h2>Search the Leveson Inquiry transcripts</h2>
+    <form class="site-search" action="/search/" method="get" >
+      <div class="row collapse">
+        <div class="medium-8 medium-centered large-6 columns">
+          <div class="small-10 columns">
+            <input type="search" class="site-search__input" placeholder="Search" name="q"/>
+          </div>
+          <div class="small-2 columns">
+            <input type="submit" class="site-search__button button postfix radius" value="Go" />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+</div> <!-- closing off the opening tags in base so we can go full width here -->
+<div class="featured-elements grey-section">
+  <div class="row">
+      <div class="small-12 medium-6 large-3 columns">
+        <a href="/hearing-24-november-2011/ms-joanne-rowling" class="featured-block">
+          <h3>Read JK Rowling's session</h3>
+          <span class="featured-block__date">
+            23 October 2012
+          </span>
+        </a>
+      </div>
+      <div class="small-12 medium-6 large-3 columns">
+        <a href="/hearing-21-november-2011/mr-hugh-grant" class="featured-block">
+          <h3>Read Hugh Grant's session</h3>
+          <span class="featured-block__date">
+            12 November 2012
+          </span>
+        </a>
+      </div>
+      <div class="small-12 medium-6 large-3 columns">
+        <a href="/hearing-6-february-2012/mr-paul-dacre" class="featured-block">
+          <h3>Read Paul Dacre's session</h3>
+          <span class="featured-block__date">
+            3 October 2012
+          </span>
+        </a>
+      </div>
+      <div class="small-12 medium-6 large-3 columns">
+        <a href="/hearing-13-june-2012/mr-nicholas-clegg" class="featured-block">
+          <h3>Read Nick Clegg's session</h3>
+          <span class="featured-block__date">
+            30 October 2012
+          </span>
+        </a>
+      </div>
+  </div>
+</div>
+</div>
+{% else %}
+
+<div class="small-12 small-centered medium-centered medium-12 columns nothing-here-yet-message">
+<h2>{% trans "Nothing has been uploaded yet. Why not <a href='/speech/add'>add a speech</a> or a <a href='/sections/add'>section</a>?" %}</h2>
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}
