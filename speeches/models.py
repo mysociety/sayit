@@ -296,20 +296,28 @@ class Section(AuditedModel, InstanceMixin):
     def _get_descendants_by_speech(self, **kwargs):
         dqs = self._get_descendants(include_min=True, **kwargs)
 
-        earliest = {}
+        lookup = dict((x.id, x) for x in dqs)
+        lookup[self.id] = self
+        self.speech_min = None
+
         for d in dqs:
             if not d.speech_min:
                 continue
-            for parent in reversed(d.path):
-                if parent not in earliest or d.speech_min < earliest[parent]:
-                    earliest[parent] = d.speech_min
+            for parent_id in reversed(d.path):
+                parent = lookup[parent_id]
+                if not parent.speech_min or d.speech_min < parent.speech_min:
+                    parent.speech_min = d.speech_min
 
         # Set the speech_min to all the earliests
         for d in dqs:
-            if d.id in earliest:
-                d.speech_min = earliest[d.id]
+            if d.speech_min: continue
+            for parent_id in reversed(d.path):
+                parent = lookup[parent_id]
+                if parent.speech_min:
+                    d.speech_min = parent.speech_min
+                    break
 
-        return sorted( dqs, key=lambda s: earliest.get(s.id, datetime.datetime(datetime.MAXYEAR, 12, 31)) )
+        return sorted( dqs, key=lambda s: getattr(s, 'speech_min', datetime.datetime(datetime.MAXYEAR, 12, 31)) )
 
     @models.permalink
     def get_absolute_url(self):
