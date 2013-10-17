@@ -224,16 +224,36 @@ class Section(AuditedModel, InstanceMixin):
     def get_descendants_tree_with_speeches(self, request):
         min_date = datetime.date(datetime.MINYEAR, 1, 1)
         min_time = datetime.time(0,0)
+        min_datetime = datetime.datetime.combine(min_date, min_time)
 
         # Get the descendants tree of sections
         tree = self.get_descendants_tree
         # Create a sorting key for each entry of the tree
-        tree_with_key = [ ( (d[0].speech_min, '', i), d ) for i, d in enumerate(tree) ]
+        tree_with_key = [
+            (
+                (
+                    getattr(d[0], 'speech_min', None) or min_datetime,
+                    '',
+                    i
+                ),
+                d
+            ) for i, d in enumerate(tree)
+        ]
 
         # Fetch all speeches in this section
         speech_list = self.speech_set.all().visible(request).select_related('speaker').prefetch_related('tags')
         # Create a sorting key for each speech
-        speech_list_with_key = [ ( ( datetime.datetime.combine(s.start_date or min_date, s.start_time or min_time ), s.id ), ( s, { 'speech': True } ) ) for s in speech_list ]
+        speech_list_with_key = [
+            (
+                (
+                    datetime.datetime.combine(
+                        s.start_date or min_date, s.start_time or min_time
+                    ),
+                    s.id
+                ),
+                ( s, { 'speech': True } )
+            ) for s in speech_list
+        ]
 
         # Sort by our sorting keys to interleave the two
         tree_sorted = [ s[1] for s in sorted( tree_with_key + speech_list_with_key ) ]
