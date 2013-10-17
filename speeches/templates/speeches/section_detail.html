@@ -27,7 +27,7 @@
         <li id="s{{ node.id }}" class="row speech {% if node.speaker %}speech--with-portrait{% endif %} speech--border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
         {% include "speeches/speech.html" with speech=node nosection="1" section=section noli=1 %}
       {% else %}
-        <li><span class="section-title"><a href="{% url 'speeches:section-view' node.get_path %}">{{ node.title }}</a></span>
+        <li class="section-signpost" ><span class="section-title"><a href="{% url 'speeches:section-view' node.get_path %}">{{ node.title }}</a></span>
         {% if node.is_leaf_node %}({{ node.speech_count }}){% endif %}
       {% endif %}
       {% for level in structure.closed_levels %}</li></ul>{% endfor %}

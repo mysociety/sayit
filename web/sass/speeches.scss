@@ -89,6 +89,16 @@
   }
 }
 
+.section-signpost {
+  width: 100%;
+  border-bottom: 1px solid $colour_light_grey;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  a {
+    font-weight: $weight_bold;
+  }
+}
+
 .speech {
   margin-bottom: 2.5em;
   position: relative;
