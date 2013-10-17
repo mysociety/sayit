@@ -15,14 +15,6 @@
     {% for top in object_list %}
     <li>
         <span class="section-title"><a href="{% url "section-view" top.id %}">{{ top.title }}</a></span>
-      {% if not top.is_leaf_node %}
-          {% for node, structure in top.descendants %}
-            {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
-            <span class="section-title"><a href="{{ node.get_absolute_url }}">{{ node.title }}</a></span>
-            {% if node.is_leaf_node %}({{ node.speech_count }}){% endif %}
-            {% for level in structure.closed_levels %}</li></ul>{% endfor %}
-        {% endfor %}
-      {% endif %}
     </li>
     {% endfor %}
 </ul>

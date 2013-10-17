@@ -276,8 +276,6 @@ class SectionList(InstanceViewMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(SectionList, self).get_context_data(**kwargs)
-        for obj in context['section_list']:
-            obj.descendants = obj.get_descendants_tree
 
         # Add in a QuerySet of all the speeches not in a section
         context['speech_list'] = Speech.objects.for_instance(self.request.instance).visible(self.request).filter(section=None).select_related('speaker').prefetch_related('tags')
