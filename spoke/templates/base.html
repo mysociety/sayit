@@ -95,6 +95,9 @@
 
           </div>
           <div class="medium-4 columns">
+            {% if request.path != '/search/' %}
+            {% if request.instance.label != 'leveson' or request.path != '/' %}
+
             <form class="site-search" action="/search/" method="get" >
               <div class="row collapse">
                 <div class="small-10 columns">
@@ -106,6 +109,8 @@
               </div>
 
             </form>
+            {% endif %}
+            {% endif %}
           </div>
           <div class="small-12 columns">
 
