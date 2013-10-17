@@ -100,7 +100,7 @@ class SectionModelTests(TestCase):
 
         # Check that the sections are in insertion order:
         all_ministries = [ a.title.replace('Ministry of ', '') for a in all_ministries ]
-        self.assertEqual(all_ministries, [ 'Silly Walks', 'Aardvarks', 'Something Else' ])
+        self.assertEqual(all_ministries, [ 'Aardvarks', 'Silly Walks', 'Something Else' ])
 
         # Get all speeches under a section, where everything should be
         # sorted by speech date:
@@ -136,12 +136,11 @@ class SectionModelTests(TestCase):
         self.assertEqual( speeches[2].get_next_speech(), speeches[3] )
         self.assertEqual( speeches[3].get_next_speech(), first_next )
 
-        speeches = Section.objects.get(title='Ministry of Aardvarks').children.get(title='March').speech_set.all()
-        p = Speech.objects.filter(section=Section.objects.get(title='Thursday 7th of March')).reverse()[0]
+        speeches = Section.objects.get(title='Ministry of Silly Walks').children.get(title='Wednesday 6th of March').speech_set.all()
+        p = Speech.objects.filter(section=Section.objects.get(title='March')).reverse()[0]
+        q = Speech.objects.filter(section=Section.objects.get(title='Thursday 7th of March'))[0]
         self.assertEqual( speeches[0].get_previous_speech(), p )
-        self.assertEqual( speeches[0].get_next_speech(), speeches[1] )
-        self.assertEqual( speeches[1].get_next_speech(), speeches[2] )
-        self.assertEqual( speeches[2].get_next_speech(), None )
+        self.assertEqual( speeches[0].get_next_speech(), q )
 
     def test_section_descendant_speeches_queryset(self):
         top_level = Section.objects.get(title='Government Written Answers')
