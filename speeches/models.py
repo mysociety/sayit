@@ -210,9 +210,9 @@ class Section(AuditedModel, InstanceMixin):
                 out[-1][1]['closed_levels'] = range(prev_level, node.level, -1)
             elif node.path[:-1] != prev_path[:-1]: # Swapping parentage in some way
                 sw = ( i for i in xrange(len(node.path)) if node.path[i] != prev_path[i] ).next()
-                out[-1][1]['closed_levels'] = range(node.level, node.level-sw, -1)
+                out[-1][1]['closed_levels'] = range(node.level, sw, -1)
                 s = {}
-                for i in range(node.level-sw, node.level):
+                for i in range(sw, node.level):
                     out.append( (Section.objects.get(id=node.path[i]), s) )
                     s = { 'new_level': True }
             prev_level, prev_path = node.level, node.path
@@ -222,9 +222,9 @@ class Section(AuditedModel, InstanceMixin):
         return out
 
     def get_descendants_tree_with_speeches(self, request):
-        min_date = datetime.date(datetime.MINYEAR, 1, 1)
-        min_time = datetime.time(0,0)
-        min_datetime = datetime.datetime.combine(min_date, min_time)
+        max_date = datetime.date(datetime.MAXYEAR, 12, 31)
+        max_time = datetime.time(23,59)
+        max_datetime = datetime.datetime.combine(max_date, max_time)
 
         # Get the descendants tree of sections
         tree = self.get_descendants_tree
@@ -232,7 +232,7 @@ class Section(AuditedModel, InstanceMixin):
         tree_with_key = [
             (
                 (
-                    getattr(d[0], 'speech_min', None) or min_datetime,
+                    getattr(d[0], 'speech_min', None) or max_datetime,
                     '',
                     i
                 ),
@@ -247,7 +247,7 @@ class Section(AuditedModel, InstanceMixin):
             (
                 (
                     datetime.datetime.combine(
-                        s.start_date or min_date, s.start_time or min_time
+                        s.start_date or max_date, s.start_time or max_time
                     ),
                     s.id
                 ),
