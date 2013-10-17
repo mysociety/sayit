@@ -157,6 +157,7 @@
 
 .speech__meta-data__speaker-name {
   margin-right: .5em;
+  font-weight: $weight_bold;
 }
 
 .speech__content {
@@ -255,6 +256,25 @@
       display: block;
       margin: 0 auto 0.5em;
     }
+}
+
+/* Search results */
+.speech--search-result {
+  .speech__meta-data {
+    a {
+      color: $colour_black;
+    }
+  }
+  .speech__content {
+    a {
+      color: $colour_black;
+      &:hover,
+      &:focus,
+      &:active {
+        color: $colour_primary;
+      }
+    }
+  }
 }
 
 .speaker-card__name {
