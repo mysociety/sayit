@@ -28,6 +28,8 @@ def get_or_create(model, **attrs):
 instance = get_or_create(Instance, label='leveson')
 
 for date, url, text in get_transcripts():
+    if '2011-11-21pm' in url: continue # Included in the morning
+    if '2011-12-15am' in url: continue # Included in the afternoon
     date_section = get_or_create(Section, instance=instance, title='Hearing, %s' % date.strftime('%d %B %Y').lstrip('0'))
 
     for speech in parse_transcript(text, url):
