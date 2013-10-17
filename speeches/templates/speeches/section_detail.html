@@ -21,17 +21,17 @@
 <div class="row">
   <div class="small-12 large-9 columns">
 
-      {% for node, structure in section_tree %}
-          {% if structure.new_level %}<ul>{% else %}</li>{% endif %}
-          {% if structure.speech %}
-            <li id="s{{ node.id }}" class="row speech {% if node.speaker %}speech--with-portrait{% endif %} speech--border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
-            {% include "speeches/speech.html" with speech=node nosection="1" section=section noli=1 %}
-          {% else %}
-            <li><span class="section-title"><a href="{% url 'speeches:section-view' node.get_path %}">{{ node.title }}</a></span>
-            {% if node.is_leaf_node %}({{ node.speech_count }}){% endif %}
-          {% endif %}
-          {% for level in structure.closed_levels %}</li></ul>{% endfor %}
-      {% endfor %}
+    {% for node, structure in section_tree %}
+      {% if structure.new_level %}<ul class="unstyled-list">{% else %}</li>{% endif %}
+      {% if structure.speech %}
+        <li id="s{{ node.id }}" class="row speech {% if node.speaker %}speech--with-portrait{% endif %} speech--border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
+        {% include "speeches/speech.html" with speech=node nosection="1" section=section noli=1 %}
+      {% else %}
+        <li><span class="section-title"><a href="{% url 'speeches:section-view' node.get_path %}">{{ node.title }}</a></span>
+        {% if node.is_leaf_node %}({{ node.speech_count }}){% endif %}
+      {% endif %}
+      {% for level in structure.closed_levels %}</li></ul>{% endfor %}
+    {% endfor %}
 
   </div>
   <div class="small-12 large-3 columns">

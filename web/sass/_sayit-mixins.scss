@@ -99,6 +99,7 @@ $weight_bold: 700;
 }
 
 /* TODO  - should probably fix this stuff but it's fine for the moment */
-.unstyled {
+.unstyled,
+.unstyled-list {
     @include unstyled-list;
 }
