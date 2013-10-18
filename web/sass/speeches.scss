@@ -281,6 +281,25 @@
   }
 }
 
+.sidebar {
+  background: #f2f1ef;
+  padding: 1.5em;
+}
+
+.stat {
+  margin-bottom: 1em;
+}
+
+.stat__descriptor {
+  font-size: 0.875em;
+  color: $colour_dark_grey;
+}
+.stat__figure {
+  font-weight: $weight_bold;
+  font-size: 1.3125em;
+  margin-bottom: 0.15em;
+}
+
 .speaker-card__name {
   font-size: 0.875em;
 }
