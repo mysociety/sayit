@@ -11,19 +11,35 @@
 
     {% include "speeches/_speaker_user_actions.html" %}
 
-    <img src="{% if speaker.person.image %}{{ speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
+  <div class="row">
+    <div class="small-12 medium-8 columns">
+      <img src="{% if speaker.person.image %}{{ speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
           style="border-color #{{ speaker.colour }}; background-color: #{{ speaker.colour }};"
 
           class="speaker-portrait speaker-portrait--left speaker-portrait--medium round-image"
           alt="Headshot of {{ speaker.name|escape}}">
 
-    <h1>{{ speaker.name }}</h1>
+              <h1>{{ speaker.name }}</h1>
+              {% if speaker.person.summary %}
+              <p class="lead person-summary"> {{ speaker.person.summary }}
 
-    {% if speaker.person.summary %}
-    <p class="lead person-summary"> {{ speaker.person.summary }}
-
-    </p>
-    {% endif %}
+              </p>
+              {% endif %}
+            </div>
+            <div class="medium-4 columns">
+              <form class="site-search site-search__person-only" action="/search/" method="get" >
+                <label for="site-search__person-only">Search in {{ speaker.name }}'s speeches</label>
+                <div class="row collapse">
+                  <div class="small-10 columns">
+                    <input type="search" class="site-search__input" placeholder="Search" name="q" id="site-search__person-only"/>
+                  </div>
+                  <div class="small-2 columns">
+                    <input type="submit" class="site-search__button button postfix radius" value="Go" />
+                  </div>
+                </div>
+              </form>
+            </div>
+  </div>
 </div>
 <div class="row">
   <div class="small-12 large-9 columns">

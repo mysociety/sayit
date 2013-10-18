@@ -205,6 +205,13 @@ a:focus {
     -webkit-appearance: none;
 }
 
+.site-search__person-only {
+    label {
+        font-size: 1em;
+        margin-bottom: 0.5em;
+    }
+}
+
 .primary-navigation-bar {
     /* Not using Foundation's .topbar, because it was too hard to customise :( */
     .menu-dropdown {
@@ -328,6 +335,9 @@ a:focus {
 }
 
 /* forms */
+form {
+    margin-bottom: 0;
+}
 .errorlist {
     @include unstyled-list();
 }
