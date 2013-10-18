@@ -240,10 +240,14 @@ def parse_transcript(text, date):
         if len(line)-len(line.lstrip()) > 11:
             print (len(line)-len(line.lstrip())), '*', line, '*'
 
+        if re.match(" {7,}[QA]\.", line):
+            speech.add_para(line.strip())
+            continue
+
         # Question/answer (speaker from previous lines)
         m = re.match('([QA])\. (.*)', line.strip())
         # On these dates, they only quote Q/As - but they quote elsewhere, which means it's getting it wrong TODO
-        if m and date.isoformat() not in ('2011-03-09', '2011-03-10', '2011-03-11'):
+        if m: # and date.isoformat() not in ('2011-03-09', '2011-03-10', '2011-03-11'):
             yield speech
             if m.group(1) == 'A':
                 assert Speech.witness, line
@@ -281,8 +285,8 @@ def parse_transcript(text, date):
         # TODO Check/sort paragraph indenting
         # 2/3 normal, 7+ new paragraph? Have to spot/deal with quoted text...
 
-        # New paragraph if indent at least 8 spaces
-        m = re.match('        ', line)
+        # New paragraph if indent at least 7 spaces
+        m = re.match('       ', line)
         if m:
             speech.add_para(line.strip())
             continue
