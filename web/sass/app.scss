@@ -111,6 +111,15 @@ a:focus {
     }
 }
 
+/* forms */
+.errorlist {
+    @include unstyled-list();
+}
+
+form {
+    margin-bottom: 0;
+}
+
 /* Staging alert-box */
 .alert-box--header {
     margin-bottom: 0;
@@ -266,7 +275,7 @@ a:focus {
 
 .grey-section {
     border-top: 1px solid $colour_light_grey;
-    background-color: #f4f4f4;
+    background-color: $colour_off_white;
     padding: 1em 0;
     @media (min-width: $medium-screen) {
         padding: 4em 0;
@@ -334,10 +343,3 @@ a:focus {
     }
 }
 
-/* forms */
-form {
-    margin-bottom: 0;
-}
-.errorlist {
-    @include unstyled-list();
-}
