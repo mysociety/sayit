@@ -53,7 +53,10 @@
 
 .page-header--with-portrait {
     h1 {
-      margin-left: 130px;
+      margin-left: 80px;
+      @media (min-width: $medium-screen) {
+          margin-left: 130px;
+      }
     }
     .lead {
       margin-left: 130px;
@@ -63,7 +66,6 @@
     }
 
     .speaker-portrait {
-      margin-right: 2em;
       margin-top: 0;
     }
 }
