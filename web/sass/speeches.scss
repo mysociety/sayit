@@ -90,6 +90,10 @@
   }
 }
 
+
+.speech + .section-signpost {
+  padding-top: 1.5em;
+}
 .section-signpost {
   width: 100%;
   border-bottom: 1px solid $colour_light_grey;
@@ -104,9 +108,6 @@
   padding-top: 1.5em;
   position: relative;
   @include clearfix;
-  &:first-child {
-    padding-top: 0;
-  }
 }
 
 .speech--with-portrait {
