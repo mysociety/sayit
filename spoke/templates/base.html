@@ -46,7 +46,7 @@
       <header class="brand-header">
         <div class="row">
           <div class="small-9 medium-9 columns">
-            <h1 class="brand-header__title">SayIt <span class="subtitle">&mdash; Simple, beautiful transcripts</span></h1>
+            <h1 class="brand-header__title">SayIt <span class="subtitle js-typewriter">&mdash; Simple, beautiful transcripts </span></h1>
           </div>
 
           <div class="small-3 medium-3 columns admin-menu-container">
@@ -155,9 +155,15 @@
         <script src="{% static "javascripts/foundation/foundation.alerts.js" %}"></script>
         <script src="{% static "javascripts/foundation/foundation.dropdown.js" %}"></script>
 
-
         <script src="{% static "speeches/mediaelement/mediaelement-and-player.min.js" %}"></script>
         <script src="{% static "speeches/js/speeches.js" %}"></script>
+        <script src="{% static "javascripts/vendor/jquery.text-effects.js" %}"></script>
+        <script>
+        $( document ).ready(function() {
+            $(".js-typewriter").typewriter();
+        });
+        </script>
+
 
         <script>
           $(document).foundation();
