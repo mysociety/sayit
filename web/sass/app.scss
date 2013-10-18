@@ -232,6 +232,17 @@ form {
     }
     .nav-menu {
         @include unstyled-list;
+        height: auto;
+        max-height: 1000em;
+        @include transition(max-height 1s ease-in-out);
+        @media (max-width: $medium-screen) {
+            &.closed {
+                height: 0;
+                max-height: 0;
+                overflow: hidden;
+                @include transition(max-height 1s ease-in-out);
+            }
+        }
         @media (min-width: $medium-screen) {
             display: block;
             @include inline-list;

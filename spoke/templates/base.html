@@ -117,7 +117,7 @@
             <nav class="primary-navigation-bar">
 
                   <span class="menu-dropdown"><a href="#">Menu</a></span>
-                  <ul class="nav-menu">
+                  <ul class="nav-menu closed">
                     {% if request.instance %}
 
                       <li{% if request.path == '/' %} class="active"{% endif %}><a href="/">Home</a></li>
@@ -161,6 +161,9 @@
         <script>
         $( document ).ready(function() {
             $(".js-typewriter").typewriter();
+            $(".menu-dropdown").click(function() {
+              $(".nav-menu").toggleClass('closed');
+            });
         });
         </script>
 
