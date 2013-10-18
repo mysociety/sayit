@@ -36,7 +36,6 @@
     position: relative;
     padding: 2em 0;
     border-bottom: 1px solid $colour_light_grey;
-    margin-bottom: 1em;
     @include clearfix();
     .action-button {
         position: absolute;
@@ -102,9 +101,29 @@
 }
 
 .speech {
-  margin-bottom: 2.5em;
+  padding-top: 1.5em;
   position: relative;
   @include clearfix;
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.speech--with-portrait {
+  padding-top: 1.5em;
+  @media (min-width: $medium-screen) {
+    background: transparent url('../img/speech-timeline-bg.png') 8% top repeat-y;
+    padding-top: 2.5em;
+    &:first-child {
+      padding-top: 1.5em;
+    }
+  }
+  @media (min-width: $large-screen) {
+    background-position-x: 7.5%
+  }
+  @media (min-width: $huge-screen) {
+    background-position-x: 6%
+  }
 }
 
 .speaker-portrait-wrapper {
@@ -154,7 +173,7 @@
     display: block;
   }
 
-  @media (min-width: $small-screen) {
+  @media (min-width: $medium-screen) {
     margin-left: 0;
     span {
       display: inline;
@@ -287,6 +306,7 @@
 .sidebar {
   background: $colour_off_white;
   padding: 1.5em;
+  margin-top: 1.5em;
 }
 
 .stat {
