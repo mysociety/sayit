@@ -106,9 +106,9 @@ def parse_transcript(text, date):
                 line = re.sub('a\.m\.?(?i)', 'am', line)
                 line = re.sub('p\.m\.?(?i)', 'pm', line)
                 try:
-                    datetime.datetime.strptime(line, '%I.%M %p')
+                    Speech.current_time = datetime.datetime.strptime(line, '%I.%M %p')
                 except:
-                    datetime.datetime.strptime(line, '%I:%M %p')
+                    Speech.current_time = datetime.datetime.strptime(line, '%I:%M %p')
             elif num == heading_row:
                 assert line.upper() in ('ORAL HEARING', 'APPEALS JUDGEMENT',
                     'STATUS CONFERENCE', 'SENTENCING HEARING', 'JUDGEMENT',
@@ -147,12 +147,14 @@ def parse_transcript(text, date):
 
         m = re.match('(\d\d:\d\d:\d\d) (\d+)  ', line.strip())
         if m:
-            TIME = m.group(1)
+            time_format = '%H:%M:%S'
+            Speech.current_time = datetime.datetime.strptime(m.group(1), time_format).time()
             line = line.replace(m.group(0), '           ' + m.group(2))
         m = re.match('(\d\d:\d\d:\d\d) ', line.strip())
         if m:
-            TIME = m.group(1)
-            line = line.replace(TIME, '        ')
+            time_format = '%H:%M:%S'
+            Speech.current_time = datetime.datetime.strptime(m.group(1), time_format).time()
+            line = line.replace(m.group(1), '        ')
 
         # Let's check we haven't lost a line anywhere...
         assert re.match(' *%d( |$)' % num, line), '%s != %s' % (num, line)
