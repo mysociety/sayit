@@ -11,11 +11,10 @@
 
     {% include "speeches/_speaker_user_actions.html" %}
 
-  <div class="row">
-    <div class="small-12 medium-8 columns">
+  <div class="page-header__row">
+    <div class="speaker-page__details">
       <img src="{% if speaker.person.image %}{{ speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
           style="border-color #{{ speaker.colour }}; background-color: #{{ speaker.colour }};"
-
           class="speaker-portrait speaker-portrait--left speaker-portrait--medium round-image"
           alt="Headshot of {{ speaker.name|escape}}">
 
@@ -26,14 +25,14 @@
               </p>
               {% endif %}
             </div>
-            <div class="medium-4 columns">
+            <div class="speaker-page__search">
               <form class="site-search site-search__person-only" action="/search/" method="get" >
                 <label for="site-search__person-only">Search in {{ speaker.name }}'s speeches</label>
-                <div class="row collapse">
-                  <div class="small-10 columns">
+                <div class="site-search__row">
+                  <div class="site-search__input-unit">
                     <input type="search" class="site-search__input" placeholder="Search" name="q" id="site-search__person-only"/>
                   </div>
-                  <div class="small-2 columns">
+                  <div class="site-search__button-unit">
                     <input type="submit" class="site-search__button button postfix radius" value="Go" />
                   </div>
                 </div>
@@ -41,8 +40,8 @@
             </div>
   </div>
 </div>
-<div class="row">
-  <div class="small-12 large-9 columns">
+<div class="page-content__row">
+  <div class="primary-content__unit">
     <h2>Speeches</h2>
     <ul class="unstyled">
         {% if not page_obj %}
@@ -55,7 +54,7 @@
 
     {% include 'speeches/pagination.html' %}
 </div>
-<div class="small-12 large-3 columns">
+<div class="sidebar__unit">
   <div class="sidebar">
     <div class="stat">
       <div class="stat__figure">

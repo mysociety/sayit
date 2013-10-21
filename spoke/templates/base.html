@@ -44,12 +44,12 @@
             </div>
       {% endif %}
       <header class="brand-header">
-        <div class="row">
-          <div class="small-9 medium-9 columns">
+        <div class="brand-header__row">
+          <div class="brand-header__title-unit">
             <h1 class="brand-header__title">SayIt <span class="subtitle js-typewriter">&mdash; Simple, beautiful transcripts </span></h1>
           </div>
 
-          <div class="small-3 medium-3 columns admin-menu-container">
+          <div class="admin-menu-container">
             <a href="{% url 'django.contrib.auth.views.login' %}?next=/" class="tiny secondary button admin-menu-button">{% trans "Log in" %}</a>
             {% if request.user.is_authenticated %}
               <a href="#" data-dropdown="drop1" class="tiny secondary button dropdown admin-menu-button">Admin</a><br>
@@ -78,8 +78,8 @@
       </header>
 
       <header class="instance-header">
-        <div class="row">
-          <div class="medium-8 columns">
+        <div class="instance-header__row">
+          <div class="instance-header__title-unit">
             <h1 class="instance-header__title">
               {% if request.instance %}
                 <a href="/">{% firstof request.instance.title request.instance.label %}</a>
@@ -94,16 +94,16 @@
             {% endif %}
 
           </div>
-          <div class="medium-4 columns">
+          <div class="instance-header__search">
             {% if request.path != '/search/' %}
             {% if request.instance.label != 'leveson' or request.path != '/' %}
 
             <form class="site-search" action="/search/" method="get" >
-              <div class="row collapse">
-                <div class="small-10 columns">
+              <div class="site-search__row">
+                <div class="site-search__input-unit">
                   <input type="search" class="site-search__input" placeholder="Search" name="q"/>
                 </div>
-                <div class="small-2 columns">
+                <div class="site-search__button-unit">
                   <input type="submit" class="site-search__button button postfix radius" value="Go" />
                 </div>
               </div>
@@ -112,7 +112,7 @@
             {% endif %}
             {% endif %}
           </div>
-          <div class="small-12 columns">
+          <div class="primary-navigation-bar__unit">
 
             <nav class="primary-navigation-bar">
 
@@ -132,8 +132,8 @@
 
 
         <div class="full-page">
-          <div class="row">
-            <div class="small-12 columns">
+          <div class="full-page__row">
+            <div class="full-page__unit">
                 {% for message in messages %}
                   <div class="alert alert-{{ message.tags }}">
                       {{ message }}
@@ -145,8 +145,8 @@
         </div>
 
         <footer class="brand-footer">
-          <div class="row">
-            <div class="small-12 columns">
+          <div class="brand-footer__row">
+            <div class="brand-footer__unit">
             </div>
           </div>
         </footer>

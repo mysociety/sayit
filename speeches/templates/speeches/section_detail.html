@@ -18,13 +18,13 @@
 
 </div>
 
-<div class="row">
-  <div class="small-12 large-9 columns">
+<div class="page-content__row">
+  <div class="primary-content__unit">
 
     {% for node, structure in section_tree %}
       {% if structure.new_level %}<ul class="unstyled-list">{% else %}</li>{% endif %}
       {% if structure.speech %}
-        <li id="s{{ node.id }}" class="row speech {% if node.speaker %}speech--with-portrait{% endif %} speech--border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
+        <li id="s{{ node.id }}" class="speech {% if node.speaker %}speech--with-portrait{% endif %} speech--border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
         {% include "speeches/speech.html" with speech=node nosection="1" section=section noli=1 %}
       {% else %}
         <li class="section-signpost" ><span class="section-title"><a href="{% url 'speeches:section-view' node.get_path %}">{{ node.title }}</a></span>
@@ -34,7 +34,7 @@
     {% endfor %}
 
   </div>
-  <div class="small-12 large-3 columns">
+  <div class="sidebar__unit">
       {% with next=section.get_next_node previous=section.get_previous_node %}
         {% if previous or next %}
           <ul class="pager">

@@ -4,7 +4,7 @@
 {% load bleach_tags %}
 
 {% if not noli %}
-<li id="s{{ speech.id }}" class="row speech {% if  result.object %}speech--search-result{% endif %} {% if speech.speaker and not nospeaker %}speech--with-portrait{% endif %} speech--border"
+<li id="s{{ speech.id }}" class="speech {% if  result.object %}speech--search-result{% endif %} {% if speech.speaker and not nospeaker %}speech--with-portrait{% endif %} speech--border"
 {% if speech.speaker.colour %} style="border-left-color: #{{ speech.speaker.colour }};"{% endif %}>
 {% endif %}
 
@@ -14,7 +14,7 @@
 
   {% if not nospeaker %}
     {% if speech.speaker %}
-    <div class="speaker-portrait-wrapper medium-2 columns">
+    <div class="speaker-portrait-wrapper">
     <img src="{% if speech.speaker.person.image %}
         {{ speech.speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
         style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-portrait speaker-portrait--left round-image speaker-portrait--medium">
@@ -22,7 +22,7 @@
     {% endif %}
   {% endif %}
 
-  <div class="speech-wrapper  {% if speech.speaker and not nospeaker %} medium-10 {% else %} medium-12 {% endif %} columns">
+  <div class="speech-wrapper">
     <div class="speech__breadcrumb">
       {% if not nosection and speech.section_id %}
       <ul class="breadcrumbs">

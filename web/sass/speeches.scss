@@ -50,6 +50,10 @@
     }
 }
 
+.page-header__row {
+  @include grid-row(nest);
+}
+
 .page-header--with-portrait {
     h1 {
       margin-left: 80px;
@@ -68,6 +72,8 @@
       margin-top: 0;
     }
 }
+
+
 
 .pager {
     @include unstyled-list;
@@ -108,6 +114,7 @@
   padding-top: 1.5em;
   position: relative;
   @include clearfix;
+  @include grid-row(nest);
 }
 
 .speech--with-portrait {
@@ -128,25 +135,26 @@
 }
 
 .speaker-portrait-wrapper {
-  @media (max-width: $medium-screen) {
-    display: inline;
-    width: auto;
-    padding: 0;
-    float: none;
+  @media (min-width: $medium-screen) {
+    @include grid-column(2);
   }
 }
 
 .speech-wrapper {
   @media (max-width: $medium-screen) {
-    display: inline;
-    width: auto;
-    padding: 0;
-    float: none !important;
+    margin-left: 0.75em;
+    margin-right: 0.75em;
+  }
+  @media (min-width: $medium-screen) {
+    @include grid-column(10);
   }
 }
 .speaker-portrait {
   max-width: 100%;
   border: 4px solid transparent;
+  @media (max-width: $medium-screen) {
+    margin-left: 0.75em;
+  }
 }
 
 .speaker-portrait--left {
@@ -284,6 +292,23 @@
       margin: 0 auto 0.5em;
     }
 }
+
+/*Individual Speaker Page */
+.speaker-page__details {
+  @include grid-column(12);
+  @media (min-width: $medium-screen) {
+      @include grid-column(8);
+  }
+}
+
+.speaker-page__search {
+  @include grid-column(12);
+  @media (min-width: $medium-screen) {
+      @include grid-column(4);
+  }
+}
+
+
 
 /* Search results */
 .speech--search-result {

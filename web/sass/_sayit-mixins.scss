@@ -1,5 +1,8 @@
 
 @import "compass/css3";
+@import "settings";
+@import "foundation/components/global"; // *always required
+@import "foundation/components/grid-5";
 
 $small-screen: 0;
 $medium-screen: 40em;
@@ -98,6 +101,31 @@ $weight_bold: 700;
         display: none;
         visibility: hidden;
     }
+}
+
+.full-page__row {
+    @include grid-row;
+    // a top-level (un-nested) grid row, used generically to add top-level grid row
+}
+
+.page-content__row {
+  @include grid-row(nest);
+  // a nested grid row, used generically to add a nested grid row
+}
+
+// A two thirds / one thirds grid that can be reused
+.primary-content__unit {
+  @include grid-column(12);
+  @media (min-width: $large-screen) {
+    @include grid-column(9);
+  }
+}
+
+.sidebar__unit {
+  @include grid-column(12);
+  @media (min-width: $large-screen) {
+    @include grid-column(3);
+  }
 }
 
 /* TODO  - should probably fix this stuff but it's fine for the moment */

@@ -69,6 +69,10 @@ body {
     background: #fff;
 }
 
+.full-page__unit {
+    @include grid-column(12);
+}
+
 /* Base typography */
 h1, h2 {
     letter-spacing: 0.02em;
@@ -131,6 +135,14 @@ form {
     background: $colour_black;
 }
 
+.brand-header__row {
+    @include grid-row;
+}
+
+.brand-header__title-unit {
+    @include grid-column(9);
+}
+
 .brand-header__title {
     color: #fff;
     font-size: emCalc(24);
@@ -147,7 +159,9 @@ form {
 }
 
 .admin-menu-container {
+    @include grid-column(3);
     text-align: right;
+
 }
 
 .admin-menu-button {
@@ -170,12 +184,31 @@ form {
     padding: 3em 0;
 }
 
+.brand-footer__row {
+    @include grid-row;
+}
+
+.brand-footer__unit {
+    @include grid-column(12);
+}
+
 /* Instance header */
 .instance-header {
     border-bottom: 1px solid $colour_light_grey;
     padding-top: emCalc(24);
     background: #fff;
     position: relative;
+}
+
+.instance-header__row {
+    @include grid-row;
+}
+
+.instance-header__title-unit {
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(8);
+    }
 }
 
 .instance-header__title {
@@ -205,8 +238,33 @@ form {
     line-height: 1.461538462em;
 }
 
+.instance-header__search {
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(4);
+    }
+}
+
 .site-search {
     margin-top: 0.75em;
+}
+
+.site-search__row {
+    @include grid-row(nest-collapse);
+}
+
+.site-search__input-unit {
+    @include grid-column(10, $collapse:true);
+}
+
+.site-search--homepage {
+    @include grid-column(12, $center:true);
+    @media (min-width: $medium-screen) {
+        @include grid-column(8, $center:true);
+    }
+    @media (min-width: $large-screen) {
+        @include grid-column(6, $center:true);
+    }
 }
 
 .site-search__input,
@@ -214,11 +272,19 @@ form {
     -webkit-appearance: none;
 }
 
+.site-search__button-unit {
+    @include grid-column(2, $collapse:true);
+}
+
 .site-search__person-only {
     label {
         font-size: 1em;
         margin-bottom: 0.5em;
     }
+}
+
+.primary-navigation-bar__unit {
+    @include grid-column(12);
 }
 
 .primary-navigation-bar {
@@ -294,13 +360,17 @@ form {
 }
 
 .homepage-search {
-    margin: 1em 0;
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(8, $center:true);
+    }
     .site-search__input,
     .site-search__button {
         font-size: 1.125em;
     }
     @media (min-width: $medium-screen) {
-        margin: 4em 0;
+        margin-top: 4em;
+        margin-bottom: 4em;
     }
     h2 {
         @media (min-width: $large-screen) {
@@ -312,6 +382,7 @@ form {
         text-align: center;
     }
 }
+
 .featured-block {
     background-color: transparent;
     border: 1px solid darken($colour_light_grey, 5%);
@@ -334,6 +405,16 @@ form {
     }
 }
 
+.featured-elements__unit {
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(6);
+    }
+    @media (min-width: $large-screen) {
+        @include grid-column(3);
+    }
+}
+
 .featured-block__date {
     position: absolute;
     width: 100%;
@@ -346,11 +427,31 @@ form {
     font-size: 0.75em;
     text-transform: uppercase;
 }
-.nothing-here-yet-message {
-    text-align: center;
-    margin: 1em 0;
+
+.centered-form {
+    @include grid-column(12);
     @media (min-width: $medium-screen) {
-        margin: 4em 0;
+        @include grid-column(6, $center:true);
+    }
+    @media (min-width: $large-screen) {
+        @include grid-column(4, $center:true);
+    }
+}
+
+.nothing-here-yet-message {
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(8, $center:true);
+    }
+    @media (min-width: $large-screen) {
+        @include grid-column(6, $center:true);
+    }
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    @media (min-width: $medium-screen) {
+        margin-top: 4em;
+        margin-bottom: 4em;
     }
 }
 
