@@ -1,5 +1,6 @@
 from datetime import datetime
 import re
+import string
 
 from leveson.names import fix_name
 
@@ -146,27 +147,28 @@ def parse_transcript(text, url):
         # Headings
         m = re.match('Reply to the Responses to his Application by [A-Z ]*$|Response to .* Application$|Directions [Hh]earing.*$|Application by [A-Z ]*$|Application to become a core participant$|Reading of evidence of [A-Z ]*$|RULING$|Ruling$|(Opening|Closing|Reply) submissions ((on|for) Module 3 )?by [A-Z ]*$|Statement by ([A-Z ]*|Lord Justice Leveson)$|Submissions? by ([A-Z ]*|Mr Garnham)$|Discussion$|Discussion re (procedure|timetable|administrative matters)$|Housekeeping$', line.strip())
         if m:
-            Speech.current_section = Section( title=line.strip() )
+            Speech.current_section = Section( title=string.capwords(line.strip()) )
             continue
 
         # Witness arriving
-        m = re.match(" *((?:[A-Z]|Mr)(?:[A-Z' ,-]|Mc|Mr|and)+) (\(.*\))$", line)
+        m = re.match(" *((?:[A-Z]|Mr)(?:[A-Z' ,-]|Mc|Mr|and)+?)\s+(\(.*\))$", line)
         if m:
             Speech.witness = fix_name(m.group(1))
-            if Speech.witness == 'DR GERALD PATRICK MCCANN AND DR KATE MARIE MCCANN':
-                Speech.witness = 'MR MCCANN' # All the A.s are him
-            if Speech.witness == 'MR JAMES WATSON AND MRS MARGARET WATSON':
-                Speech.witness = 'MRS WATSON' # All the A.s are her
-            if Speech.witness == 'MR MATTHEW BELL AND MR CHRISTOPHER JOHNSON':
+            if Speech.witness == 'Dr Gerald Patrick McCann and Dr Kate Marie McCann':
+                Speech.witness = 'Mr McCann' # All the A.s are him
+            if Speech.witness == 'Mr James Watson and Mrs Margaret Watson':
+                Speech.witness = 'Mrs Watson' # All the A.s are her
+            if Speech.witness == 'Mr Matthew Bell and Mr Christopher Johnson':
                 # The one A. is actually him from the following session
-                Speech.witness = 'MR PIERS STEFAN PUGHE-MORGAN'
+                Speech.witness = 'Mr Piers Pughe-Morgan'
+            narrative = '%s %s.' % (m.group(1), m.group(2))
             if state == 'witness':
-                Speech.current_section.title += ' / ' + m.group(1)
-                speech.add_text( line.strip() + '.' )
+                Speech.current_section.title += ' / ' + Speech.witness
+                speech.add_text( narrative )
             else:
                 yield speech
-                Speech.current_section = Section( title=m.group(1) )
-                speech = Speech( speaker=None, text=line.strip() + '.' )
+                Speech.current_section = Section( title=Speech.witness )
+                speech = Speech( speaker=None, text=narrative )
                 state = 'witness'
             continue
         else:
@@ -180,7 +182,7 @@ def parse_transcript(text, url):
             yield speech
             if m.group(1) == 'A':
                 if '2011-12-08am' in url and not Speech.witness:
-                    Speech.witness = 'PROFESSOR BARNETT'
+                    Speech.witness = 'Professor Steven Barnett'
                 assert Speech.witness
                 speaker = Speech.witness
             else:

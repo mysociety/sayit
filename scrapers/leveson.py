@@ -12,7 +12,6 @@ from speeches.models import Section, Speaker, Speech
 
 from leveson.scrape import get_transcripts
 from leveson.parse import parse_transcript
-from leveson.utils import prettify
 
 commit = True
 def get_or_create(model, **attrs):
@@ -35,12 +34,11 @@ for date, url, text in get_transcripts():
     for speech in parse_transcript(text, url):
         if not speech: continue
         if speech.section:
-            section = get_or_create(Section, instance=instance, title=prettify(speech.section.title), parent=date_section)
+            section = get_or_create(Section, instance=instance, title=speech.section.title, parent=date_section)
         else:
             section = date_section
         if speech.speaker:
-            speaker = prettify(speech.speaker)
-            speaker = get_or_create(Speaker, instance=instance, name=speaker)
+            speaker = get_or_create(Speaker, instance=instance, name=speech.speaker)
         else:
             speaker = None
         text = '\n\n'.join([ ' '.join(s) for s in speech.text ])
