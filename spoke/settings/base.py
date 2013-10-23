@@ -7,6 +7,7 @@ import djcelery
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+DEBUG_TOOLBAR = True
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -107,7 +108,7 @@ MIDDLEWARE_CLASSES = [
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-if DEBUG:
+if DEBUG_TOOLBAR:
     MIDDLEWARE_CLASSES.append( 'debug_toolbar.middleware.DebugToolbarMiddleware' )
 
 INTERNAL_IPS = ( '127.0.0.1', )
@@ -155,7 +156,7 @@ INSTALLED_APPS = [
     'login_token',
     'popit_resolver',
 ]
-if DEBUG:
+if DEBUG_TOOLBAR:
     INSTALLED_APPS.append( 'debug_toolbar' )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
