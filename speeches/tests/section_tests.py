@@ -11,8 +11,8 @@ class SectionModelTests(TestCase):
 
     def setUp(self):
         create_sections([
-            { 'title': "Government Debates", 'items': [
-                { 'title': "Monday 25th March", 'items': [
+            { 'title': "Government Debates", 'subsections': [
+                { 'title': "Monday 25th March", 'subsections': [
                     { 'title': "Oral Answers to Questions - Silly Walks",
                       'speeches': [ 4, date(2013, 3, 25), time(9, 0) ],
                     },
@@ -20,8 +20,8 @@ class SectionModelTests(TestCase):
                       'speeches': [ 2, date(2013, 3, 25), time(12, 0) ],
                     },
                 ] },
-                { 'title': "Friday 29th March", 'items': [
-                    { 'title': "Fixed Easter Bill", 'items': [
+                { 'title': "Friday 29th March", 'subsections': [
+                    { 'title': "Fixed Easter Bill", 'subsections': [
                         { 'title': "Z Clause",
                           'speeches': [ 2, date(2013, 3, 29), time(15, 00) ],
                         },
@@ -34,13 +34,13 @@ class SectionModelTests(TestCase):
                     ] },
                 ] },
             ] },
-            { 'title': "Government Written Answers", 'items': [
-                { 'title': "Ministry of Aardvarks", 'items': [
+            { 'title': "Government Written Answers", 'subsections': [
+                { 'title': "Ministry of Aardvarks", 'subsections': [
                     { 'title': "March",
                       'speeches': [ 3, None, None ],
                     },
                 ] },
-                { 'title': "Ministry of Silly Walks", 'items': [
+                { 'title': "Ministry of Silly Walks", 'subsections': [
                     { 'title': "Wednesday 6th of March",
                       'speeches': [ 1, date(2013, 3, 6), None ],
                     },
