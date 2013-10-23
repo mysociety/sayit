@@ -1,6 +1,7 @@
 # Django settings for spoke project.
 
 import os
+import sys
 from django.conf import global_settings
 from .paths import *
 import djcelery
@@ -227,4 +228,10 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': DATABASES['default']['NAME'],
     },
 }
+if 'test' in sys.argv:
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+        },
+    }
 
