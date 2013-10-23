@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 
-from speeches.models import Speaker, Speech, Tag
+from speeches.models import Speaker, Speech, Section, Tag
 from speeches.widgets import AudioFileInput
 
 class SpeechAdmin(admin.ModelAdmin):
@@ -9,6 +9,7 @@ class SpeechAdmin(admin.ModelAdmin):
         models.FileField: { 'widget': AudioFileInput },
     }
 
+admin.site.register(Section)
 admin.site.register(Speaker)
 admin.site.register(Speech, SpeechAdmin)
 admin.site.register(Tag)
