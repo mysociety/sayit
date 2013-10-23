@@ -12,6 +12,9 @@ import speeches
 from speeches.models import Speech, Speaker
 from speeches.importers.import_akomantoso import ImportAkomaNtoso
 
+import logging
+logging.disable(logging.WARNING)
+
 @override_settings(POPIT_API_URL='http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/')
 class ImportAkomaNtosoTests(InstanceTestCase):
 
@@ -35,7 +38,7 @@ class ImportAkomaNtosoTests(InstanceTestCase):
         resolved = filter(lambda s: s.person != None, speakers)
         THRESHOLD=48
 
-        print >> sys.stderr, (
+        logging.info(
                 "%d above threshold %d/%d?" 
                 % (len(resolved), THRESHOLD, len(speakers)))
 

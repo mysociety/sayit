@@ -1,3 +1,4 @@
+import logging
 import os, sys
 import tempfile
 import shutil
@@ -13,6 +14,10 @@ from speeches.importers.import_akomantoso import ImportAkomaNtoso
 from django.core.management import call_command
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.test.utils import override_settings
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.WARNING)
 
 class ImportCommandTests(InstanceTestCase):
 
@@ -24,6 +29,7 @@ class ImportCommandTests(InstanceTestCase):
     def tearDownClass(cls):
         pass
 
+    @override_settings(POPIT_API_URL='http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/')
     def test_management_command(self):
         document_path = os.path.join(self._in_fixtures, 'NA200912.xml')
 
@@ -37,21 +43,14 @@ class ImportCommandTests(InstanceTestCase):
 
         post_count = Section.objects.filter(  parent=None ).count()
 
-        print >> sys.stderr, '%d - %d\n' % (pre_count, post_count)
+        logger.info('%d - %d\n' % (pre_count, post_count))
 
         self.assertEquals( pre_count + 1, post_count, 'New section was created' )
 
+    @override_settings(POPIT_API_URL=None)
     def test_bad_config(self):
-
-        # is there equiv of perl's 'local' in Python?
-        old_POPIT_API_URL = settings.POPIT_API_URL
-
-        settings.POPIT_API_URL = None
-
         self.assertRaises(
                 ImproperlyConfigured, 
                 ImportAkomaNtoso, 
                 instance=self.instance, 
                 commit=False)
-
-        settings.POPIT_API_URL = old_POPIT_API_URL

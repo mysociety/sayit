@@ -65,7 +65,7 @@ class ImporterBase (object):
         if self.commit:
             s.save()
         elif s.title:
-            print >> sys.stderr, s.title
+            logger.info(s.title)
         return s
 
     def get_person(self, name):
@@ -91,7 +91,7 @@ class ImporterBase (object):
                 except Speaker.DoesNotExist:
                     pass
             else:
-                print " - Failed to get user %s" % display_name
+                logger.info(" - Failed to get user %s" % display_name)
 
         if not speaker:
             speaker, _ = Speaker.objects.get_or_create(

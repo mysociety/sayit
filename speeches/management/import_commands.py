@@ -26,6 +26,7 @@ class ImportCommand(BaseCommand):
     )
 
     def handle(self, *args, **options):
+        verbosity = int(options['verbosity'])
 
         instance = None
         try:
@@ -38,10 +39,11 @@ class ImportCommand(BaseCommand):
 
         if options['file']:
             (section, speakers_matched, speakers_count, speakers) = self.import_document(options['file'], **options)
-            if section and section.id:
-                self.stdout.write("Imported section %d\n\n" % section.id)
-            self.stdout.write("    % 3d matched\n" % speakers_matched)
-            self.stdout.write(" of % 3d persons\n" % speakers_count)
+            if verbosity > 1:
+                if section and section.id:
+                    self.stdout.write("Imported section %d\n\n" % section.id)
+                self.stdout.write("    % 3d matched\n" % speakers_matched)
+                self.stdout.write(" of % 3d persons\n" % speakers_count)
         elif options['dir']:
             dir = options['dir']
 
@@ -62,13 +64,15 @@ class ImportCommand(BaseCommand):
 
             if options['commit']:
                 sections = [a for a,_,_,_ in imports]
-                self.stdout.write("Imported sections %s\n\n" 
-                    % str( [s.id for s in sections]))
+                if verbosity > 1:
+                    self.stdout.write("Imported sections %s\n\n" 
+                        % str( [s.id for s in sections]))
 
             (_, speakers_matched, speakers_count, _) = reduce(
                 lambda (s1,m1,c1,d1), (s2,m2,c2,d2): (None, m1+m2, c1+c2, None), imports)
-            self.stdout.write("    % 5d matched\n" % speakers_matched)
-            self.stdout.write(" of % 5d persons\n" % speakers_count)
+            if verbosity > 1:
+                self.stdout.write("    % 5d matched\n" % speakers_matched)
+                self.stdout.write(" of % 5d persons\n" % speakers_count)
 
             dump_users = options['dump_users']
             if dump_users:
@@ -80,17 +84,20 @@ class ImportCommand(BaseCommand):
                 speakers_list = [ (k, speakers[k]) for k in speakers]
                 out.write( json.dumps( speakers_list, indent=4 ) )
 
-                self.stdout.write("Saved speakers list to %s\n" % dump_users)
+                if verbosity > 1:
+                    self.stdout.write("Saved speakers list to %s\n" % dump_users)
 
         else:
             self.stdout.write( self.help )
 
     def import_document(self, path, **options):
+        verbosity = int(options['verbosity'])
 
         if not os.path.isfile(path):
             raise CommandError("No document found")
 
-        self.stdout.write("Starting import: %s\n" % path)
+        if verbosity > 1:
+            self.stdout.write("Starting import: %s\n" % path)
 
         if self.importer_class == None:
             raise CommandError("No importer_class specified!")
@@ -105,7 +112,8 @@ class ImportCommand(BaseCommand):
             self.stderr.write(str(e))
             return (None, 0, 0, {})
 
-        self.stdout.write('%d / %d\n' % (importer.speakers_matched, importer.speakers_count))
+        if verbosity > 1:
+            self.stdout.write('%d / %d\n' % (importer.speakers_matched, importer.speakers_count))
 
         return (section, importer.speakers_matched, importer.speakers_count, importer.speakers)
 

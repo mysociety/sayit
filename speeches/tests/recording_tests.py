@@ -1,3 +1,4 @@
+import logging
 import os
 import tempfile
 import shutil
@@ -11,6 +12,8 @@ from instances.tests import InstanceTestCase
 
 import speeches
 from speeches.models import Speech, Recording, Section
+
+logging.disable(logging.WARNING)
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class RecordingTests(InstanceTestCase):

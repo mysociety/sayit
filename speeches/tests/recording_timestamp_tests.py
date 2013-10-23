@@ -14,6 +14,9 @@ import speeches
 from speeches.models import Speech, Speaker, Recording, RecordingTimestamp
 from speeches.utils import AudioHelper
 
+import logging
+logging.disable(logging.WARNING)
+
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class RecordingTimestampTests(InstanceTestCase):
 
