@@ -2,6 +2,7 @@ from django.conf.urls import patterns, url, include
 from django.views.decorators.csrf import csrf_exempt
 
 from speeches.views import *
+from speeches.search import InstanceSearchView
 from tastypie.api import Api
 from speeches.api import SpeechResource, SpeakerResource
 
@@ -15,7 +16,7 @@ urlpatterns = patterns('',
     url(r'^(?P<path>speaker|recording)/?$', AddAnSRedirectView.as_view()),
     url(r'^(?P<path>speech)/?$', AddAnSRedirectView.as_view(suffix='es')),
 
-    url(r'^search/', include('haystack.urls')),
+    url(r'^search/', lambda request: InstanceSearchView()(request), name='haystack_search'),
 
     url(r'^speeches$', SpeechList.as_view(), name='speech-list'),
     url(r'^speech/add$', SpeechCreate.as_view(), name='speech-add'),
