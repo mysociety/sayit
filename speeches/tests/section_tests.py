@@ -3,36 +3,14 @@ from datetime import datetime, date, time, timedelta
 from django.test import TestCase
 
 from speeches.models import Section, Speech
+from speeches.tests import create_sections
 from instances.models import Instance
 from instances.tests import InstanceTestCase
 
 class SectionModelTests(TestCase):
 
-    def create_sections(self, node, parent=None):
-        if parent:
-            instance = parent.instance
-        else:
-            instance, _ = Instance.objects.get_or_create(label='whatever')
-
-        for item in node:
-            s = Section.objects.create( instance=instance, title=item['title'], parent=parent )
-            if 'items' in item:
-                self.create_sections(item['items'], s)
-            if 'speeches' in item:
-                num, d, t = item['speeches']
-                for i in range(0, num):
-                    Speech.objects.create(
-                        instance = instance,
-                        section = s,
-                        text = 'rhubarb rhubarb',
-                        start_date = d,
-                        start_time = t,
-                    )
-                    if t:
-                        t = (datetime.combine(date.today(), t) + timedelta(minutes=10)).time()
-
     def setUp(self):
-        self.create_sections([
+        create_sections([
             { 'title': "Government Debates", 'items': [
                 { 'title': "Monday 25th March", 'items': [
                     { 'title': "Oral Answers to Questions - Silly Walks",
