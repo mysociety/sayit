@@ -78,11 +78,11 @@ class Speaker(InstanceMixin, AuditedModel):
 
     @models.permalink
     def get_absolute_url(self):
-        return ( 'speaker-view', (), { 'pk': self.id } )
+        return ( 'speeches:speaker-view', (), { 'pk': self.id } )
 
     @models.permalink
     def get_edit_url(self):
-        return ( 'speaker-edit', (), { 'pk': self.id } )
+        return ( 'speeches:speaker-edit', (), { 'pk': self.id } )
 
     # http://stackoverflow.com/a/5772272/669631
     def save(self, *args, **kwargs):
@@ -321,15 +321,15 @@ class Section(AuditedModel, InstanceMixin):
 
     @models.permalink
     def get_absolute_url(self):
-        return ( 'section-view', (), { 'pk': self.id } )
+        return ( 'speeches:section-view', (), { 'pk': self.id } )
 
     @models.permalink
     def get_edit_url(self):
-        return ( 'section-edit', (), { 'pk': self.id } )
+        return ( 'speeches:section-edit', (), { 'pk': self.id } )
 
     @models.permalink
     def get_delete_url(self):
-        return ( 'section-delete', (), { 'pk': self.id } )
+        return ( 'speeches:section-delete', (), { 'pk': self.id } )
 
     def _get_next_previous_node(self, direction):
         if not self.parent:
@@ -471,15 +471,15 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
 
     @models.permalink
     def get_absolute_url(self):
-        return ( 'speech-view', (), { 'pk': self.id } )
+        return ( 'speeches:speech-view', (), { 'pk': self.id } )
 
     @models.permalink
     def get_edit_url(self):
-        return ( 'speech-edit', (), { 'pk': self.id } )
+        return ( 'speeches:speech-edit', (), { 'pk': self.id } )
 
     @models.permalink
     def get_delete_url(self):
-        return ( 'speech-delete', (), { 'pk': self.id } )
+        return ( 'speeches:speech-delete', (), { 'pk': self.id } )
 
     def get_next_speech(self):
         """Return the next speech to this one in the same section, in a start
@@ -592,7 +592,7 @@ class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
 
     @models.permalink
     def get_absolute_url(self):
-        return ( 'recording-view', (), { 'pk': self.id } )
+        return ( 'speeches:recording-view', (), { 'pk': self.id } )
 
     def add_speeches_to_section(self, section):
         return Speech.objects.filter(recordingtimestamp__recording=self).update(section=section)

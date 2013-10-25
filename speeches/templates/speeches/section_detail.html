@@ -10,7 +10,7 @@
 <div class="page-header">
 
     <ul class="breadcrumbs">
-        <li><a href="{% url 'section-list' %}">{% trans "Sections" %}</a> <span class="divider">&rarr;</span></li>
+        <li><a href="{% url 'speeches:section-list' %}">{% trans "Sections" %}</a> <span class="divider">&rarr;</span></li>
     {% for n in section.get_ancestors %}
     {% if n.id != section.id %}
         <li><a href="{{ n.get_absolute_url }}">{{ n.title }}</a> <span class="divider">&rarr;</span></li>
@@ -27,8 +27,8 @@
       <ul class="dropdown-menu">
         <li><a href="{{ section.get_edit_url }}">{% trans "Edit section" %}</a>
         <li><a href="{{ section.get_delete_url }}">{% trans "Delete section" %}</a>
-        <li><a href="{% url "section-add" %}?section={{ section.id }}">{% trans "Add a new subsection" %}</a>
-        <li><a href="{% url "speech-add" %}?section={{ section.id }}">{% trans "Add a new speech" %}</a>
+        <li><a href="{% url "speeches:section-add" %}?section={{ section.id }}">{% trans "Add a new subsection" %}</a>
+        <li><a href="{% url "speeches:speech-add" %}?section={{ section.id }}">{% trans "Add a new speech" %}</a>
       </ul>
     </div>
     {% endif %}
@@ -41,10 +41,10 @@
   {% if previous or next %}
     <ul class="pager">
       {% if previous %}
-        <li class="previous"><a href="{% url "section-view" previous.id %}">&larr; {{ previous.title }}</a>
+        <li class="previous"><a href="{% url "speeches:section-view" previous.id %}">&larr; {{ previous.title }}</a>
       {% endif %}
       {% if next %}
-        <li class="next"><a href="{% url "section-view" next.id %}">{{ next.title }} &rarr;</a>
+        <li class="next"><a href="{% url "speeches:section-view" next.id %}">{{ next.title }} &rarr;</a>
       {% endif %}
     </ul>
   {% endif %}
@@ -66,10 +66,10 @@
   {% if previous or next %}
     <ul class="pager">
       {% if previous %}
-        <li class="previous"><a href="{% url "section-view" previous.id %}">&larr; {{ previous.title }}</a>
+        <li class="previous"><a href="{% url "speeches:section-view" previous.id %}">&larr; {{ previous.title }}</a>
       {% endif %}
       {% if next %}
-        <li class="next"><a href="{% url "section-view" next.id %}">{{ next.title }} &rarr;</a>
+        <li class="next"><a href="{% url "speeches:section-view" next.id %}">{{ next.title }} &rarr;</a>
       {% endif %}
     </ul>
   {% endif %}

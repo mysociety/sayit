@@ -22,8 +22,8 @@
 
 {% if added %}
 <div class="alert alert-success"> 
-    Your speech has been <a href="{% url "speech-view" added %}">created</a>
-    in the section <a href="{% url "section-view" section.id %}#s{{ added }}">{{ section.title }}</a>!
+    Your speech has been <a href="{% url "speeches:speech-view" added %}">created</a>
+    in the section <a href="{% url "speeches:section-view" section.id %}#s{{ added }}">{{ section.title }}</a>!
 </div>
 {% endif %}
 

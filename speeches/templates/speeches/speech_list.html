@@ -17,7 +17,7 @@
 		<li>
 			<h3>
 				{% if speech.grouper %}
-					<a href="{% url "speaker-view" speech.grouper.id %}">{{ speech.grouper }}</a>
+					<a href="{% url "speeches:speaker-view" speech.grouper.id %}">{{ speech.grouper }}</a>
 				{% else %}
 					No Speaker
 				{% endif %}

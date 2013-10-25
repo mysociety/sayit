@@ -58,7 +58,7 @@
     <p class="lead muted">
         <small>Statement made by </small>
         {% if object.speaker %}
-            <a href="{% url "speaker-view" object.speaker.id %}">{{ object.speaker }}</a>
+            <a href="{% url "speeches:speaker-view" object.speaker.id %}">{{ object.speaker }}</a>
         {% else %}
             Unknown speaker
         {% endif %}
@@ -80,10 +80,10 @@
   {% if previous or next %}
     <ul class="pager">
       {% if previous %}
-        <li class="previous"><a href="{% url "speech-view" previous.id %}">&larr; {{ previous.summary|bleach }}</a>
+        <li class="previous"><a href="{% url "speeches:speech-view" previous.id %}">&larr; {{ previous.summary|bleach }}</a>
       {% endif %}
       {% if next %}
-        <li class="next"><a href="{% url "speech-view" next.id %}">{{ next.summary|bleach }} &rarr;</a>
+        <li class="next"><a href="{% url "speeches:speech-view" next.id %}">{{ next.summary|bleach }} &rarr;</a>
       {% endif %}
     </ul>
   {% endif %}

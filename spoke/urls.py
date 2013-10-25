@@ -14,7 +14,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     
-    url(r'^', include('speeches.urls')),
+    url(r'^', include('speeches.urls', app_name='speeches', namespace='speeches')),
 
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),

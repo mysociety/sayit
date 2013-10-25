@@ -14,7 +14,7 @@
 <ul class="unstyled">
     {% for top in object_list %}
     <li>
-        <span class="section-title"><a href="{% url "section-view" top.id %}">{{ top.title }}</a></span>
+        <span class="section-title"><a href="{% url "speeches:section-view" top.id %}">{{ top.title }}</a></span>
     </li>
     {% endfor %}
 </ul>

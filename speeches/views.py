@@ -76,7 +76,7 @@ class SpeechMixin(InstanceFormMixin):
         return form
 
 class SpeechDelete(SpeechMixin, DeleteView):
-    success_url = reverse_lazy('speech-list')
+    success_url = reverse_lazy('speeches:speech-list')
 
 class SpeechCreate(SpeechMixin, CreateView):
     def get_context_data(self, **kwargs):
@@ -169,7 +169,7 @@ class SpeechCreate(SpeechMixin, CreateView):
         self.object.start_transcribing()
 
         if 'add_another' in self.request.POST:
-            url = reverse('speech-add')
+            url = reverse('speeches:speech-add')
             speech = self.object
             if speech.section_id:
                 url = url + '?section=%d&added=%d' % (speech.section_id, speech.id)
@@ -248,7 +248,7 @@ class SpeakerUpdate(SpeakerMixin, UpdateView):
 class SpeakerPopit(InstanceFormMixin, FormView):
     template_name = 'speeches/speaker_popit.html'
     form_class = SpeakerPopitForm
-    success_url = reverse_lazy('speaker-popit')
+    success_url = reverse_lazy('speeches:speaker-popit')
 
     def form_valid(self, form):
         ai, _ = ApiInstance.objects.get_or_create(url=form.cleaned_data['url'])
@@ -310,7 +310,7 @@ class SectionUpdate(SectionMixin, UpdateView):
     pass
 
 class SectionDelete(SectionMixin, DeleteView):
-    success_url = reverse_lazy('section-list')
+    success_url = reverse_lazy('speeches:section-list')
 
 class SectionView(InstanceViewMixin, DetailView):
     model = Section
@@ -444,7 +444,7 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
         serialisable_fields = ('audio', 'timestamps')
         serialised = serializers.serialize("json", [recording], fields=serialisable_fields)
         serialised = serialised[1:-1]
-        return self.render_to_response(serialised, status=201, location=reverse("recording-view", args=[recording.id]))
+        return self.render_to_response(serialised, status=201, location=reverse("speeches:recording-view", args=[recording.id]))
 
     def form_invalid(self, form):
         return self.render_to_response({ 'errors': json.dumps(form.errors) }, status=400)

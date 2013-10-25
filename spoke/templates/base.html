@@ -61,9 +61,9 @@
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                       {% if request.instance %}
-                        <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speaker-list' %}"><b>Speakers</b></a>
-                        <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speech-list' %}"><b>Speeches</b></a>
-                        <li{% if request.path == '/sections' %} class="active"{% endif %}><a href="{% url 'section-list' %}"><b>Sections</b></a>
+                        <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speeches:speaker-list' %}"><b>Speakers</b></a>
+                        <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speeches:speech-list' %}"><b>Speeches</b></a>
+                        <li{% if request.path == '/sections' %} class="active"{% endif %}><a href="{% url 'speeches:section-list' %}"><b>Sections</b></a>
                       {% endif %}
                     </ul>
                     <ul class="nav pull-right">
@@ -72,14 +72,14 @@
                         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Instance <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                           {% if request.is_user_instance %}
-                            <li{% if request.path == '/speech/add' %} class="active"{% endif %}><a href="{% url 'speech-add' %}">Add speech</a>
-                            <li{% if request.path == '/sections/add' %} class="active"{% endif %}><a href="{% url 'section-add' %}">Add section</a>
-                            <li{% if request.path == '/speaker/add' %} class="active"{% endif %}><a href="{% url 'speaker-add' %}">Add speaker</a>
-                            <li{% if request.path == '/speaker/popit' %} class="active"{% endif %}><a href="{% url 'speaker-popit' %}">Add PopIt instance</a>
+                            <li{% if request.path == '/speech/add' %} class="active"{% endif %}><a href="{% url 'speeches:speech-add' %}">Add speech</a>
+                            <li{% if request.path == '/sections/add' %} class="active"{% endif %}><a href="{% url 'speeches:section-add' %}">Add section</a>
+                            <li{% if request.path == '/speaker/add' %} class="active"{% endif %}><a href="{% url 'speeches:speaker-add' %}">Add speaker</a>
+                            <li{% if request.path == '/speaker/popit' %} class="active"{% endif %}><a href="{% url 'speeches:speaker-popit' %}">Add PopIt instance</a>
                             <li{% if request.path == '/instance/edit' %} class="active"{% endif %}>
                                 <a href="{% url 'instance-edit' %}">{% trans "Edit instance" %}</a>
                             </li>
-                            <li{% if request.path == '/recordings' %} class="active"{% endif %}><a href="{% url 'recording-list' %}">Your recordings</a>
+                            <li{% if request.path == '/recordings' %} class="active"{% endif %}><a href="{% url 'speeches:recording-list' %}">Your recordings</a>
                             <li{% if request.path == '/instance/token' %} class="active"{% endif %}>
                                 <a href="{% url 'tokens' %}">{% trans "Your token" %}</a>
                             </li>
