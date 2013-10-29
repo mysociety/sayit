@@ -320,6 +320,7 @@ class SectionView(InstanceViewMixin, DetailView):
         context = super(SectionView, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the speeches in this section
         context['section_tree'] = kwargs['object'].get_descendants_tree_with_speeches(self.request)
+        context['sections_breadcrumb_text'] = 'Sections'
         return context
 
 class BothObjectAndFormMixin(object):

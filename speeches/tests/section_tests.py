@@ -224,6 +224,26 @@ class SectionSiteTests(InstanceTestCase):
         self.assertContains(resp, '<a href="/sections/%d/edit">Edit section</a>' % section.id, html=True)
         self.assertContains(resp, '<a href="/sections/%d/delete">Delete section</a>' % section.id, html=True)
 
+    def test_section_page_breadcrumb(self):
+
+        top = Section.objects.create(title='Top', instance=self.instance)
+        mid = Section.objects.create(title='Mid', instance=self.instance, parent=top)
+        low = Section.objects.create(title='Low', instance=self.instance, parent=mid)
+
+        # Call the section's page
+        resp = self.client.get('/sections/%d' % low.id)
+
+        divider = '<span class="divider">&rarr;</span>'
+        sections = [
+            '<li><a href="/sections">Sections</a> %s </li>' % divider,
+            '<li><a href="/sections/%d">Top</a>    %s </li>' % (top.id, divider),
+            '<li><a href="/sections/%d">Mid</a>    %s </li>' % (mid.id, divider),
+            ]
+        for s in sections:
+            self.assertContains(resp, s, html=True)
+        breadcrumb = '<ul class="breadcrumbs"> %s </ul>' % ''.join(sections)
+        self.assertContains(resp, breadcrumb, html=True)
+
     def test_section_deletion(self):
         # Set up the section
         section = Section.objects.create(title='A test section', instance=self.instance)
