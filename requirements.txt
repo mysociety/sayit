@@ -47,7 +47,7 @@ pyelasticsearch
 django-haystack
 
 # mySociety modules
-popit-django
+-e git+https://github.com/mysociety/popit-django#egg=popit-django
 -e git+https://github.com/mysociety/popit-resolver#egg=popit-resolver
 django-subdomain-instances
 
