@@ -26,8 +26,8 @@ class ImportJsonTests(InstanceTestCase):
     def test_import(self):
         files = [
                 # filename, speech count, resolved count, section title, section parent titles, is_public
-                ('1.txt', 8, 0, "Agriculture, Forestry and Fisheries", ["Top Section", "Middle Section", "Bottom Section"], True),
-                ('2.txt', 6, 0, "Agriculture, Forestry and Fisheries", ["Top Section", "Middle Section", "Other Bottom Section"], False),
+                ('1.txt', 8, 3, "Agriculture, Forestry and Fisheries", ["Top Section", "Middle Section", "Bottom Section"], True),
+                ('2.txt', 6, 2, "Agriculture, Forestry and Fisheries", ["Top Section", "Middle Section", "Other Bottom Section"], False),
                 #('3.txt', 8, 0),
                 #('4.txt', 5, 0),
                 #('5.txt', 8, 0),
