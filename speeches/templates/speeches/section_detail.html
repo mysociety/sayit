@@ -9,14 +9,7 @@
 
 <div class="page-header">
 
-    <ul class="breadcrumbs">
-        <li><a href="{% url 'speeches:section-list' %}">{% trans "Sections" %}</a> <span class="divider">&rarr;</span></li>
-    {% for n in section.get_ancestors %}
-    {% if n.id != section.id %}
-        <li><a href="{{ n.get_absolute_url }}">{{ n.title }}</a> <span class="divider">&rarr;</span></li>
-    {% endif %}
-    {% endfor %}
-    </ul>
+    {% include "speeches/_breadcrumbs.html" %}
 
     {% if user.is_authenticated %}
     <div class="btn-group pull-right">
