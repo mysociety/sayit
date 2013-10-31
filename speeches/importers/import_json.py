@@ -57,7 +57,10 @@ class ImportJson (ImporterBase):
         self.title = data.get( 'title', data.get('organization', '') )
         
         # Determine if speeches should be public
-        speeches_public = data.get('public', True)
+        speeches_premium = data.get('premium', False)
+        speeches_public = data.get('public', not speeches_premium)
+
+        report_url = data.get('report_url', '')
 
         # Create parents as needed using parent_section_titles
         parent_section_titles = data.get('parent_section_titles', [])
@@ -85,7 +88,7 @@ class ImportJson (ImporterBase):
                     location = s.get('location', ''),
                     title    = s.get('title', ''),
                     event    = s.get('event', ''),
-                    source_url = s.get('source_url', ''),
+                    source_url = s.get('source_url', report_url),
                     # {start,end}_{date,time}
             )
 
