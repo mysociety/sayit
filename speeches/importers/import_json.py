@@ -69,7 +69,7 @@ class ImportJson (ImporterBase):
         section = Section.objects.get_or_create_with_parents(instance=self.instance, titles=parent_section_titles)
 
         if self.delete_existing:
-            section.speech_set.delete()
+            section.speech_set.all().delete()
 
         for s in data.get( 'speeches', [] ):
 
