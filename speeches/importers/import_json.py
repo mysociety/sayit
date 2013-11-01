@@ -42,6 +42,7 @@ name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 class ImportJson (ImporterBase):
     def __init__(self, **kwargs):
         ImporterBase.__init__(self, **kwargs)
+        self.delete_existing = kwargs.get('delete_existing', False)
 
     def import_document(self, document_path):
 
@@ -66,6 +67,9 @@ class ImportJson (ImporterBase):
         parent_section_titles = data.get('parent_section_titles', [])
         parent_section_titles.append(self.title)
         section = Section.objects.get_or_create_with_parents(instance=self.instance, titles=parent_section_titles)
+
+        if self.delete_existing:
+            section.speech_set.delete()
 
         for s in data.get( 'speeches', [] ):
 
