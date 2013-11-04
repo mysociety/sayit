@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson as json
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse, reverse_lazy, resolve
 from django.core import serializers
 from django.conf import settings
 from django.contrib import messages
@@ -50,7 +50,22 @@ class JSONResponseMixin(object):
             response['Location'] = location
         return response
 
-class SpeechAudioCreate(JSONResponseMixin, BaseFormView):
+class NamespaceMixin(object):
+    """Mixin for adding current_app based on namespace"""
+
+    def reverse(self, template, **kwargs):
+        kwargs['current_app'] = resolve(self.request.path).namespace
+        return reverse(template, **kwargs)
+
+    def reverse_lazy(self, template, **kwargs):
+        kwargs['current_app'] = resolve(self.request.path).namespace
+        return reverse_lazy(template, **kwargs)
+
+    def render_to_response(self, context, **kwargs):
+        kwargs['current_app'] = resolve(self.request.path).namespace
+        return super(NamespaceMixin, self).render_to_response(context, **kwargs)
+
+class SpeechAudioCreate(NamespaceMixin, JSONResponseMixin, BaseFormView):
     form_class = SpeechAudioForm
     http_method_names = ['post']
 
@@ -64,7 +79,7 @@ class SpeechAudioCreate(JSONResponseMixin, BaseFormView):
     def form_invalid(self, form):
         return self.render_to_response({ 'error': form.errors['audio'] })
 
-class SpeechMixin(InstanceFormMixin):
+class SpeechMixin(NamespaceMixin, InstanceFormMixin):
     model = Speech
     form_class = SpeechForm
 
@@ -76,7 +91,9 @@ class SpeechMixin(InstanceFormMixin):
         return form
 
 class SpeechDelete(SpeechMixin, DeleteView):
-    success_url = reverse_lazy('speeches:speech-list')
+
+    def get_success_url(self):
+        return self.reverse_lazy('speeches:speech-list')
 
 class SpeechCreate(SpeechMixin, CreateView):
     def get_context_data(self, **kwargs):
@@ -169,7 +186,7 @@ class SpeechCreate(SpeechMixin, CreateView):
         self.object.start_transcribing()
 
         if 'add_another' in self.request.POST:
-            url = reverse('speeches:speech-add')
+            url = self.reverse('speeches:speech-add')
             speech = self.object
             if speech.section_id:
                 url = url + '?section=%d&added=%d' % (speech.section_id, speech.id)
@@ -180,13 +197,13 @@ class SpeechCreate(SpeechMixin, CreateView):
 class SpeechUpdate(SpeechMixin, UpdateView):
     pass
 
-class SpeechView(InstanceViewMixin, DetailView):
+class SpeechView(NamespaceMixin, InstanceViewMixin, DetailView):
     model = Speech
 
     def get_queryset(self):
         return super(SpeechView, self).get_queryset().visible(self.request)
 
-class SpeechList(InstanceViewMixin, ListView):
+class SpeechList(NamespaceMixin, InstanceViewMixin, ListView):
     model = Speech
     paginate_by = 50
     context_object_name = "speech_list"
@@ -196,7 +213,7 @@ class SpeechList(InstanceViewMixin, ListView):
     def get_queryset(self):
         return super(SpeechList, self).get_queryset().visible(self.request).annotate(null_start_date=Count('start_date')).select_related('speaker', 'section').prefetch_related('tags').order_by("speaker__name", "-null_start_date", "-start_date", "-start_time")
 
-class InstanceView(InstanceViewMixin, ListView):
+class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
     """Done as a ListView on Speech to get recent speeches, we get instance for
     free in the request."""
     model = Speech
@@ -215,7 +232,7 @@ class InstanceView(InstanceViewMixin, ListView):
         return context
 
 # This way around because of the 1.4 Django bugs with Mixins not calling super
-class SpeakerView(InstanceViewMixin, ListView, SingleObjectMixin):
+class SpeakerView(NamespaceMixin, InstanceViewMixin, ListView, SingleObjectMixin):
     model = Speaker
     paginate_by = 50
     template_name = 'speeches/speaker_detail.html'
@@ -231,11 +248,11 @@ class SpeakerView(InstanceViewMixin, ListView, SingleObjectMixin):
         context = super(SpeakerView, self).get_context_data(**kwargs)
         return context
 
-class SpeakerMixin(InstanceFormMixin):
+class SpeakerMixin(NamespaceMixin, InstanceFormMixin):
     model = Speaker
     form_class = SpeakerForm
 
-class SpeakerList(InstanceViewMixin, ListView):
+class SpeakerList(NamespaceMixin, InstanceViewMixin, ListView):
     model = Speaker
     context_object_name = 'speaker_list'
 
@@ -245,10 +262,12 @@ class SpeakerCreate(SpeakerMixin, CreateView):
 class SpeakerUpdate(SpeakerMixin, UpdateView):
     pass
 
-class SpeakerPopit(InstanceFormMixin, FormView):
+class SpeakerPopit(NamespaceMixin, InstanceFormMixin, FormView):
     template_name = 'speeches/speaker_popit.html'
     form_class = SpeakerPopitForm
-    success_url = reverse_lazy('speeches:speaker-popit')
+
+    def get_success_url(self):
+        return self.reverse_lazy('speeches:speaker-popit')
 
     def form_valid(self, form):
         ai, _ = ApiInstance.objects.get_or_create(url=form.cleaned_data['url'])
@@ -265,7 +284,7 @@ class SpeakerPopit(InstanceFormMixin, FormView):
         messages.add_message(self.request, messages.SUCCESS, "PopIt instance added, %d new speakers added." % new)
         return super(SpeakerPopit, self).form_valid(form)
 
-class SectionList(InstanceViewMixin, ListView):
+class SectionList(NamespaceMixin, InstanceViewMixin, ListView):
     model = Section
     context_object_name = 'section_list'
 
@@ -281,7 +300,7 @@ class SectionList(InstanceViewMixin, ListView):
         context['speech_list'] = Speech.objects.for_instance(self.request.instance).visible(self.request).filter(section=None).select_related('speaker').prefetch_related('tags')
         return context
 
-class SectionMixin(InstanceFormMixin):
+class SectionMixin(NamespaceMixin, InstanceFormMixin):
     model = Section
     form_class = SectionForm
 
@@ -310,9 +329,10 @@ class SectionUpdate(SectionMixin, UpdateView):
     pass
 
 class SectionDelete(SectionMixin, DeleteView):
-    success_url = reverse_lazy('speeches:section-list')
+    def get_success_url(self):
+        return self.reverse_lazy('speeches:section-list')
 
-class SectionView(InstanceViewMixin, DetailView):
+class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
     model = Section
 
     def get_context_data(self, **kwargs):
@@ -333,13 +353,13 @@ class BothObjectAndFormMixin(object):
         context['form'].fields['section'].queryset = Section.objects.for_instance(self.request.instance)
         return context
 
-class RecordingList(InstanceViewMixin, ListView):
+class RecordingList(NamespaceMixin, InstanceViewMixin, ListView):
     model = Recording
 
-class RecordingDisplay(BothObjectAndFormMixin, InstanceViewMixin, DetailView):
+class RecordingDisplay(NamespaceMixin, BothObjectAndFormMixin, InstanceViewMixin, DetailView):
     model = Recording
 
-class RecordingSetSection(BothObjectAndFormMixin, InstanceFormMixin, FormView, SingleObjectMixin):
+class RecordingSetSection(NamespaceMixin, BothObjectAndFormMixin, InstanceFormMixin, FormView, SingleObjectMixin):
     template_name = 'speeches/recording_detail.html'
     form_class = SectionPickForm
     model = Recording
@@ -353,7 +373,7 @@ class RecordingSetSection(BothObjectAndFormMixin, InstanceFormMixin, FormView, S
         messages.add_message(self.request, messages.SUCCESS, "Speeches assigned.")
         return super(RecordingSetSection, self).form_valid(form)
 
-class RecordingView(View):
+class RecordingView(NamespaceMixin, View):
     def get(self, request, *args, **kwargs):
         view = RecordingDisplay.as_view()
         return view(request, *args, **kwargs)
@@ -364,7 +384,7 @@ class RecordingView(View):
 
 # NB: this is not an UpdateView, at least for now, as it only updates
 # RecordingTimestamp not the actual Recording class.
-class RecordingUpdate(InstanceFormMixin, DetailView):
+class RecordingUpdate(NamespaceMixin, InstanceFormMixin, DetailView):
     model = Recording
     template_name_suffix = "_form"
 
