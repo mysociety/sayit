@@ -1,0 +1,17 @@
+{% load url from future %}
+{% load i18n %}
+
+{% if user.is_authenticated %}
+<div class="btn-group pull-right">
+  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+    {% trans "Actions" %}
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu">
+    <li><a href="{{ section.get_edit_url }}">{% trans "Edit section" %}</a>
+    <li><a href="{{ section.get_delete_url }}">{% trans "Delete section" %}</a>
+    <li><a href="{% url "speeches:section-add" %}?section={{ section.id }}">{% trans "Add a new subsection" %}</a>
+    <li><a href="{% url "speeches:speech-add" %}?section={{ section.id }}">{% trans "Add a new speech" %}</a>
+  </ul>
+</div>
+{% endif %}

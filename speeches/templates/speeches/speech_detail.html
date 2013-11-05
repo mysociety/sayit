@@ -34,18 +34,7 @@
     </ul>
     {% endif %}
 
-    {% if user.is_authenticated %}
-    <div class="btn-group pull-right">
-      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        {% trans "Actions" %}
-        <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu">
-        <li><a href="{{ speech.get_delete_url }}">{% trans "Delete speech" %}</a>
-        <li><a href="{{ speech.get_edit_url }}">{% trans "Edit speech" %}</a>
-      </ul>
-    </div>
-    {% endif %}
+    {% include "speeches/_speech_user_actions.html" %}
 
     <h1>
         {% if object.title %}
@@ -54,7 +43,7 @@
             &#8220;{{ object.summary|bleach }}&#8221;
         {% endif %}
     </h1>
-    
+
     <p class="lead muted">
         <small>Statement made by </small>
         {% if object.speaker %}
