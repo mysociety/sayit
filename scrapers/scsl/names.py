@@ -1,4 +1,5 @@
 name_fixes = {
+    'THE ACCUSED': 'CHARLES GHANKAY TAYLOR',
 }
 
 def fix_name(name):

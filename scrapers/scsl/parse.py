@@ -12,6 +12,7 @@ class Speech(object):
     current_time = None
     current_section = None
     witness = None
+    presiding = None
 
     def __init__(self, speaker, text):
         self.speaker = speaker
@@ -29,6 +30,7 @@ class Speech(object):
     def reset(cls):
         cls.current_time = None
         cls.current_section = None
+        cls.presiding = None
 
 def parse_transcript(text, date):
     print "PARSING %s" % date
@@ -119,8 +121,12 @@ def parse_transcript(text, date):
             elif num == location_row:
                 assert line in ('APPEALS CHAMBER', 'TRIAL CHAMBER II', 'TRIAL CHAMBER II.'), line
                 LOCATION = line.replace('.', '')
-            #else:
-            #    print line
+
+            m = re.match('(?:(?:Before the )?Judges:(?: *Justice,?)?|Justice) *(.*?),? \(?[Pp]residing(?: Judge)?\)?$', line)
+            if m:
+                Speech.presiding = m.group(1).strip()
+            elif 'residing' in line:
+                raise Exception, 'Failed to catch Presiding Judge: %s' % line
 
             num += 1
             continue
@@ -237,8 +243,8 @@ def parse_transcript(text, date):
             Speech.current_section = Section( title=line.strip() )
             continue
 
-        if len(line)-len(line.lstrip()) > 11:
-            print (len(line)-len(line.lstrip())), '*', line, '*'
+        #if len(line)-len(line.lstrip()) > 11:
+        #    print (len(line)-len(line.lstrip())), '*', line, '*'
 
         if re.match(" {7,}[QA]\.", line):
             speech.add_para(line.strip())
@@ -246,8 +252,7 @@ def parse_transcript(text, date):
 
         # Question/answer (speaker from previous lines)
         m = re.match('([QA])\. (.*)', line.strip())
-        # On these dates, they only quote Q/As - but they quote elsewhere, which means it's getting it wrong TODO
-        if m: # and date.isoformat() not in ('2011-03-09', '2011-03-10', '2011-03-11'):
+        if m:
             yield speech
             if m.group(1) == 'A':
                 assert Speech.witness, line
@@ -271,19 +276,22 @@ def parse_transcript(text, date):
             interviewer = fix_name(m.group(1))
             continue
 
-        # TODO "Presiding Judge" matching
-
         m = re.match(' *((?:[A-Z -]|De|Mc)+): (.*)', line)
         if m:
             yield speech
             speaker = fix_name(m.group(1))
+            if speaker == 'PRESIDING JUDGE':
+                if date.isoformat() in ('2008-10-13', '2008-10-15'):
+                    Speech.presiding = 'JUDGE LUSSICK'
+                assert Speech.presiding
+                speaker = Speech.presiding
+            if speaker == 'THE WITNESS':
+                assert Speech.witness
+                speaker = Speech.witness
             #if not interviewer:
             #    interviewer = speaker
             speech = Speech( speaker=speaker, text=m.group(2) )
             continue
-
-        # TODO Check/sort paragraph indenting
-        # 2/3 normal, 7+ new paragraph? Have to spot/deal with quoted text...
 
         # New paragraph if indent at least 7 spaces
         m = re.match('       ', line)
