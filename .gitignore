@@ -9,3 +9,4 @@ chromedriver.log
 .noseids
 *.swp
 *.swo
+django_sayit.egg-info
