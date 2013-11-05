@@ -4,6 +4,8 @@ import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'spoke.settings'
+import optparse
+
 from instances.models import Instance
 from speeches.models import Section, Speaker, Speech
 
@@ -11,7 +13,14 @@ from scsl.scrape import get_transcripts
 from scsl.parse import parse_transcript
 from scsl.utils import prettify
 
-commit = True
+# Command line options
+from optparse import OptionParser
+parser = OptionParser()
+parser.add_option('--commit', dest='commit', help='commit to database', action='store_true')
+(options, args) = parser.parse_args()
+commit = options.commit
+
+# Special get_or_create that won't always commit
 def get_or_create(model, **attrs):
     global commit
     try:
@@ -22,8 +31,10 @@ def get_or_create(model, **attrs):
             obj.save()
     return obj
 
+# First we need an instance
 instance = get_or_create(Instance, label='charles-taylor')
 
+# And then we need to parse some transcripts
 for date, url, text in get_transcripts():
     date_section = get_or_create(Section, instance=instance, title='Hearing, %s' % date.strftime('%d %B %Y').lstrip('0'))
 
