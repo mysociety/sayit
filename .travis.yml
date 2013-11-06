@@ -1,0 +1,26 @@
+language: python
+
+install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq ffmpeg libavcodec-extra-53 iceweasel xvfb
+  - pip install -r requirements.txt
+  - sed -r -e "s,(SAYIT_DB_USER:) 'sayit',\\1 'postgres'," conf/general.yml-example > conf/general.yml
+
+before_script:
+  - psql -c 'create database sayit;' -U postgres
+  - ./manage.py syncdb --noinput --migrate
+  - ./manage.py collectstatic --noinput
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+env:
+  - SELENIUM_TESTS=1
+
+script:
+  - ./manage.py test
+
+# report results in IRC
+# notifications:
+#   irc: "irc.mysociety.org#pmo"
+#   use_notice: true
+#   skip_join: true
