@@ -9,6 +9,22 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     start_date = indexes.DateTimeField(model_attr='start_date', null=True)
     instance = indexes.CharField(model_attr='instance__label')
     speaker = indexes.IntegerField(model_attr='speaker__id', null=True)
+    sections = indexes.MultiValueField()
+
+
+    def prepare_sections(self, obj):
+        # Add the ids of all the sections up to the top parent. Intention is to
+        # make it easy to search all speeches under a given section.
+        section = obj.section
+        section_ids = []
+
+        # TODO this recursion is very inefficient, should refactor
+        while section:
+            section_ids.append(section.id)
+            section = section.parent
+
+        return section_ids
+
 
     def get_model(self):
         return Speech
