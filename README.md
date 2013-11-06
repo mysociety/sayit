@@ -3,6 +3,8 @@ SayIt
 
 A project to upload and store audio and text of speeches.
 
+[![Build Status](https://travis-ci.org/mysociety/sayit.png)](https://travis-ci.org/mysociety/sayit)
+
 Documentation
 -------------
 Documentation (a work in progress) can be found at: http://mysociety.github.io/sayit/
@@ -31,8 +33,8 @@ Something like the following, customised to your particular environment or set u
     CREATE DATABASE
 
     # Set up a python virtual environment, activate it
-    # this assumes that you will set up the virtualenv in .. 
-    # (e.g. outside the repo.  
+    # this assumes that you will set up the virtualenv in ..
+    # (e.g. outside the repo.
     #  You can use ~/.virtualenvs/ etc. if you prefer)
     virtualenv --no-site-packages ../virtualenv-sayit
     source ../virtualenv-sayit/bin/activate
@@ -43,7 +45,7 @@ Something like the following, customised to your particular environment or set u
     cp conf/general.yml-example conf/general.yml
     # Alter conf/general.yml as per your set up
     #    use the 'sayit' account as above for SAYIT_DB_{USER,NAME,PASS}
-    # 
+    #
     # For *development* use only:
     #    use recommendations for BASE_{HOST,PORT}
     #    you don't need Google Analytics
