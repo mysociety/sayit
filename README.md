@@ -68,9 +68,10 @@ Something like the following, customised to your particular environment or set u
 Testing
 -------
 
-    ./manage.py test speeches
+    ./manage.py test
 
-The Selenium tests currently uses Firefox, so make sure you have Firefox installed.
+By default the Selenium tests are **not** run. These tests currently uses
+Firefox, so make sure you have Firefox installed.
 
 If you're on a headless server, eg: in a vagrant box, you'll need to install the
 iceweasel and xvfb packages (see the commented out section of /conf/packages)
@@ -82,6 +83,10 @@ After installing them, start Xvfb with:
 And export your display variable:
 
     export DISPLAY=:99
+
+You can then run the tests, including the Selenium ones, using:
+
+    SELENIUM_TESTS=1 ./manage.py test
 
 You might want to make that happen at every startup with the appropriates lines in
 `/etc/rc.local` and `~/.bashrc`
