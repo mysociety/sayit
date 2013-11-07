@@ -18,7 +18,7 @@ from speeches.models import Speaker, Speech
 skip_selenium = not os.environ.get('SELENIUM_TESTS', False)
 
 @unittest.skipIf(skip_selenium, 'Selenium tests not requested')
-@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp(), ATT_API_URL='http://att.api.url.example.org/')
 class SeleniumTests(InstanceLiveServerTestCase):
     @classmethod
     def setUpClass(cls):

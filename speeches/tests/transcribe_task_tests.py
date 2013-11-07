@@ -17,7 +17,7 @@ from speeches.models import Speech
 from speeches.tasks import transcribe_speech
 from speeches.utils import TranscribeHelper, TranscribeException
 
-@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp(), ATT_API_URL='http://att.api.url.example.org/')
 class TranscribeTaskTests(InstanceTestCase):
 
     @classmethod
