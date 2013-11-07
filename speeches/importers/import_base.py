@@ -56,12 +56,11 @@ class ImporterBase (object):
                 date_string = date_string)
 
     def make(self, cls, **kwargs):
-        args = kwargs
         if cls == Speech:
-            args['title'] = args.get('title', self.title)
-            args['start_date'] = self.start_date
+            kwargs['title'] = kwargs.get('title', self.title)
+            kwargs['start_date'] = self.start_date
 
-        s = cls(instance=self.instance, **args)
+        s = cls(instance=self.instance, **kwargs)
         if self.commit:
             s.save()
         elif s.title:
