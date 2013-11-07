@@ -86,7 +86,7 @@ class ImporterBase (object):
                 self.speakers_matched += 1
                 try:
                     speaker = Speaker.objects.get(
-                        instance = self.instance, 
+                        instance = self.instance,
                         person = popit_person)
                 except Speaker.DoesNotExist:
                     pass
@@ -95,7 +95,7 @@ class ImporterBase (object):
 
         if not speaker:
             speaker, _ = Speaker.objects.get_or_create(
-                instance = self.instance, 
+                instance = self.instance,
                 name = display_name)
 
             if popit_person:
