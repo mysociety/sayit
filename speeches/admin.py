@@ -4,12 +4,20 @@ from django.db import models
 from speeches.models import Speaker, Speech, Section, Tag
 from speeches.widgets import AudioFileInput
 
+
 class SpeechAdmin(admin.ModelAdmin):
+    date_hierarchy = 'start_date'
+    list_filter = ('tags',)
     formfield_overrides = {
         models.FileField: { 'widget': AudioFileInput },
     }
 
-admin.site.register(Section)
+
+class SectionAdmin(admin.ModelAdmin):
+    search_fields = ('title',)
+
+
+admin.site.register(Section, SectionAdmin)
 admin.site.register(Speaker)
 admin.site.register(Speech, SpeechAdmin)
 admin.site.register(Tag)
@@ -18,5 +26,5 @@ admin.site.register(Tag)
 #     prepopulated_fields = {"slug": ["name"]}
 #     list_display  = [ 'slug', 'name', ]
 #     search_fields = ['name']
-# 
+#
 # admin.site.register( FooBar, FooBarAdmin )
