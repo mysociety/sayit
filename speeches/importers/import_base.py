@@ -14,7 +14,7 @@ from django.conf import settings
 
 from popit.models import Person, ApiInstance
 from speeches.models import Section, Speech, Speaker
-from popit_resolver.resolve import ResolvePopitName
+from popit_resolver.resolve import SetupEntities, ResolvePopitName
 from django.core.exceptions import ImproperlyConfigured
 
 logger = logging.getLogger(__name__)
@@ -50,8 +50,8 @@ class ImporterBase (object):
         self.resolver = None
 
     def init_popit_data(self, date_string='', date=None):
+        SetupEntities(self.popit_url).init_popit_data()
         self.resolver = ResolvePopitName(
-                popit_url = self.popit_url,
                 date = date,
                 date_string = date_string)
 
@@ -80,7 +80,7 @@ class ImporterBase (object):
 
         if name:
             self.speakers_count += 1
-            popit_person = self.resolver.get_popit_person(display_name)
+            popit_person = self.resolver.get_person(display_name)
 
             if popit_person:
                 self.speakers_matched += 1
