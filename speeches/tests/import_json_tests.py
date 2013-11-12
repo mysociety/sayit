@@ -1,6 +1,7 @@
 import os, sys
 import tempfile
 import shutil
+from datetime import date
 
 import requests
 
@@ -32,9 +33,9 @@ class ImportJsonTests(InstanceTestCase):
                 "section_title": "Agriculture, Forestry and Fisheries",
                 "section_parent_titles": ["Top Section", "Middle Section", "Bottom Section"],
                 "is_public": True,
-                "start_date": None,
+                "start_date": date(2013, 06, 21),
                 "start_time": None,
-                "end_date": None,
+                "end_date": date(2013, 06, 21),
                 "end_time": None,
             },
             {
@@ -44,9 +45,9 @@ class ImportJsonTests(InstanceTestCase):
                 "section_title": "Agriculture, Forestry and Fisheries",
                 "section_parent_titles": ["Top Section", "Middle Section", "Other Bottom Section"],
                 "is_public": False,
-                "start_date": None,
+                "start_date": date(2013, 06, 19),
                 "start_time": None,
-                "end_date": None,
+                "end_date": date(2013, 06, 19),
                 "end_time": None,
             },
             # {"filename": '3.json', "speech_count": 8, "resolved_count": 0},
