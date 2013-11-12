@@ -31,7 +31,11 @@ class ImportJsonTests(InstanceTestCase):
                 "resolved_count": 3,
                 "section_title": "Agriculture, Forestry and Fisheries",
                 "section_parent_titles": ["Top Section", "Middle Section", "Bottom Section"],
-                "is_public": True
+                "is_public": True,
+                "start_date": None,
+                "start_time": None,
+                "end_date": None,
+                "end_time": None,
             },
             {
                 "filename": "2.json",
@@ -39,7 +43,11 @@ class ImportJsonTests(InstanceTestCase):
                 "resolved_count": 2,
                 "section_title": "Agriculture, Forestry and Fisheries",
                 "section_parent_titles": ["Top Section", "Middle Section", "Other Bottom Section"],
-                "is_public": False
+                "is_public": False,
+                "start_date": None,
+                "start_time": None,
+                "end_date": None,
+                "end_time": None,
             },
             # {"filename": '3.json', "speech_count": 8, "resolved_count": 0},
             # {"filename": '4.json', "speech_count": 5, "resolved_count": 0},
@@ -75,6 +83,12 @@ class ImportJsonTests(InstanceTestCase):
             # Check that all speeches have the correct privacy setting
             for speech in speeches:
                 self.assertEqual(speech.public, expected["is_public"])
+
+                # check that all speeches have the expected date
+                self.assertEqual(speech.start_date, expected['start_date'])
+                self.assertEqual(speech.start_time, expected['start_time'])
+                self.assertEqual(speech.end_date,   expected['end_date'])
+                self.assertEqual(speech.end_time,   expected['end_time'])
 
             resolved = filter(lambda s: s.speaker.person != None, speeches)
 
