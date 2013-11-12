@@ -65,7 +65,7 @@ class NamespaceMixin(object):
         kwargs['current_app'] = resolve(self.request.path).namespace
         return super(NamespaceMixin, self).render_to_response(context, **kwargs)
 
-class SpeechAudioCreate(NamespaceMixin, JSONResponseMixin, BaseFormView):
+class SpeechAudioCreate(JSONResponseMixin, BaseFormView):
     form_class = SpeechAudioForm
     http_method_names = ['post']
 
