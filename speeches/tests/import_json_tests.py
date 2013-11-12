@@ -24,23 +24,36 @@ class ImportJsonTests(InstanceTestCase):
         pass
 
     def test_import(self):
-        files = [
-                # filename, speech count, resolved count, section title, section parent titles, is_public
-                ('1.json', 8, 3, "Agriculture, Forestry and Fisheries", ["Top Section", "Middle Section", "Bottom Section"], True),
-                ('2.json', 6, 2, "Agriculture, Forestry and Fisheries", ["Top Section", "Middle Section", "Other Bottom Section"], False),
-                #('3.json', 8, 0),
-                #('4.json', 5, 0),
-                #('5.json', 8, 0),
-                #('6.json', 9, 0),
-                #('7.json', 6, 0),
-                #('8.json', 6, 0),
-                #('9.json', 7, 0)
-                ]
+        expecteds = [
+            {
+                "filename": "1.json",
+                "speech_count": 8,
+                "resolved_count": 3,
+                "section_title": "Agriculture, Forestry and Fisheries",
+                "section_parent_titles": ["Top Section", "Middle Section", "Bottom Section"],
+                "is_public": True
+            },
+            {
+                "filename": "2.json",
+                "speech_count": 6,
+                "resolved_count": 2,
+                "section_title": "Agriculture, Forestry and Fisheries",
+                "section_parent_titles": ["Top Section", "Middle Section", "Other Bottom Section"],
+                "is_public": False
+            },
+            # {"filename": '3.json', "speech_count": 8, "resolved_count": 0},
+            # {"filename": '4.json', "speech_count": 5, "resolved_count": 0},
+            # {"filename": '5.json', "speech_count": 8, "resolved_count": 0},
+            # {"filename": '6.json', "speech_count": 9, "resolved_count": 0},
+            # {"filename": '7.json', "speech_count": 6, "resolved_count": 0},
+            # {"filename": '8.json', "speech_count": 6, "resolved_count": 0},
+            # {"filename": '9.json', "speech_count": 7, "resolved_count": 0}
+        ]
 
         sections = []
 
-        for (f, exp_speeches, exp_resolved, exp_section_name, exp_section_parents, is_public) in files:
-            document_path = os.path.join(self._in_fixtures, f)
+        for expected in expecteds:
+            document_path = os.path.join(self._in_fixtures, expected["filename"])
 
             aj = ImportJson(instance=self.instance, category_field="title", commit=True)
             section = aj.import_document(document_path)
@@ -50,9 +63,9 @@ class ImportJsonTests(InstanceTestCase):
             self.assertTrue(section is not None)
 
             # Check sections created as expected
-            self.assertEqual(section.title, exp_section_name)
+            self.assertEqual(section.title, expected["section_title"])
             parent_to_test = section.parent
-            for exp_parent in reversed(exp_section_parents):
+            for exp_parent in reversed(expected["section_parent_titles"]):
                 self.assertEqual(parent_to_test.title, exp_parent)
                 parent_to_test = parent_to_test.parent
             self.assertEqual(parent_to_test, None)
@@ -61,16 +74,16 @@ class ImportJsonTests(InstanceTestCase):
 
             # Check that all speeches have the correct privacy setting
             for speech in speeches:
-                self.assertEqual(speech.public, is_public)
+                self.assertEqual(speech.public, expected["is_public"])
 
             resolved = filter(lambda s: s.speaker.person != None, speeches)
 
-            self.assertEquals( len(speeches), exp_speeches,
+            self.assertEquals( len(speeches), expected["speech_count"],
                    'Speeches %d == %d (%s)' %
-                   (len(speeches), exp_speeches, f) )
-            self.assertEquals( len(resolved), exp_resolved,
+                   (len(speeches), expected["speech_count"], expected["filename"]) )
+            self.assertEquals( len(resolved), expected["resolved_count"],
                    'Resolved %d == %d (%s)' %
-                   (len(resolved), exp_resolved, f) )
+                   (len(resolved), expected["resolved_count"], expected["filename"]) )
 
         s0 = sections[0]
         s1 = sections[1]
