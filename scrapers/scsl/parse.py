@@ -226,8 +226,8 @@ def parse_transcript(text, date):
         m1 = re.match('(?i)(?:FURTHER )?(?:EXAMINATION(?:-| )IN-CHIEF|CROSS-EXAMINATION|CROSS-EXAMINED|RE-EXAMINATION) BY ([A-Z ]*):?(?: *\[Cont(?:(?:inue|\')d|\.|)\])?:?\.?$', line.strip())
         m2 = re.match('QUESTIONS BY (THE BENCH):$', line.strip())
         m = m1 or m2
-        if m:
-            interviewer = fix_name(m.group(1))
+        if m and not re.match('cross-examination', line.strip()):
+            interviewer = fix_name(m.group(1).strip())
             continue
 
         # Witness arriving
@@ -239,7 +239,7 @@ def parse_transcript(text, date):
         # TODO Witness is an ID number, needs list finding/ matching to name
         m = re.match("WITNESS: *([A-Z0-9- ]+):? \[(.*)\]\.?$", line.strip())
         if m:
-            Speech.witness = fix_name(m.group(1))
+            Speech.witness = fix_name(m.group(1).strip())
             Speech.current_section = Section( title=line.strip() )
             continue
 
@@ -277,15 +277,17 @@ def parse_transcript(text, date):
             continue
 
         m = re.match(' *((?:[A-Z -]|De|Mc)+): (.*)', line)
-        if m:
+        ignore = re.match(' *(ECOWAS|H-O-U-Y-E|C|OBASANJO|TAYLOR):', line)
+        # When TAYLOR is used on its own (2008-05-20) it's a quote of a transcript
+        if m and not ignore:
             yield speech
-            speaker = fix_name(m.group(1))
+            speaker = fix_name(m.group(1).strip())
             if speaker == 'PRESIDING JUDGE':
                 if date.isoformat() in ('2008-10-13', '2008-10-15'):
-                    Speech.presiding = 'JUDGE LUSSICK'
+                    Speech.presiding = 'RICHARD LUSSICK'
                 assert Speech.presiding
                 speaker = Speech.presiding
-            if speaker == 'THE WITNESS':
+            if speaker in ('THE WITNESS', 'MR WITNESS', 'WITNESS'):
                 assert Speech.witness
                 speaker = Speech.witness
             #if not interviewer:
