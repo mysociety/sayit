@@ -48,12 +48,12 @@ class ImportJson (ImporterBase):
 
         data = json.load( open(document_path, 'r') )
 
-        meetingdate_string = data.get( 'date', None )
-        meetingdate = None
-        if meetingdate_string:
-            meetingdate = datetime.strptime( meetingdate_string, '%Y-%m-%d' ).date()
+        start_date_string = data.get( 'date', None )
+        start_date = None
+        if start_date_string:
+            start_date = datetime.strptime( start_date_string, '%Y-%m-%d' ).date()
 
-        self.init_popit_data(date=meetingdate)
+        self.init_popit_data(date=start_date)
 
         self.title = data.get( 'title', data.get('organization', '') )
         
@@ -93,6 +93,8 @@ class ImportJson (ImporterBase):
                     title    = s.get('title', ''),
                     event    = s.get('event', ''),
                     source_url = s.get('source_url', report_url),
+
+                    start_date = start_date,
                     # {start,end}_{date,time}
             )
 
