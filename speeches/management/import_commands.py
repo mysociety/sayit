@@ -12,6 +12,7 @@ class ImportCommand(BaseCommand):
 
     importer_class = None
     document_extension = ''
+    popit_setup = False
 
     # TODO configure this
     popit_url = 'http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
@@ -105,6 +106,10 @@ class ImportCommand(BaseCommand):
         importer = self.importer_class(
             ai = self.ai,
             **options)
+
+        if not self.popit_setup:
+            importer.init_popit_data()
+            self.popit_setup = True
 
         try:
             section = importer.import_document(path)

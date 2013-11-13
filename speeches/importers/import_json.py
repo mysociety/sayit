@@ -53,7 +53,7 @@ class ImportJson (ImporterBase):
         if start_date_string:
             start_date = datetime.strptime( start_date_string, '%Y-%m-%d' ).date()
 
-        self.init_popit_data(date=start_date)
+        self.set_resolver_for_date(date=start_date)
 
         self.title = data.get( 'title', data.get('organization', '') )
         

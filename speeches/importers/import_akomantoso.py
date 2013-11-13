@@ -37,7 +37,7 @@ class ImportAkomaNtoso (ImporterBase):
 
         #try:
         start_date = xml.debate.preface.p.docDate.get('date')
-        self.init_popit_data(date_string = start_date)
+        self.set_resolver_for_date(date_string = start_date)
 
         self.start_date = datetime.strptime(start_date, '%Y-%m-%d')
 

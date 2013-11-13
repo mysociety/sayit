@@ -49,8 +49,10 @@ class ImporterBase (object):
 
         self.resolver = None
 
-    def init_popit_data(self, date_string='', date=None):
+    def init_popit_data(self):
         SetupEntities(self.popit_url).init_popit_data()
+
+    def set_resolver_for_date(self, date_string='', date=None):
         self.resolver = ResolvePopitName(
                 date = date,
                 date_string = date_string)
