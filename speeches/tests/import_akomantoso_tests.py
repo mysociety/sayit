@@ -34,6 +34,10 @@ class ImportAkomaNtosoTests(InstanceTestCase):
 
         self.assertTrue(section is not None)
 
+        # Check that all the sections have correct looking titles
+        for sub in section.children.all():
+            self.assertFalse("Member'S" in sub.title)
+
         speakers = Speaker.objects.all()
         resolved = filter(lambda s: s.person != None, speakers)
         THRESHOLD=48

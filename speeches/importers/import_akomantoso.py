@@ -19,6 +19,11 @@ from speeches.models import Section, Speech, Speaker
 logger = logging.getLogger(__name__)
 name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 
+def title_case_heading(heading):
+    titled = heading.title()
+    titled = titled.replace("'S", "'s")
+    return titled
+
 class ImportAkomaNtoso (ImporterBase):
 
     def import_document(self, document_path):
@@ -80,7 +85,7 @@ class ImportAkomaNtoso (ImporterBase):
                 # this will already have been extracted
                 continue
             if tagname == 'debateSection':
-                title = child.heading.text.title()
+                title = title_case_heading(child.heading.text)
                 childSection = self.make(Section, parent=section, title=title)
                 self.visit(child, childSection)
             elif tagname == 'speech':
