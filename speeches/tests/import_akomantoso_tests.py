@@ -29,7 +29,7 @@ class ImportAkomaNtosoTests(InstanceTestCase):
     def test_import(self):
         document_path = os.path.join(self._in_fixtures, 'NA200912.xml')
 
-        an = ImportAkomaNtoso(instance=self.instance, commit=False)
+        an = ImportAkomaNtoso(instance=self.instance, commit=True)
         section = an.import_document(document_path)
 
         self.assertTrue(section is not None)
@@ -39,10 +39,10 @@ class ImportAkomaNtosoTests(InstanceTestCase):
         THRESHOLD=48
 
         logging.info(
-                "%d above threshold %d/%d?" 
+                "%d above threshold %d/%d?"
                 % (len(resolved), THRESHOLD, len(speakers)))
 
         self.assertTrue(
-                len(resolved) >= THRESHOLD, 
-                "%d above threshold %d/%d" 
+                len(resolved) >= THRESHOLD,
+                "%d above threshold %d/%d"
                 % (len(resolved), THRESHOLD, len(speakers)))

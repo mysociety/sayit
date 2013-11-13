@@ -27,10 +27,10 @@ class ImportAkomaNtoso (ImporterBase):
         xml = tree.getroot()
 
         debateBody = xml.debate.debateBody
-        mainSection = debateBody.debateSection 
+        mainSection = debateBody.debateSection
 
         self.title = '%s (%s)' % (
-                mainSection.heading.text, 
+                mainSection.heading.text,
                 etree.tostring(xml.debate.preface.p, method='text'))
 
         section = self.make(Section, title=self.title)
@@ -57,8 +57,8 @@ class ImportAkomaNtoso (ImporterBase):
         return etree.QName(node.tag).localname
 
     def get_text(self, node):
-        paras = [etree.tostring(child, method='text') 
-                for child in node.iterchildren() 
+        paras = [etree.tostring(child, method='text')
+                for child in node.iterchildren()
                 if self.get_tag(child) != 'from']
         return '\n\n'.join(paras)
 
