@@ -10,7 +10,7 @@ from instances.tests import InstanceTestCase
 
 import speeches
 from speeches.models import Speech, Speaker
-from speeches.importers.import_akomantoso import ImportAkomaNtoso
+from speeches.importers.import_akomantoso import ImportAkomaNtoso, title_case_heading
 
 import logging
 logging.disable(logging.WARNING)
@@ -50,3 +50,14 @@ class ImportAkomaNtosoTests(InstanceTestCase):
                 len(resolved) >= THRESHOLD,
                 "%d above threshold %d/%d"
                 % (len(resolved), THRESHOLD, len(speakers)))
+
+
+    def test_title_casing(self):
+        tests = (
+            # initial, expected
+            ( "ALL CAPS", "All Caps"),
+            ( "MEMBER'S Statement", "Member's Statement"),
+        )
+
+        for initial, expected in tests:
+            self.assertEqual(title_case_heading(initial), expected)
