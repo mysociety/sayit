@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os, sys
 import tempfile
 import shutil
@@ -57,6 +59,7 @@ class ImportAkomaNtosoTests(InstanceTestCase):
             # initial, expected
             ( "ALL CAPS", "All Caps"),
             ( "MEMBER'S Statement", "Member's Statement"),
+            ( "member’s", "Member’s"),
         )
 
         for initial, expected in tests:

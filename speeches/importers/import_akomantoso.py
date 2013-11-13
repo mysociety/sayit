@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import calendar
 
 from speeches.importers.import_base import ImporterBase, SpeechImportException
@@ -21,7 +23,7 @@ name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 
 def title_case_heading(heading):
     titled = heading.title()
-    titled = titled.replace("'S", "'s")
+    titled = titled.replace("'S", "'s").replace("’S", "’s")
     return titled
 
 class ImportAkomaNtoso (ImporterBase):
