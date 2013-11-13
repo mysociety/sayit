@@ -61,7 +61,8 @@ class ImporterBase (object):
         args = kwargs
         if cls == Speech:
             args['title'] = args.get('title', self.title)
-            args['start_date'] = self.start_date
+            if 'start_date' not in args:
+                args['start_date'] = self.start_date
 
         s = cls(instance=self.instance, **args)
         if self.commit:

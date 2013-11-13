@@ -56,7 +56,7 @@ class ImportJson (ImporterBase):
         self.set_resolver_for_date(date=start_date)
 
         self.title = data.get( 'title', data.get('organization', '') )
-        
+
         # Determine if speeches should be public
         speeches_premium = data.get('premium', False)
         speeches_public = data.get('public', not speeches_premium)
@@ -94,8 +94,13 @@ class ImportJson (ImporterBase):
                     event    = s.get('event', ''),
                     source_url = s.get('source_url', report_url),
 
+                    # Assume that the speech does not span several days
                     start_date = start_date,
-                    # {start,end}_{date,time}
+                    end_date   = start_date,
+
+                    # Time not implemented in JSON, but could easily be. For now set to None
+                    start_time = None,
+                    end_time   = None,
             )
 
             for tagname in s.get('tags', []):
