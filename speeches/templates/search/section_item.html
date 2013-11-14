@@ -1,0 +1,13 @@
+{% load url from future %}
+{% load bleach_tags %}
+
+<li class="search speech speech-border">
+    {% for n in section.get_ancestors %}
+        {% if n.id != section.id %}
+        <a href="{% url 'speeches:section-view' n.id %}">{{ n.title }}</a> &rarr;
+        {% endif %}
+    {% endfor %}
+
+    <p class="search"><a href="{{ section.get_absolute_url }}">{{ highlight|bleach }}</a></p>
+
+</li>

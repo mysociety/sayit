@@ -31,13 +31,17 @@
         {% if query %}
             <h3>Results</h3>
 
+            <ul>
             {% for result in page.object_list %}
-                <p>
+                {% if result.model_name == 'speech' %}
                     {% include 'speeches/speech.html' with speech=result.object highlight=result.highlighted.0 %}
-                </p>
+                {% elif result.model_name == 'section' %}
+                    {% include 'search/section_item.html' with section=result.object highlight=result.highlighted.0 %}
+                {% endif %}
             {% empty %}
-                <p>No results found.</p>
+                <li>No results found.</li>
             {% endfor %}
+            </ul>
 
             {% if page.has_previous or page.has_next %}
                 <div>

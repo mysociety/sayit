@@ -5,12 +5,12 @@ from haystack.views import SearchView
 from haystack.query import SearchQuerySet
 from haystack.inputs import AutoQuery
 
-from speeches.models import Speaker, Speech
+from speeches.models import Speaker, Speech, Section
 
 class HMSearchForm(SearchForm):
     def search(self):
         sqs = super(HMSearchForm, self).search()
-        sqs = sqs.models(self.model)
+        sqs = sqs.models(*self.model)
         sqs = sqs.highlight()
         return sqs
 
@@ -20,7 +20,7 @@ class SpeechForm(HMSearchForm):
     """
     p = forms.IntegerField(required=False, widget=forms.HiddenInput())
 
-    model = Speech
+    model = [ Speech, Section ]
 
     def search(self):
         sqs = super(SpeechForm, self).search()
@@ -29,7 +29,7 @@ class SpeechForm(HMSearchForm):
         return sqs
 
 class SpeakerForm(HMSearchForm):
-    model = Speaker
+    model = [ Speaker ]
 
 class InstanceSearchView(SearchView):
     """

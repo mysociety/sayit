@@ -1,6 +1,6 @@
 import datetime
 from haystack import indexes
-from speeches.models import Speech, Speaker
+from speeches.models import Speech, Speaker, Section
 
 class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     # Use a template here to include speaker name as well... TODO
@@ -23,3 +23,10 @@ class SpeakerIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Speaker
+
+class SectionIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, model_attr='title')
+    instance = indexes.CharField(model_attr='instance__label')
+
+    def get_model(self):
+        return Section
