@@ -1,35 +1,45 @@
-import os, sys
-import tempfile
-import shutil
+import os
 from datetime import date
 
-import requests
-
-from django.test.utils import override_settings
+from django.core.management import call_command
 
 from instances.tests import InstanceTestCase
+from popit.models import ApiInstance
+from popit_resolver.resolve import SetupEntities, ResolvePopitName, EntityName
 
 import speeches
-from speeches.models import Speech, Speaker
 from speeches.importers.import_json import ImportJson
 
-@override_settings(POPIT_API_URL='http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/')
+POPIT_API_URL='http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
+
 class ImportJsonTests(InstanceTestCase):
 
     @classmethod
     def setUpClass(cls):
         cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs', 'committee')
 
+        call_command('clear_index', interactive=False, verbosity=0)
+
+        if not EntityName.objects.count():
+            SetupEntities(POPIT_API_URL).init_popit_data()
+            call_command('update_index', verbosity=0)
+
     @classmethod
     def tearDownClass(cls):
-        pass
+        EntityName.objects.all().delete()
+        ApiInstance.objects.all().delete()
+
+    def test_resolve(self):
+        resolver = ResolvePopitName(date=date(2013, 06, 21))
+        person = resolver.get_person('Mrs A Steyn')
+        self.assertTrue( person )
 
     def test_import(self):
         expecteds = [
             {
                 "filename": "1.json",
                 "speech_count": 8,
-                "resolved_count": 3,
+                "resolved_count": 7,
                 "section_title": "Agriculture, Forestry and Fisheries",
                 "section_parent_titles": ["Top Section", "Middle Section", "Bottom Section"],
                 "is_public": True,
@@ -41,7 +51,7 @@ class ImportJsonTests(InstanceTestCase):
             {
                 "filename": "2.json",
                 "speech_count": 6,
-                "resolved_count": 2,
+                "resolved_count": 6,
                 "section_title": "Agriculture, Forestry and Fisheries",
                 "section_parent_titles": ["Top Section", "Middle Section", "Other Bottom Section"],
                 "is_public": False,

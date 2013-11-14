@@ -1,32 +1,38 @@
 # -*- coding: utf-8 -*-
 
-import os, sys
-import tempfile
-import shutil
+import os
 
-import requests
-
-from django.test.utils import override_settings
+from django.core.management import call_command
 
 from instances.tests import InstanceTestCase
+from popit.models import ApiInstance
+from popit_resolver.resolve import SetupEntities, EntityName
 
 import speeches
-from speeches.models import Speech, Speaker
+from speeches.models import Speaker
 from speeches.importers.import_akomantoso import ImportAkomaNtoso, title_case_heading
 
 import logging
 logging.disable(logging.WARNING)
 
-@override_settings(POPIT_API_URL='http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/')
+POPIT_API_URL='http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
+
 class ImportAkomaNtosoTests(InstanceTestCase):
 
     @classmethod
     def setUpClass(cls):
         cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
 
+        call_command('clear_index', interactive=False, verbosity=0)
+
+        if not EntityName.objects.count():
+            SetupEntities(POPIT_API_URL).init_popit_data()
+            call_command('update_index', verbosity=0)
+
     @classmethod
     def tearDownClass(cls):
-        pass
+        EntityName.objects.all().delete()
+        ApiInstance.objects.all().delete()
 
     def test_import(self):
         document_path = os.path.join(self._in_fixtures, 'NA200912.xml')

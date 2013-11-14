@@ -1,15 +1,18 @@
 from mock import patch, Mock
 
 from django.core import management
+from django.conf import settings
+from django.test.utils import override_settings
 
 from popit.models import ApiInstance, Person
 from instances.tests import InstanceTestCase
 from speeches.models import Speaker
 
+@override_settings(POPIT_API_URL='http://popit.mysociety.org/api/v1/')
 class PopulateSpeakersCommandTests(InstanceTestCase):
 
     def test_populates_empty_db(self):
-        api_url = 'http://popit.mysociety.org/api/v1/'
+        api_url = settings.POPIT_API_URL
         ai = ApiInstance.objects.create(url=api_url)
 
         # Canned data to simulate a response from popit-api
@@ -42,7 +45,7 @@ class PopulateSpeakersCommandTests(InstanceTestCase):
         self.assertEqual(db_people[1].api_instance, ai)
 
     def test_updates_existing_records(self):
-        api_url = 'http://popit.mysociety.org/api/v1/'
+        api_url = settings.POPIT_API_URL
         ai = ApiInstance.objects.create(url=api_url)
 
         # Add a record into the db first
