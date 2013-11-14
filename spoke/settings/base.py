@@ -193,6 +193,16 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,  
         },
+        'pyelasticsearch': {
+            'handlers': ['console'],
+            'level': 'WARN',
+            'propagate': True,
+        },
+        'requests.packages.urllib3.connectionpool': {
+            'handlers': ['console'],
+            'level': 'WARN',
+            'propagate': True,
+        },
     }
 }
 
@@ -221,17 +231,14 @@ from .mysociety import *
 SESSION_COOKIE_DOMAIN = BASE_HOST
 SESSION_COOKIE_NAME = 's'
 
+SEARCH_INDEX_NAME = DATABASES['default']['NAME']
+if 'test' in sys.argv:
+    SEARCH_INDEX_NAME += '_test'
+
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': DATABASES['default']['NAME'],
+        'INDEX_NAME': SEARCH_INDEX_NAME,
     },
 }
-if 'test' in sys.argv:
-    HAYSTACK_CONNECTIONS = {
-        'default': {
-            'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
-        },
-    }
-
