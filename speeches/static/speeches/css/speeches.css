@@ -155,3 +155,7 @@
     padding-top: 6px;
 }
 
+.search em {
+    font-weight: bold;
+    font-style: normal;
+}

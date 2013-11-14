@@ -19,7 +19,7 @@
 
             {% for result in page.object_list %}
                 <p>
-                    {% include 'speeches/speech.html' with speech=result.object %}
+                    {% include 'speeches/speech.html' with speech=result.object highlight=result.highlighted.0 %}
                 </p>
             {% empty %}
                 <p>No results found.</p>

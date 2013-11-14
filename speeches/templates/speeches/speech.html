@@ -63,6 +63,8 @@
 
   {% if speech.audio and not speech.text %}
     <p>{% trans "[ recorded audio ]" %}</p>
+  {% elif highlight %}
+    <p class="search">{{ highlight|bleach }}</p>
   {% else %}
     {{ speech.text|bleach|linebreaks }}
   {% endif %}

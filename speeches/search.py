@@ -14,6 +14,7 @@ class PersonSearchForm(SearchForm):
         sqs = super(PersonSearchForm, self).search()
         if self.cleaned_data.get('p'):
             sqs = sqs.filter(speaker=self.cleaned_data['p'])
+        sqs = sqs.highlight()
         return sqs
 
 class InstanceSearchView(SearchView):
