@@ -1,6 +1,6 @@
 import datetime
 from haystack import indexes
-from speeches.models import Speech
+from speeches.models import Speech, Speaker
 
 class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     # Use a template here to include speaker name as well... TODO
@@ -16,3 +16,10 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
         return self.get_model().objects # .filter(pub_date__lte=datetime.datetime.now())
+
+class SpeakerIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, model_attr='name')
+    instance = indexes.CharField(model_attr='instance__label')
+
+    def get_model(self):
+        return Speaker

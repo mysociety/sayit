@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load url from future %}
+{% load bleach_tags %}
 
 {% block content %}
     <h2>Search</h2>
@@ -13,6 +15,18 @@
                 </td>
             </tr>
         </table>
+
+            {% if speaker_results %}
+                <h3>Speakers matching &ldquo;{{ query }}&rdquo;</h3>
+
+                <ul>
+                    {% for result in speaker_results %}
+                    <li class="search"><a href="{% url "speeches:speaker-view" result.object.id %}">
+                        {{ result.highlighted.0|bleach }}
+                    </a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
 
         {% if query %}
             <h3>Results</h3>
