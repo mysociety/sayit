@@ -15,7 +15,7 @@ class ImportCommand(BaseCommand):
     popit_setup = False
 
     # TODO configure this
-    popit_url = 'http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
+    popit_url = 'http://za-peoples-assembly.popit.mysociety.org/api/v0.1/'
 
     option_list = BaseCommand.option_list + (
         make_option('--commit', action='store_true', help='Whether to commit to the database or not'),
@@ -51,7 +51,7 @@ class ImportCommand(BaseCommand):
             start_date = options['start_date']
             valid = lambda f: f > start_date if start_date else lambda _: True
 
-            files = [ os.path.join(root, filename) 
+            files = [ os.path.join(root, filename)
                     for (root, _, files)
                     in os.walk(dir)
                     for filename in files
@@ -66,7 +66,7 @@ class ImportCommand(BaseCommand):
             if options['commit']:
                 sections = [a for a,_,_,_ in imports]
                 if verbosity > 1:
-                    self.stdout.write("Imported sections %s\n\n" 
+                    self.stdout.write("Imported sections %s\n\n"
                         % str( [s.id for s in sections]))
 
             (_, speakers_matched, speakers_count, _) = reduce(
@@ -122,4 +122,4 @@ class ImportCommand(BaseCommand):
 
         return (section, importer.speakers_matched, importer.speakers_count, importer.speakers)
 
-        
+

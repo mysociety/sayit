@@ -15,7 +15,7 @@ from speeches.importers.import_akomantoso import ImportAkomaNtoso, title_case_he
 import logging
 logging.disable(logging.WARNING)
 
-POPIT_API_URL='http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
+POPIT_API_URL='http://za-peoples-assembly.popit.mysociety.org/api/v0.1/'
 
 class ImportAkomaNtosoTests(InstanceTestCase):
 

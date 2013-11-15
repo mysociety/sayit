@@ -10,7 +10,7 @@ from popit_resolver.resolve import SetupEntities, ResolvePopitName, EntityName
 import speeches
 from speeches.importers.import_json import ImportJson
 
-POPIT_API_URL='http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
+POPIT_API_URL='http://za-peoples-assembly.popit.mysociety.org/api/v0.1/'
 
 class ImportJsonTests(InstanceTestCase):
 
