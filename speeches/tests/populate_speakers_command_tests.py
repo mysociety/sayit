@@ -8,11 +8,12 @@ from popit.models import ApiInstance, Person
 from instances.tests import InstanceTestCase
 from speeches.models import Speaker
 
-@override_settings(POPIT_API_URL='http://popit.mysociety.org/api/v1/')
 class PopulateSpeakersCommandTests(InstanceTestCase):
 
+    popit_url = 'http://popit.mysociety.org/api/v1/'
+
     def test_populates_empty_db(self):
-        api_url = settings.POPIT_API_URL
+        api_url = self.popit_url
         ai = ApiInstance.objects.create(url=api_url)
 
         # Canned data to simulate a response from popit-api
@@ -37,19 +38,19 @@ class PopulateSpeakersCommandTests(InstanceTestCase):
 
         db_people = Person.objects.all()
         self.assertEqual(len(db_people), 2)
-        self.assertEqual(db_people[0].popit_url, 'http://popit.mysociety.org/api/v1/persons/abcde')
+        self.assertEqual(db_people[0].popit_url, api_url + 'persons/abcde')
         self.assertEqual(db_people[0].name, 'Test 1')
         self.assertEqual(db_people[0].api_instance, ai)
-        self.assertEqual(db_people[1].popit_url, 'http://popit.mysociety.org/api/v1/persons/fghij')
+        self.assertEqual(db_people[1].popit_url, api_url + 'persons/fghij')
         self.assertEqual(db_people[1].name, 'Test 2')
         self.assertEqual(db_people[1].api_instance, ai)
 
     def test_updates_existing_records(self):
-        api_url = settings.POPIT_API_URL
+        api_url = self.popit_url
         ai = ApiInstance.objects.create(url=api_url)
 
         # Add a record into the db first
-        existing_person = Person.objects.create(popit_url='http://popit.mysociety.org/api/v1/persons/abcde', name='test 1', api_instance=ai)
+        existing_person = Person.objects.create(popit_url=api_url + 'persons/abcde', name='test 1', api_instance=ai)
         existing_speaker = Speaker.objects.create(person=existing_person, name='Test Override', instance=self.instance)
 
         # Canned data to simulate a response from popit
@@ -57,12 +58,12 @@ class PopulateSpeakersCommandTests(InstanceTestCase):
             {
                 'id': 'abcde',
                 'name': 'Test 3', # Note changed name
-                'popit_url': 'http://popit.mysociety.org/api/v1/persons/abcde',
+                'popit_url': api_url + 'persons/abcde',
             },
             {
                 'id': 'fghij',
                 'name': 'Test 2',
-                'popit_url': 'http://popit.mysociety.org/api/v1/persons/fghij',
+                'popit_url': api_url + 'persons/fghij',
             }
         ]
         # Mock out popit and then call our command
@@ -74,10 +75,10 @@ class PopulateSpeakersCommandTests(InstanceTestCase):
 
         db_people = Person.objects.all()
         self.assertEqual(len(db_people), 2)
-        self.assertEqual(db_people[0].popit_url, 'http://popit.mysociety.org/api/v1/persons/abcde')
+        self.assertEqual(db_people[0].popit_url, api_url + 'persons/abcde')
         self.assertEqual(db_people[0].name, 'Test 3')
         self.assertEqual(db_people[0].api_instance, ai)
-        self.assertEqual(db_people[1].popit_url, 'http://popit.mysociety.org/api/v1/persons/fghij')
+        self.assertEqual(db_people[1].popit_url, api_url + 'persons/fghij')
         self.assertEqual(db_people[1].name, 'Test 2')
         self.assertEqual(db_people[1].api_instance, ai)
 

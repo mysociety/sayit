@@ -14,9 +14,6 @@ class ImportCommand(BaseCommand):
     document_extension = ''
     popit_setup = False
 
-    # TODO configure this
-    popit_url = 'http://za-peoples-assembly.popit.mysociety.org/api/v0.1/'
-
     option_list = BaseCommand.option_list + (
         make_option('--commit', action='store_true', help='Whether to commit to the database or not'),
         make_option('--instance', action='store', default='default', help='Label of instance to add data to'),
@@ -24,6 +21,7 @@ class ImportCommand(BaseCommand):
         make_option('--dir',  action='store', help='directory of documents to import'),
         make_option('--start-date',  action='store', default='', help='earliest date to process, in yyyy-mm-dd format'),
         make_option('--dump-users',  action='store', default='', help='dump a json list to <file> (only valid with --dir for now)'),
+        make_option('--popit_url', action='store', default=None, help="PopIt API base url - eg 'http://foo.popit.mysociety.org/api/v0.1/'")
     )
 
     def handle(self, *args, **options):
@@ -36,7 +34,11 @@ class ImportCommand(BaseCommand):
             raise CommandError("Instance specified not found (%s)" % options['instance'])
         options['instance'] = instance
 
-        self.ai, _ = ApiInstance.objects.get_or_create(url=self.popit_url)
+        # TODO configure this
+        if not options['popit_url']:
+            raise CommandError("'--popit_url' argument is required")
+
+        self.ai, _ = ApiInstance.objects.get_or_create(url=options['popit_url'])
 
         if options['file']:
             (section, speakers_matched, speakers_count, speakers) = self.import_document(options['file'], **options)

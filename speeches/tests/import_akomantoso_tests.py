@@ -15,7 +15,7 @@ from speeches.importers.import_akomantoso import ImportAkomaNtoso, title_case_he
 import logging
 logging.disable(logging.WARNING)
 
-POPIT_API_URL='http://za-peoples-assembly.popit.mysociety.org/api/v0.1/'
+popit_url='http://za-peoples-assembly.popit.mysociety.org/api/v0.1/'
 
 class ImportAkomaNtosoTests(InstanceTestCase):
 
@@ -26,7 +26,7 @@ class ImportAkomaNtosoTests(InstanceTestCase):
         call_command('clear_index', interactive=False, verbosity=0)
 
         if not EntityName.objects.count():
-            SetupEntities(POPIT_API_URL).init_popit_data()
+            SetupEntities(popit_url).init_popit_data()
             call_command('update_index', verbosity=0)
 
     @classmethod
@@ -37,7 +37,7 @@ class ImportAkomaNtosoTests(InstanceTestCase):
     def test_import(self):
         document_path = os.path.join(self._in_fixtures, 'NA200912.xml')
 
-        an = ImportAkomaNtoso(instance=self.instance, commit=True)
+        an = ImportAkomaNtoso(instance=self.instance, commit=True, popit_url=popit_url)
         section = an.import_document(document_path)
 
         self.assertTrue(section is not None)

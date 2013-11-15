@@ -42,7 +42,7 @@ ATT_API_URL = config.get('ATT_API_URL')
 # How long to wait for the api before timing out
 ATT_TIMEOUT = config.get('ATT_TIMEOUT')
 
-# Celery Broker details 
+# Celery Broker details
 BROKER_URL = config.get('CELERY_BROKER_URL')
 
 # Content formatting
@@ -50,6 +50,3 @@ BROKER_URL = config.get('CELERY_BROKER_URL')
 SPEECH_SUMMARY_LENGTH = config.get('SPEECH_SUMMARY_LENGTH')
 # Default auto-transcription text
 DEFAULT_TRANSCRIPTION = config.get('DEFAULT_TRANSCRIPTION')
-
-# Which popit instance to use
-POPIT_API_URL = config.get('POPIT_API_URL')
