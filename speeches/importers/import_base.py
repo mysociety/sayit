@@ -58,13 +58,12 @@ class ImporterBase (object):
                 date_string = date_string)
 
     def make(self, cls, **kwargs):
-        args = kwargs
         if cls == Speech:
-            args['title'] = args.get('title', self.title)
-            if 'start_date' not in args:
-                args['start_date'] = self.start_date
+            kwargs['title'] = kwargs.get('title', self.title)
+            if 'start_date' not in kwargs:
+                kwargs['start_date'] = self.start_date
 
-        s = cls(instance=self.instance, **args)
+        s = cls(instance=self.instance, **kwargs)
         if self.commit:
             s.save()
         elif s.title:
@@ -89,7 +88,7 @@ class ImporterBase (object):
                 self.speakers_matched += 1
                 try:
                     speaker = Speaker.objects.get(
-                        instance = self.instance, 
+                        instance = self.instance,
                         person = popit_person)
                 except Speaker.DoesNotExist:
                     pass
@@ -98,7 +97,7 @@ class ImporterBase (object):
 
         if not speaker:
             speaker, _ = Speaker.objects.get_or_create(
-                instance = self.instance, 
+                instance = self.instance,
                 name = display_name)
 
             if popit_person:
