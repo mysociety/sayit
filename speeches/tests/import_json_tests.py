@@ -10,7 +10,7 @@ from popit_resolver.resolve import SetupEntities, ResolvePopitName, EntityName
 import speeches
 from speeches.importers.import_json import ImportJson
 
-POPIT_API_URL='http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
+popit_url='http://za-peoples-assembly.popit.mysociety.org/api/v0.1/'
 
 class ImportJsonTests(InstanceTestCase):
 
@@ -21,7 +21,7 @@ class ImportJsonTests(InstanceTestCase):
         call_command('clear_index', interactive=False, verbosity=0)
 
         if not EntityName.objects.count():
-            SetupEntities(POPIT_API_URL).init_popit_data()
+            SetupEntities(popit_url).init_popit_data()
             call_command('update_index', verbosity=0)
 
     @classmethod
@@ -74,7 +74,7 @@ class ImportJsonTests(InstanceTestCase):
         for expected in expecteds:
             document_path = os.path.join(self._in_fixtures, expected["filename"])
 
-            aj = ImportJson(instance=self.instance, category_field="title", commit=True)
+            aj = ImportJson(instance=self.instance, category_field="title", popit_url=popit_url, commit=True)
             section = aj.import_document(document_path)
 
             sections.append(section)

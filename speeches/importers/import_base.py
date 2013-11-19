@@ -25,15 +25,15 @@ class SpeechImportException (Exception):
 
 class ImporterBase (object):
 
-    def __init__(self, instance=None, commit=True, ai = None, **kwargs):
+    def __init__(self, popit_url, instance=None, commit=True, ai=None, **kwargs):
         self.instance = instance
+        self.popit_url = popit_url
         self.commit = commit
         self.start_date = None
         self.title = '(untitled)'
-        self.popit_url = settings.POPIT_API_URL
 
         if not self.popit_url:
-            raise ImproperlyConfigured("POPIT_API_URL was not set")
+            raise RuntimeError("popit_url required")
 
         # TODO get this url from the AN document, or from config/parameter
         if ai:

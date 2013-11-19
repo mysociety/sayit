@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        popit_url = options.get('popit_api_url', settings.POPIT_API_URL)
+        popit_url = options['popit_api_url']
         instance = options['instance']
 
         reparented_count = 0
@@ -43,7 +43,7 @@ class Command(BaseCommand):
             speeches = speaker.speech_set
             cache = {} # name to speaker
             keep = False
-            
+
             if VERBOSE >= 1:
                 self.stdout.write('Processing speaker %s (%d)\n' % (speaker.name, speaker.id))
 
@@ -63,7 +63,7 @@ class Command(BaseCommand):
 
                     speech.speaker = cached_speaker
                     speech.save()
-                    reparented_count += 1 
+                    reparented_count += 1
                     if VERBOSE > 1:
                         self.stdout.write('  (from cache %d)\n' % cached_speaker.id)
                     continue
@@ -87,7 +87,7 @@ class Command(BaseCommand):
                     cache[name] = existing_speaker
                     speech.speaker = existing_speaker
                     speech.save()
-                    reparented_count += 1 
+                    reparented_count += 1
                     if VERBOSE > 1:
                         self.stdout.write('  (found existing speaker %d)\n' % existing_speaker.id)
                 else:

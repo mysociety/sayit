@@ -14,9 +14,6 @@ class ImportCommand(BaseCommand):
     document_extension = ''
     popit_setup = False
 
-    # TODO configure this
-    popit_url = 'http://sa-test.matthew.popit.dev.mysociety.org/api/v0.1/'
-
     option_list = BaseCommand.option_list + (
         make_option('--commit', action='store_true', help='Whether to commit to the database or not'),
         make_option('--instance', action='store', default='default', help='Label of instance to add data to'),
@@ -24,6 +21,7 @@ class ImportCommand(BaseCommand):
         make_option('--dir',  action='store', help='directory of documents to import'),
         make_option('--start-date',  action='store', default='', help='earliest date to process, in yyyy-mm-dd format'),
         make_option('--dump-users',  action='store', default='', help='dump a json list to <file> (only valid with --dir for now)'),
+        make_option('--popit_url', action='store', default=None, help="PopIt API base url - eg 'http://foo.popit.mysociety.org/api/v0.1/'")
     )
 
     def handle(self, *args, **options):
@@ -36,7 +34,11 @@ class ImportCommand(BaseCommand):
             raise CommandError("Instance specified not found (%s)" % options['instance'])
         options['instance'] = instance
 
-        self.ai, _ = ApiInstance.objects.get_or_create(url=self.popit_url)
+        # TODO configure this
+        if not options['popit_url']:
+            raise CommandError("'--popit_url' argument is required")
+
+        self.ai, _ = ApiInstance.objects.get_or_create(url=options['popit_url'])
 
         if options['file']:
             (section, speakers_matched, speakers_count, speakers) = self.import_document(options['file'], **options)
@@ -51,7 +53,7 @@ class ImportCommand(BaseCommand):
             start_date = options['start_date']
             valid = lambda f: f > start_date if start_date else lambda _: True
 
-            files = [ os.path.join(root, filename) 
+            files = [ os.path.join(root, filename)
                     for (root, _, files)
                     in os.walk(dir)
                     for filename in files
@@ -66,7 +68,7 @@ class ImportCommand(BaseCommand):
             if options['commit']:
                 sections = [a for a,_,_,_ in imports]
                 if verbosity > 1:
-                    self.stdout.write("Imported sections %s\n\n" 
+                    self.stdout.write("Imported sections %s\n\n"
                         % str( [s.id for s in sections]))
 
             (_, speakers_matched, speakers_count, _) = reduce(
@@ -122,4 +124,4 @@ class ImportCommand(BaseCommand):
 
         return (section, importer.speakers_matched, importer.speakers_count, importer.speakers)
 
-        
+
