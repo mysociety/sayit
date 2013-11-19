@@ -105,14 +105,15 @@ class Command(BaseCommand):
                 speeches_xml = scene[1:]
                 speeches = []
                 for sp in speeches_xml:
-                    if sp.tag == 'STAGEDIR' or sp.tag == 'SUBHEAD':
+                    if sp.tag == 'STAGEDIR' or sp.tag == 'SUBHEAD' or sp.tag == 'SUBTITLE':
                         self.make(Speech, section=scene_section, text='<i>%s</i>' % sp.text)
                         continue
         
                     if  not sp[0].text:
                         speaker = None
                     elif self.commit:
-                        speaker, _ = Speaker.objects.get_or_create(name=sp[0].text, instance=self.instance)
+                        name = sp[0].text.replace('[', '').replace(']', '')
+                        speaker, _ = Speaker.objects.get_or_create(name=name, instance=self.instance)
                     else:
                         speaker = Speaker(name=sp[0].text, instance=self.instance)
         
