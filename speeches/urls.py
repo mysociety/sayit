@@ -31,7 +31,7 @@ urlpatterns = patterns('',
     url(r'^speaker/(?P<pk>\d+)/edit$', SpeakerUpdate.as_view(), name='speaker-edit'),
     url(r'^speaker/popit$', SpeakerPopit.as_view(), name='speaker-popit'),
 
-    url(r'^sections/(?P<pk>\d+)$', SectionView.as_view(), name='section-view'),
+    url(r'^sections/(?P<pk>\d+)$', SectionView.as_view(), name='section-id-view'),
     url(r'^sections/add$', SectionCreate.as_view(), name='section-add'),
     url(r'^sections/(?P<pk>\d+)/edit$', SectionUpdate.as_view(), name='section-edit'),
     url(r'^sections/(?P<pk>\d+)/delete$', SectionDelete.as_view(), name='section-delete'),
@@ -42,6 +42,8 @@ urlpatterns = patterns('',
     url(r'^recording/(?P<pk>\d+)/edit$', RecordingUpdate.as_view(), name='recording-edit'),
     url(r'^api/v0.1/recording/$', csrf_exempt(RecordingAPICreate.as_view()), name='recording-api-add'),
 
-    url(r'^api/', include(v01_api.urls))
+    url(r'^api/', include(v01_api.urls)),
+
+    url(r'^(?P<full_slug>.+)$', SectionView.as_view(), name='section-view'),
 )
 

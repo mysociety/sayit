@@ -71,8 +71,8 @@ class SpeechTests(InstanceTestCase):
 
         resp = self.client.get(get_url)
         self.assertContains( resp, 'Your speech has been <a href="/speech/%d">created</a>' % speech.id)
-        self.assertContains( resp, 'in the section <a href="/sections/%d#s%d">%s</a>!' % (
-            section.id, speech.id, section.title))
+        self.assertContains( resp, 'in the section <a href="/%s#s%d">%s</a>!' % (
+            section.slug, speech.id, section.title))
 
     def _post_speech(test, section, speech_data):
         post_data = speech_data.copy()

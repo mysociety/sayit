@@ -170,7 +170,7 @@ class SectionSiteTests(InstanceTestCase):
             'title': 'A test section'
         })
         new_section = Section.objects.order_by('-id')[0]
-        self.assertRedirects(resp, 'sections/%d' % new_section.id)
+        self.assertRedirects(resp, '%s' % new_section.slug)
         # Check in db
         section = Section.objects.get(id=new_section.id)
         self.assertEquals(section.title, 'A test section')
@@ -182,7 +182,7 @@ class SectionSiteTests(InstanceTestCase):
             'title': 'A test subsection'
         })
         new_section = Section.objects.order_by('-id')[0]
-        self.assertRedirects(resp, 'sections/%d' % new_section.id)
+        self.assertRedirects(resp, '%s/%s' % (section.slug, new_section.slug))
         # Check in db
         subsection = Section.objects.get(id=new_section.id)
         self.assertEquals(subsection.title, 'A test subsection')

@@ -4,7 +4,7 @@
 <li class="search speech speech-border">
     {% for n in section.get_ancestors %}
         {% if n.id != section.id %}
-        <a href="{% url 'speeches:section-view' n.id %}">{{ n.title }}</a> &rarr;
+        <a href="{% url 'speeches:section-view' n.get_path %}">{{ n.title }}</a> &rarr;
         {% endif %}
     {% endfor %}
 

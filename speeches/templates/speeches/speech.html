@@ -9,7 +9,7 @@
 
   {% if not nosection and speech.section_id %}
     {% for n in speech.section.get_ancestors %}
-        <a href="{% url 'speeches:section-view' n.id %}">{{ n.title }}</a> &rarr;
+        <a href="{% url 'speeches:section-view' n.get_path %}">{{ n.title }}</a> &rarr;
     {% endfor %}
   {% endif %}
 
@@ -50,7 +50,7 @@
   {% endfor %}
 
   {% if speech.section_id %}
-    <a class="hov" title="{% trans "Permalink to this speech in context" %}" href="{% url 'speeches:section-view' speech.section_id %}#s{{ speech.id }}"><i class="icon-tags off-screen">{% trans "Permalink to this speech in context" %}</i></a>
+    <a class="hov" title="{% trans "Permalink to this speech in context" %}" href="{% if section %}{% url 'speeches:section-view' section.get_path %}{% else %}{% url 'speeches:section-view' speech.section.get_path %}{% endif %}#s{{ speech.id }}"><i class="icon-tags off-screen">{% trans "Permalink to this speech in context" %}</i></a>
   {% endif %}
     <a class="hov" title="{% trans "Permalink to this speech individually" %}" href="{% url "speeches:speech-view" speech.id %}"><i class="icon-tag off-screen">{% trans "Permalink to this speech individually" %}</i></a>
   {% if speech.audio %}

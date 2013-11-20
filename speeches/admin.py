@@ -12,10 +12,9 @@ class SpeechAdmin(admin.ModelAdmin):
         models.FileField: { 'widget': AudioFileInput },
     }
 
-
 class SectionAdmin(admin.ModelAdmin):
     search_fields = ('title',)
-
+    prepopulated_fields = { 'slug': ('title',) }
 
 admin.site.register(Section, SectionAdmin)
 admin.site.register(Speaker)

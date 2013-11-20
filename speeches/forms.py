@@ -191,7 +191,7 @@ class SectionForm(forms.ModelForm):
 
     class Meta:
         model = Section
-        exclude = 'instance'
+        exclude = ('instance', 'slug')
 
     def clean_parent(self):
         parent = self.cleaned_data['parent']

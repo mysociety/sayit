@@ -12,18 +12,7 @@ from instances.views import InstanceUpdate
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    
-    url(r'^', include('speeches.urls', app_name='speeches', namespace='speeches')),
-
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
-
-    url(r'^instance/edit$', InstanceUpdate.as_view(), name='instance-edit'),
-    url(r'^instance/token$', 'login_token.views.login_tokens_for_user', name='tokens'),
-)
-
-urlpatterns += staticfiles_urlpatterns()
+urlpatterns = staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # If we're running test, then we need to serve static files even though DEBUG
@@ -39,3 +28,13 @@ if 'test' in sys.argv:
         }),
     )
 
+urlpatterns += patterns('',
+
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
+
+    url(r'^instance/edit$', InstanceUpdate.as_view(), name='instance-edit'),
+    url(r'^instance/token$', 'login_token.views.login_tokens_for_user', name='tokens'),
+
+    url(r'^', include('speeches.urls', app_name='speeches', namespace='speeches')),
+)

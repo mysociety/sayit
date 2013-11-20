@@ -29,7 +29,7 @@
     {% if object.section %}
     <ul class="breadcrumbs">
       {% for n in object.section.get_ancestors %}
-        <li><a href="{% url 'speeches:section-view' n.id %}">{{ n.title }}</a> <span class="divider">&rarr;</span></li>
+        <li><a href="{% url 'speeches:section-view' n.get_path %}">{{ n.title }}</a> <span class="divider">&rarr;</span></li>
       {% endfor %}
     </ul>
     {% endif %}

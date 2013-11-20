@@ -7,6 +7,7 @@ from django.contrib import messages
 
 from django.db.models import Count
 from django.core.files import File
+from django.shortcuts import get_object_or_404
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
 from popit.models import ApiInstance
@@ -334,6 +335,17 @@ class SectionDelete(SectionMixin, DeleteView):
 
 class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
     model = Section
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get(self.pk_url_kwarg, None)
+        if pk is not None:
+            return super(SectionView, self).get_object(queryset)
+        full_slug = self.kwargs.get('full_slug', None)
+        slugs = full_slug.split('/')
+        obj = get_object_or_404(self.model, slug=slugs[0], parent=None)
+        for slug in slugs[1:]:
+            obj = get_object_or_404(self.model, slug=slug, parent=obj)
+        return obj
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
