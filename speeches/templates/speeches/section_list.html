@@ -3,12 +3,12 @@
 {% load url from future %}
 {% load i18n %}
 
-{% block title %}{% trans "Sections" %}{% endblock %}
+{% block title %}{% trans "Speeches" %}{% endblock %}
 
 {% block content %}
 
 <div class="page-header">
-    <h1>{% trans "Sections" %}</h1>
+    <h1>{% trans "Speeches" %}</h1>
 </div>
 
 <ul class="unstyled">
@@ -19,12 +19,11 @@
     {% endfor %}
 </ul>
 
-    <h2>Speeches</h2>
-    <p>These are speeches not attached to a section.</p>
+    <h2>Unattached speeches</h2>
 
     <ol class="unstyled">
         {% if not speech_list %}
-            <li>There are no un-sectioned speeches.</li>
+            <li>There are no unattached speeches.</li>
         {% endif %}
         {% for speech in speech_list %}
             {% include "speeches/speech.html" with speech=speech nosection="1" %}

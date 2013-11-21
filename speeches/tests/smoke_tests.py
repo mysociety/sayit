@@ -9,7 +9,7 @@ class SmokeTests(InstanceTestCase):
         resp = self.client.get('/')
         self.assertEqual(resp.status_code, 200)
 
-    def test_all_speakers_page(self):
+    def test_all_speeches_page(self):
         resp = self.client.get('/speeches')
         self.assertEqual(resp.status_code, 200)
 
@@ -37,8 +37,4 @@ class SmokeTests(InstanceTestCase):
 
     def test_add_section_page(self):
         resp = self.client.get("/sections/add")
-        self.assertEqual(resp.status_code, 200)
-
-    def test_section_list_page(self):
-        resp = self.client.get("/sections")
         self.assertEqual(resp.status_code, 200)

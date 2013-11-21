@@ -94,7 +94,7 @@ class SpeechMixin(NamespaceMixin, InstanceFormMixin):
 class SpeechDelete(SpeechMixin, DeleteView):
 
     def get_success_url(self):
-        return self.reverse_lazy('speeches:speech-list')
+        return self.reverse_lazy('speeches:section-list')
 
 class SpeechCreate(SpeechMixin, CreateView):
     def get_context_data(self, **kwargs):
@@ -203,16 +203,6 @@ class SpeechView(NamespaceMixin, InstanceViewMixin, DetailView):
 
     def get_queryset(self):
         return super(SpeechView, self).get_queryset().visible(self.request)
-
-class SpeechList(NamespaceMixin, InstanceViewMixin, ListView):
-    model = Speech
-    paginate_by = 50
-    context_object_name = "speech_list"
-
-    # The .annotate magic allows us to put things with a null start date
-    # to the bottom of the list, otherwise they would naturally sort to the top
-    def get_queryset(self):
-        return super(SpeechList, self).get_queryset().visible(self.request).annotate(null_start_date=Count('start_date')).select_related('speaker', 'section').prefetch_related('tags').order_by("speaker__name", "-null_start_date", "-start_date", "-start_time")
 
 class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
     """Done as a ListView on Speech to get recent speeches, we get instance for

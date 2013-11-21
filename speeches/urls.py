@@ -18,7 +18,6 @@ urlpatterns = patterns('',
 
     url(r'^search/', lambda request: InstanceSearchView()(request), name='haystack_search'),
 
-    url(r'^speeches$', SpeechList.as_view(), name='speech-list'),
     url(r'^speech/add$', SpeechCreate.as_view(), name='speech-add'),
     url(r'^speech/ajax_audio$', SpeechAudioCreate.as_view(), name='speech-ajax-audio'),
     url(r'^speech/(?P<pk>\d+)$', SpeechView.as_view(), name='speech-view'),
@@ -35,7 +34,7 @@ urlpatterns = patterns('',
     url(r'^sections/add$', SectionCreate.as_view(), name='section-add'),
     url(r'^sections/(?P<pk>\d+)/edit$', SectionUpdate.as_view(), name='section-edit'),
     url(r'^sections/(?P<pk>\d+)/delete$', SectionDelete.as_view(), name='section-delete'),
-    url(r'^sections$', SectionList.as_view(), name='section-list'),
+    url(r'^speeches$', SectionList.as_view(), name='section-list'),
 
     url(r'^recordings$', RecordingList.as_view(), name='recording-list'),
     url(r'^recording/(?P<pk>\d+)$', RecordingView.as_view(), name='recording-view'),

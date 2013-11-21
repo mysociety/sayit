@@ -62,8 +62,7 @@
                     <ul class="nav">
                       {% if request.instance %}
                         <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speeches:speaker-list' %}"><b>Speakers</b></a>
-                        <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speeches:speech-list' %}"><b>Speeches</b></a>
-                        <li{% if request.path == '/sections' %} class="active"{% endif %}><a href="{% url 'speeches:section-list' %}"><b>Sections</b></a>
+                        <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speeches:section-list' %}"><b>Speeches</b></a>
                       {% endif %}
                     </ul>
                     <ul class="nav pull-right">
