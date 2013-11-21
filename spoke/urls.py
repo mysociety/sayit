@@ -36,5 +36,6 @@ urlpatterns += patterns('',
     url(r'^instance/edit$', InstanceUpdate.as_view(), name='instance-edit'),
     url(r'^instance/token$', 'login_token.views.login_tokens_for_user', name='tokens'),
 
+    (r'^about', include('about.urls')),
     url(r'^', include('speeches.urls', app_name='speeches', namespace='speeches')),
 )

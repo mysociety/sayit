@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     (r'^accounts/mobile-login', 'login_token.views.check_login_token'),
 
     (r'^api/', include(v01_api.urls)),
+    (r'^about', include('about.urls')),
 
     (r'^', include('instances.urls')),
 )

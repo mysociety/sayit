@@ -154,6 +154,7 @@ INSTALLED_APPS = [
     'popit',
     'instances',
     'speeches',
+    'about',
     'login_token',
     'popit_resolver',
 ]
