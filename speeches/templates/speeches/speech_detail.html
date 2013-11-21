@@ -97,6 +97,12 @@
         {{ object.text|bleach|linebreaks }}
     {% endif %}
 
+    {% if object.section %}
+        <p>
+            <a href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}">{% trans "See speech in context" %}</a>
+        </p>
+    {% endif %}
+
     {% if object.source_url %}
         <p><a href="{{ object.source_url }}">{% trans "Source:" %} {{ object.source_url }}</a></p>
     {% endif %}

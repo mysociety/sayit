@@ -99,6 +99,12 @@
     bottom: -0.5em;
 }
 
+/* Target */
+
+.speech:target {
+    background-color: #ffc;
+}
+
 /* Permalink visibility */
 
 .speech .hov {
