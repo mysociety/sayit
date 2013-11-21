@@ -13,16 +13,17 @@ import datetime
 
 class Command(BaseCommand):
 
+    help = "Rerun popit-resolver resolution, based on the current index of names available.  \nYou will first need to have run popit_resolver_init to set up the names to match against"
+
     option_list = BaseCommand.option_list + (
+
         make_option('--instance', action='store', default='default', help='Label of instance to re-resolve'),
-        make_option('--popit-api-url', action='store', help='popit url to use'),
         make_option('--name-startswith', action='store', help='name startswith clause for speaker name (not speech display name)'),
         # make_option('--redo', action='store-true', help='refresh already resolved names'),
     )
 
 
     def handle(self, *args, **options):
-        popit_url = options['popit_api_url']
         instance = options['instance']
 
         reparented_count = 0
@@ -69,7 +70,6 @@ class Command(BaseCommand):
                     continue
 
                 resolver = ResolvePopitName(
-                    popit_url = popit_url,
                     date = speech.start_date or datetime.date.today() )
                 person = resolver.get_person(name)
                 if not person:
