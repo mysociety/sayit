@@ -121,6 +121,8 @@ def parse_transcript(text, url):
             try:
                 line = m.group(1)
                 line = line.replace('O2', '02')
+                if '2011-11-16am' in url and line == '(12.30 am)':
+                    line = '(12.30 pm)'
                 if re.match('\(1[3-9]\.', line):
                     time_format = '(%H.%M %p)'
                 else:
