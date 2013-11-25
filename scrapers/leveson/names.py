@@ -38,6 +38,7 @@ name_fixes = {
     'Ms Susan Akers': 'DAC Sue Akers',
     'Dr John Vincent Cable': 'Dr Vincent Cable',
     'Lord Guy Vaughan Black': 'Lord Black of Brentwood',
+    'Hjk': 'HJK',
 }
 
 def title_with_corrections(s):
