@@ -42,7 +42,11 @@ for date, url, text in get_transcripts():
     for speech in parse_transcript(text, url):
         if not speech: continue
         if speech.section:
-            section = get_or_create(Section, instance=instance, title=speech.section.title, parent=date_section)
+            if speech.section.object:
+                section = speech.section.object
+            else:
+                section = Section.objects.create(instance=instance, title=speech.section.title, parent=date_section)
+                speech.section.object = section
         else:
             section = date_section
         if speech.speaker:

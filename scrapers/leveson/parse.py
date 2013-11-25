@@ -5,6 +5,7 @@ import string
 from leveson.names import fix_name
 
 class Section(object):
+    object = None
     def __init__(self, title):
         self.title = title
 
