@@ -30,8 +30,8 @@ class Speech(object):
     @classmethod
     def reset(cls, morning):
         cls.current_time = None
-        cls.current_section = None
         if morning:
+            cls.current_section = None
             cls.witness = None
 
 
