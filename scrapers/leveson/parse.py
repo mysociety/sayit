@@ -52,6 +52,11 @@ def parse_transcript(text, url):
     state = 'text'
     speech = None
     Speech.reset('am' in url)
+
+    if '2012-06-26pm' in url:
+        time_format = '(%I.%M %p)'
+        Speech.current_time = datetime.strptime('(2.00 pm)', time_format).time()
+
     for line in text:
         # Page break
         if '\014' in line:
@@ -131,6 +136,11 @@ def parse_transcript(text, url):
                 Speech.current_time = datetime.strptime(line, time_format).time()
             except:
                 yield speech
+                if 'Hearing in private' in line:
+                    time_format = '(%I.%M %p)'
+                    Speech.current_time = datetime.strptime('(10.30 am)', time_format).time()
+                if 'The luncheon adjournment' in line and not Speech.current_time:
+                    continue
                 speech = Speech( speaker=None, text=line )
             continue
         # Multiline message about adjournment
