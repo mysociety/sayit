@@ -156,7 +156,8 @@ def parse_transcript(text, url):
         # Witness arriving
         m = re.match(" *((?:[A-Z]|Mr)(?:[A-Z' ,-]|Mc|Mr|and)+?)\s+(\(.*\))$", line)
         if m:
-            Speech.witness = fix_name(m.group(1))
+            title = fix_name(m.group(1))
+            Speech.witness = title
             if Speech.witness == 'Dr Gerald Patrick McCann and Dr Kate Marie McCann':
                 Speech.witness = 'Mr McCann' # All the A.s are him
             if Speech.witness == 'Mr James Watson and Mrs Margaret Watson':
@@ -170,7 +171,7 @@ def parse_transcript(text, url):
                 speech.add_text( narrative )
             else:
                 yield speech
-                Speech.current_section = Section( title=Speech.witness )
+                Speech.current_section = Section( title=title )
                 speech = Speech( speaker=None, text=narrative )
                 state = 'witness'
             continue
