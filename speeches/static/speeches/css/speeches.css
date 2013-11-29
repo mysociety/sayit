@@ -114,6 +114,8 @@
 .speaker-img {
     border: solid 2px #cccccc;
     background-color: #cccccc;
+    width: 48px;
+    height: 48px;
 }
 
 .speech-border {
