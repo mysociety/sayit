@@ -183,20 +183,26 @@
 }
 
 .speech__meta-data {
-  margin-left: 4em;
   margin-bottom: .75em;
   span {
     display: block;
   }
 
   @media (min-width: $medium-screen) {
-    margin-left: 0;
     margin-bottom: 0;
     span {
       display: inline;
     }
   }
 }
+.speech--with-portrait .speech__meta-data {
+  margin-left: 4em;
+  @media (min-width: $medium-screen) {
+    margin-left: 0;
+  }
+
+}
+
 
 .speech__meta-data__speaker-name {
   margin-right: .5em;
