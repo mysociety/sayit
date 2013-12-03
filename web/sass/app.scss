@@ -129,6 +129,36 @@ form {
     margin-bottom: 0;
     border: none;
 }
+/* mySociety header */
+.ms-header {
+    background: transparent;
+    border-top: 4px solid #424242;
+}
+
+.ms-header__row {
+    @include grid-row;
+    position: relative;
+}
+
+.ms-header__logo {
+    @extend .image-replacement;
+    display: block;
+    position: absolute;
+    right: 0.75em;
+    top: 0;
+    width: 125px;
+    height: 39px;
+    background-color: #424242;
+    background-image: url('../img/mysociety-logo.png');
+    background-repeat: no-repeat;
+    background-position: 16px 10px ;
+    @include background-size(93px 19px);
+    @include border-radius(0 0 1.25em 1.25em);
+    @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+        background-image: url('../img/mysociety-logo@2.png');
+    }
+
+}
 
 /* Brand header */
 .brand-header {
