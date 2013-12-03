@@ -201,7 +201,10 @@ form {
     font-weight: $weight_bold;
     letter-spacing: 0;
     display: inline-block;
-    height: 2.125em; //prevents a little jump before the JS ticker fires
+    height: 1.42em; //prevents a little jump before the JS ticker fires
+    @media (min-width: $medium-screen) {
+        height: auto;
+    }
     .subtitle {
         font-size: .458333333em; /* 11px */
         @media (min-width: $medium-screen) {
