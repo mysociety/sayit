@@ -224,11 +224,11 @@
 }
 
 .speech__links {
-  background: #fff;
   position: absolute;
-  bottom: -1.1em;
+  bottom: -0.25em;
   right: 0;
   padding: .5em 1em .5em 0;
+  z-index: 300;
   a {
     text-transform: uppercase;
     font-weight: $weight_bold;
