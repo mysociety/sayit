@@ -4,7 +4,7 @@
 {% load bleach_tags %}
 
 {% if not noli %}
-<li id="s{{ speech.id }}" class="speech {% if  result.object %}speech--search-result{% endif %} {% if speech.speaker and not nospeaker %}speech--with-portrait{% endif %} speech--border"
+<li id="s{{ speech.id }}" class="speech {% if  result.object %}speech--search-result{% endif %} {% if speech.speaker and not nospeaker %}speech--with-portrait{% endif %} {% if not speech.speaker  %}speech--narrative{% endif %} speech--border"
 {% if speech.speaker.colour %} style="border-left-color: #{{ speech.speaker.colour }};"{% endif %}>
 {% endif %}
 
@@ -46,15 +46,11 @@
       {% endif %}
     </div>
     <div class="speech__meta-data">
-      {% if not nospeaker %}
+      {% if speech.speaker and not nospeaker %}
         <span class="speech__meta-data__speaker-name">
-          {% if speech.speaker %}
           <a href="{% url 'speeches:speaker-view' speech.speaker.id %}">
               {% firstof speech.speaker_display speech.speaker %}
           </a>
-          {% else %}
-              {% trans "Unknown Speaker" %}
-          {% endif %}
         </span>
       {% endif %}
 
