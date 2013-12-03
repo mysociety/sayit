@@ -50,7 +50,6 @@
           </div>
 
           <div class="admin-menu-container">
-            <a href="{% url 'django.contrib.auth.views.login' %}?next=/" class="tiny secondary button admin-menu-button">{% trans "Log in" %}</a>
             {% if request.user.is_authenticated %}
               <a href="#" data-dropdown="drop1" class="tiny secondary button dropdown admin-menu-button">Admin</a><br>
 
