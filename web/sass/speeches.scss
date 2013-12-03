@@ -120,21 +120,16 @@
 .speech--with-portrait {
   padding-top: 1.5em;
   @media (min-width: $medium-screen) {
-    background: transparent url('../img/speech-timeline-bg.png') 8% top repeat-y;
+    background: transparent url('../img/speech-timeline-bg.png') 8.2% top repeat-y;
     padding-top: 2.5em;
     &:first-child {
       padding-top: 1.5em;
     }
   }
-  @media (min-width: $large-screen) {
-    background-position-x: 7.5%
-  }
-  @media (min-width: $huge-screen) {
-    background-position-x: 6%
-  }
 }
 
 .speaker-portrait-wrapper {
+  text-align: center;
   @media (min-width: $medium-screen) {
     @include grid-column(2);
   }
@@ -149,6 +144,7 @@
     @include grid-column(10);
   }
 }
+
 .speaker-portrait {
   max-width: 100%;
   border: 4px solid transparent;
@@ -159,16 +155,19 @@
 
 .speaker-portrait--left {
   float: left;
+  @media (min-width: $medium-screen) {
+    float: none;
+  }
 }
 
 .speaker-portrait--small {
-  width: 72px;
+  width: 64px;
 }
 
 .speaker-portrait--medium {
-  width: 64px;
+  width: 48px;
   @media (min-width: $medium-screen) {
-      width: 96px;
+      width: 72px;
   }
 }
 
