@@ -243,6 +243,21 @@
   }
 }
 
+.speech--narrative {
+  //a speech with no speaker, we assume it's narrative information, like "Adjourned for 10 minutes" or similar
+  background: #f4f4f4;
+  border-bottom: 1px solid $colour_light_grey;
+  border-top: 1px solid $colour_light_grey;
+  margin-top: -1px; // a cheeky way to hide the border of the element that comes before it, as we can't select a preceding sibling
+  .speech__links {
+    background: transparent;
+  }
+  .speech__content {
+    border-bottom: none;
+    font-family: $body-font-family;
+  }
+}
+
 /* Hide speech__links on devices capable of hover, reveal on hover or focus of speech */
 .no-touch {
   .speech__links {
