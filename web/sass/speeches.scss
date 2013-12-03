@@ -111,19 +111,19 @@
 }
 
 .speech {
-  padding-top: 1.5em;
+  padding-top: 1em;
   position: relative;
   @include clearfix;
   @include grid-row(nest);
 }
 
 .speech--with-portrait {
-  padding-top: 1.5em;
+  padding-top: 1em;
   @media (min-width: $medium-screen) {
-    background: transparent url('../img/speech-timeline-bg.png') 8.2% top repeat-y;
-    padding-top: 2.5em;
+    background: transparent url('../img/speech-timeline-bg.png') 4% top repeat-y;
+    padding-top: 1em;
     &:first-child {
-      padding-top: 1.5em;
+      padding-top: 1em;
     }
   }
 }
@@ -131,7 +131,7 @@
 .speaker-portrait-wrapper {
   text-align: center;
   @media (min-width: $medium-screen) {
-    @include grid-column(2);
+    @include grid-column(1);
   }
 }
 
@@ -141,7 +141,7 @@
     margin-right: 0.75em;
   }
   @media (min-width: $medium-screen) {
-    @include grid-column(10);
+    @include grid-column(11);
   }
 }
 
@@ -161,13 +161,13 @@
 }
 
 .speaker-portrait--small {
-  width: 64px;
+  width: 36px;
 }
 
 .speaker-portrait--medium {
   width: 48px;
   @media (min-width: $medium-screen) {
-      width: 72px;
+      width: 64px;
   }
 }
 
@@ -176,13 +176,15 @@
 }
 
 .speech__meta-data {
-  margin-left: 5em;
+  margin-left: 4em;
+  margin-bottom: .75em;
   span {
     display: block;
   }
 
   @media (min-width: $medium-screen) {
     margin-left: 0;
+    margin-bottom: 0;
     span {
       display: inline;
     }
@@ -198,7 +200,7 @@
   font-family: Georgia, Times, 'Times New Roman', Serif;
   font-size: 1.0625em; /* 17px */
   clear: both;
-  margin-top: 0.5em;
+  margin-top: 0em;
   border-bottom: 1px solid $colour_light_grey;
   @media (min-width: $small-screen) {
       font-size:  1.1875em; /* 19px */
