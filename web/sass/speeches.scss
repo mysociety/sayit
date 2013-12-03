@@ -156,6 +156,13 @@
 .speaker-portrait--left {
   float: left;
   @media (min-width: $medium-screen) {
+    float: left;
+  }
+}
+
+.speech--with-portrait .speaker-portrait--left {
+  // in speech sections with a speaker portrait we don't want to float it, a we're using text-align: center
+  @media (min-width: $medium-screen) {
     float: none;
   }
 }
