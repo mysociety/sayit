@@ -252,6 +252,16 @@ form {
 /* Brand footer */
 .brand-footer {
     padding: 3em 0;
+    color: #fff;
+    h2 {
+        color: #fff;
+        font-size: 1em;
+        font-weight: $weight_bold;
+    }
+    p {
+        font-size: 0.8125em;
+        letter-spacing: 0.02em;
+    }
 }
 
 .brand-footer__row {
@@ -260,6 +270,12 @@ form {
 
 .brand-footer__unit {
     @include grid-column(12);
+}
+
+.about-sayit {
+    @media (min-width: $medium-screen) {
+        @include grid-column(4);
+    }
 }
 
 /* Instance header */
