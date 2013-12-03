@@ -178,6 +178,10 @@ form {
 /* Brand header */
 .brand-header {
     background: $colour_black;
+    a:link,
+    a:visited {
+        color: #fff;
+    }
 }
 
 .brand-header__row {
@@ -185,7 +189,10 @@ form {
 }
 
 .brand-header__title-unit {
-    @include grid-column(9);
+    min-width: 15em;
+    float: left;
+    margin-right: 2.4%;
+    margin-left: 0.75em;
 }
 
 .brand-header__title {
@@ -193,6 +200,8 @@ form {
     font-size: emCalc(24);
     font-weight: $weight_bold;
     letter-spacing: 0;
+    display: inline-block;
+    height: 2.125em; //prevents a little jump before the JS ticker fires
     .subtitle {
         font-size: .458333333em; /* 11px */
         @media (min-width: $medium-screen) {
@@ -200,6 +209,22 @@ form {
         }
 
         font-weight: $weight_light;
+    }
+}
+
+.brand-header__navigation {
+    display: none; //temporary hide on mobile: #todo: fix on mobile
+    @media (min-width: $medium-screen) {
+        display: block;
+    }
+    float: right;
+    margin-top: 0.95em;
+    margin-right: 145px;
+    a {
+        display: inline-block;
+        margin-right: 1em;
+        font-size: 0.8125em;
+        letter-spacing: 0.02em;
     }
 }
 
