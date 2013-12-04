@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import json
 
 from django.core.management import call_command
 
@@ -9,7 +10,7 @@ from popit.models import ApiInstance
 from popit_resolver.resolve import SetupEntities, EntityName
 
 import speeches
-from speeches.models import Speaker
+from speeches.models import Speaker, Section
 from speeches.importers.import_akomantoso import title_case_heading
 from speeches.importers.import_za_akomantoso import ImportZAAkomaNtoso
 
@@ -23,6 +24,7 @@ class ImportAkomaNtosoTests(InstanceTestCase):
     @classmethod
     def setUpClass(cls):
         cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
+        cls._expected_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'expected_outputs')
 
         call_command('clear_index', interactive=False, verbosity=0)
 
@@ -35,7 +37,7 @@ class ImportAkomaNtosoTests(InstanceTestCase):
         EntityName.objects.all().delete()
         ApiInstance.objects.all().delete()
 
-    def test_import(self):
+    def test_za_import(self):
         document_path = os.path.join(self._in_fixtures, 'NA200912.xml')
 
         an = ImportZAAkomaNtoso(instance=self.instance, commit=True, popit_url=popit_url)
@@ -60,6 +62,24 @@ class ImportAkomaNtosoTests(InstanceTestCase):
                 "%d above threshold %d/%d"
                 % (len(resolved), THRESHOLD, len(speakers)))
 
+
+        filename = 'NA200912_section_titles.json'
+        expected_filename = os.path.join(self._expected_fixtures, filename)
+        out_filename = filename
+        
+        with open(expected_filename) as fh:
+            expected_titles = json.load(fh)
+
+        section_titles = [s.title for s in Section.objects.all()]
+
+        if not expected_titles == section_titles:
+            out = open(out_filename, 'w')
+            json.dump(section_titles, out, indent=4)
+
+        self.assertEqual(
+            expected_titles, section_titles,
+            'NB: check JSON output: e.g. vimdiff %s %s' % (out_filename, expected_filename)
+        )
 
     def test_title_casing(self):
         tests = (

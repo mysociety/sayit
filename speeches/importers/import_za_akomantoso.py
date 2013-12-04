@@ -14,6 +14,10 @@ class ImportZAAkomaNtoso (ImportAkomaNtoso):
     title_case = True
     use_by_refs = False
 
+    def visit(self, node, section):
+        self.cached_title = ''
+        super(ImportZAAkomaNtoso, self).visit(node, section)
+
     def parse_document(self):
         """We know we only have one top level section, which we want to
         deal with differently, so do that here"""
@@ -68,3 +72,21 @@ class ImportZAAkomaNtoso (ImportAkomaNtoso):
             speaker = speaker,
         )
         return True
+
+    def make_child_section(self, section, child):
+
+        title = self.construct_title(child)
+
+        # Note that len(child) returns the number of siblings, not the
+        # number of children (because we're using objectify).
+        element_count = child.countchildren()
+
+        if element_count <= 1:
+            if title:
+                self.cached_title += title + ' - '
+        else:
+            if self.cached_title:
+                title = self.cached_title + title
+                self.cached_title = ''
+            childSection = self.make(Section, parent=section, title=title)
+            self.visit(child, childSection)

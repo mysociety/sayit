@@ -109,9 +109,9 @@ class ImportAkomaNtoso (ImporterBase):
                     'communication', 'petitions', 'papers', 'noticesOfMotion',
                     'questions', 'address', 'proceduralMotions',
                     'pointOfOrder', 'adjournment'):
-                title = self.construct_title(child)
-                childSection = self.make(Section, parent=section, title=title)
-                self.visit(child, childSection)
+
+                self.make_child_section(section, child)
+
             elif tagname in ('speech', 'question', 'answer'):
                 title = self.construct_title(child)
                 text = self.get_text(child)
@@ -146,3 +146,8 @@ class ImportAkomaNtoso (ImporterBase):
                 success = self.handle_tag(child, section)
                 if not success:
                     raise Exception, '%s unrecognised, "%s" - %s' % (child.tag, child, self.get_text(child))
+
+    def make_child_section(self, section, child):
+        title = self.construct_title(child)
+        childSection = self.make(Section, parent=section, title=title)
+        self.visit(child, childSection)
