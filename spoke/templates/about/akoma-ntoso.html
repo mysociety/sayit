@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+
+{% block title %}
+Akoma Ntoso
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Akoma Ntoso</h1>
+</div>
+
+<p>Akoma Ntoso (technically an acronym for Architecture for Knowledge-Oriented
+Management of African Normative Texts using Open Standards and Ontologies, and
+probably a <a href="http://en.wikipedia.org/wiki/Backronym">backronym</a> as it
+means &ldquo;linked hearts&rdquo; in Akan) is a comprehensive XML schema for
+several Parliamentary document types such as bills, acts, and debates. Various
+bodies around the world are starting to use or interoperate with Akoma Ntoso to
+model their data.
+
+<p>SayIt can import a subset of Akoma Ntoso, and below we describe which
+aspects of it we cover. If you have some transcripts and can transcribe them
+into the format below, we should be able to import it. If you use aspects of
+Akoma Ntoso that we don't yet cover, please get in touch so we can discuss
+improving our import process.
+
+<h2>Basic structure</h2>
+
+<p>Akoma Ntoso is XML, with some HTML for its low-level content, which for all
+practical purposes means it looks quite a bit like HTML. Here is a small
+example showing the basic structure:
+
+<pre>
+&lt;akomaNtoso&gt;
+  &lt;debate name="The Tempest"&gt;
+    &lt;meta&gt;
+      &lt;references source="#"&gt;
+        &lt;TLCPerson id="caliban" href="/ontology/person/shakespeare.caliban" showAs="Caliban"/&gt;
+        &lt;TLCPerson id="trinculo" href="/ontology/person/shakespeare.trinculo" showAs="Trinculo"/&gt;
+        &lt;TLCPerson id="stephano" href="/ontology/person/shakespeare.stephano" showAs="Stephano"/&gt;
+      &lt;/references&gt;
+    &lt;/meta&gt;
+    &lt;preface&gt;
+      &lt;docTitle&gt;The Tempest&lt;/docTitle&gt;
+    &lt;/preface&gt;
+    &lt;debateBody&gt;
+      &hellip;
+      &lt;debateSection name="act" id="act2"&gt;
+        &lt;heading id="act2-head"&gt;Act 2&lt;/heading&gt;
+        &hellip;
+        &lt;debateSection name="scene" id="act2-scene2"&gt;
+          &lt;heading id="act2-scene2-head"&gt;Scene 2&lt;/heading&gt;
+          &lt;subheading&gt;Another part of the island.&lt;/subheading&gt;
+          &lt;narrative&gt;Enter CALIBAN with a burden of wood. A noise of thunder heard&lt;/narrative&gt;
+          &lt;speech by="#caliban"&gt;
+            &lt;from&gt;CALIBAN&lt;/from&gt;
+            &lt;p&gt;All the infections that the sun sucks up&hellip;&lt;/p&gt;
+          &lt;/speech&gt;
+          &lt;narrative&gt;Enter TRINCULO&lt;/narrative&gt;
+          &lt;speech by="#caliban"&gt;
+            &lt;from&gt;CALIBAN&lt;/from&gt;
+            &lt;p&gt;Lo, now lo!&hellip;&lt;/p&gt;
+          &lt;/speech&gt;
+          &lt;speech by="#trinculo"&gt;
+            &lt;from&gt;TRINCULO&lt;/from&gt;
+            &lt;p&gt;Here's neither bush nor shrub, to bear off&hellip;&lt;/p&gt;
+          &lt;/speech&gt;
+          &hellip;
+        &lt;/debateSection&gt;
+        &hellip;
+      &lt;/debateSection&gt;
+      &hellip;
+    &lt;/debateBody&gt;
+  &lt;/debate&gt;
+&lt;/akomaNtoso&gt;
+</pre>
+
+<!--
+Optionally, you may have a <code>coverPage</code> before the preface, and a
+<code>conclusions</code> after the debateBody, both containing block elements.
+These will both be imported into SayIt as one speech within its own section
+at the start/end of the import.
+-->
+
+<h3>Generic attributes</h3>
+
+<p>All elements can have the following optional attributes:
+<ul>
+    <li>id (must be unique within the document, start with letter or
+    underscore, and can only contain letters, digits, underscores, periods, and
+    hyphens)
+    <li>class, style, and title (as in HTML)
+    <!--
+    <li>period (a URI to a <code>temporalGroup</code>)
+    <li>status (removed|temporarilyRemoved|translated|editorial|edited|verbatim|incomplete|unknown|undefined|ignored)
+    <li>xml:lang and xml:space
+    <li>alternativeTo (a URI to the main element that this element is an alternative of)
+    <li>evolvingId (the identifier it would have in a static situation)
+    -->
+    <li>refersTo (a URI to an entry within <code>references</code>)
+</ul>
+
+<h2 id="container">Container elements</h2>
+
+<h3>preface</h3>
+
+<p>The <code>preface</code> element should contain <a href="#block">block</a>
+element children. Within that, you may use various inline elements to signify
+things such as the title, type, number, purpose, or jurisdiction of the
+document &ndash; SayIt currently only spots the <code>docDate</code> or
+<code>docTitle</code> elements.
+
+<!--
+    <docType|docTitle|docNumber|shortTitle|docPurpose|docIntroducer|docStage|docStatus|docJurisdiction|docketNumber>
+    <docProponent as=URI>
+    <docDate date=date(required) time=time>
+    <legislature|session|docCommittee value="">
+-->
+
+<h3>Speech sections</h3>
+
+<pre style="float:right;margin-left:1em">
+&lt;questions id="&hellip;"&gt;
+  &lt;debateSection id="&hellip;"&gt;
+    &lt;heading id="&hellip;"&gt;&hellip;&lt;/heading&gt;
+    &lt;question by="#&hellip;"&gt;&hellip;&lt;/question&gt;
+    &lt;answer by="#&hellip;" as="#&hellip;"&gt;&hellip;&lt;/answer&gt;
+    &hellip;
+  &lt;/debateSection&gt;
+  &hellip;
+&lt;/questions&gt;
+&lt;ministerialStatements&gt;
+  &lt;heading id="&hellip;"&gt;&hellip;&lt;/heading&gt;
+  &lt;debateSection id="&hellip;"&gt;
+    &lt;heading id="&hellip;"&gt;&hellip;&lt;/heading&gt;
+    &lt;speech by="#&hellip;" as="#&hellip;"&gt;&hellip;&lt;/speech&gt;
+  &lt;/debateSection&gt;
+&lt;/ministerialStatements&gt;
+</pre>
+
+<p>The following elements (which all require an <code>id</code> attribute) can be used to
+create a hierarchy of speech-like elements:
+
+<ul>
+    <li>administrationOfOath
+    <li>rollCall
+    <li>prayers
+    <li>oralStatements
+    <li>writtenStatements
+    <li>personalStatements
+    <li>ministerialStatements
+    <li>resolutions
+    <li>nationalInterest
+    <li>declarationOfVote
+    <li>communication
+    <li>petitions
+    <li>papers
+    <li>noticesOfMotion
+    <li>questions
+    <li>address
+    <li>proceduralMotions
+    <li>pointOfOrder
+    <li>adjournment
+    <li>debateSection (additionally requires a <code>name</code> attribute to
+    describe the type of section)
+</ul>
+
+<p>Each of these elements contains zero or one <code>num</code>,
+<code>heading</code>, and <code>subheading</code> elements, followed by more
+speech section elements, or speech-like elements.
+
+<!-- , div/container?, or block elements directly.
+div has a required ID, and can contain block elements only.
+container has a required ID and name, and can contain block elements and itself only.
+-->
+
+<p>The <code>num</code>, <code>heading</code> and <code>subheading</code>
+elements can contain inline text, and <code>heading</code> must have an
+<code>id</code> attribute (though the official examples do not). Whilst
+semantically you can use these to mark up different information, SayIt will
+munge these together into one string on import.
+
+<h3>Speech-like elements</h3>
+
+<pre style="float:right;margin-left:1em">
+&lt;narrative&gt;&hellip;&lt;/narrative&gt;
+&lt;speech by="#caliban"&gt;
+  &lt;from&gt;CALIBAN&lt;/from&gt;
+  &lt;p&gt;&hellip;&hellip;&lt;/p&gt;
+&lt;/speech&gt;
+&lt;narrative&gt;Enter TRINCULO&lt;/narrative&gt;
+&lt;speech by="#caliban"&gt;
+  &lt;from&gt;CALIBAN&lt;/from&gt;
+  &lt;p&gt;Lo, now lo!&hellip;&lt;/p&gt;
+&lt;/speech&gt;
+&lt;speech by="#trinculo"&gt;
+  &lt;from&gt;TRINCULO&lt;/from&gt;
+  &lt;p&gt;&hellip;&hellip;&lt;/p&gt;
+&lt;/speech&gt;
+</pre>
+
+<p>There are seven elements for holding speech-like entries:
+
+<ul>
+    <li>speech
+    <li>question
+    <li>answer
+    <li>scene
+    <li>narrative
+    <li>summary
+    <li>other
+</ul>
+
+<p><code>speech</code>, <code>question</code> and <code>answer</code> require a
+<code>by</code> attribute &ndash; a URI to an entry in <code>references</code>
+(probably a <code>TLCPerson</code>). You may also optionally include
+<code>as</code> (a URI to a reference of the role this speech is made in),
+<code>to</code> (a URI to a reference of who this speech is addressed to), and
+<code>startTime</code> and <code>endTime</code> (in ISO format
+<code>YYYY-MM-DDThh:mm:ss</code>).
+
+<p>Each of these three elements contains optional <code>num</code>,
+<code>heading</code>, and <code>subheading</code> elements (as with speech
+section elements), an optional <code>from</code> element and then one or more
+<a href="#block">block</a> elements.
+
+<p>The <code>from</code> element should contain the text used in the transcript
+for this speaker (their identifier is handled by the attributes on the speech
+element itself).
+
+<p>There are three elements for <strong>descriptive entries</strong>, that can
+contain <a href="#inline">inline</a> elements and text:
+
+<ul>
+    <li>scene (e.g. &ldquo;applause&rdquo;)
+    <li>narrative (e.g. &ldquo;Mr X takes the Chair&rdquo;)
+    <li>summary (e.g. &ldquo;Question agreed to&rdquo;)
+</ul>
+
+<p>Lastly, the <code>other</code> element is the container for parts of a debate that
+are not speeches nor scene comments (e.g. lists of papers). It requires an
+<code>id</code> attribute, and contains <a href="#block">block</a> elements.
+
+<!-- formula container speechGroup -->
+
+<h2 id="block">Block elements</h2>
+
+<pre style="float:right;margin-left:1em">
+&lt;speech by="#&hellip;" as="#&hellip;"&gt;
+  &lt;from&gt;Mr Block&lt;/from&gt;
+  &lt;p&gt;Here is a list:&lt;/p&gt;
+  &lt;ul id=""&gt;
+    &lt;li&gt;First item&lt;/li&gt;
+    &lt;li&gt;Second item&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p&gt;And here is a table:&lt;/p&gt;
+  &lt;table id=""&gt;
+    &lt;tr&gt; &lt;td&gt;A&lt;/td&gt; &lt;td&gt;B&lt;/td&gt; &lt;/tr&gt;
+    &lt;tr&gt; &lt;td&gt;A&lt;/td&gt; &lt;td&gt;D&lt;/td&gt; &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/speech&gt;
+</pre>
+
+<p>Block elements handled by SayIt are the HTML elements:
+<ul>
+    <li>p
+    <li>ul
+    <li>ol
+    <li>table
+</ul>
+
+<p>All these besides <code>p</code> require an <code>id</code> attribute.
+<code>ul</code> and <code>ol</code> contain <code>li</code>s as in HTML (which
+can optionally have a <code>value</code> attribue), and <code>li</code>s can
+contain <code>p</code>, <code>ul</code>, <code>ol</code>, or
+<a href="#inline">inline</a> text.
+
+<!--
+<p>tables can have width, border, cellspacing, cellpadding attributes
+caption, tr, th/td (rowspan/colspan), containing block elements.
+-->
+
+<p>Other Akoma Ntoso block elements <!-- &ndash; blockList, tblock, foreign,
+block &ndash; --> are ignored (though not their contents).
+
+<h2 id="inline">Inline elements</h2>
+
+<p>Akoma Ntoso supports the following HTML inline elements, and so does SayIt:
+
+<ul>
+<li>span (generic inline)
+<li>b, i, u, sup, sub (presentational
+<li>abbr (abbreviations)
+<li>a (link)
+<li>br (line break)
+</ul>
+
+<p>Akoma Ntoso has many inline elements for adding semantic information to
+inline text; the only one SayIt currently recognises on import is
+<code>recordedTime</code>, which it uses for updating speech times (if speeches
+don't have their own times).
+
+<p>Feel free to use other inline elements such as <code>person</code> or
+<code>eop</code> (TODO, find a list); they simply won't be output in the
+HTML.
+
+<!--
+SayIt will ignore any other Akoma Ntoso inline elements used, though some
+are described below and may be covered in some way in future.
+
+noteRef img marker
+
+.reqreq below: id and refersTo required
+.req:    id required
+
+<ul>
+<li>Akoma Ntoso markers: eol, eop (breakat=N)
+<li>AN semantic inline: 
+<date date=date(required)>
+<time time=time(required)>
+<entity .reqreq name=""(req)>
+<person .reqreq as=URI>
+<organization|concept|object|event|location|process|role|term .reqreq>
+<quantity .reqreq normalized="">
+<def>
+<li>AN inline:
+<ref .req href=URI(required)>
+<mref>
+<rref .req from=URI(required) upTo=URI(required)>
+<remark type=sceneDescription|phenomenon|caption|translation>
+<recordedTime type=startEvent|endEvent time=time(required)>
+<vote by=URI(required) as=URI choice=URI>
+<outcome>
+<ins>
+<del>
+<omissis>
+<placeholder originalText="">
+<fillIn width="">
+<li> <inline name=""(required)>
+</ul>
+-->
+
+<h2>References</h2>
+
+<p>Reference elements are empty elements for providing URIs for entities used
+in the document following:</p>
+
+<ul>
+    <li>TLCPerson
+    <li>TLCOrganization
+    <li>TLCConcept
+    <li>TLCObject
+    <li>TLCEvent
+    <li>TLCLocation
+    <li>TLCProcess
+    <li>TLCRole
+    <li>TLCTerm
+    <li>TLCReference
+</ul>
+
+<p>An <code>id</code> attribute is required, as is <code>href</code>,  and
+<code>showAs</code>. Optional attributes are <code>shortForm</code>.
+<code>name</code> is required for <code>TLCReference</code> to explain what
+type of reference it is.
+
+Please see the Akoma Ntoso website for
+<a href="http://www.akomantoso.org/docs/akoma-ntoso-user-documentation/metadata-describes-the-content">more
+information on Akoma Ntoso metadata</a>.
+
+                <!-- analysis, temporalData, identification, notes, proprietary, presentation -->
+
+{% endblock %}
