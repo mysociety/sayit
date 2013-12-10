@@ -353,15 +353,15 @@ form {
     }
 }
 
-.site-search {
-
-}
-
 .site-search__input,
 .site-search__input[type="search"] {
     -webkit-appearance: none;
 }
 
+.site-search__input[type="search"] {
+    @include border-radius(2em);
+    padding: 0.5em 0.75em;
+}
 
 .site-search--header {
     float: left;
@@ -372,7 +372,6 @@ form {
     .site-search__input[type="search"] {
         background: darken($colour_primary, 5%);
         color: #fff;
-        @include border-radius(2em);
         border: none;
     }
     .site-search__input[type="search"]:focus {
@@ -516,7 +515,7 @@ form {
     .icon-search {
         position: absolute;
         right: 0.6em;
-        top: 0.35em;
+        top: 23%;
     }
 }
 
