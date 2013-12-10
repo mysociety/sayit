@@ -295,17 +295,26 @@ form {
 
 .instance-header__title-unit {
     @include grid-column(12);
-    @media (min-width: $medium-screen) {
-        @include grid-column(8);
+    @media (min-width: $large-screen) {
+        @include grid-column(5);
     }
 }
 
 .instance-header__title {
-    font-weight: $weight_bold;
-    font-size: emCalc(32);
-    margin-bottom: 0.15em;
-    margin-top: 0;
-    line-height: 1em;
+    float: left;
+    width: 100%;
+    @media (min-width: $medium-screen) {
+        width: 50%;
+    }
+    @media (min-width: $huge-screen) {
+        width: 37%;
+    }
+    h1 {
+        font-weight: $weight_light;
+        font-size: emCalc(24);
+        margin-top: 0.2em;
+        line-height: 1em;
+    }
     a {
         &:link,
         &:visited {
@@ -321,10 +330,20 @@ form {
 }
 
 .instance-header__subtitle {
-    font-size: emCalc(13);
-    color: $colour_dark_grey;
-    max-width: 29em;
-    line-height: 1.461538462em;
+    width: 100%;
+    float: left;
+    @media (min-width: $medium-screen) {
+        width: 49%;
+    }
+    @media (min-width: $huge-screen) {
+        width: 61%;
+        margin-left: 2%;
+    }
+    p {
+        font-size: emCalc(13);
+        color: $colour_dark_grey;
+        line-height: 1.461538462em;
+    }
 }
 
 .instance-header__search {
