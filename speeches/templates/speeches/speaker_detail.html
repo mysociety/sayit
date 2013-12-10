@@ -35,7 +35,7 @@
     <div class="speaker-page__stats">
       <div class="stat">
         <div class="stat__figure">
-          3
+          {{ section_count }}
         </div>
         <div class="stat__descriptor">
           Session appearances
@@ -43,12 +43,13 @@
       </div>
       <div class="stat">
         <div class="stat__figure">
-          127
+          {{ paginator.count }}
         </div>
         <div class="stat__descriptor">
           Statements made
         </div>
       </div>
+      <!--
       <div class="stat">
         <div class="stat__figure">
           4<sup>th</sup>
@@ -57,6 +58,7 @@
          of 60 speakers
         </div>
       </div>
+      -->
       <div class="stat">
         <div class="stat__descriptor">
          Unusual words

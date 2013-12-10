@@ -232,6 +232,7 @@ class SpeakerView(NamespaceMixin, InstanceViewMixin, ListView, SingleObjectMixin
         # Call the base implementation first to get a context
         kwargs['speaker'] = self.object
         context = super(SpeakerView, self).get_context_data(**kwargs)
+        context['section_count'] = self.object.speech_set.all().visible(self.request).aggregate(Count('section', distinct=True))['section__count']
         return context
 
 class SpeakerMixin(NamespaceMixin, InstanceFormMixin):
