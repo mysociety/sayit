@@ -115,6 +115,10 @@ $weight_bold: 700;
     // a top-level (un-nested) grid row, used generically to add top-level grid row
 }
 
+.full-page__unit {
+    @include grid-column(12);
+}
+
 .nested-row,
 .page-content__row {
   @include grid-row(nest);
