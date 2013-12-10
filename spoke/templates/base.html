@@ -90,20 +90,23 @@
       <header class="instance-header">
         <div class="instance-header__row">
           <div class="instance-header__title-unit">
-            <h1 class="instance-header__title">
-              {% if request.instance %}
-                <a href="/">{% firstof request.instance.title request.instance.label %}</a>
-              {% else %}
-                <a href="{{ settings.base_HOST }}">SayIt</a>
-              {% endif %}
-            </h1>
+              <div class="instance-header__title">
+                <h1>
+                  {% if request.instance %}
+                    <a href="/">{% firstof request.instance.title request.instance.label %}</a>
+                  {% else %}
+                    <a href="{{ settings.base_HOST }}">SayIt</a>
+                  {% endif %}
+                </h1>
+              </div>
             {% if request.instance.description %}
-              <p class="instance-header__subtitle">
+              <div class="instance-header__subtitle">
+                <p>
                 {{ request.instance.description }}
-              </p>
+                </p>
+              </div>
             {% endif %}
-
-          </div>
+            </div>
           <div class="instance-header__search">
             {% if request.path != '/search/' %}
             {% if request.instance.label != 'leveson' or request.path != '/' %}
