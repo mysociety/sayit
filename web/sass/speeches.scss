@@ -335,6 +335,9 @@
   @media (min-width: $medium-screen) {
       @include grid-column(4);
   }
+  .site-search {
+    width: 100%;
+  }
 }
 
 
