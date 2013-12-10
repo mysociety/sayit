@@ -283,7 +283,7 @@ form {
 
 /* Instance header */
 .instance-header {
-    border-bottom: 1px solid $colour_light_grey;
+    border-bottom: 5px solid $colour_light_grey;
     padding-top: emCalc(15);
     background: $colour_primary;
     position: relative;
@@ -354,10 +354,45 @@ form {
 }
 
 .site-search {
+
+}
+
+.site-search__input,
+.site-search__input[type="search"] {
+    -webkit-appearance: none;
+}
+
+
+.site-search--header {
     float: left;
     width: 100%;
     @media (min-width: $medium-screen) {
         width: 50%;
+    }
+    .site-search__input[type="search"] {
+        background: darken($colour_primary, 5%);
+        color: #fff;
+        @include border-radius(2em);
+        border: none;
+    }
+    .site-search__input[type="search"]:focus {
+        background: darken($colour_primary, 5%);
+        color: #fff;
+        border: none;
+        @include box-shadow(none);
+    }
+
+    .site-search__input::-webkit-input-placeholder {
+        color: #fff;
+    }
+    .site-search__input::-moz-placeholder {
+        color: #fff;
+    }
+    .site-search__input:-moz-placeholder {   /* Older versions of Firefox */
+        color: #fff;
+    }
+    .site-search__input:-ms-input-placeholder {
+       color: #fff;
     }
 }
 
@@ -369,38 +404,6 @@ form {
     @media (min-width: $large-screen) {
         @include grid-column(6, $center:true);
     }
-}
-
-.site-search__input,
-.site-search__input[type="search"] {
-    -webkit-appearance: none;
-}
-
-.site-search__input[type="search"] {
-    background: darken($colour_primary, 5%);
-    color: #fff;
-    @include border-radius(2em);
-    border: none;
-}
-
-.site-search__input[type="search"]:focus {
-    background: darken($colour_primary, 5%);
-    color: #fff;
-    border: none;
-    @include box-shadow(none);
-}
-
-.site-search__input::-webkit-input-placeholder {
-    color: #fff;
-}
-.site-search__input::-moz-placeholder {
-    color: #fff;
-}
-.site-search__input:-moz-placeholder {   /* Older versions of Firefox */
-    color: #fff;
-}
-.site-search__input:-ms-input-placeholder {
-   color: #fff;
 }
 
 .site-search__person-only {

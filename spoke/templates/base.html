@@ -120,7 +120,7 @@
             </nav>
             {% if request.path != '/search/' %}
               {% if request.instance.label != 'leveson' or request.path != '/' %}
-              <form class="site-search" action="/search/" method="get" >
+              <form class="site-search site-search--header" action="/search/" method="get" >
                     <input type="search" class="site-search__input" placeholder="Search" name="q"/>
                     <input type="submit" class="site-search__button button postfix radius" value="Go" style="display: none;" />
               </form>
