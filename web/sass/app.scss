@@ -511,6 +511,32 @@ form {
     }
 }
 
+.search-wrapper {
+    position: relative;
+    .icon-search {
+        position: absolute;
+        right: 0.6em;
+        top: 0.35em;
+    }
+}
+
+.icon-search {
+    display: block;
+    height: emCalc(20);
+    width: emCalc(20);
+    @include background-size(69px 78px);
+    background-image: url(../img/search-icons.png);
+    background-position: 0 -40px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    padding: 0;
+    @extend .image-replacement;
+    &.icon-search--white {
+        background-position: 0 0
+    }
+}
+
 .featured-block {
     background-color: transparent;
     border: 1px solid darken($colour_light_grey, 5%);

@@ -52,8 +52,6 @@
         <div class="brand-header__row">
           <div class="brand-header__title-unit">
             <h1 class="brand-header__title">SayIt <span class="subtitle js-typewriter">&mdash; Simple, beautiful transcripts </span></h1>
-
-
           </div>
           <nav class="brand-header__navigation">
               <a href="#">About SayIt</a>
@@ -121,8 +119,10 @@
             {% if request.path != '/search/' %}
               {% if request.instance.label != 'leveson' or request.path != '/' %}
               <form class="site-search site-search--header" action="/search/" method="get" >
+                <div class="search-wrapper">
                     <input type="search" class="site-search__input" placeholder="Search" name="q"/>
-                    <input type="submit" class="site-search__button button postfix radius" value="Go" style="display: none;" />
+                    <input type="submit" class="icon-search icon-search--white" value="Go"/>
+                </div>
               </form>
               {% endif %}
             {% endif %}
