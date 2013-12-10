@@ -15,3 +15,8 @@ def add_settings( request ):
             'BASE_HOST': url,
         }
     }
+
+def nav_section(request):
+    return {
+        'nav_primary': request.path_info.split('/')[1]
+    }

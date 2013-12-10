@@ -131,8 +131,8 @@
                     {% if request.instance %}
 
                       <li{% if request.path == '/' %} class="active"{% endif %}><a href="/">Home</a></li>
-                      <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speeches:speaker-list' %}">Speakers</a></li>
-                      <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speeches:section-list' %}">Speeches</a></li>
+                      <li{% if nav_primary == 'speakers' or nav_primary == 'speaker' %} class="active"{% endif %}><a href="{% url 'speeches:speaker-list' %}">Speakers</a></li>
+                      <li{% if nav_primary == 'speeches' or nav_primary == 'speech' or section_tree %} class="active"{% endif %}><a href="{% url 'speeches:section-list' %}">Speeches</a></li>
                     {% endif %}
                   </ul>
               </nav>
