@@ -352,6 +352,12 @@
   }
 }
 
+.speaker-page__heading {
+  @media (min-width: $medium-screen) {
+      @include grid-column(8);
+  }
+}
+
 .speaker-page__search {
   @include grid-column(12);
   @media (min-width: $medium-screen) {
@@ -359,6 +365,20 @@
   }
   .site-search {
     width: 100%;
+  }
+}
+
+.js-masonry {
+  @media (min-width: $medium-screen) {
+    .speech {
+      width: 33%;
+    }
+    .gutter-sizer {
+      width: 2%;
+    }
+    .speech-wrapper {
+      @include grid-column(12);
+    }
   }
 }
 
