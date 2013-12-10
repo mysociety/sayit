@@ -352,12 +352,6 @@
   }
 }
 
-.speaker-page__heading {
-  @media (min-width: $medium-screen) {
-      @include grid-column(8);
-  }
-}
-
 .speaker-page__search {
   @include grid-column(12);
   @media (min-width: $medium-screen) {
@@ -365,6 +359,7 @@
   }
   .site-search {
     width: 100%;
+    margin-top: 0.5em;
   }
 }
 
@@ -382,6 +377,16 @@
   }
 }
 
+.speaker-page__speeches-title {
+  @include grid-column(12);
+  @media (min-width: $medium-screen) {
+      @include grid-column(8);
+  }
+}
+
+.speaker-page__speeches-collection {
+  background-color: $colour_off_white;
+}
 
 
 /* Search results */

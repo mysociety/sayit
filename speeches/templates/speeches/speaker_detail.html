@@ -75,22 +75,22 @@
     </div>
   </div>
 </div>
-<div class="page-content__row">
-  <div class="full-page__unit">
-    <div class="speaker-page__heading">
+<div class="speaker-page__speeches-collection">
+    <div class="full-page__row">
+      <div class="speaker-page__speeches-title">
         <h2>Speeches</h2>
+      </div>
+
+      <div class="speaker-page__search">
+        <form class="site-search site-search" action="/search/" method="get" >
+          <input type="hidden" name="p" value="{{ speaker.id }}">
+          <div class="search-wrapper">
+              <input type="search" class="site-search__input" placeholder="Search this person's speeches" name="q"/>
+              <input type="submit" class="icon-search icon-search" value="Search"/>
+          </div>
+        </form>
+      </div>
     </div>
-    <div class="speaker-page__search">
-      <form class="site-search site-search" action="/search/" method="get" >
-        <input type="hidden" name="p" value="{{ speaker.id }}">
-        <div class="search-wrapper">
-            <input type="search" class="site-search__input" placeholder="Search this person's speeches" name="q"/>
-            <input type="submit" class="icon-search icon-search" value="Search"/>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="full-page__unit">
 
     <ul class="unstyled js-masonry" data-masonry-options='{"columnWidth":".speech","itemSelector":".speech","gutter":".gutter-sizer"}'>
         <li class="gutter-sizer"></li>
@@ -104,5 +104,5 @@
 
     {% include 'speeches/pagination.html' %}
 </div>
-</div>
+
 {% endblock %}
