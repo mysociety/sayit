@@ -16,24 +16,31 @@
       <img src="{% if speaker.person.image %}{{ speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
           style="border-color #{{ speaker.colour }}; background-color: #{{ speaker.colour }};"
           class="speaker-portrait speaker-portrait--left speaker-portrait--large round-image"
-          alt="Headshot of {{ speaker.name|escape}}">
-
-              <h1>{{ speaker.name }}</h1>
-              {% if speaker.person.summary %}
-              <p class="lead person-summary"> {{ speaker.person.summary }}
-
-              </p>
-              {% endif %}
-            </div>
-            <div class="speaker-page__search">
-              <form class="site-search site-search" action="/search/" method="get" >
-                <input type="hidden" name="p" value="{{ speaker.id }}">
-                <div class="search-wrapper">
-                    <input type="search" class="site-search__input" placeholder="Search this person's speeches" name="q"/>
-                    <input type="submit" class="icon-search icon-search" value="Search"/>
-                </div>
-              </form>
-            </div>
+          alt="Headshot of {{ speaker.name|escape}}" />
+      <div class="speaker-information">
+        <p class="pretitle"> Statements made
+        {% if request.instance %}
+          at the
+          {% firstof request.instance.title request.instance.label %}</a>
+        {% endif %}
+        by
+        </p>
+        <h1>{{ speaker.name }}</h1>
+        {% if speaker.person.summary %}
+          <p class="person-summary"> {{ speaker.person.summary }}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="speaker-page__search">
+      <form class="site-search site-search" action="/search/" method="get" >
+        <input type="hidden" name="p" value="{{ speaker.id }}">
+        <div class="search-wrapper">
+            <input type="search" class="site-search__input" placeholder="Search this person's speeches" name="q"/>
+            <input type="submit" class="icon-search icon-search" value="Search"/>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 <div class="page-content__row">
@@ -73,9 +80,8 @@
         Deliberateness
       </div>
       <div class="stat__descriptor">
-        Favourite long word
+       Favourite long word
       </div>
     </div>
   </div>
-</div>
 {% endblock %}
