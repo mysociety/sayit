@@ -346,23 +346,19 @@ form {
     }
 }
 
-.instance-header__search {
+.instance-header__search-nav {
     @include grid-column(12);
-    @media (min-width: $medium-screen) {
-        @include grid-column(4);
+    @media (min-width: $large-screen) {
+        @include grid-column(7);
     }
 }
 
 .site-search {
-    margin-top: 0.75em;
-}
-
-.site-search__row {
-    @include grid-row(nest-collapse);
-}
-
-.site-search__input-unit {
-    @include grid-column(10, $collapse:true);
+    float: left;
+    width: 100%;
+    @media (min-width: $medium-screen) {
+        width: 50%;
+    }
 }
 
 .site-search--homepage {
@@ -380,10 +376,6 @@ form {
     -webkit-appearance: none;
 }
 
-.site-search__button-unit {
-    @include grid-column(2, $collapse:true);
-}
-
 .site-search__person-only {
     label {
         font-size: 1em;
@@ -391,12 +383,12 @@ form {
     }
 }
 
-.primary-navigation-bar__unit {
-    @include grid-column(12);
-}
-
 .primary-navigation-bar {
-    /* Not using Foundation's .topbar, because it was too hard to customise :( */
+    float: left;
+    width: 100%;
+    @media (min-width: $medium-screen) {
+        width: 50%;
+    }
     .menu-dropdown {
         display: none;
         @media (max-width: $medium-screen) {
@@ -428,7 +420,6 @@ form {
         letter-spacing: 0.02em;
         display: block;
         padding: 0.25em;
-        border-bottom: 1px solid $colour_light_grey;
         &:link,
         &:visited {
             color: $colour_dark_grey;
@@ -440,9 +431,8 @@ form {
             text-decoration: none;
         }
         @media (min-width: $medium-screen) {
-            border-bottom: .375em solid transparent;
             display: inline-block;
-            padding: 0 0.5em 0.37em;
+            padding: 0.5em;
             &:hover,
             &:active,
             &:focus {
@@ -452,7 +442,6 @@ form {
     }
     .active {
         a {
-            border-color: $colour_light_grey;
             color: $colour_black;
         }
     }
