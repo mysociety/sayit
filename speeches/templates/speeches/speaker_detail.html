@@ -26,15 +26,10 @@
               {% endif %}
             </div>
             <div class="speaker-page__search">
-              <form class="site-search site-search__person-only" action="/search/" method="get" >
-                <label for="site-search__person-only">Search in {{ speaker.name }}'s speeches</label>
-                <div class="site-search__row">
-                  <div class="site-search__input-unit">
-                    <input type="search" class="site-search__input" placeholder="Search" name="q" id="site-search__person-only"/>
-                  </div>
-                  <div class="site-search__button-unit">
-                    <input type="submit" class="site-search__button button postfix radius" value="Go" />
-                  </div>
+              <form class="site-search site-search--homepage" action="/search/" method="get" >
+                <div class="search-wrapper">
+                    <input type="search" class="site-search__input" placeholder="Search this person's speeches" name="q"/>
+                    <input type="submit" class="icon-search icon-search" value="Go"/>
                 </div>
               </form>
             </div>
