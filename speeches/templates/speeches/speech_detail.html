@@ -41,17 +41,14 @@
     </h1>
 
     <p class="lead muted">
-        <small>Statement made by </small>
+        Statement made by
         {% if object.speaker %}
             <a href="{% url "speeches:speaker-view" object.speaker.id %}">{{ object.speaker }}</a>
         {% else %}
             Unknown speaker
         {% endif %}
-        <small> on </small>
         {% if object.start_date %}
-            {{ object.start_date }}
-        {% else %}
-            Unknown date
+            on {{ object.start_date }}
         {% endif %}
 
         {% if object.location %}
@@ -61,20 +58,10 @@
 
 </div>
 
-{% with next=speech.get_next_speech previous=speech.get_previous_speech %}
-  {% if previous or next %}
-    <ul class="pager">
-      {% if previous %}
-        <li class="previous"><a href="{% url "speeches:speech-view" previous.id %}">&larr; {{ previous.summary|bleach }}</a>
-      {% endif %}
-      {% if next %}
-        <li class="next"><a href="{% url "speeches:speech-view" next.id %}">{{ next.summary|bleach }} &rarr;</a>
-      {% endif %}
-    </ul>
-  {% endif %}
-{% endwith %}
+<div class="page-content__row">
+    <div class="primary-content__unit">
 
-    {% if object.audio %}
+      {% if object.audio %}
         <p>
             <audio id="the-audio" src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio>
             <script>
@@ -87,21 +74,40 @@
                 }
             </script>
         </p>
-    {% endif %}
+      {% endif %}
 
-    {% if object.text %}
-        {{ object.text|bleach|linebreaks }}
-    {% endif %}
+      {% if object.text %}
+        <div class="speech__content">
+            {{ object.text|bleach|linebreaks }}
+        </div>
+      {% endif %}
 
-    {% if object.section %}
+    </div>
+    <div class="sidebar__unit">
+      {% if object.section %}
         <p>
             <a href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}">{% trans "See speech in context" %}</a>
         </p>
-    {% endif %}
+      {% endif %}
 
-    {% if object.source_url %}
+      {% if object.source_url %}
         <p><a href="{{ object.source_url }}">{% trans "Source:" %} {{ object.source_url }}</a></p>
-    {% endif %}
+      {% endif %}
+
+        {% with next=speech.get_next_speech previous=speech.get_previous_speech %}
+          {% if previous or next %}
+            <ul class="pager">
+              {% if previous %}
+                <li class="previous"><a href="{% url "speeches:speech-view" previous.id %}"><span class="skinny-type">&larr;</span> {{ previous.summary|bleach }}</a>
+              {% endif %}
+              {% if next %}
+                <li class="next"><a href="{% url "speeches:speech-view" next.id %}">{{ next.summary|bleach }} <span class="skinny-type">&rarr;</span></a>
+              {% endif %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+    </div>
+</div>
 
 {% endif %}
 
