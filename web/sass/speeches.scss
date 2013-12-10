@@ -55,25 +55,36 @@
 }
 
 .page-header--with-portrait {
-    h1 {
-      margin-left: 80px;
-      @media (min-width: $medium-screen) {
-          margin-left: 130px;
-      }
+  .speaker-information {
+    margin-left: 80px;
+    @media (min-width: $medium-screen) {
+        margin-left: 130px;
     }
-    .lead {
-      margin-left: 130px;
-      margin-top: 1em;
-      margin-bottom: 0;
-      font-weight: $weight_light;
-    }
+  }
+  h1 {
+  }
+  .lead {
+    margin-top: 1em;
+    margin-bottom: 0;
+    font-weight: $weight_light;
+  }
 
-    .speaker-portrait {
-      margin-top: 0;
-    }
+  .speaker-portrait {
+    margin-top: 0;
+  }
 }
 
+.pretitle {
+  margin-bottom: 0;
+  font-size: emCalc(14);
+}
 
+.person-summary {
+  font-size: emCalc(14);
+  color: $colour_dark_grey;
+  line-height: 1.357142857em;
+  margin-top: emCalc(14);
+}
 
 .pager {
     @include unstyled-list;
