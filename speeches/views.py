@@ -208,23 +208,14 @@ class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
     """Done as a ListView on Speech to get recent speeches, we get instance for
     free in the request."""
     model = Speech
-    context_object_name = "recent_speeches"
+    paginate_by = 20
+
     # Use a slightly different template
     def get_template_names(self):
         return [
             "speeches/%s/instance_detail.html" % self.request.instance.label,
             "speeches/instance_detail.html"
         ]
-
-    def get_queryset(self):
-        return super(InstanceView, self).get_queryset().visible(self.request).select_related('section', 'speaker').prefetch_related('tags').order_by('-created')[:20]
-
-    def get_context_data(self, **kwargs):
-        """Better done as a MultiListView somehow?"""
-        context = super(InstanceView, self).get_context_data(**kwargs)
-        context['recent_sections'] = self.request.instance.section_set.order_by('-created')[:20]
-        context['speakers'] = self.request.instance.speaker_set.all()
-        return context
 
 # This way around because of the 1.4 Django bugs with Mixins not calling super
 class SpeakerView(NamespaceMixin, InstanceViewMixin, ListView, SingleObjectMixin):

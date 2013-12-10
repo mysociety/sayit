@@ -1,36 +1,14 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
-{% load url from future %}
+{% extends 'speeches/instance_detail.html' %}
 {% load i18n %}
 {% load speech_utils %}
 
 {% block title %}{{ request.instance.title }}{% endblock %}
 
-{% block content %}
-{% if request.path != '/' %}
-<div class="page-header">
-    <h1>{{ request.instance.title }}</h1>
-    {% if request.instance.description %}
-      {{ request.instance.description|linebreaks_with_lead }}
-    {% endif %}
-</div>
-{% endif %}
-<div class="page-content__row">
+{% block instance_search_title %}
+<h2>Search the Leveson Inquiry transcripts</h2>
+{% endblock %}
 
-{% if speakers or recent_sections or recent_speeches %}
-
-  <div class="homepage-search">
-    <h2>Search the Leveson Inquiry transcripts</h2>
-    <form class="site-search site-search--homepage" action="/search/" method="get" >
-      <div class="search-wrapper">
-          <input type="search" class="site-search__input" placeholder="Search" name="q"/>
-          <input type="submit" class="icon-search icon-search" value="Go"/>
-      </div>
-    </form>
-  </div>
-</div>
-</div>
-</div> <!-- closing off the opening tags in base so we can go full width here -->
+{% block instance_blocks %}
 <div class="featured-elements grey-section">
   <div class="full-page__row">
       <div class="featured-elements__unit">
@@ -64,18 +42,4 @@
             30 October 2012
           </span>
         </a>
-      </div>
-  </div>
-</div>
-</div>
-{% else %}
-
-<div class="nothing-here-yet-message">
-<h2>{% trans "Nothing has been uploaded yet. Why not <a href='/speech/add'>add a speech</a> or a <a href='/sections/add'>section</a>?" %}</h2>
-</div>
-
-{% endif %}
-
-</div>
-
 {% endblock %}
