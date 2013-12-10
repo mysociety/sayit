@@ -341,8 +341,14 @@
 /*Individual Speaker Page */
 .speaker-page__details {
   @include grid-column(12);
-  @media (min-width: $medium-screen) {
-      @include grid-column(8);
+  @media (min-width: $large-screen) {
+      @include grid-column(7);
+  }
+}
+.speaker-page__stats {
+  @include grid-column(12);
+  @media (min-width: $large-screen) {
+      @include grid-column(5);
   }
 }
 
@@ -385,10 +391,17 @@
 
 .stat {
   margin-bottom: 1em;
+  display: inline-block;
+  padding-right: 1em;
+  margin-left: 1em;
+  border-right: 1px solid $colour_light_grey;
+  &:last-child {
+    border-right: none;
+  }
 }
 
 .stat__descriptor {
-  font-size: 0.875em;
+  font-size: emCalc(12);
   color: $colour_dark_grey;
 }
 .stat__figure {

@@ -32,6 +32,45 @@
         {% endif %}
       </div>
     </div>
+    <div class="speaker-page__stats">
+      <div class="stat">
+        <div class="stat__figure">
+          3
+        </div>
+        <div class="stat__descriptor">
+          Session appearances
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat__figure">
+          127
+        </div>
+        <div class="stat__descriptor">
+          Statements made
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat__figure">
+          4<sup>th</sup>
+        </div>
+        <div class="stat__descriptor">
+         of 60 speakers
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat__descriptor">
+         Unusual words
+        </div>
+        <div class="stat__figure">
+          Inchoate, Banana, Matthew
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-content__row">
+  <div class="full-page__unit">
+    <h2>Speeches</h2>
     <div class="speaker-page__search">
       <form class="site-search site-search" action="/search/" method="get" >
         <input type="hidden" name="p" value="{{ speaker.id }}">
@@ -41,11 +80,6 @@
         </div>
       </form>
     </div>
-  </div>
-</div>
-<div class="page-content__row">
-  <div class="primary-content__unit">
-    <h2>Speeches</h2>
     <ul class="unstyled">
         {% if not page_obj %}
             <li>{% blocktrans with speaker=speaker.name %}{{ speaker }} has no recorded speeches yet.{% endblocktrans %}</li>
@@ -57,31 +91,4 @@
 
     {% include 'speeches/pagination.html' %}
 </div>
-<div class="sidebar__unit">
-  <div class="sidebar">
-    <div class="stat">
-      <div class="stat__figure">
-        3
-      </div>
-      <div class="stat__descriptor">
-        Appearances
-      </div>
-    </div>
-    <div class="stat">
-      <div class="stat__figure">
-        127
-      </div>
-      <div class="stat__descriptor">
-        Speeches
-      </div>
-    </div>
-    <div class="stat">
-      <div class="stat__figure">
-        Deliberateness
-      </div>
-      <div class="stat__descriptor">
-       Favourite long word
-      </div>
-    </div>
-  </div>
 {% endblock %}
