@@ -74,6 +74,9 @@ body {
 }
 
 /* Base typography */
+h1 {
+    font-size: emCalc(36);
+}
 h1, h2 {
     letter-spacing: 0.02em;
 }
