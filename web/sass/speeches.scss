@@ -256,6 +256,11 @@
     border-bottom: none;
     font-family: $body-font-family;
   }
+  .speech-wrapper {
+    @media (min-width: $medium-screen) {
+      @include grid-column(11, $offset:1);
+    }
+  }
 }
 
 /* Hide speech__links on devices capable of hover, reveal on hover or focus of speech */
