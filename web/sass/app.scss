@@ -69,10 +69,6 @@ body {
     background: #fff;
 }
 
-.full-page__unit {
-    @include grid-column(12);
-}
-
 /* Base typography */
 h1 {
     font-size: emCalc(36);
