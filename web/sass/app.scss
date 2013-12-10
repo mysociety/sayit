@@ -285,6 +285,7 @@ form {
 .instance-header {
     border-bottom: 5px solid $colour_light_grey;
     padding-top: emCalc(15);
+    padding-bottom: emCalc(15);
     background: $colour_primary;
     position: relative;
 }
@@ -343,6 +344,7 @@ form {
         font-size: emCalc(13);
         color: #fff;
         line-height: 1.461538462em;
+        margin-bottom: 0;
     }
 }
 
@@ -361,6 +363,7 @@ form {
 .site-search__input[type="search"] {
     @include border-radius(2em);
     padding: 0.5em 0.75em;
+    margin-bottom: 0;
 }
 
 .site-search--header {
