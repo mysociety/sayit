@@ -107,42 +107,28 @@
               </div>
             {% endif %}
             </div>
-          <div class="instance-header__search">
-            {% if request.path != '/search/' %}
-            {% if request.instance.label != 'leveson' or request.path != '/' %}
-
-            <form class="site-search" action="/search/" method="get" >
-              <div class="site-search__row">
-                <div class="site-search__input-unit">
-                  <input type="search" class="site-search__input" placeholder="Search" name="q"/>
-                </div>
-                <div class="site-search__button-unit">
-                  <input type="submit" class="site-search__button button postfix radius" value="Go" />
-                </div>
-              </div>
-
-            </form>
-            {% endif %}
-            {% endif %}
-          </div>
-          <div class="primary-navigation-bar__unit">
-
+          <div class="instance-header__search-nav">
             <nav class="primary-navigation-bar">
-
-                  <span class="menu-dropdown"><a href="#">Menu</a></span>
-                  <ul class="nav-menu closed">
-                    {% if request.instance %}
-
-                      <li{% if request.path == '/' %} class="active"{% endif %}><a href="/">Home</a></li>
-                      <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speeches:speaker-list' %}">Speakers</a></li>
-                      <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speeches:section-list' %}">Speeches</a></li>
-                    {% endif %}
-                  </ul>
-              </nav>
-          </div>
+              <span class="menu-dropdown"><a href="#">Menu</a></span>
+              <ul class="nav-menu closed">
+                {% if request.instance %}
+                  <li{% if request.path == '/' %} class="active"{% endif %}><a href="/">Home</a></li>
+                  <li{% if request.path == '/speakers' %} class="active"{% endif %}><a href="{% url 'speeches:speaker-list' %}">Speakers</a></li>
+                  <li{% if request.path == '/speeches' %} class="active"{% endif %}><a href="{% url 'speeches:section-list' %}">Speeches</a></li>
+                {% endif %}
+              </ul>
+            </nav>
+            {% if request.path != '/search/' %}
+              {% if request.instance.label != 'leveson' or request.path != '/' %}
+              <form class="site-search" action="/search/" method="get" >
+                    <input type="search" class="site-search__input" placeholder="Search" name="q"/>
+                    <input type="submit" class="site-search__button button postfix radius" value="Go" style="display: none;" />
+              </form>
+              {% endif %}
+            {% endif %}
+            </div>
         </div>
       </header>
-
 
         <div class="full-page">
           <div class="full-page__row">
