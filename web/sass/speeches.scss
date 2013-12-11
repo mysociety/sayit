@@ -347,8 +347,14 @@
 }
 .speaker-page__stats {
   @include grid-column(12);
+  @media (min-width: $medium-screen) {
+      margin-left: 114px;
+      margin-top: -1.4em;
+  }
   @media (min-width: $large-screen) {
       @include grid-column(5);
+      margin-left: 0;
+      margin-top: 0;
   }
 }
 
