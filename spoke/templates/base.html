@@ -5,8 +5,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% block extra_headers %}{% endblock %}
+        {% if request.instance.label == 'shakespeare' %}
+        <link href="{% static "stylesheets/app-shakespeare.css" %}" rel="stylesheet">
+        <link href="{% static "stylesheets/speeches-shakespeare.css" %}" rel="stylesheet">
+        {% else %}
         <link href="{% static "stylesheets/app.css" %}" rel="stylesheet">
         <link href="{% static "stylesheets/speeches.css" %}" rel="stylesheet">
+        {% endif %}
         <link href="{% static "speeches/mediaelement/mediaelementplayer.min.css" %}" rel="stylesheet">
         <!-- <link href="{% static "speeches/css/speeches.css" %}" rel="stylesheet"> -->
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
