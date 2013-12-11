@@ -90,17 +90,15 @@
   {% if speech.audio and not speech.text %}
     <p>{% trans "[ recorded audio ]" %}</p>
   {% elif highlight %}
-    <p class="search">{{ highlight|bleach }}</p>
+    <p class="search">
+      <a title="{% trans "Link in context" %}" href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}">
+        {{ highlight|bleach }}
+      </a>
+    </p>
   {% elif truncate %}
     {{ speech.text|bleach|truncatewords_html:"50" }}
   {% else %}
-    {% if result.object %}
-      <a title="{% trans "Link in context" %}" href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}">
-        {{ speech.text|bleach|linebreaks }}
-      </a>
-    {% else %}
-      {{ speech.text|bleach|linebreaks }}
-    {% endif %}
+    {{ speech.text|bleach|linebreaks }}
   {% endif %}
 </div>
 

@@ -23,13 +23,7 @@
           class="speaker-portrait speaker-portrait--left speaker-portrait--large round-image"
           alt="Headshot of {{ speaker.name|escape}}" />
       <div class="speaker-information">
-        <p class="pretitle"> Statements made
-        {% if request.instance %}
-          at the
-          {% firstof request.instance.title request.instance.label %}</a>
-        {% endif %}
-        by
-        </p>
+        <p class="pretitle"> <a href="{% url "speeches:speaker-list" %}">Speakers</a> / </p>
         <h1>{{ speaker.name }}</h1>
         {% if speaker.person.summary %}
           <p class="person-summary"> {{ speaker.person.summary }}

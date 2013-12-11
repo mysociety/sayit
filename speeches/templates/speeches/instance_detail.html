@@ -12,7 +12,7 @@
   {% if paginator.count %}
 
     <div class="homepage-search">
-        <h2>{% block instance_search_title %}Search{% endblock %}</h2>
+        <h2>{% block instance_search_title %}Search the {{ request.instance.title }}{% endblock %}</h2>
         <form class="site-search site-search--homepage" action="/search/" method="get" >
             <div class="search-wrapper">
                 <input type="search" class="site-search__input" placeholder="Search" name="q"/>
@@ -33,36 +33,7 @@
           <strong>{{ count_sections|intcomma }}</strong> sections
 
 {% block instance_blocks %}
-<div class="featured-elements grey-section">
-  <div class="full-page__row">
-      <div class="featured-elements__unit">
-        <a href="" class="featured-block">
-            <h3></h3>
-          <span class="featured-block__date">
-          </span>
-        </a>
-      </div>
-      <div class="featured-elements__unit">
-        <a href="" class="featured-block">
-            <h3></h3>
-          <span class="featured-block__date">
-          </span>
-        </a>
-      </div>
-      <div class="featured-elements__unit">
-        <a href="" class="featured-block">
-            <h3></h3>
-          <span class="featured-block__date">
-          </span>
-        </a>
-      </div>
-      <div class="featured-elements__unit">
-        <a href="" class="featured-block">
-            <h3></h3>
-          <span class="featured-block__date">
-          </span>
-        </a>
-    {% endblock %}
+{% endblock %}
 
   {% else %}
 
