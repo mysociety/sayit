@@ -20,19 +20,17 @@
             </div>
         </form>
     </div>
-    <div class="medium-4 columns">
-        <p>
-            <strong>{{ count_speeches|intcomma }}</strong> speeches, by
-            <strong>{{ count_speakers|intcomma }}</strong> speakers, in
-            <strong>{{ count_sections|intcomma }}</strong> sections, with an
-            average speech length of {{ average_length|floatformat:"0"|intcomma }}
-            characters.
-        </p>
-    </div>
+
 
         </div>
     </div>
 </div> <!-- closing off the opening tags in base so we can go full width here -->
+<div class="homepage-stats">
+  <div class="full-page__row">
+      <div class="full-page__unit">
+          <strong>{{ count_speeches|intcomma }}</strong> speeches, by
+          <strong>{{ count_speakers|intcomma }}</strong> speakers, in
+          <strong>{{ count_sections|intcomma }}</strong> sections
 
 {% block instance_blocks %}
 <div class="featured-elements grey-section">

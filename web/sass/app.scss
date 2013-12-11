@@ -65,6 +65,10 @@ body {
     background: #222;
 }
 
+strong, b {
+    font-weight: $weight_bold;
+}
+
 .full-page {
     background: #fff;
 }
@@ -492,9 +496,6 @@ form {
 
 .homepage-search {
     @include grid-column(12);
-    @media (min-width: $medium-screen) {
-        @include grid-column(8);
-    }
     .site-search__input,
     .site-search__button {
         font-size: 1.125em;
@@ -503,6 +504,11 @@ form {
         margin-top: 4em;
         margin-bottom: 4em;
     }
+
+    @media (min-width: $large-screen) {
+        @include grid-column(8, $center:true);
+    }
+
     h2 {
         @media (min-width: $large-screen) {
             font-size: 2.5em;
@@ -511,6 +517,17 @@ form {
             font-size: 3em;
         }
         text-align: center;
+    }
+}
+
+.homepage-stats {
+    text-align: center;
+    padding: 1em 0 3em;
+    font-size: emCalc(24);
+    font-weight: $weight_light;
+    line-height: 1.4em;
+    strong {
+        color: $colour_primary;
     }
 }
 
