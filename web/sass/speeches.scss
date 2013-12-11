@@ -2,6 +2,10 @@
 @import "_sayit-mixins.scss";
 @import "compass/css3";
 
+.speech:target {
+    background-color: #ffc;
+}
+
 /* breadcrumb
  * Foundation puts the breadcrumb divider before the link, we want it afterwards
  */
@@ -429,6 +433,10 @@
       &:active {
         color: $colour_primary;
       }
+    }
+    em {
+      font-weight: bold;
+      font-style: normal;
     }
   }
 }
