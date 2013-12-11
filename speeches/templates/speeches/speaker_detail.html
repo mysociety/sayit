@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load bleach_tags %}
 {% load url from future %}
 {% load i18n %}
 
@@ -58,14 +59,20 @@
         </div>
       </div>
       -->
+      {% if longest_speech %}{% with longest_speech.0 as speech %}
       <div class="stat">
         <div class="stat__descriptor">
-         Unusual words
+         Longest speech
         </div>
         <div class="stat__figure">
-          Inchoate, Banana, Matthew
+          <a href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}">
+            {% if speech.title %}{{ speech.title }}{% else %}
+            &#8220;{{ speech.summary|bleach }}&#8221;
+            {% endif %}
+          </a>
         </div>
       </div>
+      {% endwith %}{% endif %}
     </div>
   </div>
 </div>
