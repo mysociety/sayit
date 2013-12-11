@@ -5,13 +5,14 @@ from django.core import serializers
 from django.conf import settings
 from django.contrib import messages
 
-from django.db.models import Count
+from django.db.models import Count, Avg
 from django.core.files import File
 from django.shortcuts import get_object_or_404
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
 from popit.models import ApiInstance
 
+from speeches.aggregates import Length
 from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, SpeakerPopitForm, RecordingForm, RecordingTimestampFormSet
 from speeches.models import Speech, Speaker, Section, Recording, Tag, RecordingTimestamp
 import speeches.utils
@@ -216,6 +217,14 @@ class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
             "speeches/%s/instance_detail.html" % self.request.instance.label,
             "speeches/instance_detail.html"
         ]
+
+    def get_context_data(self, **kwargs):
+        context = super(InstanceView, self).get_context_data(**kwargs)
+        context['count_speeches'] = Speech.objects.for_instance(self.request.instance).visible(self.request).count()
+        context['count_sections'] = Section.objects.for_instance(self.request.instance).count()
+        context['count_speakers'] = Speaker.objects.for_instance(self.request.instance).count()
+        context['average_length'] = Speech.objects.for_instance(self.request.instance).annotate(length=Length('text')).aggregate(avg=Avg('length'))['avg']
+        return context
 
 # This way around because of the 1.4 Django bugs with Mixins not calling super
 class SpeakerView(NamespaceMixin, InstanceViewMixin, ListView, SingleObjectMixin):

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load humanize %}
 {% load speech_utils %}
 
 {% block title %}{{ request.instance.title }}{% endblock %}
@@ -18,6 +19,15 @@
                 <input type="submit" class="icon-search icon-search" value="Search"/>
             </div>
         </form>
+    </div>
+    <div class="medium-4 columns">
+        <p>
+            <strong>{{ count_speeches|intcomma }}</strong> speeches, by
+            <strong>{{ count_speakers|intcomma }}</strong> speakers, in
+            <strong>{{ count_sections|intcomma }}</strong> sections, with an
+            average speech length of {{ average_length|floatformat:"0"|intcomma }}
+            characters.
+        </p>
     </div>
 
         </div>

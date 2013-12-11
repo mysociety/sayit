@@ -493,7 +493,7 @@ form {
 .homepage-search {
     @include grid-column(12);
     @media (min-width: $medium-screen) {
-        @include grid-column(8, $center:true);
+        @include grid-column(8);
     }
     .site-search__input,
     .site-search__button {
