@@ -3,6 +3,7 @@
 {% load bleach_tags %}
 {% load url from future %}
 {% load i18n %}
+{% load humanize %}
 
 {% block extra_js %}
 {{ block.super }}
@@ -35,7 +36,7 @@
     <div class="speaker-page__stats">
       <div class="stat">
         <div class="stat__figure">
-          {{ section_count }}
+          {{ section_count|intcomma }}
         </div>
         <div class="stat__descriptor">
           Session appearances
@@ -43,7 +44,7 @@
       </div>
       <div class="stat">
         <div class="stat__figure">
-          {{ paginator.count }}
+          {{ paginator.count|intcomma }}
         </div>
         <div class="stat__descriptor">
           Statements made
