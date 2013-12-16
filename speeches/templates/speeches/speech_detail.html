@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% load i18n %}
+{% load staticfiles %}
 {% load bleach_tags %}
 
 {% block extra_headers %}
@@ -28,6 +29,13 @@
 <div class="single-speech-layout">
     <div class="single-speech-layout__speech-column">
             <div class="speech speech-single-speech">
+              {% if speech.speaker %}
+                <div class="speech-single-speech__speaker-portrait">
+                <img src="{% if speech.speaker.person.image %}
+                  {{ speech.speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
+                  style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-portrait speaker-portrait--left round-image speaker-portrait--large">
+                </div>
+              {% endif %}
                 <div class="speech__meta-data">
                     {% if object.speaker %}
                         <span class="speech__meta-data__speaker-name">

@@ -503,6 +503,10 @@
 /* Single speech page */
 .single-speech-layout {
   @include grid-row(nest);
+
+  @media (min-width: $large-screen) {
+      background: transparent url("../img/speech-timeline-bg.png") 8% top repeat-y;
+  }
 }
 
 .single-speech-layout__speech-column {
@@ -516,6 +520,7 @@
   padding: 3% 3% 3em;
   border: 1px solid $colour_light_grey;
   margin: 1em 0;
+
   @include border-radius(7px);
   .breadcrumbs {
     border: none;
@@ -535,6 +540,27 @@
     .speech-icon {
       top: -0.15em;
     }
+  }
+}
+
+.speech-single-speech__speaker-portrait {
+  .speaker-portrait {
+    max-width: 3em;
+    margin-left: 0;
+    margin-right: 1em;
+  }
+  @media (min-width: $large-screen) {
+      position:  absolute;
+      width: 16.66667%;
+      left: -20%;
+      top: 0;
+      text-align: center;
+      .speaker-portrait {
+        max-width: 100%;
+
+        margin-right: 0;
+        float: none;
+      }
   }
 }
 
