@@ -245,10 +245,8 @@
   padding: .5em 1em .5em 0;
   z-index: 300;
   a {
-    text-transform: uppercase;
-    font-weight: $weight_bold;
     color: $colour_dark_grey;
-    font-size: 0.6875em;
+    font-size: emCalc(14);
     margin-left: 1em;
     &:hover,
     &:active,
