@@ -1,3 +1,4 @@
+import json
 import os
 import logging
 from datetime import datetime
@@ -10,7 +11,6 @@ from django.forms.forms import BoundField
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.forms.widgets import Textarea
 from django.core.files.uploadedfile import UploadedFile
-from django.utils import simplejson
 
 from speeches.fields import FromStartIntegerField
 from speeches.models import Speech, Speaker, Section, Recording, RecordingTimestamp, Tag
@@ -138,7 +138,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
             return timestamps
 
         logger.debug('timestamps received = %s' % self.cleaned_data['timestamps'])
-        timestamps_json = simplejson.loads(self.cleaned_data['timestamps'])
+        timestamps_json = json.loads(self.cleaned_data['timestamps'])
 
         if not isinstance(timestamps_json, list):
             return timestamps
@@ -172,7 +172,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
 
     class Meta:
         model = Recording
-        exclude = 'instance'
+        exclude = ('instance',)
 
 class RecordingForm(forms.ModelForm):
     class Meta:
@@ -206,7 +206,7 @@ class SectionForm(forms.ModelForm):
 class SpeakerForm(forms.ModelForm):
     class Meta:
         model = Speaker
-        exclude = 'instance'
+        exclude = ('instance',)
         widgets = {
             'name': forms.TextInput(),
         }

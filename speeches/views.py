@@ -1,5 +1,7 @@
+import datetime
+import json
+
 from django.http import HttpResponse, HttpResponseRedirect
-from django.utils import simplejson as json
 from django.core.urlresolvers import reverse, reverse_lazy, resolve
 from django.core import serializers
 from django.conf import settings
@@ -20,8 +22,6 @@ from speeches.utils import AudioHelper, AudioException
 from django.views.generic import View, CreateView, UpdateView, DeleteView, DetailView, ListView, RedirectView, FormView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import BaseFormView
-
-import datetime
 
 import celery
 import logging
