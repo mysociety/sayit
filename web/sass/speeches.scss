@@ -500,8 +500,53 @@
   @include border-radius(100%);
 }
 
+/* Single speech page */
+.single-speech-layout {
+  @include grid-row(nest);
+}
 
+.single-speech-layout__speech-column {
+  @include grid-column(12);
+  @media (min-width: $large-screen) {
+      @include grid-column(10, $offset: 2);
+  }
+}
 
+.speech-single-speech {
+  padding: 3% 3% 3em;
+  border: 1px solid $colour_light_grey;
+  margin: 1em 0;
+  @include border-radius(7px);
+  .breadcrumbs {
+    border: none;
+  }
+  .speech__meta-data {
+    margin-bottom: 1em;
+    font-size: 1.125em;
+  }
+  .speech__links {
+    bottom: 0.5em;
+    left: 1%;
+    @media (min-width: $medium-screen) {
+        right: 1%;
+        left: auto;
+    }
+    display: block;
+    .speech-icon {
+      top: -0.15em;
+    }
+  }
+}
 
+.speech__content-single-speech {
+  border: none;
+  p {
+    @media (min-width: $medium-screen) {
+      font-size: 1.105263158em;
+      line-height: 1.523809524em;
+    }
+  }
+
+}
 
 
