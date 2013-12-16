@@ -247,12 +247,38 @@
   a {
     color: $colour_dark_grey;
     font-size: emCalc(14);
-    margin-left: 1em;
+    margin-left: 1.5em;
+    padding-left: 1em;
+    display: inline-block;
+    position: relative;
     &:hover,
     &:active,
     &:focus {
       color: $colour_primary;
     }
+  }
+}
+
+/* Icons for speech links */
+.speech-icon {
+  height: 21px;
+  width: 21px;
+  display: inline-block;
+  @include background-size(60px 20px); /* This is to render the @2 size sprite correctly, change this if more sprites are added to the .png */
+  background-image: url('../img/link-icons.png');
+  @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+      background-image: url('../img/link-icons@2.png');
+  }
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0.1em;
+  left: -0.75em;
+  &.icon-link {
+    background-position-x: -40px
+  }
+  &.icon-link-in-context {
+    background-position-x: -20px
   }
 }
 
@@ -473,6 +499,8 @@
 .round-image {
   @include border-radius(100%);
 }
+
+
 
 
 

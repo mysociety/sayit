@@ -91,7 +91,7 @@
     <p>{% trans "[ recorded audio ]" %}</p>
   {% elif highlight %}
     <p class="search">
-      <a title="{% trans "Link in context" %}" href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}">
+      <a title="{% trans "Link in context" %}" href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}"><i class="speech-icon icon-link-in-context"></i>
         {{ highlight|bleach }}
       </a>
     </p>
@@ -105,9 +105,9 @@
 {% if not result.object %}
   <div class="speech__links">
     {% if speech.section_id %}
-      <a title="{% trans "Link in context" %}" href="{% if section %}{% url 'speeches:section-view' section.get_path %}{% else %}{% url 'speeches:section-view' speech.section.get_path %}{% endif %}#s{{ speech.id }}">{% trans "Link in context" %}</a>
+      <a title="{% trans "Link in context" %}" href="{% if section %}{% url 'speeches:section-view' section.get_path %}{% else %}{% url 'speeches:section-view' speech.section.get_path %}{% endif %}#s{{ speech.id }}"><i class="speech-icon icon-link-in-context"></i>{% trans "Link in context" %}</a>
     {% endif %}
-      <a title="{% trans "Link" %}" href="{% url "speeches:speech-view" speech.id %}">{% trans "Link" %}</a>
+      <a title="{% trans "Link" %}" href="{% url "speeches:speech-view" speech.id %}"><i class="speech-icon icon-link"></i>{% trans "Link" %}</a>
   </div>
 {% endif %}
 
