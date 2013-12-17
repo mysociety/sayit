@@ -20,7 +20,7 @@
   {% if not nospeaker %}
     <span class="speech-speaker">
       {% if speech.speaker %}
-        <a href="{% url 'speeches:speaker-view' speech.speaker.id %}">
+        <a href="{% url 'speeches:speaker-view' speech.speaker.id32 speech.speaker.slug %}">
             <img src="{% if speech.speaker.person.image %}
                 {{ speech.speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
                 style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt="" width=48 height=48 class="speaker-img">

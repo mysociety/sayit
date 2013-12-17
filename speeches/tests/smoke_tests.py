@@ -16,7 +16,7 @@ class SmokeTests(InstanceTestCase):
     def test_a_speaker_page(self):
         # Add a speaker first
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
-        resp = self.client.get('/speaker/%s' % speaker.id)
+        resp = self.client.get('/speaker/%s/steve' % speaker.id32)
         self.assertEqual(resp.status_code, 200)
 
     def test_a_speech_page(self):

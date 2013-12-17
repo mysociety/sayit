@@ -18,6 +18,7 @@ from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAP
 from speeches.models import Speech, Speaker, Section, Recording, Tag, RecordingTimestamp
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
+from speeches.mixins import Base32SingleObjectMixin
 
 from django.views.generic import View, CreateView, UpdateView, DeleteView, DetailView, ListView, RedirectView, FormView
 from django.views.generic.detail import SingleObjectMixin
@@ -222,8 +223,7 @@ class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
         context['speakers'] = self.request.instance.speaker_set.all()
         return context
 
-# This way around because of the 1.4 Django bugs with Mixins not calling super
-class SpeakerView(NamespaceMixin, InstanceViewMixin, ListView, SingleObjectMixin):
+class SpeakerView(NamespaceMixin, InstanceViewMixin, Base32SingleObjectMixin, ListView):
     model = Speaker
     paginate_by = 50
     template_name = 'speeches/speaker_detail.html'
@@ -234,8 +234,7 @@ class SpeakerView(NamespaceMixin, InstanceViewMixin, ListView, SingleObjectMixin
         return self.object.speech_set.all().visible(self.request).select_related('section', 'speaker').prefetch_related('tags')
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        kwargs['speaker'] = self.object
+        kwargs['speech_list'] = self.object_list
         context = super(SpeakerView, self).get_context_data(**kwargs)
         return context
 

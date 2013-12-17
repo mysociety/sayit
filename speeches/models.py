@@ -14,6 +14,7 @@ from django.core.files import File
 from instances.models import InstanceMixin, InstanceManager
 import speeches
 from speeches.utils import AudioHelper
+from speeches.utils.base32 import int_to_base32
 
 from djqmethod import Manager, querymethod
 from popit.models import Person
@@ -73,12 +74,21 @@ class Speaker(InstanceMixin, AuditedModel):
             return self.name
         return "[no name]"
 
+    @property
     def colour(self):
         return hashlib.sha1('%s' % (self.person_id or self.id)).hexdigest()[:6]
 
+    @property
+    def id32(self):
+        return int_to_base32(self.id)
+
+    @property
+    def slug(self):
+        return slugify(self.name)
+
     @models.permalink
     def get_absolute_url(self):
-        return ( 'speeches:speaker-view', (), { 'pk': self.id } )
+        return ( 'speeches:speaker-view', (), { 'pk': self.id32, 'slug': self.slug } )
 
     @models.permalink
     def get_edit_url(self):

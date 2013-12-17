@@ -18,7 +18,7 @@ class SpeakerTests(InstanceTestCase):
         speaker = Speaker.objects.create(name='Steve', instance=self.instance, person=popit_person)
         
         # Call the speaker's page
-        resp = self.client.get('/speaker/%d' % speaker.id)
+        resp = self.client.get('/speaker/%s/steve' % speaker.id32)
 
         self.assertSequenceEqual("Steve", resp.context['speaker'].person.name)
         self.assertSequenceEqual("A froody dude", resp.context['speaker'].person.summary)
@@ -31,7 +31,7 @@ class SpeakerTests(InstanceTestCase):
         speech = Speech.objects.create(text="A test speech", speaker=speaker, instance=self.instance)
 
         # Call the speaker's page again
-        resp = self.client.get('/speaker/%d' % speaker.id)
+        resp = self.client.get('/speaker/%s/steve' % speaker.id32)
 
         self.assertSequenceEqual([speech], resp.context['speech_list'])
 
@@ -40,7 +40,7 @@ class SpeakerTests(InstanceTestCase):
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
         
         # Call the speaker's page
-        resp = self.client.get('/speaker/%d' % speaker.id)
+        resp = self.client.get('/speaker/%s/steve' % speaker.id32)
 
         self.assertContains(resp, '<a href="/speech/add?speaker=%d">Add a new speech</a>' % speaker.id, html=True)
 
@@ -62,6 +62,6 @@ class SpeakerTests(InstanceTestCase):
 
         resp = self.client.get('/sections/' + str(section.id))
 
-        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/%d">\s*<img src="\s*http:\/\/example.com\/image.jpg\s*"' % speaker1.id)
+        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/%s/%s">\s*<img src="\s*http:\/\/example.com\/image.jpg\s*"' % (speaker1.id32, speaker1.slug))
 
-        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/%d">\s*<img src="\s*/static/speeches/i/a.\w+.png\s*"' % speaker2.id)
+        self.assertRegexpMatches(resp.content, r'<a href="\/speaker\/%s/%s">\s*<img src="\s*/static/speeches/i/a.\w+.png\s*"' % (speaker2.id32, speaker2.slug))
