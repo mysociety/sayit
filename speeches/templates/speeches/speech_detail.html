@@ -79,40 +79,26 @@
                     {% include "speeches/_breadcrumbs.html" with section=object.section all=1 %}
                 {% endif %}
                 <div class="speech__links">
-
-                      <a title="Link in context" href=""><i class="speech-icon icon-link-in-context"></i>Link in context</a>
-
-                      <a title="Link" href="{{ object.source_url }}"><i class="speech-icon icon-link"></i>Link</a>
+                    {% if object.section %}
+                      <a title="Link in context" href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}"><i class="speech-icon icon-link-in-context"></i>{% trans "Link in context" %}</a>
+                    {% endif %}
+                      <a title="Link" href="{{ object.source_url }}"><i class="speech-icon icon-link"></i>{% trans "Link" %}</a>
                   </div>
 
             </div> <!-- ./speech -->
-            <!--
-            <div class="sidebar__unit">
-              {% if object.section %}
-                <p>
-                    <a href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}">{% trans "See speech in context" %}</a>
-                </p>
-              {% endif %}
 
-              {% if object.source_url %}
-                <p><a href="{{ object.source_url }}">{% trans "Source:" %} {{ object.source_url }}</a></p>
-              {% endif %}
-
-                {% with next=speech.get_next_speech previous=speech.get_previous_speech %}
-                  {% if previous or next %}
-                    <ul class="pager">
-                      {% if previous %}
-                        <li class="previous"><a href="{% url "speeches:speech-view" previous.id %}"><span class="skinny-type">&larr;</span> {{ previous.summary|bleach }}</a>
-                      {% endif %}
-                      {% if next %}
-                        <li class="next"><a href="{% url "speeches:speech-view" next.id %}">{{ next.summary|bleach }} <span class="skinny-type">&rarr;</span></a>
-                      {% endif %}
-                    </ul>
+            {% with next=speech.get_next_speech previous=speech.get_previous_speech %}
+              {% if previous or next %}
+                <div class="speech-navigation">
+                  {% if previous %}
+                   <a href="{% url "speeches:speech-view" previous.id %}" class="button speech-navigation__button">&larr; {{ previous.summary|bleach }}</a>
                   {% endif %}
-                {% endwith %}
-            </div>
-            -->
-
+                  {% if next %}
+                    <a href="{% url "speeches:speech-view" next.id %}" class="button speech-navigation__button">{{ next.summary|bleach }} &rarr;</a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endwith %}
         </div>
     </div>
 
