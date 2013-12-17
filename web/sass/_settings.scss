@@ -367,7 +367,7 @@ $anchor-font-color-hover: darken($primary-color, 10%);
 // $button-font-tny: emCalc(11);
 // $button-font-sml: emCalc(13);
 // $button-font-lrg: emCalc(20);
-// $button-font-weight: bold;
+$button-font-weight: normal;
 // $button-font-align: center;
 
 // We use these to control various hover effects.
@@ -376,8 +376,8 @@ $anchor-font-color-hover: darken($primary-color, 10%);
 
 // We use these to control button border styles.
 
-// $button-border-width: 1px;
-// $button-border-style: solid;
+$button-border-width: 0;
+$button-border-style: none;
 
 // We use this to set the default radius used throughout the core.
 

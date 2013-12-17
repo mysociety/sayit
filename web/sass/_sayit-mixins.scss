@@ -140,6 +140,31 @@ $weight_bold: 700;
   }
 }
 
+.button {
+    background-color: $colour_primary;
+    @include border-radius(3px);
+    &:hover,
+    &:focus {
+        background-color: darken($colour_primary, 10%);
+    }
+}
+
+.secondary-button {
+    background-color: $colour_off_white;
+    border: 1px solid $colour_light_grey;
+    color: $colour_dark_grey;
+    &:hover {
+        background-color: darken($colour_off_white, 5%);
+        color: $colour_black;
+        border-color: darken($colour_light_grey, 10%);
+    }
+}
+
+.small-button {
+    font-size: 0.875em;
+    padding: 0.5em 1em 0.45em 1em;
+}
+
 /* TODO  - should probably fix this stuff but it's fine for the moment */
 .unstyled,
 .unstyled-list {
