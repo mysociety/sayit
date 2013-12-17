@@ -572,7 +572,27 @@
       line-height: 1.523809524em;
     }
   }
-
 }
 
+.speech-navigation {
+  margin-bottom: 1em;
+  margin-top: 1em;
+  text-align: center;
+  @include clearfix;
+  @media (min-width: $large-screen) {
+    text-align: left;
+  }
+}
+
+.speech-navigation__button {
+  @extend .secondary-button;
+  @extend .small-button;
+  max-width: 49%;
+  margin: 0 0.5%;
+  float: left;
+  @media (min-width: $large-screen) {
+    max-width: none;
+    margin: 0 1% 0 0;
+  }
+}
 
