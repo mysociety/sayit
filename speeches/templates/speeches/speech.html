@@ -29,6 +29,7 @@
         {% for n in speech.section.get_ancestors %}
             <li><a href="{{ n.get_absolute_url }}">{{ n.title }}</a></li>
         {% endfor %}
+        {% if not result.object %}
         <li class="no-content-after">
           <span  class="breadcrumbs__date">
             {{ speech.start_time|default:"" }}{% if speech.start_time and speech.start_date and speech.start_date != speech.end_date %},{% endif %}
@@ -42,6 +43,7 @@
             {% endif %}
           </span>
         </li>
+        {% endif %}
       </ul>
       {% endif %}
     </div>
