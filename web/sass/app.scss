@@ -308,7 +308,7 @@ form {
 
 .instance-header__title-unit {
     @include grid-column(12);
-    @media (min-width: $large-screen) {
+    @media (min-width: $medium-screen) {
         @include grid-column(6);
     }
 }
@@ -316,7 +316,7 @@ form {
 .instance-header__title {
     float: left;
     width: 100%;
-    @media (min-width: $medium-screen) {
+    @media (min-width: $large-screen) {
         width: 50%;
     }
     @media (min-width: $huge-screen) {
@@ -341,7 +341,8 @@ form {
 .instance-header__subtitle {
     width: 100%;
     float: left;
-    @media (min-width: $medium-screen) {
+    margin-bottom: .5em;
+    @media (min-width: $large-screen) {
         width: 49%;
     }
     @media (min-width: $huge-screen) {
@@ -358,7 +359,7 @@ form {
 
 .instance-header__search-nav {
     @include grid-column(12);
-    @media (min-width: $large-screen) {
+    @media (min-width: $medium-screen) {
         @include grid-column(6);
     }
 }
@@ -378,6 +379,10 @@ form {
     float: left;
     width: 100%;
     @media (min-width: $medium-screen) {
+        margin-top: 2.8em;
+    }
+    @media (min-width: $large-screen) {
+        margin-top: 0;
         width: 50%;
     }
     .site-search__input[type="search"] {
@@ -430,13 +435,16 @@ form {
 .primary-navigation-bar {
     float: left;
     width: 100%;
-    @media (min-width: $medium-screen) {
+    @media (min-width: $large-screen) {
         width: 50%;
     }
     .menu-dropdown {
         display: none;
-        @media (max-width: $medium-screen) {
+        @media (max-width: $large-screen) {
             display: block;
+            position: absolute;
+            top: 1em;
+            right: 0.75em;
         }
         line-height: 1.6;
     }
@@ -445,7 +453,8 @@ form {
         height: auto;
         max-height: 1000em;
         @include transition(max-height 1s ease-in-out);
-        @media (max-width: $medium-screen) {
+        position: absolute;
+        @media (max-width: $large-screen) {
             &.closed {
                 height: 0;
                 max-height: 0;
@@ -453,7 +462,8 @@ form {
                 @include transition(max-height 1s ease-in-out);
             }
         }
-        @media (min-width: $medium-screen) {
+        @media (min-width: $large-screen) {
+            position: static;
             display: block;
             @include inline-list;
         }
