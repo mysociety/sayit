@@ -4,17 +4,11 @@
 
 {% block content %}
     <h1>Search</h1>
-    <form class="site-search" action="." method="get" >
-        <div class="row collapse">
-            <div class="medium-6 columns">
-                <div class="small-10 columns">
-                    <input type="search" class="site-search__input" placeholder="Search" name="q" value="{{ form.q.value }}"/>
-                </div>
-                <div class="small-2 columns">
-                    <input type="submit" class="site-search__button button postfix radius" value="Search" />
-                </div>
-            </div>
-        </div>
+    <form class="site-search" action="/search/" method="get" >
+      <div class="search-wrapper">
+          <input type="search" class="site-search__input" placeholder="Search" name="q" value="{{ form.q.value }}"/>
+          <input type="submit" class="icon-search" value="Search"/>
+      </div>
     </form>
 
     <div class="page-content__row">
