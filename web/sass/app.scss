@@ -528,11 +528,13 @@ form {
 
     h2 {
         font-weight: $weight_light;
-        @media (min-width: $large-screen) {
+        font-size: 2em;
+        margin-top: 1em;
+        @media (min-width: $medium-screen) {
             font-size: 2.5em;
         }
         @media (min-width: $huge-screen) {
-            font-size: 3em;
+            font-size: 2.8em;
         }
         text-align: center;
     }
