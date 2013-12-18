@@ -40,21 +40,22 @@
                     {% include 'search/section_item.html' with section=result.object highlight=result.highlighted.0 %}
                 {% endif %}
             {% empty %}
-                <li>No results found.</li>
+                <li>No results found</li>
             {% endfor %}
             </ul>
 
             {% if page.has_previous or page.has_next %}
-                <div>
-                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
-                    |
-                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+                <div class="pagination">
+                    {% if page.has_previous %}<a class="button search-pagination-button" href="?q={{ query }}&amp;page={{ page.previous_page_number }}">&laquo; Previous </a>{% endif %}
+
+                    {% if page.has_next %}<a class="button search-pagination-button" href="?q={{ query }}&amp;page={{ page.next_page_number }}">Next &raquo;</a>{% endif %}
                 </div>
             {% endif %}
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
         </div>
+
     </div>
 
 {% endblock %}
