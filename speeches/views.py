@@ -7,13 +7,14 @@ from django.core import serializers
 from django.conf import settings
 from django.contrib import messages
 
-from django.db.models import Count
+from django.db.models import Count, Avg
 from django.core.files import File
 from django.shortcuts import get_object_or_404
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
 from popit.models import ApiInstance
 
+from speeches.aggregates import Length
 from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, SpeakerPopitForm, RecordingForm, RecordingTimestampFormSet
 from speeches.models import Speech, Speaker, Section, Recording, Tag, RecordingTimestamp
 import speeches.utils
@@ -209,18 +210,21 @@ class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
     """Done as a ListView on Speech to get recent speeches, we get instance for
     free in the request."""
     model = Speech
-    context_object_name = "recent_speeches"
-    # Use a slightly different template
-    template_name = "speeches/instance_detail.html"
+    paginate_by = 20
 
-    def get_queryset(self):
-        return super(InstanceView, self).get_queryset().visible(self.request).select_related('section', 'speaker').prefetch_related('tags').order_by('-created')[:20]
+    # Use a slightly different template
+    def get_template_names(self):
+        return [
+            "speeches/%s/instance_detail.html" % self.request.instance.label,
+            "speeches/instance_detail.html"
+        ]
 
     def get_context_data(self, **kwargs):
-        """Better done as a MultiListView somehow?"""
         context = super(InstanceView, self).get_context_data(**kwargs)
-        context['recent_sections'] = self.request.instance.section_set.order_by('-created')[:20]
-        context['speakers'] = self.request.instance.speaker_set.all()
+        context['count_speeches'] = Speech.objects.for_instance(self.request.instance).visible(self.request).count()
+        context['count_sections'] = Section.objects.for_instance(self.request.instance).count()
+        context['count_speakers'] = Speaker.objects.for_instance(self.request.instance).count()
+        context['average_length'] = Speech.objects.for_instance(self.request.instance).annotate(length=Length('text')).aggregate(avg=Avg('length'))['avg']
         return context
 
 class SpeakerView(NamespaceMixin, InstanceViewMixin, Base32SingleObjectMixin, ListView):
@@ -236,6 +240,8 @@ class SpeakerView(NamespaceMixin, InstanceViewMixin, Base32SingleObjectMixin, Li
     def get_context_data(self, **kwargs):
         kwargs['speech_list'] = self.object_list
         context = super(SpeakerView, self).get_context_data(**kwargs)
+        context['section_count'] = self.object.speech_set.all().visible(self.request).aggregate(Count('section', distinct=True))['section__count']
+        context['longest_speech'] = self.object.speech_set.annotate(length=Length('text')).order_by('-length')[:1]
         return context
 
 class SpeakerMixin(NamespaceMixin, InstanceFormMixin):

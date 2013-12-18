@@ -7,53 +7,47 @@
 
 {% block content %}
 
+
+
 <div class="page-header">
 
-    {% include "speeches/_breadcrumbs.html" %}
-
     {% include "speeches/_section_user_actions.html" %}
+    {% include "speeches/_breadcrumbs.html" %}
 
     <h1>{{ section.title }}</h1>
 
 </div>
 
-{% with next=section.get_next_node previous=section.get_previous_node %}
-  {% if previous or next %}
-    <ul class="pager">
-      {% if previous %}
-        <li class="previous"><a href="{% url "speeches:section-view" previous.get_path %}">&larr; {{ previous.title }}</a>
-      {% endif %}
-      {% if next %}
-        <li class="next"><a href="{% url "speeches:section-view" next.get_path %}">{{ next.title }} &rarr;</a>
-      {% endif %}
-    </ul>
-  {% endif %}
-{% endwith %}
+<div class="page-content__row">
+  <div class="primary-content__unit">
 
     {% for node, structure in section_tree %}
-      {% if structure.new_level %}<ul>{% else %}</li>{% endif %}
+      {% if structure.new_level %}<ul class="unstyled-list">{% else %}</li>{% endif %}
       {% if structure.speech %}
-        <li id="s{{ node.id }}" class="speech speech-border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
+        <li id="s{{ node.id }}" class="speech {% if node.speaker %}speech--with-portrait{% endif %} {% if not node.speaker  %}speech--narrative{% endif %} speech--border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
         {% include "speeches/speech.html" with speech=node nosection="1" section=section noli=1 %}
       {% else %}
-        <li><span class="section-title"><a href="{% url 'speeches:section-view' node.get_path %}">{{ node.title }}</a></span>
+        <li class="section-signpost" ><span class="section-title"><a href="{% url 'speeches:section-view' node.get_path %}">{{ node.title }}</a></span>
         {% if node.is_leaf_node %}({{ node.speech_count }}){% endif %}
       {% endif %}
       {% for level in structure.closed_levels %}</li></ul>{% endfor %}
     {% endfor %}
 
-{% with next=section.get_next_node previous=section.get_previous_node %}
-  {% if previous or next %}
-    <ul class="pager">
-      {% if previous %}
-        <li class="previous"><a href="{% url "speeches:section-view" previous.get_path %}">&larr; {{ previous.title }}</a>
-      {% endif %}
-      {% if next %}
-        <li class="next"><a href="{% url "speeches:section-view" next.get_path %}">{{ next.title }} &rarr;</a>
-      {% endif %}
-    </ul>
-  {% endif %}
-{% endwith %}
-
+  </div>
+  <div class="sidebar__unit">
+      {% with next=section.get_next_node previous=section.get_previous_node %}
+        {% if previous or next %}
+          <ul class="pager">
+            {% if previous %}
+              <li class="previous"><a href="{% url "speeches:section-view" previous.get_path %}"><span class="skinny-type">&larr;</span> {{ previous.title }}</a>
+            {% endif %}
+            {% if next %}
+              <li class="next"><a href="{% url "speeches:section-view" next.get_path %}">{{ next.title }} <span class="skinny-type">&rarr;</span></a>
+            {% endif %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+  </div>
+</div>
 {% endblock %}
 

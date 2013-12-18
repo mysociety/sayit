@@ -130,6 +130,7 @@ TEMPLATE_DIRS = (
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     "django.core.context_processors.request",
     "spoke.context_processors.add_settings",
+    "spoke.context_processors.nav_section",
 )
 
 INSTALLED_APPS = [

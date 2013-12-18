@@ -1,0 +1,636 @@
+// Global Foundation Settings
+@import "settings";
+
+// Comment out this import if you don't want to use normalize
+@import "normalize";
+
+// Comment out this import if you are customizing you imports below
+// @import "foundation";
+
+// Import specific parts of Foundation by commenting the import "foundation"
+// and uncommenting what you want below. You must uncomment the following if customizing
+
+@import "foundation/components/global"; // *always required
+//@import "foundation/components/grid";
+
+//
+// Use this grid if you want to start using the new Foundation 5 grid early.
+// It will change breakpoints to min-width: 640px and 1024px.
+//
+@import "foundation/components/grid-5";
+//
+
+// @import "foundation/components/visibility";
+// @import "foundation/components/block-grid";
+@import "foundation/components/type";
+@import "foundation/components/buttons";
+@import "foundation/components/forms"; // *requires components/buttons
+// @import "foundation/components/custom-forms"; // *requires components/buttons, components/forms
+// @import "foundation/components/button-groups"; // *requires components/buttons
+@import "foundation/components/dropdown-buttons"; // *requires components/buttons
+// @import "foundation/components/split-buttons"; // *requires components/buttons
+// @import "foundation/components/flex-video";
+// @import "foundation/components/section";
+// @import "foundation/components/top-bar";  // *requires components/grid
+// @import "foundation/components/orbit";
+// @import "foundation/components/reveal";
+// @import "foundation/components/joyride";
+// @import "foundation/components/clearing";
+@import "foundation/components/alert-boxes";
+@import "foundation/components/breadcrumbs";
+// @import "foundation/components/keystrokes";
+// @import "foundation/components/labels";
+@import "foundation/components/inline-lists";
+// @import "foundation/components/pagination";
+// @import "foundation/components/panels";
+// @import "foundation/components/pricing-tables";
+// @import "foundation/components/progress-bars";
+// @import "foundation/components/side-nav";
+// @import "foundation/components/sub-nav";
+// @import "foundation/components/switch";
+// @import "foundation/components/magellan";
+// @import "foundation/components/tables";
+// @import "foundation/components/thumbs";
+// @import "foundation/components/tooltips";
+// @import "foundation/components/dropdown";
+
+@import "compass/css3";
+@import "_sayit-mixins.scss";
+
+
+
+html,
+body {
+    height: 100%;
+    background: #222;
+}
+
+strong, b {
+    font-weight: $weight_bold;
+}
+
+.full-page {
+    background: #fff;
+}
+
+/* Base typography */
+
+h1 {
+    letter-spacing: 0.02em;
+}
+
+h2,
+h3 {
+    font-weight: $weight_bold;
+}
+
+.body-text {
+    font-size: emCalc(15);
+}
+
+.skinny-type {
+    font-weight: $weight_light;
+}
+
+a {
+    -ms-word-break: break-all;
+         word-break: break-all;
+
+         // Non standard for webkit
+         word-break: break-word;
+
+    -webkit-hyphens: auto;
+       -moz-hyphens: auto;
+            hyphens: auto;
+    color: $colour_primary;
+}
+
+a:hover,
+a:focus {
+    text-decoration: underline;
+    color: darken($colour_primary, 10%);
+}
+
+/* Buttons */
+.button {
+    @include box-shadow(none);
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+/* forms */
+.errorlist {
+    @include unstyled-list();
+}
+
+form {
+    margin-bottom: 0;
+}
+
+/* Staging alert-box */
+.alert-box--header {
+    margin-bottom: 0;
+    border: none;
+}
+/* mySociety header */
+.ms-header {
+    background: transparent;
+    border-top: 4px solid #424242;
+}
+
+.ms-header__row {
+    @include grid-row;
+    position: relative;
+}
+
+.ms-header__logo {
+    @extend .image-replacement;
+    display: block;
+    position: absolute;
+    right: 0.75em;
+    top: 0;
+    background-color: #424242;
+    background-repeat: no-repeat;
+    height: 38px;
+    width: 44px;
+    @include border-radius(0 0 0.75em 0.75em);
+    @include background-size(22px);
+    background-position: 11px 7px ;
+    background-image: url('../img/mysociety-bloom.png');
+
+    @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+        background-image: url('../img/mysociety-bloom@2.png');
+    }
+
+    @media (min-width: $medium-screen) {
+        @include border-radius(0 0 1.25em 1.25em);
+        background-position: 16px 10px ;
+        @include background-size(93px 19px);
+        background-image: url('../img/mysociety-logo.png');
+        width: 125px;
+        height: 39px;
+
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/mysociety-logo@2.png');
+        }
+    }
+
+
+}
+
+/* Brand header */
+.brand-header {
+    background: $colour_black;
+    a:link,
+    a:visited {
+        color: #fff;
+    }
+}
+
+.brand-header__row {
+    @include grid-row;
+}
+
+.brand-header__title-unit {
+    min-width: 15em;
+    float: left;
+    margin-right: 2.4%;
+    margin-left: 0.75em;
+}
+
+.brand-header__title {
+    color: #fff;
+    font-size: emCalc(24);
+    font-weight: $weight_bold;
+    letter-spacing: 0;
+    display: inline-block;
+    height: 1.42em; //prevents a little jump before the JS ticker fires
+    @media (min-width: $medium-screen) {
+        height: auto;
+    }
+    .subtitle {
+        font-size: .458333333em; /* 11px */
+        @media (min-width: $medium-screen) {
+            font-size: .583333333em; /* 14px */
+        }
+
+        font-weight: $weight_light;
+    }
+}
+
+.brand-header__navigation {
+    display: none; //temporary hide on mobile: #todo: fix on mobile
+    @media (min-width: $medium-screen) {
+        display: block;
+    }
+    float: right;
+    margin-top: 0.95em;
+    margin-right: 145px;
+    a {
+        display: inline-block;
+        margin-right: 1em;
+        font-size: 0.8125em;
+        letter-spacing: 0.02em;
+    }
+}
+
+.admin-menu-container {
+    @include grid-column(3);
+    text-align: right;
+
+}
+
+.admin-menu-button {
+    margin-top: 1.1em;
+    /* show at all? */
+    &.button.secondary {
+        /* Override some Foundation stuff */
+        background: transparent;
+        color: #fff;
+        border-color: #333;
+        @include box-shadow(none);
+        &:before {
+            border-color: rgba(255,255,255,0.8) transparent transparent transparent;
+        }
+    }
+}
+
+/* Brand footer */
+.brand-footer {
+    padding: 3em 0;
+    color: #fff;
+    h2 {
+        color: #fff;
+        font-size: 1em;
+        font-weight: $weight_bold;
+    }
+    p {
+        font-size: 0.8125em;
+        letter-spacing: 0.02em;
+    }
+}
+
+.brand-footer__row {
+    @include grid-row;
+}
+
+.brand-footer__unit {
+    @include grid-column(12);
+}
+
+.about-sayit {
+    @media (min-width: $medium-screen) {
+        @include grid-column(4);
+    }
+}
+
+/* Instance header */
+.instance-header {
+    border-bottom: 5px solid $colour_light_grey;
+    padding-top: emCalc(15);
+    padding-bottom: emCalc(15);
+    background: $colour_primary;
+    position: relative;
+}
+
+.instance-header__row {
+    @include grid-row;
+}
+
+.instance-header__title-unit {
+    @include grid-column(12);
+    @media (min-width: $large-screen) {
+        @include grid-column(6);
+    }
+}
+
+.instance-header__title {
+    float: left;
+    width: 100%;
+    @media (min-width: $medium-screen) {
+        width: 50%;
+    }
+    @media (min-width: $huge-screen) {
+        width: 37%;
+    }
+    h1 {
+        font-weight: $weight_light;
+        font-size: emCalc(24);
+        margin-top: 0.2em;
+        line-height: 1em;
+        color: #fff;
+    }
+    a {
+        &:link,
+        &:visited {
+            color: #fff;
+        }
+        &:hover,
+        &:active,
+        &:focus {
+            text-decoration: none;
+        }
+    }
+}
+
+.instance-header__subtitle {
+    width: 100%;
+    float: left;
+    @media (min-width: $medium-screen) {
+        width: 49%;
+    }
+    @media (min-width: $huge-screen) {
+        width: 61%;
+        margin-left: 2%;
+    }
+    p {
+        font-size: emCalc(13);
+        color: #fff;
+        line-height: 1.461538462em;
+        margin-bottom: 0;
+    }
+}
+
+.instance-header__search-nav {
+    @include grid-column(12);
+    @media (min-width: $large-screen) {
+        @include grid-column(6);
+    }
+}
+
+.site-search__input,
+.site-search__input[type="search"] {
+    -webkit-appearance: none;
+}
+
+.site-search__input[type="search"] {
+    @include border-radius(2em);
+    padding: 0.5em 0.75em;
+    margin-bottom: 0;
+}
+
+.site-search--header {
+    float: left;
+    width: 100%;
+    @media (min-width: $medium-screen) {
+        width: 50%;
+    }
+    .site-search__input[type="search"] {
+        background: darken($colour_primary, 5%);
+        color: #fff;
+        border: none;
+    }
+    .site-search__input[type="search"]:focus {
+        background: darken($colour_primary, 5%);
+        color: #fff;
+        border: none;
+        @include box-shadow(none);
+    }
+
+    .site-search__input::-webkit-input-placeholder {
+        color: #fff;
+    }
+    .site-search__input::-moz-placeholder {
+        color: #fff;
+    }
+    .site-search__input:-moz-placeholder {   /* Older versions of Firefox */
+        color: #fff;
+    }
+    .site-search__input:-ms-input-placeholder {
+       color: #fff;
+    }
+}
+
+.site-search--homepage {
+    @include grid-column(12, $center:true);
+    @media (min-width: $medium-screen) {
+        @include grid-column(8, $center:true);
+    }
+    @media (min-width: $large-screen) {
+        @include grid-column(6, $center:true);
+    }
+}
+
+.site-search--on-results-page {
+    margin-bottom: 2em;
+}
+
+.site-search__person-only {
+    label {
+        font-size: 1em;
+        margin-bottom: 0.5em;
+    }
+}
+
+.primary-navigation-bar {
+    float: left;
+    width: 100%;
+    @media (min-width: $medium-screen) {
+        width: 50%;
+    }
+    .menu-dropdown {
+        display: none;
+        @media (max-width: $medium-screen) {
+            display: block;
+        }
+        line-height: 1.6;
+    }
+    .nav-menu {
+        @include unstyled-list;
+        height: auto;
+        max-height: 1000em;
+        @include transition(max-height 1s ease-in-out);
+        @media (max-width: $medium-screen) {
+            &.closed {
+                height: 0;
+                max-height: 0;
+                overflow: hidden;
+                @include transition(max-height 1s ease-in-out);
+            }
+        }
+        @media (min-width: $medium-screen) {
+            display: block;
+            @include inline-list;
+        }
+    }
+
+    a {
+        font-size: emCalc(15);
+        letter-spacing: 0.02em;
+        display: block;
+        padding: 0.25em;
+
+        &:link,
+        &:visited {
+            color: #fff;
+        }
+        &:hover,
+        &:active,
+        &:focus {
+            text-decoration: none;
+        }
+        @media (min-width: $medium-screen) {
+            display: inline-block;
+            padding: 0.5em;
+            @include border-radius(3px);
+            &:hover,
+            &:active,
+            &:focus {
+                background: darken($colour_primary, 5%);
+            }
+        }
+    }
+    .active {
+        a {
+            background: darken($colour_primary, 5%);
+        }
+    }
+}
+
+.grey-section {
+    border-top: 1px solid $colour_light_grey;
+    background-color: $colour_off_white;
+    padding: 1em 0;
+    @media (min-width: $medium-screen) {
+        padding: 4em 0;
+    }
+}
+
+.homepage-search {
+    @include grid-column(12);
+    .site-search__input,
+    .site-search__button {
+        font-size: 1.125em;
+    }
+    @media (min-width: $medium-screen) {
+        margin-top: 4em;
+        margin-bottom: 4em;
+    }
+
+    @media (min-width: $large-screen) {
+        @include grid-column(8, $center:true);
+    }
+
+    h2 {
+        font-weight: $weight_light;
+        @media (min-width: $large-screen) {
+            font-size: 2.5em;
+        }
+        @media (min-width: $huge-screen) {
+            font-size: 3em;
+        }
+        text-align: center;
+    }
+}
+
+.homepage-stats {
+    text-align: center;
+    padding: 1em 0 3em;
+    font-size: emCalc(24);
+    font-weight: $weight_light;
+    line-height: 1.4em;
+    strong {
+        color: $colour_primary;
+    }
+}
+
+.search-wrapper {
+    position: relative;
+    max-width: 40em;
+    .icon-search {
+        position: absolute;
+        right: 0.6em;
+        top: 23%;
+    }
+}
+
+.icon-search {
+    display: block;
+    height: emCalc(20);
+    width: emCalc(20);
+    @include background-size(69px 78px);
+    background-image: url(../img/search-icons.png);
+    background-position: 0 -40px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    padding: 0;
+    @extend .image-replacement;
+    &.icon-search--white {
+        background-position: 0 0
+    }
+}
+
+.featured-block {
+    background-color: transparent;
+    border: 1px solid darken($colour_light_grey, 5%);
+    @include border-radius(3px);
+    text-align: center;
+    padding: 3em 1.5em 4em;
+    display: block;
+    margin: .75em 0;
+    position: relative;
+    &:hover {
+        text-decoration: none;
+        @include box-shadow(0 0 2px 1px rgba(0, 0, 0, 0.1));
+        h3 {
+            color: $colour_primary;
+        }
+
+    }
+    h3 {
+        font-weight: $weight_light;
+    }
+}
+
+.featured-elements__unit {
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(6);
+    }
+    @media (min-width: $large-screen) {
+        @include grid-column(3);
+    }
+}
+
+.featured-block__date {
+    position: absolute;
+    width: 100%;
+    border-top: 1px solid darken($colour_light_grey, 5%);
+    bottom: 0;
+    left: 0;
+    color: $colour_dark_grey;
+    line-height: 3em;
+    height: 3em;
+    font-size: 0.75em;
+    text-transform: uppercase;
+}
+
+.centered-form {
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(6, $center:true);
+    }
+    @media (min-width: $large-screen) {
+        @include grid-column(4, $center:true);
+    }
+}
+
+.nothing-here-yet-message {
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(8, $center:true);
+    }
+    @media (min-width: $large-screen) {
+        @include grid-column(6, $center:true);
+    }
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    @media (min-width: $medium-screen) {
+        margin-top: 4em;
+        margin-bottom: 4em;
+    }
+}
+

@@ -1,61 +1,47 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
-{% load url from future %}
 {% load i18n %}
+{% load humanize %}
 {% load speech_utils %}
 
 {% block title %}{{ request.instance.title }}{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>{{ request.instance.title }}</h1>
-    {{ request.instance.description|linebreaks_with_lead }}
-</div>
 
-<div class="row-fluid">
+<div class="page-content__row">
 
-{% if speakers or recent_sections or recent_speeches %}
+  {% if paginator.count %}
 
-<div class="span4">
-    <h2>{% trans "Speakers" %}</h2>
-    <ul class="unstyled">
-      {% for speaker in speakers %}
-        <li>
-            <img src="{% static "speeches/i/a.png" %}" style="border-color: #{{ speaker.colour }}; background-color: #{{ speaker.colour }};" alt="" width=24 height=24 class="speaker-img">
-            <a href="{{ speaker.get_absolute_url }}">{{ speaker }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-</div>
+    <div class="homepage-search">
+        <h2>{% block instance_search_title %}Search the {{ request.instance.title }}{% endblock %}</h2>
+        <form class="site-search site-search--homepage" action="/search/" method="get" >
+            <div class="search-wrapper">
+                <input type="search" class="site-search__input" placeholder="Search" name="q"/>
+                <input type="submit" class="icon-search icon-search" value="Search"/>
+            </div>
+        </form>
+    </div>
 
-<div class="span8">
-<h2>{% trans "Recent Sections" %}</h2>
 
-<ul style="column-count:2; -webkit-column-count:2">
-  {% for section in recent_sections %}
-    <li>
-        <a href="{{ section.get_absolute_url }}">{{ section.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
-</div>
+        </div>
+    </div>
+</div> <!-- closing off the opening tags in base so we can go full width here -->
+<div class="homepage-stats">
+  <div class="full-page__row">
+      <div class="full-page__unit">
+          <strong>{{ count_speeches|intcomma }}</strong> speeches, by
+          <strong>{{ count_speakers|intcomma }}</strong> speakers, in
+          <strong>{{ count_sections|intcomma }}</strong> sections
 
-<div class="span8">
-<h2>{% trans "Recent Speeches" %}</h2>
+{% block instance_blocks %}
+{% endblock %}
 
-<ul class="unstyled">
-  {% for speech in recent_speeches %}
-    {% include "speeches/speech.html" with speech=speech %}
-  {% endfor %}
-</ul>
+  {% else %}
 
-</div>
+    <div class="nothing-here-yet-message">
+        <h2>{% trans "Nothing has been uploaded yet. Why not <a href='/speech/add'>add a speech</a> or a <a href='/sections/add'>section</a>?" %}</h2>
+    </div>
 
-{% else %}
-
-<p>{% trans "Nothing has been uploaded yet. Why not <a href='/speech/add'>add a speech</a> or a <a href='/sections/add'>section</a>?" %}</p>
-
-{% endif %}
+  {% endif %}
 
 </div>
 

@@ -1,0 +1,49 @@
+{% extends 'speeches/instance_detail.html' %}
+{% load i18n %}
+{% load speech_utils %}
+
+{% block title %}{{ request.instance.title }}{% endblock %}
+
+{% block instance_search_title %}
+Search the Leveson Inquiry transcripts
+{% endblock %}
+
+{% block instance_blocks %}
+        </div>
+    </div>
+</div>
+
+<div class="featured-elements grey-section">
+  <div class="full-page__row">
+      <div class="featured-elements__unit">
+        <a href="/hearing-24-november-2011/ms-joanne-rowling" class="featured-block">
+          <h3>Read JK Rowling's session</h3>
+          <span class="featured-block__date">
+            23 October 2012
+          </span>
+        </a>
+      </div>
+      <div class="featured-elements__unit">
+        <a href="/hearing-21-november-2011/mr-hugh-grant" class="featured-block">
+          <h3>Read Hugh Grant's session</h3>
+          <span class="featured-block__date">
+            12 November 2012
+          </span>
+        </a>
+      </div>
+      <div class="featured-elements__unit">
+        <a href="/hearing-6-february-2012/mr-paul-dacre" class="featured-block">
+          <h3>Read Paul Dacre's session</h3>
+          <span class="featured-block__date">
+            3 October 2012
+          </span>
+        </a>
+      </div>
+      <div class="featured-elements__unit">
+        <a href="/hearing-13-june-2012/mr-nicholas-clegg" class="featured-block">
+          <h3>Read Nick Clegg's session</h3>
+          <span class="featured-block__date">
+            30 October 2012
+          </span>
+        </a>
+{% endblock %}

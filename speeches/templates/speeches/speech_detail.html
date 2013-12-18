@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% load i18n %}
+{% load staticfiles %}
 {% load bleach_tags %}
 
 {% block extra_headers %}
@@ -22,90 +23,84 @@
 {% if object.celery_task_id %}
 <div class="page-header">
     <p class="lead">{% trans "Please wait, audio is being transcribed. This page will automatically refresh in 5 seconds..." %}</p>
+    {% include "speeches/_speech_user_actions.html" %}
 </div>
 {% else %}
+<div class="single-speech-layout">
+    <div class="single-speech-layout__speech-column">
+            <div class="speech speech-single-speech">
+              {% if speech.speaker %}
+                <div class="speech-single-speech__speaker-portrait">
+                <img src="{% if speech.speaker.person.image %}
+                  {{ speech.speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
+                  style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-portrait speaker-portrait--left round-image speaker-portrait--large">
+                </div>
+              {% endif %}
+                <div class="speech__meta-data">
+                    {% if object.speaker %}
+                        <span class="speech__meta-data__speaker-name">
+                            <a href="{% url "speeches:speaker-view" object.speaker.id32 object.speaker.slug %}">{{ object.speaker }}</a>
+                        </span>
+                    {% else %}
+                        Unknown speaker
+                    {% endif %}
+                    {% if object.start_date %}
+                        <span class="speech__meta-data__date">
+                            {{ object.start_date }}
+                        </span>
+                    {% endif %}
 
-<div class="page-header">
-    {% if object.section %}
-    <ul class="breadcrumbs">
-      {% for n in object.section.get_ancestors %}
-        <li><a href="{% url 'speeches:section-view' n.get_path %}">{{ n.title }}</a> <span class="divider">&rarr;</span></li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+                    {% if object.location %}
+                       <small>{% trans "Location:" %} </small>{{ object.location }}
+                    {% endif %}
 
-    {% include "speeches/_speech_user_actions.html" %}
+                </div>
+              {% if object.audio %}
+                <p>
+                    <audio id="the-audio" src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio>
+                    <script>
+                        var a = $('#the-audio'), ae = a[0];
+                        if (ae.playbackRate) {
+                            $('<label><input type="checkbox" id="speed"> Play at half speed (experimental)</label>').insertAfter(a);
+                            $('#speed').click(function(){
+                                ae.playbackRate = 1.5 - ae.playbackRate;
+                            });
+                        }
+                    </script>
+                </p>
+              {% endif %}
 
-    <h1>
-        {% if object.title %}
-            {{ object.title }}
-        {% else %}
-            &#8220;{{ object.summary|bleach }}&#8221;
-        {% endif %}
-    </h1>
+              {% if object.text %}
+                <div class="speech__content speech__content-single-speech">
+                    {{ object.text|bleach|linebreaks }}
+                </div>
+              {% endif %}
+                {% if object.section %}
+                    {% include "speeches/_breadcrumbs.html" with section=object.section all=1 %}
+                {% endif %}
+                <div class="speech__links">
+                    {% if object.section %}
+                      <a title="Link in context" href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}"><i class="speech-icon icon-link-in-context"></i>{% trans "Link in context" %}</a>
+                    {% endif %}
+                      <a title="Link" href="{{ object.source_url }}"><i class="speech-icon icon-link"></i>{% trans "Link" %}</a>
+                  </div>
 
-    <p class="lead muted">
-        <small>Statement made by </small>
-        {% if object.speaker %}
-            <a href="{% url "speeches:speaker-view" object.speaker.id32 object.speaker.slug %}">{{ object.speaker }}</a>
-        {% else %}
-            Unknown speaker
-        {% endif %}
-        <small> on </small>
-        {% if object.start_date %}
-            {{ object.start_date }}
-        {% else %}
-            Unknown date
-        {% endif %}
+            </div> <!-- ./speech -->
 
-        {% if object.location %}
-            <br /><small>{% trans "Location:" %} </small>{{ object.location }}
-        {% endif %}
-    </p>
-
-</div>
-
-{% with next=speech.get_next_speech previous=speech.get_previous_speech %}
-  {% if previous or next %}
-    <ul class="pager">
-      {% if previous %}
-        <li class="previous"><a href="{% url "speeches:speech-view" previous.id %}">&larr; {{ previous.summary|bleach }}</a>
-      {% endif %}
-      {% if next %}
-        <li class="next"><a href="{% url "speeches:speech-view" next.id %}">{{ next.summary|bleach }} &rarr;</a>
-      {% endif %}
-    </ul>
-  {% endif %}
-{% endwith %}
-
-    {% if object.audio %}
-        <p>
-            <audio id="the-audio" src="{{ MEDIA_URL }}{{ object.audio }}" controls></audio>
-            <script>
-                var a = $('#the-audio'), ae = a[0];
-                if (ae.playbackRate) {
-                    $('<label><input type="checkbox" id="speed"> Play at half speed (experimental)</label>').insertAfter(a);
-                    $('#speed').click(function(){
-                        ae.playbackRate = 1.5 - ae.playbackRate;
-                    });
-                }
-            </script>
-        </p>
-    {% endif %}
-
-    {% if object.text %}
-        {{ object.text|bleach|linebreaks }}
-    {% endif %}
-
-    {% if object.section %}
-        <p>
-            <a href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}">{% trans "See speech in context" %}</a>
-        </p>
-    {% endif %}
-
-    {% if object.source_url %}
-        <p><a href="{{ object.source_url }}">{% trans "Source:" %} {{ object.source_url }}</a></p>
-    {% endif %}
+            {% with next=speech.get_next_speech previous=speech.get_previous_speech %}
+              {% if previous or next %}
+                <div class="speech-navigation">
+                  {% if previous %}
+                   <a href="{% url "speeches:speech-view" previous.id %}" class="button speech-navigation__button">&laquo; {{ previous.summary|bleach }}</a>
+                  {% endif %}
+                  {% if next %}
+                    <a href="{% url "speeches:speech-view" next.id %}" class="button speech-navigation__button">{{ next.summary|bleach }} &raquo;</a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endwith %}
+        </div>
+    </div>
 
 {% endif %}
 

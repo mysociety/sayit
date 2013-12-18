@@ -1,37 +1,110 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load bleach_tags %}
 {% load url from future %}
 {% load i18n %}
+{% load humanize %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static "speeches/js/masonry.pkgd.min.js" %}"></script>
+{% endblock %}
 
 {% block title %}{% blocktrans with speaker=speaker.name %}View Speaker: {{ speaker }}{% endblocktrans %}{% endblock %}
 
 {% block content %}
 
-<div class="page-header clearfix">
-
-    <img src="{% if speaker.person.image %}{{ speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
-          style="border: 4px solid #{{ speaker.colour }}; background-color: #{{ speaker.colour }};"
-          width="128" height="128"
-          class="pull-right"
-          alt="Headshot of {{ speaker.name|escape}}">
-
-    <h1>{{ speaker.name }}</h1>
+<div class="page-header page-header--with-portrait">
 
     {% include "speeches/_speaker_user_actions.html" %}
 
-    <p class="lead person-summary"> {{ speaker.person.summary }} </p>
-
+  <div class="page-header__row">
+    <div class="speaker-page__details">
+      <img src="{% if speaker.person.image %}{{ speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
+          style="border-color #{{ speaker.colour }}; background-color: #{{ speaker.colour }};"
+          class="speaker-portrait speaker-portrait--left speaker-portrait--large round-image"
+          alt="Headshot of {{ speaker.name|escape}}" />
+      <div class="speaker-information">
+        <p class="pretitle"> <a href="{% url "speeches:speaker-list" %}">Speakers</a> / </p>
+        <h1>{{ speaker.name }}</h1>
+        {% if speaker.person.summary %}
+          <p class="person-summary"> {{ speaker.person.summary }}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="speaker-page__stats">
+      <div class="stat">
+        <div class="stat__figure">
+          {{ section_count|intcomma }}
+        </div>
+        <div class="stat__descriptor">
+          Session appearances
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat__figure">
+          {{ paginator.count|intcomma }}
+        </div>
+        <div class="stat__descriptor">
+          Statements made
+        </div>
+      </div>
+      <!--
+      <div class="stat">
+        <div class="stat__figure">
+          4<sup>th</sup>
+        </div>
+        <div class="stat__descriptor">
+         of 60 speakers
+        </div>
+      </div>
+      -->
+      {% if longest_speech %}{% with longest_speech.0 as speech %}
+      <div class="stat">
+        <div class="stat__descriptor">
+         Longest speech
+        </div>
+        <div class="stat__figure">
+          <a href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}">
+            {% if speech.title %}{{ speech.title }}{% else %}
+            &#8220;{{ speech.summary|bleach }}&#8221;
+            {% endif %}
+          </a>
+        </div>
+      </div>
+      {% endwith %}{% endif %}
+    </div>
+  </div>
 </div>
+<div class="speaker-page__speeches-collection">
+    <div class="full-page__row nested-row">
+      <div class="speaker-page__speeches-title">
+        <h2>Speeches</h2>
+      </div>
 
-    <ul class="unstyled">
+      <div class="speaker-page__search">
+        <form class="site-search site-search" action="/search/" method="get" >
+          <input type="hidden" name="p" value="{{ speaker.id }}">
+          <div class="search-wrapper">
+              <input type="search" class="site-search__input" placeholder="Search this person's speeches" name="q"/>
+              <input type="submit" class="icon-search icon-search" value="Search"/>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <ul class="unstyled js-masonry" data-masonry-options='{"columnWidth":".speech","itemSelector":".speech","gutter":".gutter-sizer"}'>
+        <li class="gutter-sizer"></li>
         {% if not page_obj %}
             <li>{% blocktrans with speaker=speaker.name %}{{ speaker }} has no recorded speeches yet.{% endblocktrans %}</li>
         {% endif %}
         {% for speech in page_obj %}
-            {% include "speeches/speech.html" with speech=speech nospeaker="1" %}
+            {% include "speeches/speech.html" with speech=speech nospeaker="1" truncate="1" %}
         {% endfor %}
     </ul>
 
     {% include 'speeches/pagination.html' %}
+</div>
 
 {% endblock %}

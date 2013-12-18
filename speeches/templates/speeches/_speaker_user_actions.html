@@ -2,12 +2,8 @@
 {% load i18n %}
 
 {% if user.is_authenticated %}
-  <div class="btn-group">
-      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        {% trans "Actions" %}
-        <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu">
+    <a href="#" data-dropdown="drop2" class="tiny secondary button dropdown action-button">{% trans "Edit" %}</a><br>
+      <ul id="drop2" class="f-dropdown admin-menu">
         <li><a href="{{ speaker.get_edit_url }}">{% trans "Edit speaker" %}</a>
         <li><a href="{% url "speeches:speech-add" %}?speaker={{ speaker.id }}">{% trans "Add a new speech" %}</a>
       </ul>
