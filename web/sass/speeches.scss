@@ -163,10 +163,7 @@
 
 .speaker-portrait {
   max-width: 100%;
-  border: 4px solid transparent;
-  @media (max-width: $medium-screen) {
-    margin-left: 0.75em;
-  }
+  border: 3px solid transparent;
 }
 
 .speaker-portrait--left {
