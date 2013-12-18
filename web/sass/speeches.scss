@@ -210,12 +210,14 @@
     }
   }
 }
-.speech--with-portrait .speech__meta-data {
-  margin-left: 4em;
-  @media (min-width: $medium-screen) {
-    margin-left: 0;
+.speech--with-portrait {
+  .speech__meta-data,
+  .speech__breadcrumb {
+   margin-left: 4em;
+   @media (min-width: $medium-screen) {
+     margin-left: 0;
+   }
   }
-
 }
 
 
@@ -441,26 +443,24 @@
   }
 }
 
-
 /* Search results */
 .speech--search-result {
-  .speech__meta-data {
-    a {
-      color: $colour_black;
-    }
-  }
+  background: transparent;
   .speech__content {
     a {
       color: $colour_black;
       &:hover,
       &:focus,
       &:active {
-        color: $colour_primary;
+        em {
+          color: $colour_black;
+        }
       }
     }
     em {
-      font-weight: bold;
       font-style: normal;
+      background-color: #faf5cd;
+      padding: 0.1em 0.2em;
     }
   }
 }
