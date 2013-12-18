@@ -3,31 +3,34 @@
 {% load bleach_tags %}
 
 {% block content %}
-    <h1>Search</h1>
-    <form class="site-search" action="/search/" method="get" >
+    <h1 {% if query %}class="search-title-with-result"{% endif %}>Search {% if query %}/ <strong>{{ query }}</strong>{% endif %}</h1>
+    <form class="site-search site-search--on-results-page" action="/search/" method="get" >
       <div class="search-wrapper">
           <input type="search" class="site-search__input" placeholder="Search" name="q" value="{{ form.q.value }}"/>
           <input type="submit" class="icon-search" value="Search"/>
       </div>
     </form>
 
-    <div class="page-content__row">
+    <div class="page-content__row ">
+        <div class="sidebar__unit">
+          {% if speaker_results %}
+
+              <h2 class="reduced-heading">Speakers</h2>
+
+              <ul class="unstyled-list search-results-speakers">
+                  {% for result in speaker_results %}
+                  <li class="search"><a href="{% url "speeches:speaker-view" result.object.id %}">
+                      {{ result.highlighted.0|bleach }}
+                  </a></li>
+                  {% endfor %}
+              </ul>
+
+          {% endif %}
+        </div>
+
       <div class="primary-content__unit">
-
-            {% if speaker_results %}
-                <h2>Speakers matching &ldquo;{{ query }}&rdquo;</h2>
-
-                <ul>
-                    {% for result in speaker_results %}
-                    <li class="search"><a href="{% url "speeches:speaker-view" result.object.id %}">
-                        {{ result.highlighted.0|bleach }}
-                    </a></li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-
         {% if query %}
-            <h2>Results</h2>
+            <h2>Speeches &amp; sections</h2>
 
             <ul class="unstyled-list search-results-list">
             {% for result in page.object_list %}
