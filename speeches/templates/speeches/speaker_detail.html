@@ -66,7 +66,11 @@
          Longest speech
         </div>
         <div class="stat__figure">
+          {% if speech.section %}
           <a href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}">
+          {% else %}
+          <a href="{% url 'speeches:speech-view' speech.id %}">
+          {% endif %}
             {% if speech.title %}{{ speech.title }}{% else %}
             &#8220;{{ speech.summary|bleach }}&#8221;
             {% endif %}

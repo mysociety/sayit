@@ -5,7 +5,7 @@
 
 {% block extra_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static "css/bootstrap-datepicker.css" %}" />
+{# <link rel="stylesheet" href="{% static "css/bootstrap-datepicker.css" %}" /> #}
 {% endblock %}
 
 {% block extra_js %}
@@ -13,7 +13,7 @@
 <script src="{% static "speeches/js/jQuery-File-Upload/js/vendor/jquery.ui.widget.js" %}"></script>
 <script src="{% static "speeches/js/jQuery-File-Upload/js/jquery.iframe-transport.js" %}"></script>
 <script src="{% static "speeches/js/jQuery-File-Upload/js/jquery.fileupload.js" %}"></script>
-<script src="{% static "js/bootstrap-datepicker.js" %}"></script>
+{# <script src="{% static "js/bootstrap-datepicker.js" %}"></script> #}
 {% endblock %}
 
 {% block title %}{% if object %}{% trans "Edit speech" %} {% else %}{% trans "Add speech" %}{% endif %}{% endblock %}

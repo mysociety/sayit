@@ -23,9 +23,10 @@
 {% if object.celery_task_id %}
 <div class="page-header">
     <p class="lead">{% trans "Please wait, audio is being transcribed. This page will automatically refresh in 5 seconds..." %}</p>
-    {% include "speeches/_speech_user_actions.html" %}
 </div>
 {% else %}
+
+{% include "speeches/_speech_user_actions.html" %}
 <div class="single-speech-layout">
     <div class="single-speech-layout__speech-column">
             <div class="speech speech-single-speech">
