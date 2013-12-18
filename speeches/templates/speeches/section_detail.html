@@ -3,6 +3,17 @@
 {% load url from future %}
 {% load i18n %}
 
+{% block extra_headers %}
+{% with next=section.get_next_node previous=section.get_previous_node %}
+  {% if previous %}
+    <link rel="prev" href="{% url "speeches:section-view" previous.get_path %}" />
+  {% endif %}
+  {% if next %}
+    <link rel="next" href="{% url "speeches:section-view" next.get_path %}" />
+  {% endif %}
+{% endwith %}
+{% endblock %}
+
 {% block title %}{% blocktrans with title=section.title %}View Section: {{ title }}{% endblocktrans %}{% endblock %}
 
 {% block content %}

@@ -1,6 +1,7 @@
 $(function() {
     sayit_add_speech_links();
     sayit_ajax_file_uploads();
+    sayit_link_prev_next_keyboard();
     $('audio').not('.audio-small').mediaelementplayer();
 });
 
@@ -115,3 +116,21 @@ function sayit_ajax_file_uploads() {
     });
 }
 
+function sayit_link_prev_next_keyboard() {
+    var prev = $('link[rel=prev]'),
+        next = $('link[rel=next]');
+    if (prev.length) {
+        $(document).keyup(function(e) {
+            if (e.target === document.body && e.which == 74) {
+                window.location = prev.attr('href');
+            }
+        });
+    }
+    if (next.length) {
+        $(document).keyup(function(e) {
+            if (e.target === document.body && e.which == 75) {
+                window.location = next.attr('href');
+            }
+        });
+    }
+}

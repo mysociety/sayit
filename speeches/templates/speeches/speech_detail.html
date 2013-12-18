@@ -8,6 +8,14 @@
 {% if object.celery_task_id %}
     <meta http-equiv="refresh" content="5">
 {% endif %}
+{% with next=speech.get_next_speech previous=speech.get_previous_speech %}
+  {% if previous %}
+    <link rel="prev" href="{% url "speeches:speech-view" previous.id %}" />
+  {% endif %}
+  {% if next %}
+    <link rel="next" href="{% url "speeches:speech-view" next.id %}" />
+  {% endif %}
+{% endwith %}
 {% endblock %}
 
 {% block title %}
