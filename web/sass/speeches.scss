@@ -234,7 +234,7 @@
   font-family: Georgia, Times, 'Times New Roman', Serif;
   font-size: 1.0625em; /* 17px */
   clear: both;
-  margin-top: 0em;
+  margin-top: 0;
   border-bottom: 1px solid $colour_light_grey;
   @media (min-width: $large-screen) {
       font-size:  1.1875em; /* 19px */
