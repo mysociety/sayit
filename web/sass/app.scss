@@ -412,6 +412,10 @@ form {
     }
 }
 
+.site-search--on-results-page {
+    margin-bottom: 2em;
+}
+
 .site-search__person-only {
     label {
         font-size: 1em;
@@ -533,6 +537,7 @@ form {
 
 .search-wrapper {
     position: relative;
+    max-width: 40em;
     .icon-search {
         position: absolute;
         right: 0.6em;
