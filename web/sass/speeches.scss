@@ -124,13 +124,17 @@
   a {
     font-weight: $weight_bold;
   }
+  .breadcrumbs {
+    a {
+      font-weight: normal;
+    }
+  }
 }
 
 .speech {
   padding-top: 1em;
   position: relative;
   @include clearfix;
-  @include grid-row(nest);
 }
 
 .speech--with-portrait {
