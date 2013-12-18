@@ -151,15 +151,11 @@
 .speaker-portrait-wrapper {
   text-align: center;
   @media (min-width: $medium-screen) {
-    @include grid-column(1);
+    @include grid-column(1, $collapse:true);
   }
 }
 
 .speech-wrapper {
-  @media (max-width: $medium-screen) {
-    margin-left: 0.75em;
-    margin-right: 0.75em;
-  }
   @media (min-width: $medium-screen) {
     @include grid-column(11);
   }
