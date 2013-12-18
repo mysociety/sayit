@@ -235,6 +235,7 @@
   font-size: 1.0625em; /* 17px */
   clear: both;
   margin-top: 0;
+  padding-bottom: 0.66em;
   border-bottom: 1px solid $colour_light_grey;
   @media (min-width: $large-screen) {
       font-size:  1.1875em; /* 19px */
