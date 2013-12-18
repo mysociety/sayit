@@ -74,13 +74,12 @@ strong, b {
 }
 
 /* Base typography */
+
 h1 {
-    font-size: emCalc(36);
-}
-h1, h2 {
     letter-spacing: 0.02em;
 }
 
+h2,
 h3 {
     font-weight: $weight_bold;
 }
@@ -510,6 +509,7 @@ form {
     }
 
     h2 {
+        font-weight: $weight_light;
         @media (min-width: $large-screen) {
             font-size: 2.5em;
         }
