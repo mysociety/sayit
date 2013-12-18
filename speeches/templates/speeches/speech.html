@@ -93,7 +93,7 @@
     <p>{% trans "[ recorded audio ]" %}</p>
   {% elif highlight %}
     <p class="search">
-      <a title="{% trans "Link in context" %}" href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}"><i class="speech-icon icon-link-in-context"></i>
+      <a title="{% trans "Link in context" %}" href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}">
         {{ highlight|bleach }}
       </a>
     </p>
