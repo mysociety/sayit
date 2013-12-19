@@ -83,6 +83,8 @@ def parse_transcript(text, date):
                 else:
                     assert re.match('Case No. SCSL-2003-01-([AT]|PT)', line), line
             elif num == 2:
+                if line in ('SCSL-2003-01-'):
+                    continue
                 if line == 'THE PROSECUTOR OF SPECIAL COURT':
                     num += 1
                 else:
@@ -146,7 +148,7 @@ def parse_transcript(text, date):
             continue
         # Special case bad headings on this date
         if date == datetime.date(2007, 7, 3):
-            if re.sub(' +', ' ', line.strip()) in ('3', 'OPEN', '3 OPEN', 'SESSION', '2 JULY 2007', '2 JULY 2007 OPEN'):
+            if re.sub(' +', ' ', line.strip()) in ('3', 'OPEN', '3 OPEN', 'SESSION', '2 JULY 2007', '2 JULY 2007 OPEN', 'OPEN SESSION', '2 JULY 2007 OPEN SESSION'):
                 continue
         if re.match('(?i)SCSL - (APPEALS CHAMBER|TRIAL CHAMBER II|TRIAL CHAMBER)', line.strip()):
             continue
