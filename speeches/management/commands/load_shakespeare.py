@@ -94,6 +94,7 @@ class Command(BaseCommand):
         play_xml = etree.fromstring(xml)
         play_section = self.make(Section, title=play)
 
+        speakers = {}
         for act in play_xml:
             if act.tag != 'ACT': continue
             act_title = act[0].text
@@ -113,7 +114,11 @@ class Command(BaseCommand):
                         speaker = None
                     elif self.commit:
                         name = sp[0].text.replace('[', '').replace(']', '')
-                        speaker, _ = Speaker.objects.get_or_create(name=name, instance=self.instance)
+                        if name in speakers:
+                            speaker = speakers[name]
+                        else:
+                            speaker = Speaker.objects.create(name=name, instance=self.instance)
+                            speakers[name] = speaker
                     else:
                         speaker = Speaker(name=sp[0].text, instance=self.instance)
         
