@@ -62,7 +62,8 @@
 html,
 body {
     height: 100%;
-    background: #222;
+    background: $body-bg;
+    color: $body-font-color;
 }
 
 strong, b {
@@ -71,6 +72,7 @@ strong, b {
 
 .full-page {
     background: #fff;
+    color: #222;
 }
 
 /* Base typography */
@@ -259,6 +261,7 @@ form {
 .brand-footer {
     padding: 3em 0;
     color: #fff;
+    background-color: #222;
     h2 {
         color: #fff;
         font-size: 1em;
