@@ -4,13 +4,14 @@ from django.views.decorators.csrf import csrf_exempt
 from speeches.views import *
 from speeches.search import InstanceSearchView
 from tastypie.api import NamespacedApi
-from speeches.api import SpeechResource, SpeakerResource
+from speeches.api import SpeechResource, SpeakerResource, SectionResource
 
 # XXX The below assumes this app is being included with a 'speeches' namespace.
 # Unclear how to have this inherit whichever namespace is being used.
 v01_api = NamespacedApi(api_name='v0.1', urlconf_namespace='speeches')
 v01_api.register(SpeakerResource())
 v01_api.register(SpeechResource())
+v01_api.register(SectionResource())
 
 urlpatterns = patterns('',
     url(r'^$', InstanceView.as_view(), name='home'),

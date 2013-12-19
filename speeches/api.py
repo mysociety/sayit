@@ -8,7 +8,26 @@ from tastypie.authorization import ReadOnlyAuthorization
 
 from haystack.query import SearchQuerySet
 
-from speeches.models import Speech, Speaker
+from speeches.models import Speech, Speaker, Section
+
+class SectionResource(NamespacedModelResource):
+    parent = fields.ForeignKey('self', 'parent', null=True)
+    children = fields.ToManyField('self', 'children')
+
+    def get_object_list(self, request):
+        return super(SectionResource, self).get_object_list(request).filter(instance=request.instance)
+
+    class Meta:
+        queryset = Section.objects.all()
+        resource_name = 'section'
+        excludes = []
+        allowed_methods = [ 'get' ]
+        authentication = Authentication()
+        authorization = ReadOnlyAuthorization()
+        filtering = {
+            'title': ALL,
+            'parent': ALL,
+        }
 
 class SpeakerResource(NamespacedModelResource):
     def get_object_list(self, request):
