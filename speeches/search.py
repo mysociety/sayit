@@ -42,7 +42,7 @@ class InstanceSearchView(SearchView):
 
     def build_form(self, *args, **kwargs):
         sqs = SearchQuerySet()
-        sqs = sqs.filter(instance=self.request.instance.label)
+        sqs = sqs.narrow('instance:%s' % self.request.instance.label)
         self.searchqueryset = sqs
         return super(InstanceSearchView, self).build_form(*args, **kwargs)
 

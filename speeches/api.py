@@ -56,7 +56,7 @@ class SpeechResource(NamespacedModelResource):
 
     def get_object_list(self, request):
         if 'q' in request.GET:
-            return SearchQuerySet().models(Speech).filter(instance=request.instance.label).load_all()
+            return SearchQuerySet().models(Speech).narrow('instance:%s' % request.instance.label).load_all()
         return super(SpeechResource, self).get_object_list(request).filter(instance=request.instance)
 
     class Meta:
