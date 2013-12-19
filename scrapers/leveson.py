@@ -45,7 +45,9 @@ for date, url, text in get_transcripts():
             if speech.section.object:
                 section = speech.section.object
             else:
-                section = Section.objects.create(instance=instance, title=speech.section.title, parent=date_section)
+                section = Section(instance=instance, title=speech.section.title, parent=date_section)
+                if commit:
+                    section.save()
                 speech.section.object = section
         else:
             section = date_section
