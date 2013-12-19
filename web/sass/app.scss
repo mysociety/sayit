@@ -439,14 +439,27 @@ form {
         width: 50%;
     }
     .menu-dropdown {
-        display: none;
-        @media (max-width: $large-screen) {
-            display: block;
-            position: absolute;
-            top: 1em;
-            right: 0.75em;
+        display: block;
+        position: absolute;
+        top: 1em;
+        right: 0.75em;
+        @media (min-width: $large-screen) {
+
+            display: none;
         }
         line-height: 1.6;
+    }
+    .menu-dropdown--button {
+        @extend .image-replacement;
+        height: 2.4em; /* 36px */
+        width: 2.4em;
+        background-image: url('../img/hamburger.png');
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image:  url('../img/hamburger@2.png');
+        }
+        background-position: center;
+        background-repeat: no-repeat;
+        @include background-size(28px 26px);
     }
     .nav-menu {
         @include unstyled-list;
