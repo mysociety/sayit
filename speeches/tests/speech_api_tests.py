@@ -28,8 +28,6 @@ class SpeechAPITests(InstanceTestCase):
         self.assertEqual(len(objects), 1)
 
         self.assertEqual(objects[0]['title'], "Public")
-        self.assertEqual(objects[0]['public'], True)
-
 
     def test_public_speech_visible(self):
         resp = self.get_speech_from_api(self.public_speech)
