@@ -26,6 +26,10 @@ class SpeechForm(HMSearchForm):
         sqs = super(SpeechForm, self).search()
         if self.is_valid() and self.cleaned_data.get('p'):
             sqs = sqs.filter(speaker=self.cleaned_data['p'])
+            try:
+                self.speaker = Speaker.objects.get(id=self.cleaned_data['p'])
+            except:
+                pass
         return sqs
 
 class SpeakerForm(HMSearchForm):

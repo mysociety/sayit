@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
 {% load url from future %}
 {% load bleach_tags %}
+{% load i18n %}
 
 {% block content %}
-    <h1 {% if query %}class="search-title-with-result"{% endif %}>Search {% if query %}/ <strong>{{ query }}</strong>{% endif %}</h1>
+    <h1 {% if query %}class="search-title-with-result"{% endif %}>{% trans 'Search' %} {% if query %}/ <strong>{{ query }}</strong>{% endif %}</h1>
     <form class="site-search site-search--on-results-page" action="/search/" method="get" >
       <div class="search-wrapper">
-          <input type="search" class="site-search__input" placeholder="Search" name="q" value="{{ form.q.value }}"/>
-          <input type="submit" class="icon-search" value="Search"/>
+          <input type="search" class="site-search__input" placeholder="{% trans 'Search' %}" name="q" value="{{ form.q.value }}"/>
+          <input type="submit" class="icon-search" value="{% trans 'Search' %}"/>
+        {% if form.speaker %}
+          <label>
+              <input type="checkbox" name="p" value="{{ form.p.value }}" checked>
+              {% blocktrans with speaker=form.speaker %}Search only speeches by {{ speaker }}{% endblocktrans %}
+          </label>
+        {% endif %}
       </div>
     </form>
 
@@ -15,7 +22,7 @@
         <div class="sidebar__unit">
           {% if speaker_results %}
 
-              <h2 class="reduced-heading">Speakers</h2>
+              <h2 class="reduced-heading">{% trans 'Speakers' %}</h2>
 
               <ul class="unstyled-list search-results-speakers">
                   {% for result in speaker_results %}
@@ -30,7 +37,7 @@
 
       <div class="primary-content__unit">
         {% if query %}
-            <h2>Speeches &amp; sections</h2>
+            <h2>{% trans 'Speeches &amp; sections' %}</h2>
 
             <ul class="unstyled-list search-results-list">
             {% for result in page.object_list %}
@@ -40,15 +47,15 @@
                     {% include 'search/section_item.html' with section=result.object highlight=result.highlighted.0 %}
                 {% endif %}
             {% empty %}
-                <li>No results found</li>
+                <li>{% trans 'No results found' %}</li>
             {% endfor %}
             </ul>
 
             {% if page.has_previous or page.has_next %}
                 <div class="pagination">
-                    {% if page.has_previous %}<a class="button search-pagination-button" href="?q={{ query }}&amp;page={{ page.previous_page_number }}">&laquo; Previous </a>{% endif %}
+                    {% if page.has_previous %}<a class="button search-pagination-button" href="?q={{ query }}&amp;page={{ page.previous_page_number }}">&laquo; {% trans 'Previous' %}</a>{% endif %}
 
-                    {% if page.has_next %}<a class="button search-pagination-button" href="?q={{ query }}&amp;page={{ page.next_page_number }}">Next &raquo;</a>{% endif %}
+                    {% if page.has_next %}<a class="button search-pagination-button" href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% trans 'Next' %} &raquo;</a>{% endif %}
                 </div>
             {% endif %}
         {% else %}
