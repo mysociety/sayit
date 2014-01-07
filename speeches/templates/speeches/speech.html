@@ -58,6 +58,7 @@
 
 
   {% if not nospeaker %}
+    {% ifchanged %}
     {% if speech.start_time or speech.start_date or speech.end_time or speech.end_date %}
       <span class="speech__meta-data__date">
         {{ speech.start_time|default:"" }}{% if speech.start_time and speech.start_date and speech.start_date != speech.end_date %},{% endif %}
@@ -71,6 +72,7 @@
         {% endif %}
       </span>
     {% endif %}
+    {% endifchanged %}
   {% endif %}
 
   {% for tag in speech.tags.all %}
