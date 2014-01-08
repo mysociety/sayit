@@ -2,9 +2,71 @@
 {% load i18n %}
 
 {% block fulltitle %}{% trans "Welcome to SayIt" %}{% endblock %}
-
+{% block instanceheader %}{% endblock %}
 {% block content %}
+<div class="the-problem">
+  <h2>{% trans "Transcripts of trials, political debates, meetings and interviews are stuck in the last century" %}</h2>
+  <p>{% trans "We think transcripts deserve better" %}</p>
+</div>
+<div class="the-solution">
+  <h2>{% trans "So we built <strong>SayIt</strong>" %}</h2>
+  <p>{% trans "A modern, open platform for transcripts" %}</p>
+</div>
+<div class="sayit-demos">
+  <h2>{% trans "SayIt makes it easy to search, browse and share transcripts" %}</h2>
+  <p class="sub">{% trans "See our demos" %}</p>
+  <ul>
+    <li><a href="#">{% trans "Read the Leveson Inquiry" %}</a></li>
+    <li><a href="#">{% trans "Read the Charles Taylor Trial" %}</a></li>
+    <li><a href="#">{% trans "Read the Plays of Shakespeare" %}</a></li>
+  </ul>
+</div>
+<div class="who-is-sayit-for">
+  <h2>{% trans "Who can SayIt help?" %}</h2>
+  <ul>
+    <li>
+      <h3>{% trans "Reporters" %}</h3>
+      <p>{% trans "Help your news organisation keep a searchable, linkable record of who said what and when" %}</p>
+    </li>
+    <li>
+      <h3>{% trans "Campaigners" %}</h3>
+      <p>{% trans "Build a databse of what key people are saying about issues you care about" %}</p>
+    </li>
+    <li>
+      <h3>{% trans "Courts officials" %}</h3>
+      <p>{% trans "Bring your official records into the internet age" %}</p>
+    </li>
+    <li>
+      <h3>{% trans "Researchers" %}</h3>
+      <p>{% trans "Keep your interviews or your quotations from literature easy to search and cite" %}</p>
+    </li>
+  </ul>
+</div>
+<div class="next-actions">
 
+      <h3>{% trans "Developers!" %}</h3>
+      <p>{% trans "SayIt is open source and built on open standards" %}</p>
+      <a href="#">{% trans "Get started" %}</a>
+
+
+      <h3>{% trans "Non-technical?" %}</h3>
+      <p>{% trans "Get help putting your transcripts online" %}</p>
+      <a href="#">{% trans "Find out how" %}</a>
+
+</div>
+<div class="development-roadmap">
+  <h2>{% trans "And we’re not done yet" %}</h2>
+  <p class="sub">{% trans "Phase 1 is complete, but SayIt is still in development" %}</p>
+  <h3>{% trans "Phase 1" %}</h3>
+  <span class="status status-complete">{% trans "Done" %}</span>
+  <p>{% trans "Publish transcripts that have been converted into an open standard we have adopted." %}</p>
+  <h3>{% trans "Phase 2" %}</h3>
+  <span class="status status-complete">{% trans "Next" %}</span>
+  <p>{% trans "Directly author new  transcripts through a modern interface." %}</p>
+</div>
+<div class="questions-and-answers">
+  <h2>{% trans "We're sure you have questions" %}</h2>
+</div>
 <div class="page-header">
     <h1>{% trans "SayIt &mdash; Simple, beautiful transcripts " %}</h1>
     <p>{% trans "A repository of speeches, written questions, dialogues, what have you. We're working on it." %}</p>
