@@ -40,7 +40,7 @@
         <script src="{% static "javascripts/vendor/custom.modernizr.js" %}"></script>
     </head>
 
-    <body>
+    <body class="{% block body_class %}{% endblock %}">
 
       {% if settings.DEBUG %}
       <!-- temporary hide
