@@ -19,7 +19,7 @@ from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAP
 from speeches.models import Speech, Speaker, Section, Recording, Tag, RecordingTimestamp
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
-from speeches.mixins import Base32SingleObjectMixin
+from speeches.mixins import Base32SingleObjectMixin, UnmatchingSlugException
 
 from django.views.generic import View, CreateView, UpdateView, DeleteView, DetailView, ListView, RedirectView, FormView
 from django.views.generic.detail import SingleObjectMixin
@@ -227,11 +227,13 @@ class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
         context['average_length'] = Speech.objects.for_instance(self.request.instance).annotate(length=Length('text')).aggregate(avg=Avg('length'))['avg']
         return context
 
-# It doesn't actually use base32 IDs in the URL, but this works around Django 1.4 generic view bug
+# It doesn't actually use base32 IDs in the URL, but this works around Django
+# 1.4 generic view bug, and allows non-canonical slug redirects to Just Work.
 class SpeakerView(NamespaceMixin, InstanceViewMixin, Base32SingleObjectMixin, ListView):
     model = Speaker
     paginate_by = 50
     template_name = 'speeches/speaker_detail.html'
+    slug_field = 'slugs__slug'
 
     def get_queryset(self):
         queryset = super(SpeakerView, self).get_queryset()
@@ -332,15 +334,27 @@ class SectionDelete(SectionMixin, DeleteView):
 class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
     model = Section
 
+    def get(self, request, *args, **kwargs):
+        try:
+            return super(SectionView, self).get(request, *args, **kwargs)
+        except UnmatchingSlugException, e:
+            return HttpResponseRedirect(e.args[0])
+
     def get_object(self, queryset=None):
         pk = self.kwargs.get(self.pk_url_kwarg, None)
         if pk is not None:
             return super(SectionView, self).get_object(queryset)
         full_slug = self.kwargs.get('full_slug', None)
         slugs = full_slug.split('/')
-        obj = get_object_or_404(self.model, slug=slugs[0], parent=None)
-        for slug in slugs[1:]:
-            obj = get_object_or_404(self.model, slug=slug, parent=obj)
+        parent = None
+        for i, slug in enumerate(slugs):
+            obj = get_object_or_404(self.model, slugs__slug=slug, parent=parent)
+            if slug != obj.slug:
+                new_url = obj.get_absolute_url()
+                if i < len(slugs) - 1:
+                    new_url += '/' + '/'.join(slugs[i+1:])
+                raise UnmatchingSlugException(new_url)
+            parent = obj
         return obj
 
     def get_context_data(self, **kwargs):
