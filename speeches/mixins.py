@@ -30,8 +30,8 @@ class Base32SingleObjectMixin(SingleObjectMixin):
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get(self.pk_url_kwarg, None)
+        mistyped = False
         if pk is not None:
-            mistyped = False
             try:
                 pk = base32_to_int(pk)
             except MistypedIDException, e:

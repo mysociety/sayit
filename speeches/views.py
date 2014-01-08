@@ -227,6 +227,7 @@ class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
         context['average_length'] = Speech.objects.for_instance(self.request.instance).annotate(length=Length('text')).aggregate(avg=Avg('length'))['avg']
         return context
 
+# It doesn't actually use base32 IDs in the URL, but this works around Django 1.4 generic view bug
 class SpeakerView(NamespaceMixin, InstanceViewMixin, Base32SingleObjectMixin, ListView):
     model = Speaker
     paginate_by = 50

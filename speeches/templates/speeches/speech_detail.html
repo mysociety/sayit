@@ -48,7 +48,7 @@
                 <div class="speech__meta-data">
                     {% if object.speaker %}
                         <span class="speech__meta-data__speaker-name">
-                            <a href="{% url "speeches:speaker-view" object.speaker.id32 object.speaker.slug %}">{{ object.speaker }}</a>
+                            <a href="{% url "speeches:speaker-view" object.speaker.slug %}">{{ object.speaker }}</a>
                         </span>
                     {% else %}
                         Unknown speaker

@@ -29,7 +29,7 @@ urlpatterns = patterns('',
 
     url(r'^speakers$', SpeakerList.as_view(), name='speaker-list'),
     url(r'^speaker/add$', SpeakerCreate.as_view(), name='speaker-add'),
-    url(r'^speaker/(?P<pk>.+?)(?:/(?P<slug>.*))?$', SpeakerView.as_view(), name='speaker-view'),
+    url(r'^speaker/(?P<slug>.+)$', SpeakerView.as_view(), name='speaker-view'),
     url(r'^speaker/(?P<pk>\d+)/edit$', SpeakerUpdate.as_view(), name='speaker-edit'),
     url(r'^speaker/popit$', SpeakerPopit.as_view(), name='speaker-popit'),
 

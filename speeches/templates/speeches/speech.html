@@ -50,7 +50,7 @@
     <div class="speech__meta-data">
       {% if speech.speaker and not nospeaker %}
         <span class="speech__meta-data__speaker-name">
-          <a href="{% url 'speeches:speaker-view' speech.speaker.id32 speech.speaker.slug %}">
+          <a href="{% url 'speeches:speaker-view' speech.speaker.slug %}">
               {% firstof speech.speaker_display speech.speaker %}
           </a>
         </span>

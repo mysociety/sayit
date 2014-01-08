@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.template.defaultfilters import timesince, slugify
 from django.conf import settings
 from django.core.files import File
+from django.contrib.contenttypes import generic
 
 from instances.models import InstanceMixin, InstanceManager
 import speeches
@@ -18,6 +19,8 @@ from speeches.utils.base32 import int_to_base32
 
 from djqmethod import Manager, querymethod
 from popit.models import Person
+from sluggable.fields import SluggableField
+from sluggable.models import Slug as SlugModel
 
 logger = logging.getLogger(__name__)
 
@@ -61,13 +64,19 @@ class AuditedModel(models.Model):
         self.modified = now
         super(AuditedModel, self).save(*args, **kwargs)
 
+class Slug(SlugModel):
+    pass
+
 # Speaker - someone who gave a speech
 class Speaker(InstanceMixin, AuditedModel):
     person = models.ForeignKey(Person, blank=True, null=True, on_delete=models.PROTECT, help_text='Associated PopIt object, optional')
     name = models.TextField(db_index=True)
+    slug = SluggableField(unique_with='instance', populate_from='name')
+    slugs = generic.GenericRelation(Slug)
 
     class Meta:
         ordering = ('name',)
+        unique_together = ('instance', 'slug')
 
     def __unicode__(self):
         if self.name:
@@ -82,13 +91,9 @@ class Speaker(InstanceMixin, AuditedModel):
     def id32(self):
         return int_to_base32(self.id)
 
-    @property
-    def slug(self):
-        return slugify(self.name)
-
     @models.permalink
     def get_absolute_url(self):
-        return ( 'speeches:speaker-view', (), { 'pk': self.id32, 'slug': self.slug } )
+        return ( 'speeches:speaker-view', (), { 'slug': self.slug } )
 
     @models.permalink
     def get_edit_url(self):
@@ -137,7 +142,8 @@ class Section(AuditedModel, InstanceMixin):
 
     title = models.TextField(blank=False, null=False, help_text='The title of the section')
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
-    slug = models.SlugField()
+    slug = SluggableField(unique_with='parent', populate_from='title')
+    slugs = generic.GenericRelation(Slug)
 
     class Meta:
         ordering = ('id',)
@@ -145,19 +151,6 @@ class Section(AuditedModel, InstanceMixin):
 
     def __unicode__(self):
         return self.title
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            slug = slugify(self.title)[:50].rstrip('-')
-            original_slug, n = slug, 2
-            while Section.objects.filter(slug=slug, parent=self.parent):
-                slug = original_slug
-                suffix = '-%d' % n
-                slug = slug[:50-len(suffix)].rstrip('-')
-                slug = '%s%s' % (slug, suffix)
-                n += 1
-            self.slug = slug
-        return super(Section, self).save(*args, **kwargs)
 
     def speech_datetimes(self):
         return (datetime.datetime.combine(s.start_date, s.start_time or datetime.time(0,0) )

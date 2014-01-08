@@ -18,7 +18,7 @@ class SpeakerTests(InstanceTestCase):
         speaker = Speaker.objects.create(name='Steve', instance=self.instance, person=popit_person)
         
         # Call the speaker's page
-        resp = self.client.get('/speaker/%s/steve' % speaker.id32)
+        resp = self.client.get('/speaker/%s' % speaker.slug)
 
         self.assertSequenceEqual("Steve", resp.context['speaker'].person.name)
         self.assertSequenceEqual("A froody dude", resp.context['speaker'].person.summary)
@@ -26,21 +26,23 @@ class SpeakerTests(InstanceTestCase):
 
         # Assert no speeches
         self.assertSequenceEqual([], resp.context['speech_list'])
+        self.assertSequenceEqual([], resp.context['page_obj'])
 
         # Add a speech
         speech = Speech.objects.create(text="A test speech", speaker=speaker, instance=self.instance)
 
         # Call the speaker's page again
-        resp = self.client.get('/speaker/%s/steve' % speaker.id32)
+        resp = self.client.get('/speaker/%s' % speaker.slug)
 
         self.assertSequenceEqual([speech], resp.context['speech_list'])
+        self.assertSequenceEqual([speech], resp.context['page_obj'])
 
     def test_speaker_page_has_button_to_add_speech(self):
         # Add a speaker
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
         
         # Call the speaker's page
-        resp = self.client.get('/speaker/%s/steve' % speaker.id32)
+        resp = self.client.get('/speaker/%s' % speaker.slug)
 
         self.assertContains(resp, '<a href="/speech/add?speaker=%d">Add a new speech</a>' % speaker.id, html=True)
 
@@ -62,6 +64,6 @@ class SpeakerTests(InstanceTestCase):
 
         resp = self.client.get('/sections/' + str(section.id))
 
-        self.assertRegexpMatches(resp.content, r'(?s)<img src="\s*http://example.com/image.jpg\s*".*?<a href="/speaker/%s/%s">\s*' % (speaker1.id32, speaker1.slug))
+        self.assertRegexpMatches(resp.content, r'(?s)<img src="\s*http://example.com/image.jpg\s*".*?<a href="/speaker/%s">\s*' % (speaker1.slug))
 
-        self.assertRegexpMatches(resp.content, r'(?s)<img src="\s*/static/speeches/i/a.\w+.png\s*".*?<a href="/speaker/%s/%s">\s*' % (speaker2.id32, speaker2.slug))
+        self.assertRegexpMatches(resp.content, r'(?s)<img src="\s*/static/speeches/i/a.\w+.png\s*".*?<a href="/speaker/%s">\s*' % (speaker2.slug))

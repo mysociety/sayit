@@ -26,7 +26,7 @@
 
               <ul class="unstyled-list search-results-speakers">
                   {% for result in speaker_results %}
-                  <li class="search"><a href="{% url "speeches:speaker-view" result.object.id32 result.object.slug %}">
+                  <li class="search"><a href="{% url "speeches:speaker-view" result.object.slug %}">
                       {{ result.highlighted.0|bleach }}
                   </a></li>
                   {% endfor %}
