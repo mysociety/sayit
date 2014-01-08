@@ -674,3 +674,159 @@ form {
     }
 }
 
+/* Marketing home page */
+
+.sayit-homepage {
+    h2 {
+        font-weight: normal;
+        @media (min-width: $medium-screen) {
+            font-size: emCalc(30);
+        }
+    }
+    h3 {
+        font-weight: normal;
+        @media (min-width: $medium-screen) {
+            font-size: emCalc(18);
+        }
+
+    }
+
+    .major-heading {
+        font-size: emCalc(28);
+         @media (min-width: $medium-screen) {
+            font-size: emCalc(36);
+        }
+    }
+
+    .mid-heading {
+        font-size: emCalc(21);
+        @media (min-width: $medium-screen) {
+            font-size: emCalc(24);
+        }
+    }
+
+    .sub-heading {
+        font-size: 1em;
+        @media (min-width: $medium-screen) {
+            font-size: emCalc(18);
+        }
+        color: $colour_dark_grey;
+    }
+
+    .homepage-section {
+        padding: 1em 0;
+         @media (min-width: $medium-screen) {
+            padding: 3em 0;
+        }
+        border-bottom: 1px solid $colour_light_grey;
+    }
+
+    .the-problem {
+        .full-page__row {
+            position: relative;
+        }
+        padding-top: 8em;
+        padding-bottom: 4em;
+        background-color: $colour_off_white;
+        .mid-heading {
+            @media (max-width: $medium-screen) {
+                font-size: 1em;
+            }
+            color: $colour_dark_grey;
+            font-weight: $weight_light;
+        }
+    }
+
+    .the-problem__messaging {
+        @include grid-column(12);
+         @media (min-width: $medium-screen) {
+            @include grid-column(9, $offset:3);
+        }
+         @media (min-width: $large-screen) {
+            @include grid-column(6, $offset:6);
+        }
+    }
+
+    .the-problem__figure {
+        .circa-messaging {
+            width: 329px;
+            height: 31px;
+            background-image: url('../img/modern-transcript-pointer.png');
+            @include background-size(329px 31px);
+            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                background-image: url('../img/modern-transcript-pointer@2.png');
+            }
+            background-position: top left;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 90%;
+            left: 38.5%;
+        }
+        .old-transcript {
+            width: 439px;
+            height: 389px;
+            background-image: url('../img/old-transcript.jpg');
+            @include box-shadow(0 0 9px rgba(0,0,0,0.4));
+            @include background-size(439px 389px);
+            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                background-image: url('../img/old-transcript@2.jpg');
+            }
+            background-position: top left;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: -6em;
+            left: 4%;
+        }
+    }
+    .the-solution {
+        position: relative;
+        z-index: 300;
+        background: #333;
+        padding-top: 4em;
+        color: #fff;
+        h2 {
+            color: #fff;
+        }
+    }
+
+    .the-solution__messaging {
+        @include grid-column(12);
+         @media (min-width: $medium-screen) {
+            @include grid-column(6);
+        }
+    }
+
+    .the-solution__figure {
+        @include grid-column(12);
+         @media (min-width: $medium-screen) {
+            @include grid-column(6);
+        }
+    }
+
+    .sayit-screenshot--desktop {
+        width: 668px;
+        height: 337px;
+        background-image: url('../img/sayit-screenshot-desktop.jpg');
+        @include box-shadow(0 0 9px rgba(0,0,0,0.4));
+        @include background-size(668px 337px);
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/sayit-screenshot-desktop@2.jpg');
+        }
+        background-position: top left;
+        background-repeat: no-repeat;
+    }
+
+    .sayit-demos {
+        position: relative;
+        z-index: 400;
+    }
+
+    .development-roadmap,
+    .questions-and-answers,
+    .next-actions,
+    .who-is-sayit-for,
+    .sayit-demos {
+        @extend .homepage-section;
+        @include clearfix;
+    }
+}
