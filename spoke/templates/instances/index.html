@@ -5,106 +5,140 @@
 {% block body_class %}sayit-homepage{% endblock %}
 {% block instanceheader %}{% endblock %}
 {% block content %}
-    </div> {# Closing the page wrappers as we want to go full width #}
+
+<div class="page-wrapper">
+  <div class="the-problem">
+    <div class="full-page__row">
+      <div class="the-problem__figure">
+        <div class="old-transcript"></div>
+        <div class="circa-messaging"></div>
+      </div>
+      <div class="the-problem__messaging">
+        <div class="words">
+          <h2 class="mid-heading">{% trans "Transcripts of trials, political debates, meetings and interviews are stuck in the last century" %}</h2>
+          <p class="major-heading">{% trans "We think transcripts deserve better" %}</p>
+        </div>
+      </div>
+    </div>
   </div>
-<div class="the-problem">
-  <div class="full-page__row">
-    <div class="the-problem__figure">
-      <div class="old-transcript"></div>
-      <div class="circa-messaging"></div>
-    </div>
-    <div class="the-problem__messaging">
-      <h2 class="mid-heading">{% trans "Transcripts of trials, political debates, meetings and interviews are stuck in the last century" %}</h2>
-      <p class="major-heading">{% trans "We think transcripts deserve better" %}</p>
+  <div class="the-solution">
+    <div class="full-page__row">
+      <div class="the-solution__messaging">
+        <div class="words">
+          <h2 class="major-heading">{% trans "So we built <strong>SayIt</strong>" %}</h2>
+          <p class="mid-heading">{% trans "A modern, open platform for transcripts" %}</p>
+        </div>
+      </div>
+      <div class="the-solution__figure">
+        <div class="sayit-screenshot--desktop">
+        </div>
+      </div>
     </div>
   </div>
-</div>
-<div class="the-solution">
-  <div class="full-page__row">
-    <div class="the-solution__messaging">
-      <h2 class="major-heading">{% trans "So we built <strong>SayIt</strong>" %}</h2>
-      <p class="mid-heading">{% trans "A modern, open platform for transcripts" %}</p>
+  <div class="sayit-demos">
+    <div class="full-page__row">
+      <div class="full-page__unit">
+        <h2>{% trans "SayIt makes it easy to search, browse and share transcripts" %}</h2>
+        <p class="sub-heading">{% trans "See our demos" %}</p>
+        <ul class="list-of-demos">
+          <li><a href="#" class="leveson-icon">{% trans "Read the <strong>Leveson Inquiry</strong> transcripts" %}</a></li>
+          <li><a href="#" class="taylor-icon">{% trans "Read the <strong>Charles Taylor Trial</strong> transcripts" %}</a></li>
+          <li><a href="#" class="shakespeare-icon">{% trans "Read the <strong>Plays of Shakespeare</strong>" %}</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="the-solution__figure">
-      <div class="sayit-screenshot--desktop">
+  </div>
+  <div class="who-is-sayit-for">
+    <div class="full-page__row">
+      <div class="full-page__unit">
+        <h2>{% trans "Who can SayIt help?" %}</h2>
+        <ul class="list-of-people">
+          <li class="people-reporters">
+            <h3>{% trans "Reporters" %}</h3>
+            <p>{% trans "Help your news organisation keep a searchable, linkable record of who said what and when" %}</p>
+          </li>
+          <li class="people-campaigners">
+            <h3>{% trans "Campaigners" %}</h3>
+            <p>{% trans "Build a databse of what key people are saying about issues you care about" %}</p>
+          </li>
+          <li class="people-courts-officials">
+            <h3>{% trans "Courts officials" %}</h3>
+            <p>{% trans "Bring your official records into the internet age" %}</p>
+          </li>
+          <li class="people-researchers">
+            <h3>{% trans "Researchers" %}</h3>
+            <p>{% trans "Keep your interviews or your quotations from literature easy to search and cite" %}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="next-actions">
+    <div class="full-page__row">
+      <div class="action-type action-type--developers">
+        <h3>{% trans "Developers!" %}</h3>
+        <p><strong>{% trans "SayIt is open source and built on open standards" %}</strong></p>
+        <a href="#" class="button">{% trans "Get started" %}</a>
+      </div>
+      <div class="action-type action-type--non-technical">
+        <h3>{% trans "Non-technical?" %}</h3>
+        <p><strong>{% trans "Get help putting your transcripts online" %}</strong></p>
+        <a href="#" class="button">{% trans "Find out how" %}</a>
+      </div>
+    </div>
+  </div>
+  <div class="development-roadmap">
+    <div class="full-page__row">
+      <div class="full-page__unit">
+        <h2>{% trans "And we’re not done yet" %}</h2>
+        <p class="sub-heading">{% trans "Phase 1 is complete, but SayIt is still in development" %}</p>
+        <div class="phases">
+          <div class="phase-column">
+            <div class="roadmap-entry roadmap-entry--phase1">
+              <h3>{% trans "Phase 1" %}</h3>
+              <span class="status status-complete">{% trans "Done" %}</span>
+              <p>{% trans "Publish transcripts that have been converted into an open standard we have adopted." %}</p>
+            </div>
+          </div>
+          <div class="phase-column">
+            <div class="roadmap-entry roadmap-entry--phase2">
+              <h3>{% trans "Phase 2" %}</h3>
+              <span class="status status-next">{% trans "Next" %}</span>
+              <p>{% trans "The ability to directly author new transcripts through a web-based user interface." %}</p>
+            </div>
+          </div>
+        </div>
+        <div class="centered"><a href="#" class="button secondary">Read more on our blog</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="questions-and-answers">
+    <div class="full-page__row">
+      <div class="full-page__unit">
+        <h2>{% trans "We're sure you have questions" %}</h2>
+        <div class="questions">
+          <div class="question-column">
+            <dl class="list-of-questions">
+              <dt>What is SayIt?</dt>
+              <dd>It’s an open source tool for making transcripts really easy to read, search and share on the modern internet.</dd>
+              <dt>Why try to make transcripts better?</dt>
+              <dd>Transcripts are a kind of oil that greases the wheels of well-functioning societies. They let people discover when powerful people have made pronouncements that affect other people. We believe that by making transcripts function better, more people will end up learning about decisions and opinions that affect their lives.</dd>
+            </dl>
+          </div>
+          <div class="question-column">
+            <dl class="list-of-questions">
+              <dt>Does SayIt support languages other than English?</dt>
+              <dd>mySociety is an international organisation, and we’re very keen to get the first non-English transcripts online as soon as possible. Please contact us if you want to help us launch a non-English SayIt site.</dd>
+              <dt>Is SayIt Open Source? Does it use open standards or open data?</dt>
+              <dd>SayIt is Open Source, licensed under the AGPL 3.0, and you can check out the code in our GitHub repo here. The data standard we use is a subset of the Akoma Ntoso data standard - a standard developed specifically for use in parliaments and assemblies.</dd>
+
+            </dl>
+          </div>
+        </div>
+        <div class="centered"><a href="#" class="button secondary">More questions</a></div>
       </div>
     </div>
   </div>
 </div>
-<div class="sayit-demos">
-  <div class="full-page__row">
-    <div class="full-page__unit">
-      <h2>{% trans "SayIt makes it easy to search, browse and share transcripts" %}</h2>
-      <p class="sub-heading">{% trans "See our demos" %}</p>
-      <ul>
-        <li><a href="#">{% trans "Read the Leveson Inquiry" %}</a></li>
-        <li><a href="#">{% trans "Read the Charles Taylor Trial" %}</a></li>
-        <li><a href="#">{% trans "Read the Plays of Shakespeare" %}</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-<div class="who-is-sayit-for">
-  <div class="full-page__row">
-    <div class="full-page__unit">
-      <h2>{% trans "Who can SayIt help?" %}</h2>
-      <ul>
-        <li>
-          <h3>{% trans "Reporters" %}</h3>
-          <p>{% trans "Help your news organisation keep a searchable, linkable record of who said what and when" %}</p>
-        </li>
-        <li>
-          <h3>{% trans "Campaigners" %}</h3>
-          <p>{% trans "Build a databse of what key people are saying about issues you care about" %}</p>
-        </li>
-        <li>
-          <h3>{% trans "Courts officials" %}</h3>
-          <p>{% trans "Bring your official records into the internet age" %}</p>
-        </li>
-        <li>
-          <h3>{% trans "Researchers" %}</h3>
-          <p>{% trans "Keep your interviews or your quotations from literature easy to search and cite" %}</p>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-<div class="next-actions">
-  <div class="full-page__row">
-    <div class="full-page__unit">
-      <h3>{% trans "Developers!" %}</h3>
-      <p class="sub-heading">{% trans "SayIt is open source and built on open standards" %}</p>
-      <a href="#">{% trans "Get started" %}</a>
 
-
-      <h3>{% trans "Non-technical?" %}</h3>
-      <p>{% trans "Get help putting your transcripts online" %}</p>
-      <a href="#">{% trans "Find out how" %}</a>
-    </div>
-  </div>
-</div>
-<div class="development-roadmap">
-  <div class="full-page__row">
-    <div class="full-page__unit">
-      <h2>{% trans "And we’re not done yet" %}</h2>
-      <p class="sub-heading">{% trans "Phase 1 is complete, but SayIt is still in development" %}</p>
-      <h3>{% trans "Phase 1" %}</h3>
-      <span class="status status-complete">{% trans "Done" %}</span>
-      <p>{% trans "Publish transcripts that have been converted into an open standard we have adopted." %}</p>
-      <h3>{% trans "Phase 2" %}</h3>
-      <span class="status status-complete">{% trans "Next" %}</span>
-      <p>{% trans "Directly author new  transcripts through a modern interface." %}</p>
-    </div>
-  </div>
-</div>
-<div class="questions-and-answers">
-  <div class="full-page__row">
-    <div class="full-page__unit">
-      <h2>{% trans "We're sure you have questions" %}</h2>
-    </div>
-  </div>
-</div>
-
-<div> {# reopening the page wrappers as we went full width #}
-  <div>
 {% endblock %}
