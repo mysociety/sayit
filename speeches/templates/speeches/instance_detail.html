@@ -28,9 +28,9 @@
 <div class="homepage-stats">
   <div class="full-page__row">
       <div class="full-page__unit">
-          <strong>{{ count_speeches|intcomma }}</strong> speeches, by
-          <strong>{{ count_speakers|intcomma }}</strong> speakers, in
-          <strong>{{ count_sections|intcomma }}</strong> sections
+          <strong>{{ count_speeches|intcomma }}</strong> speeches{% if count_speakers %}, by
+          <strong>{{ count_speakers|intcomma }}</strong> speakers{% endif %}{% if count_sections %}, in
+          <strong>{{ count_sections|intcomma }}</strong> sections{% endif %}
 
 {% block instance_blocks %}
 {% endblock %}
