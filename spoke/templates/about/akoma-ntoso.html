@@ -10,19 +10,19 @@ Akoma Ntoso
     <h1>Akoma Ntoso</h1>
 </div>
 
-<p>Akoma Ntoso (technically an acronym for Architecture for Knowledge-Oriented
-Management of African Normative Texts using Open Standards and Ontologies, and
-probably a <a href="http://en.wikipedia.org/wiki/Backronym">backronym</a> as it
-means &ldquo;linked hearts&rdquo; in Akan) is a comprehensive XML schema for
-several Parliamentary document types such as bills, acts, and debates. Various
-bodies around the world are starting to use or interoperate with Akoma Ntoso to
-model their data.
+<p>Akoma Ntoso<a name="f1b" href="#f1"><sup>1</sup></a> is a comprehensive XML
+schema for several Parliamentary document types such as bills, acts, and
+debates. Various bodies around the world are starting to use or interoperate
+with Akoma Ntoso to model their data. Whilst it was designed for Parliamentary
+document types, the schema is general enough that it can be used for many
+different types of debate.</p>
 
 <p>SayIt can import a subset of Akoma Ntoso, and below we describe which
-aspects of it we cover. If you have some transcripts and can transcribe them
-into the format below, we should be able to import it. If you use aspects of
-Akoma Ntoso that we don't yet cover, please get in touch so we can discuss
-improving our import process.
+aspects of it we currently cover. If you have some transcripts and can
+transcribe them into the format below, we should be able to import it. If you
+use aspects of Akoma Ntoso that we don't yet cover, please get in touch so we
+can discuss improving our import process.</p>
+
 
 <h2>Basic structure</h2>
 
@@ -84,7 +84,9 @@ at the start/end of the import.
 
 <h3>Generic attributes</h3>
 
-<p>All elements can have the following optional attributes:
+<p>All elements can have the following optional attributes (don&rsquo;t worry
+about these too much, you might only need <code>id</code>):</p>
+
 <ul>
     <li>id (must be unique within the document, start with letter or
     underscore, and can only contain letters, digits, underscores, periods, and
@@ -97,7 +99,7 @@ at the start/end of the import.
     <li>alternativeTo (a URI to the main element that this element is an alternative of)
     <li>evolvingId (the identifier it would have in a static situation)
     -->
-    <li>refersTo (a URI to an entry within <code>references</code>)
+    <li>refersTo (a URI to an entry within <code>references</code>) <!-- needs example -->
 </ul>
 
 <h2 id="container">Container elements</h2>
@@ -139,30 +141,27 @@ document &ndash; SayIt currently only spots the <code>docDate</code> or
 </pre>
 
 <p>The following elements (which all require an <code>id</code> attribute) can be used to
-create a hierarchy of speech-like elements:
+create a hierarchy of speech-like elements. The generic element is
+<code>debateSection</code>, which requires a <code>name</code> attribute to
+describe what type of section it is. Most of the specific elements are only useful in
+a Parliamentary-style debate context; do use them if applicable, but generally you may find
+<code>debateSection</code> is what you use. SayIt doesn't handle different
+types of section differently at present.</p>
 
 <ul>
-    <li>administrationOfOath
-    <li>rollCall
-    <li>prayers
-    <li>oralStatements
-    <li>writtenStatements
-    <li>personalStatements
-    <li>ministerialStatements
-    <li>resolutions
-    <li>nationalInterest
+    <li>debateSection (additionally requires a <code>name</code> attribute to
+    describe the type of section)
+    <li>administrationOfOath, rollCall, prayers
+    <li>oralStatements, writtenStatements, personalStatements, ministerialStatements
+    <li>resolutions, nationalInterest
     <li>declarationOfVote
     <li>communication
-    <li>petitions
-    <li>papers
-    <li>noticesOfMotion
+    <li>petitions, papers, noticesOfMotion
     <li>questions
     <li>address
     <li>proceduralMotions
     <li>pointOfOrder
     <li>adjournment
-    <li>debateSection (additionally requires a <code>name</code> attribute to
-    describe the type of section)
 </ul>
 
 <p>Each of these elements contains zero or one <code>num</code>,
@@ -289,7 +288,7 @@ block &ndash; --> are ignored (though not their contents).
 
 <ul>
 <li>span (generic inline)
-<li>b, i, u, sup, sub (presentational
+<li>b, i, u, sup, sub (presentational)
 <li>abbr (abbreviations)
 <li>a (link)
 <li>br (line break)
@@ -368,5 +367,13 @@ Please see the Akoma Ntoso website for
 information on Akoma Ntoso metadata</a>.
 
                 <!-- analysis, temporalData, identification, notes, proprietary, presentation -->
+
+<h2>Footnotes</h2>
+
+<p id="f1"><a href="#f1b"><sup>1</sup></a> Technically an acronym for Architecture
+for Knowledge-Oriented Management of African Normative Texts using Open
+Standards and Ontologies, and probably a
+<a href="http://en.wikipedia.org/wiki/Backronym">backronym</a> as it means
+&ldquo;linked hearts&rdquo; in Akan :)</p>
 
 {% endblock %}
