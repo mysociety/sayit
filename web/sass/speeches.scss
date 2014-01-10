@@ -38,7 +38,8 @@
 
 .page-header {
     position: relative;
-    padding: 2em 0;
+    padding: 2em 0 1em;
+    margin-bottom: 1em;
     border-bottom: 1px solid $colour_light_grey;
     @include clearfix();
     .action-button {
@@ -52,6 +53,10 @@
             line-height: 1em;
         }
     }
+}
+
+.page-header--speech {
+  margin-bottom: 0;
 }
 
 .page-header__row {
