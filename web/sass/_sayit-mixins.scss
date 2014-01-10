@@ -84,8 +84,8 @@ $weight_bold: 700;
 }
 
 .hide-on-small {
-    display: none !important;
-    visibility: hidden !important;
+    display: none;
+    visibility: hidden;
     @media (min-width: $medium-screen) {
         display: block;
         visibility: visible;
