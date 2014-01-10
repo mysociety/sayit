@@ -101,6 +101,10 @@ h2 {
     font-weight: $weight_light;
 }
 
+.centered {
+    text-align: center;
+}
+
 a {
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -677,8 +681,13 @@ form {
 /* Marketing home page */
 
 .sayit-homepage {
+    background-color: $colour_off_white;
+    .full-page__row > .full-page__unit {
+        padding: 0;
+    }
     h2 {
         font-weight: normal;
+        margin-bottom: 0.25em;
         @media (min-width: $medium-screen) {
             font-size: emCalc(30);
         }
@@ -688,11 +697,12 @@ form {
         @media (min-width: $medium-screen) {
             font-size: emCalc(18);
         }
-
     }
 
     .major-heading {
         font-size: emCalc(28);
+        margin-bottom: 0.2em;
+        line-height: 1.2em;
          @media (min-width: $medium-screen) {
             font-size: emCalc(36);
         }
@@ -716,7 +726,7 @@ form {
     .homepage-section {
         padding: 1em 0;
          @media (min-width: $medium-screen) {
-            padding: 3em 0;
+            padding: 4em 0;
         }
         border-bottom: 1px solid $colour_light_grey;
     }
@@ -725,9 +735,16 @@ form {
         .full-page__row {
             position: relative;
         }
-        padding-top: 8em;
-        padding-bottom: 4em;
+        padding-top: 3em;
+        padding-bottom: 3em;
         background-color: $colour_off_white;
+        background-image: url('../img/papers-bg.jpg');
+        @include background-size(cover);
+        background-position: center;
+        background-repeat: no-repeat;
+        @media (min-width: $medium-screen) {
+            padding-bottom: 0;
+        }
         .mid-heading {
             @media (max-width: $medium-screen) {
                 font-size: 1em;
@@ -739,51 +756,99 @@ form {
 
     .the-problem__messaging {
         @include grid-column(12);
-         @media (min-width: $medium-screen) {
-            @include grid-column(9, $offset:3);
+        text-align: center;
+        @media (min-width: $medium-screen) {
+            @include grid-column(7);
+            .words {
+               padding-top: 2em;
+               text-align: left;
+            }
         }
-         @media (min-width: $large-screen) {
-            @include grid-column(6, $offset:6);
+        @media (min-width: $large-screen) {
+            @include grid-column(6);
+        }
+        @media (min-width: $large-screen) {
+            .words {
+               padding-top: 6em;
+            }
+        }
+        @media (min-width: $huge-screen) {
+            .words {
+               margin-left: -2em;
+            }
         }
     }
 
     .the-problem__figure {
+        @include grid-column(12);
+        @media (min-width: $medium-screen) {
+            @include grid-column(5);
+        }
+        @media (min-width: $large-screen) {
+            @include grid-column(6);
+        }
         .circa-messaging {
-            width: 329px;
-            height: 31px;
-            background-image: url('../img/modern-transcript-pointer.png');
-            @include background-size(329px 31px);
-            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
-                background-image: url('../img/modern-transcript-pointer@2.png');
+            @extend .hide-on-small;
+            @media (min-width: $medium-screen) {
+                width: 329px;
+                height: 31px;
+                background-image: url('../img/modern-transcript-pointer.png');
+                @include background-size(329px 31px);
+                @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/modern-transcript-pointer@2.png');
+                }
+                background-position: top left;
+                background-repeat: no-repeat;
+                position: absolute;
+                top: 70%;
+                left: 31%;
             }
-            background-position: top left;
-            background-repeat: no-repeat;
-            position: absolute;
-            top: 90%;
-            left: 38.5%;
+            @media (min-width: $large-screen) {
+                top: 80%;
+                left: 42.5%;
+            }
+
         }
         .old-transcript {
-            width: 439px;
-            height: 389px;
-            background-image: url('../img/old-transcript.jpg');
-            @include box-shadow(0 0 9px rgba(0,0,0,0.4));
-            @include background-size(439px 389px);
-            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
-                background-image: url('../img/old-transcript@2.jpg');
+            @extend .hide-on-small;
+            @media (min-width: $medium-screen) {
+                position: relative;
+                left: -11em;
+                width: 439px;
+                height: 389px;
+                background-image: url('../img/old-transcript.jpg');
+                @include background-size(439px 389px);
+                background-position: top left;
+                background-repeat: no-repeat;
+                 @include box-shadow(0 0 9px rgba(0,0,0,0.4));
+                @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/old-transcript@2.jpg');
+                }
+
             }
-            background-position: top left;
-            background-repeat: no-repeat;
-            position: absolute;
-            top: -6em;
-            left: 4%;
+            @media (min-width: $large-screen) {
+                position: relative;
+                left: 0;
+            }
+            @media (min-width: $huge-screen) {
+                left: 3em;
+            }
         }
     }
     .the-solution {
         position: relative;
         z-index: 300;
         background: #333;
-        padding-top: 4em;
+        background-image: url('../img/blurred-product-background.jpg');
+        @include background-size(cover);
+        background-position: center;
+        background-repeat: no-repeat;
+        padding-top: 2em;
         color: #fff;
+        border-bottom: 1px solid $colour_light_grey;
+        @media (min-width: $medium-screen) {
+            padding-top: 4em;
+        }
         h2 {
             color: #fff;
         }
@@ -791,42 +856,341 @@ form {
 
     .the-solution__messaging {
         @include grid-column(12);
-         @media (min-width: $medium-screen) {
-            @include grid-column(6);
+        position: relative;
+        .words {
+            text-align: center;
         }
+        @media (min-width: $medium-screen) {
+            @include grid-column(6);
+             .words {
+                position: absolute;
+                top: 2em;
+                left: 2em;
+                text-align: left;
+            }
+        }
+        @media (min-width: $large-screen) {
+            .words {
+                top: 3em;
+                left: 4em;
+            }
+        }
+        .mid-heading {
+            font-weight: $weight_light;
+        }
+
     }
 
     .the-solution__figure {
         @include grid-column(12);
          @media (min-width: $medium-screen) {
-            @include grid-column(6);
+            @include grid-column(6, $offset:6);
         }
     }
 
     .sayit-screenshot--desktop {
-        width: 668px;
-        height: 337px;
+        width: 100%;
+        height: 150px;
+        @include background-size(cover);
         background-image: url('../img/sayit-screenshot-desktop.jpg');
-        @include box-shadow(0 0 9px rgba(0,0,0,0.4));
-        @include background-size(668px 337px);
         @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
             background-image: url('../img/sayit-screenshot-desktop@2.jpg');
         }
-        background-position: top left;
+        background-position: center top;
         background-repeat: no-repeat;
+        @media (min-width: $medium-screen) {
+            width: 668px;
+            height: 300px;
+            @include background-size(668px 337px);
+            background-position: top left;
+        }
     }
 
     .sayit-demos {
         position: relative;
         z-index: 400;
     }
+    .page-wrapper {
+        background: #fff;
+        overflow-x: hidden;
+        overflow-y: auto;
+        @include box-shadow(0 0 4px rgba(0, 0, 0, 0.3));
+    }
 
     .development-roadmap,
     .questions-and-answers,
-    .next-actions,
     .who-is-sayit-for,
     .sayit-demos {
         @extend .homepage-section;
         @include clearfix;
+        h2,
+        .sub-heading,
+        .mid-heading, {
+            text-align: center;
+        }
+    }
+
+    .list-of-demos {
+        @include grid-row($behavior:nest);
+        @include unstyled-list;
+        li {
+            @include grid-column(12);
+            margin-bottom: 1em;
+            @media (min-width: $medium-screen) {
+                @include grid-column(4);
+                margin-bottom: 0;
+            }
+        }
+        a {
+            display: block;
+            text-align: center;
+            width: 100%;
+            color: #fff;
+            background-color: #398db8;
+            padding: 3.5em 0;
+            font-weight: $weight_light;
+            line-height: 1.6em;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 187px;
+            @include background-size(167px 156px);
+            &:hover,
+            &:active,
+            &:focus {
+                background-color: darken(#398db8, 10%);
+                text-decoration: none;
+            }
+            &.leveson-icon {
+                background-image: url('../img/mic.png');
+                 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/mic@2.png');
+                }
+            }
+            &.taylor-icon {
+                background-image: url('../img/gavel.png');
+                 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/gavel@2.png');
+                }
+            }
+            &.shakespeare-icon {
+                background-image: url('../img/pen.png');
+                @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/pen@2.png');
+                }
+            }
+        }
+        strong {
+            display: block;
+            font-weight: normal;
+            font-size: emCalc(24);
+        }
+
+    }
+
+    .list-of-people {
+        @include grid-row($behavior:nest);
+        @include unstyled-list;
+        li {
+            @include grid-column(12);
+            margin-bottom: 1em;
+            text-align: center;
+            padding-top: 5em;
+            background-position: center top;
+            background-repeat: no-repeat;
+            @include background-size(90px 70px);
+            @media (min-width: $medium-screen) {
+                @include grid-column(3);
+                margin-bottom: 0;
+                margin-top: 1em;
+            }
+            &.people-reporters {
+                background-image: url('../img/newspaper.png');
+                @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/newspaper@2.png');
+                }
+            }
+            &.people-campaigners {
+                background-image: url('../img/lightening.png');
+                @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/lightening@2.png');
+                }
+            }
+            &.people-courts-officials {
+                background-image: url('../img/scales.png');
+                @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/scales@2.png');
+                }
+            }
+            &.people-researchers {
+                background-image: url('../img/glasses.png');
+                @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/glasses@2.png');
+                }
+            }
+        }
+        p {
+            color: $colour_dark_grey;
+        }
+    }
+
+    .next-actions {
+        background-color: $colour_primary;
+        color: #fff;
+        @include clearfix;
+        a {
+            color: #fff;
+        }
+        h3 {
+            color: lighten($colour_primary, 27%);
+        }
+        strong {
+            font-weight: normal;
+            font-size: emCalc(18);
+            @media (min-width: $medium-screen) {
+                font-size: emCalc(24);
+            }
+            line-height: 1.25em;
+            max-width: 13em;
+            display: inline-block;
+        }
+        .button {
+            background-color: darken($colour_primary, 10%);
+            &:hover {
+                background-color: darken($colour_primary, 15%);
+            }
+        }
+        .action-type {
+            @include grid-column(12);
+            padding: 1em 0;
+            background-position: right bottom;
+            background-repeat: no-repeat;
+            text-align: center;
+            @include background-size(167px 204px);
+            @media (min-width: $medium-screen) {
+                padding: 2em 0;
+            }
+            @media (min-width: $medium-screen) {
+                @include grid-column(6);
+            }
+        }
+
+        .action-type--developers {
+            background-image: url('../img/octocat.png');
+            border-bottom: 1px solid darken($colour_primary, 5%);
+            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/octocat@2.png');
+                }
+            @media (min-width: $medium-screen) {
+                border-right: 1px solid darken($colour_primary, 5%);
+                border-bottom: none;
+            }
+        }
+
+        .action-type--non-technical {
+            background-image: url('../img/plant.png');
+            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                background-image: url('../img/plant@2.png');
+            }
+        }
+    }
+
+    .development-roadmap {
+        .phases {
+            @include grid-row($behavior:nested);
+            margin-top: 4em;
+            margin-bottom: 2em;
+        }
+        .phase-column {
+            @include grid-row(12);
+            margin-bottom: 1em;
+            &:first-child {
+                margin-bottom: 3em;
+            }
+            @media (min-width: $medium-screen) {
+                @include grid-column(6);
+                &:first-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+        .roadmap-entry {
+            border: 1px solid $colour_light_grey;
+            @include border-radius(6px);
+            padding: 1.5em;
+            position: relative;
+            @media (min-width: $medium-screen) {
+                margin: 0 2em;
+            }
+            h3 {
+                margin-top: 0;
+                margin-bottom: 0.25em;
+                @media (min-width: $medium-screen) {
+                    font-size: emCalc(21);
+                }
+            }
+        }
+
+        .status {
+            position: absolute;
+            top: -2.5em;
+            right: -1.5em;
+            display: block;
+            width: 87px;
+            height: 87px;
+            @include background-size(87px);
+            background-position: center;
+            background-repeat: no-repeat;
+            @extend .image-replacement;
+        }
+
+        .status-complete {
+            background-image: url('../img/done-mark.png');
+            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                background-image: url('../img/done-mark@2.png');
+            }
+        }
+
+        .status-next {
+            background-image: url('../img/next-mark.png');
+            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                background-image: url('../img/next-mark@2.png');
+            }
+        }
+
+        p {
+            color: $colour_dark_grey;
+            margin-bottom: 0;
+        }
+    }
+    .questions-and-answers  {
+        .questions {
+            @include grid-row($behavior:nested);
+        }
+        .question-column {
+        @include grid-column(12);
+        margin-bottom: 1em;
+        @media (min-width: $medium-screen) {
+            @include grid-column(6);
+        }
+        @media (min-width: $large-screen) {
+            &:first-child {
+                @include grid-column(5, $offset:1);
+            }
+            &:last-child {
+                @include grid-column(5, $pull:1);
+            }
+        }
+    }
+    }
+}
+
+.questions-and-answers {
+    /* Used on homepage and FAQs pages */
+    dt {
+        font-weight: normal;
+        margin-top: 1em;
+    }
+    dd {
+        color: lighten($colour_dark_grey, 5%);
     }
 }
