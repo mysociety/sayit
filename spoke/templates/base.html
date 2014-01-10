@@ -106,7 +106,10 @@
             {% if request.instance.description %}
               <div class="instance-header__subtitle">
                 <p>
-                {{ request.instance.description }}
+                    {{ request.instance.description }}
+                  {% if instance_about_page %}
+                    <a href="/about">{% trans "More&hellip;" %}</a>
+                  {% endif %}
                 </p>
               </div>
             {% endif %}

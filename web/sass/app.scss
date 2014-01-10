@@ -294,6 +294,12 @@ form {
     padding-bottom: emCalc(15);
     background: $colour_primary;
     position: relative;
+    a {
+        &:link,
+        &:visited {
+            color: #fff;
+        }
+    }
 }
 
 .instance-header__row {
@@ -324,10 +330,6 @@ form {
         color: #fff;
     }
     a {
-        &:link,
-        &:visited {
-            color: #fff;
-        }
         &:hover,
         &:active,
         &:focus {
