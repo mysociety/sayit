@@ -828,10 +828,10 @@ form {
         .circa-messaging {
             @extend .hide-on-small;
             @media (min-width: $medium-screen) {
-                width: 329px;
+                width: 271px;
                 height: 31px;
                 background-image: url('../img/modern-transcript-pointer.png');
-                @include background-size(329px 31px);
+                @include background-size(271px 31px);
                 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
                     background-image: url('../img/modern-transcript-pointer@2.png');
                 }
