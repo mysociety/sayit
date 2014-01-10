@@ -937,8 +937,12 @@ form {
             @include grid-column(12);
             margin-bottom: 1em;
             @media (min-width: $medium-screen) {
+                //@include grid-column(6);
                 @include grid-column(4);
-                margin-bottom: 0;
+            }
+            @media (min-width: $large-screen) {
+                //@include grid-column(3); *put back when fourth speech set is online
+                 margin-bottom: 0;
             }
         }
         a {
@@ -959,6 +963,12 @@ form {
             &:focus {
                 background-color: darken(#398db8, 10%);
                 text-decoration: none;
+            }
+            &.conservative-icon {
+                background-image: url('../img/tie.png');
+                 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/tie@2.png');
+                }
             }
             &.leveson-icon {
                 background-image: url('../img/mic.png');
