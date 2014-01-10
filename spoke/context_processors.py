@@ -20,9 +20,10 @@ def add_settings( request ):
 
 def nav_section(request):
     instance_about_page = False
-    template = '%s/about/templates/about/%s/index.html' % (settings.PROJECT_ROOT, request.instance.label)
-    if os.path.exists(template):
-        instance_about_page = True
+    if request.instance:
+        template = '%s/about/templates/about/%s/index.html' % (settings.PROJECT_ROOT, request.instance.label)
+        if os.path.exists(template):
+            instance_about_page = True
     return {
         'nav_primary': request.path_info.split('/')[1],
         'instance_about_page': instance_about_page,
