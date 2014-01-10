@@ -105,6 +105,36 @@ h2 {
     text-align: center;
 }
 
+.pull-right {
+     @media (min-width: $medium-screen) {
+        float: right;
+        margin-left: 1em;
+    }
+}
+.pull-left {
+     @media (min-width: $medium-screen) {
+        float: left;
+        margin-left: 1em;
+    }
+}
+
+ul {
+    list-style-position: inside;
+}
+
+pre {
+    padding: 1em;
+    background: $colour_off_white;
+    border: 1px solid $colour_light_grey;
+    line-height: 1.5em;
+    margin-bottom: 1em;
+    @include border-radius(3px);
+    font-size: emCalc(14);
+    font-family: Consolas, 'Liberation Mono', Courier, monospace;
+    max-width: 100%;
+    overflow-x: scroll;
+}
+
 a {
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -1210,5 +1240,18 @@ form {
     }
     dd {
         color: lighten($colour_dark_grey, 5%);
+    }
+}
+
+.content-page {
+    p, ol, ul {
+        max-width: 37em;
+    }
+    h2 {
+        font-weight: normal;
+        margin-bottom: 0.25em;
+        @media (min-width: $medium-screen) {
+            font-size: emCalc(30);
+        }
     }
 }
