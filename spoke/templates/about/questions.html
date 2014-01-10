@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block body_class %}content-page{% endblock %}
+{% block instanceheader %}{% endblock %}
+{% block title %}
+Akoma Ntoso
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Questions</h1>
+</div>
+<dl>
+  <dt id="1">
+    What is SayIt?
+    <a href="#1">#</a>
+  </dt>
+  <dd>
+    <p>It’s an open source tool for making transcripts easy to read, search and share on the modern internet.</p>
+  </dd>
+  <dt id="2">
+    What sort of people or organisations can SayIt help?
+    <a href="#2">#</a>
+  </dt>
+  <dd>
+    <p>Lots, including:</p>
+    <ul>
+      <li>Journalists, who want to store, search and publish both the transcripts of specific events, and databases of speeches and statements by politicians.</li>
+      <li>Officials in courts, who want to produce transcripts that are quicker and easier to use.</li>
+      <li>Researchers who have records of interviews with subjects, who want that data to be quick and easy to access, even if private.</li>
+      <li>Campaigners and activists who want to track what certain people say about key issues.</li>
+    </ul>
+  </dd>
+  <dt id="3">
+    Why is a SayIt transcript better than a PDF version?
+    <a href="#3">#</a>
+  </dt>
+  <dd>
+    <p>SayIt has several advantages over classic paper or PDF versions:</p>
+    <ul>
+    <li>The design is mobile responsive to make reading and navigation pleasant across devices, large and small</li>
+    <li>Search within an entire database of speeches, for example a whole trial, or everything said by an elected assembly - better than opening hundreds of PDFs and searching manually.</li>
+    <li>Search within one person’s speeches, even if they only speak occasionally.</li>
+    <li>Easily share links to a single session (for example at a trial), or even a single speech within a session.</li>
+    <li>Make your transcripts more likely to show up clearly in search engines.</li>
+    <li>There’s an API for people who want to do more advanced text processing.</li>
+    </ul>
+  </dd>
+  <dt id="4">
+    How do I get a transcript online using SayIt?
+    <a href="#4">#</a>
+  </dt>
+  <dd>
+    <p>In Phase 1 there is only one way of getting your transcript(s) online, which is to convert your current data from whatever format it is into the open standard that we have adopted. This requires technical skills to carry out. If you have those skills, please see the instructions here. If you don’t have access to those skills, please write to us anyway and we’ll see if we can help provide them.</p>
+  </dd>
+  <dt id="5">
+    Why do you call this Phase 1?
+    <a href="#5">#</a>
+  </dt>
+  <dd>
+    <p>In Phase 1 you can only load in new transcripts by creating data in the right format, which requires technical skills. In Phase 2 we’ll be launching an authoring and editing interface so that people who want to make new transcripts can author them directly through a web browser. We’ll be taking feedback on what sort of tools people need to make this easy and attractive.</p>
+  </dd>
+  <dt id="6">
+    Is SayIt only available as a hosted service?
+    <a href="#6">#</a>
+  </dt>
+  <dd>
+    <p>SayIt is an open source tool that has been developed to work both as a hosted service, and as something deployed on your own servers. Right now - at the start of Phase 1 - we’ve not put a lot of time into making the install experience particularly nice, though. So if you want to start playing with SayIt you might be better off converting some data into the open standard we use, and we’ll make you a hosted instance to play with.</p>
+  </dd>
+  <dt id="7">
+    Aren’t transcripts sort of old fashioned? Isn’t everything video now?
+    <a href="#7">#</a>
+  </dt>
+  <dd>
+    <p>Online video is definitely amazing stuff. But text transcripts offer certain virtues too, which is makes them still valuable.  if you want to know whether a committee has been talking about you, or you want to subscribe to be sent alerts when your street gets mentioned by powerful people, then written transcripts, made of nicely structured data are hard to beat. The ideal system would clearly mix both, and being open source we hope that SayIt forms a foundation for such systems in future.</p>
+  </dd>
+  <dt id="8">
+    Is SayIt Open Source? Does it use open standards or open data?
+    <a href="#8">#</a>
+  </dt>
+  <dd>
+    <p>SayIt is Open Source, licensed under the AGPL 3.0, and you can check out the code in our GitHub repo here. The data standard we use is a subset of the Akoma Ntoso data standard - a standard developed specifically for use in parliaments and assemblies.</p>
+  </dd>
+  <dt id="9">
+    Can I write a parser that loads data directly into SayIt on a daily or weekly basis?
+    <a href="#9">#</a>
+  </dt>
+  <dd>
+    <p>Yes - we’re keen to see people use the site like this. Please contact us so we can discuss how best to implement this so it works well for you and us.</p>
+  </dd>
+  <dt id="10">
+    Does SayIt support languages other than English?
+    <a href="#10">#</a>
+  </dt>
+  <dd>
+    <p>mySociety is an international organisation, and we’re very keen to get the first non-English transcripts online as soon as possible. Please contact us if you want to help us launch a non-English SayIt site.</p>
+  </dd>
+  <dt id="11">
+    I’m a coder who thinks this is cool. What’s the best thing for me to do?
+    <a href="#11">#</a>
+  </dt>
+  <dd>
+    <p>There are plenty of options! You could help someone less techy to important some data that’s important to them (we can make the connection). Or you could pick a transcript data source and convert it yourself. Or you could try deploying our code and give us feedback on the install instructions. Or you could try using our API. Or you can submit ideas and bug reports via GitHub issues. Or you can just subscribe to the mailing list and say hello!</p>
+  </dd>
+  <dt id="12">
+    Can SayIt sites be made private?
+    <a href="#12">#</a>
+  </dt>
+  <dd>
+    <p>Yes, please contact us if you want to discuss this feature.</p>
+  </dd>
+  <dt id="13">
+    Can SayIt be used to track speeches made in more than one place?
+    <a href="#13">#</a>
+  </dt>
+  <dd>
+    <p>Yes, you don’t just have to record one event, like a trial or a focus group. You can build up nicely structured database of quotes made by people across media sources, or from books and papers. We would like to see people use SayIt to build sites like ‘all public statements by the Prime Minister’. </p>
+  </dd>
+</dl>
+
+{% endblock %}

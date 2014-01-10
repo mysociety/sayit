@@ -119,7 +119,7 @@ h2 {
 }
 
 ul {
-    list-style-position: inside;
+    margin-left: 1.2em;
 }
 
 pre {
@@ -1231,15 +1231,20 @@ form {
     }
     }
 }
-
+.questions-and-answers {
+    dd {
+        color: lighten($colour_dark_grey, 5%);
+    }
+}
+.content-page,
 .questions-and-answers {
     /* Used on homepage and FAQs pages */
     dt {
         font-weight: normal;
         margin-top: 1em;
-    }
-    dd {
-        color: lighten($colour_dark_grey, 5%);
+        p {
+            margin-bottom: 0;
+        }
     }
 }
 
@@ -1253,5 +1258,13 @@ form {
         @media (min-width: $medium-screen) {
             font-size: emCalc(30);
         }
+    }
+    dt {
+        font-weight: $weight_bold;
+        font-size: emCalc(18);
+        @media (min-width: $medium-screen) {
+            font-size: emCalc(21);
+        }
+
     }
 }
