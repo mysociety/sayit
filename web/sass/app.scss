@@ -573,6 +573,10 @@ form {
     display: block;
     margin: .75em 0;
     position: relative;
+    -webkit-hyphens: manual;
+       -moz-hyphens: manual;
+        -ms-hyphens: manual;
+            hyphens: manual;
     &:hover {
         text-decoration: none;
         @include box-shadow(0 0 2px 1px rgba(0, 0, 0, 0.1));
