@@ -72,6 +72,8 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = [
+    'django.middleware.gzip.GZipMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -80,6 +82,7 @@ MIDDLEWARE_CLASSES = [
     'pagination.middleware.PaginationMiddleware',
     'instances.middleware.MultiInstanceMiddleware',
     'spoke.middleware.WhoDidMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -221,4 +224,19 @@ HAYSTACK_CONNECTIONS = {
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': SEARCH_INDEX_NAME,
     },
+}
+
+if DEBUG:
+    cache = { 'BACKEND': 'django.core.cache.backends.dummy.DummyCache' }
+    CACHE_MIDDLEWARE_SECONDS = 0
+else:
+    cache = {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+        'KEY_PREFIX': DATABASES['default']['NAME'],
+    }
+    CACHE_MIDDLEWARE_SECONDS = 3600
+
+CACHES = {
+    'default': cache
 }
