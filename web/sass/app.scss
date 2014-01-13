@@ -52,7 +52,7 @@
 // @import "foundation/components/tables";
 // @import "foundation/components/thumbs";
 // @import "foundation/components/tooltips";
-// @import "foundation/components/dropdown";
+@import "foundation/components/dropdown";
 
 @import "compass/css3";
 @import "_sayit-mixins.scss";
@@ -278,9 +278,21 @@ form {
 }
 
 .admin-menu-container {
-    @include grid-column(3);
-    text-align: right;
-
+    position: fixed;
+    top: 0;
+    left: 1em;
+    z-index: 500;
+    min-width: 280px;
+    a {
+        &:link {
+            color: $colour_primary;
+        }
+        &:hover,
+        &:active,
+        &:visited {
+            color: darken($colour_primary, 10%);
+        }
+    }
 }
 
 .admin-menu-button {
