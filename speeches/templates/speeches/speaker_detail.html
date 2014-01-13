@@ -25,7 +25,7 @@
           class="speaker-portrait speaker-portrait--left speaker-portrait--large round-image"
           alt="Headshot of {{ speaker.name|escape}}" />
       <div class="speaker-information">
-        <p class="pretitle"> <a href="{% url "speeches:speaker-list" %}">Speakers</a> / </p>
+        <p class="pretitle"> <a href="{% url "speeches:speaker-list" %}">{% trans "Speakers" %}</a> / </p>
         <h1>{{ speaker.name }}</h1>
         {% if speaker.person.summary %}
           <p class="person-summary"> {{ speaker.person.summary }}
@@ -39,7 +39,7 @@
           {{ section_count|intcomma }}
         </div>
         <div class="stat__descriptor">
-          Session appearances
+            {% blocktrans count c=section_count %}Session appearance{% plural %}Session appearances{% endblocktrans %}
         </div>
       </div>
       <div class="stat">
@@ -47,7 +47,7 @@
           {{ paginator.count|intcomma }}
         </div>
         <div class="stat__descriptor">
-          Speeches made
+          {% blocktrans count c=paginator.count %}Speech made{% plural %}Speeches made{% endblocktrans %}
         </div>
       </div>
       <!--
@@ -63,7 +63,7 @@
       {% if longest_speech %}{% with longest_speech.0 as speech %}
       <div class="stat">
         <div class="stat__descriptor">
-         Longest speech
+          {% trans "Longest speech" %}
         </div>
         <div class="stat__figure">
           {% if speech.section %}
@@ -84,15 +84,15 @@
 <div class="speaker-page__speeches-collection">
     <div class="full-page__row nested-row">
       <div class="speaker-page__speeches-title">
-        <h2>Speeches</h2>
+        <h2>{% trans "Speeches" %}</h2>
       </div>
 
       <div class="speaker-page__search">
         <form class="site-search site-search" action="/search/" method="get" >
           <input type="hidden" name="p" value="{{ speaker.id }}">
           <div class="search-wrapper">
-              <input type="search" class="site-search__input" placeholder="Search this person's speeches" name="q"/>
-              <input type="submit" class="icon-search icon-search" value="Search"/>
+              <input type="search" class="site-search__input" placeholder="{% trans "Search this person's speeches" %}" name="q"/>
+              <input type="submit" class="icon-search icon-search" value="{% trans 'Search' %}"/>
           </div>
         </form>
       </div>

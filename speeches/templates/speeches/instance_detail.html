@@ -12,11 +12,11 @@
   {% if paginator.count %}
 
     <div class="homepage-search">
-        <h2>{% block instance_search_title %}Search the {{ request.instance.title }}{% endblock %}</h2>
+        <h2>{% block instance_search_title %}{% blocktrans with instance=request.instance.title %}Search the {{ instance }}{% endblocktrans %}{% endblock %}</h2>
         <form class="site-search site-search--homepage" action="/search/" method="get" >
             <div class="search-wrapper">
-                <input type="search" class="site-search__input" placeholder="Search" name="q"/>
-                <input type="submit" class="icon-search icon-search" value="Search"/>
+                <input type="search" class="site-search__input" placeholder="{% trans 'Search' %}" name="q"/>
+                <input type="submit" class="icon-search icon-search" value="{% trans 'Search' %}"/>
             </div>
         </form>
     </div>
@@ -28,9 +28,9 @@
 <div class="homepage-stats">
   <div class="full-page__row">
       <div class="full-page__unit">
-          <strong>{{ count_speeches|intcomma }}</strong> speeches, by
-          <strong>{{ count_speakers|intcomma }}</strong> speakers, in
-          <strong>{{ count_sections|intcomma }}</strong> sections
+          <strong>{{ count_speeches|intcomma }}</strong> speeches{% if count_speakers %}, by
+          <strong>{{ count_speakers|intcomma }}</strong> speakers{% endif %}{% if count_sections %}, in
+          <strong>{{ count_sections|intcomma }}</strong> sections{% endif %}
 
 {% block instance_blocks %}
 {% endblock %}
