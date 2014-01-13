@@ -5,6 +5,7 @@
 ### General useful bits
 PyYAML
 psycopg2
+python-memcached
 
 ### Django related
 Django>=1.4.2,<1.5
