@@ -1,5 +1,4 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
+{% extends 'speeches/base_player.html' %}
 {% load url from future %}
 {% load i18n %}
 
@@ -17,8 +16,6 @@
 {% block title %}{% blocktrans with title=section.title %}View Section: {{ title }}{% endblocktrans %}{% endblock %}
 
 {% block content %}
-
-
 
 <div class="page-header page-header--speech">
 

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load staticfiles %}
+{% load compressed %}
 {% load url from future %}
 
 {% block extra_css %}
@@ -10,10 +11,7 @@
 
 {% block extra_js %}
 {{ block.super }}
-<script src="{% static "speeches/js/jQuery-File-Upload/js/vendor/jquery.ui.widget.js" %}"></script>
-<script src="{% static "speeches/js/jQuery-File-Upload/js/jquery.iframe-transport.js" %}"></script>
-<script src="{% static "speeches/js/jQuery-File-Upload/js/jquery.fileupload.js" %}"></script>
-{# <script src="{% static "js/bootstrap-datepicker.js" %}"></script> #}
+{% compressed_js 'upload' %}
 {% endblock %}
 
 {% block title %}{% if object %}{% trans "Edit speech" %} {% else %}{% trans "Add speech" %}{% endif %}{% endblock %}

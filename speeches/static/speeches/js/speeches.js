@@ -2,7 +2,11 @@ $(function() {
     sayit_add_speech_links();
     sayit_ajax_file_uploads();
     sayit_link_prev_next_keyboard();
-    $('audio').not('.audio-small').mediaelementplayer();
+
+    var audios = $('audio').not('.audio-small');
+    if (audios.mediaelementplayer) {
+        audios.mediaelementplayer();
+    }
 });
 
 // Make them answer an Audio/Text question first if it's a brand new speech

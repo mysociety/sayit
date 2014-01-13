@@ -7,13 +7,14 @@ PyYAML
 psycopg2
 
 ### Django related
-Django>=1.4,<1.5
+Django>=1.4.2,<1.5
 South
 django-pagination
 django_select2
 django-tastypie==0.9.16
 django-qmethod
 django-bleach
+django-pipeline
 # Only for debugging, but very useful and easiest to just have it here
 django-debug-toolbar
 
