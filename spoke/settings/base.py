@@ -63,13 +63,15 @@ MEDIA_URL = '/media/'
 FILE_UPLOAD_PERMISSIONS = 0644
 
 # List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    ('django.template.loaders.cached.Loader', (
-        'django.template.loaders.filesystem.Loader',
-        'django.template.loaders.app_directories.Loader',
+loaders = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
-    )),
 )
+if not DEBUG:
+    loaders = ( ('django.template.loaders.cached.Loader', loaders), )
+
+TEMPLATE_LOADERS = loaders
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.gzip.GZipMiddleware',
