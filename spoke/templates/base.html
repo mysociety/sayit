@@ -12,7 +12,6 @@
         <link href="{% static "stylesheets/app.css" %}" rel="stylesheet">
         <link href="{% static "stylesheets/speeches.css" %}" rel="stylesheet">
         {% endif %}
-        <link href="{% static "speeches/mediaelement/mediaelementplayer.min.css" %}" rel="stylesheet">
         <!-- <link href="{% static "speeches/css/speeches.css" %}" rel="stylesheet"> -->
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
         {% block extra_css %}{% endblock %}
@@ -21,6 +20,7 @@
             var docEl = document.documentElement;
             docEl.className = docEl.className.replace(/\bno-js\b/,'') + ' js';
         </script>
+        {% block extra_js_head %}{% endblock %}
         {% if settings.GOOGLE_ANALYTICS_ACCOUNT %}
         <script type="text/javascript">
 

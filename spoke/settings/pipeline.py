@@ -40,22 +40,30 @@ PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
 PIPELINE_YUI_BINARY = '/usr/bin/env yui-compressor'
 
 PIPELINE_JS = {
+    # Some things in document body (e.g. media player set up) call $()
     'default-head': {
         'source_filenames': (
             'javascripts/vendor/jquery.js',
         ),
         'output_filename': 'javascripts/sayit.head.min.js',
     },
+    # The JS at the end of each page, before </body>
     'default': {
         'source_filenames': (
             'javascripts/foundation/foundation.js',
             'javascripts/foundation/foundation.alerts.js',
             'javascripts/foundation/foundation.dropdown.js',
-            'speeches/mediaelement/mediaelement-and-player.js',
             'speeches/js/speeches.js',
             'javascripts/vendor/jquery.text-effects.js',
         ),
         'output_filename': 'javascripts/sayit.min.js',
+    },
+    # The media player
+    'player': {
+        'source_filenames': (
+            'speeches/mediaelement/mediaelement-and-player.js',
+        ),
+        'output_filename': 'javascripts/sayit.mediaplayer.min.js',
     },
     'admin': {
         'source_filenames': (
