@@ -22,9 +22,7 @@ $weight_bold: 700;
 
 @mixin unstyled-list {
     margin-left: 0;
-    li {
-       list-style: none outside none;
-    }
+    list-style: none outside none;
 }
 
 @mixin inline-list {
