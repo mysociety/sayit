@@ -7,6 +7,8 @@ python-virtualenv
 # various repo management tools to fetch them
 # mercurial
 
+yui-compressor
+
 # Database stuff
 postgresql
 python-psycopg2

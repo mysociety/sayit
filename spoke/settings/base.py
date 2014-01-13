@@ -62,34 +62,6 @@ MEDIA_URL = '/media/'
 # All uploaded files world-readable
 FILE_UPLOAD_PERMISSIONS = 0644
 
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(PARENT_DIR, 'collected_static')
-
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
-
-# Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_ROOT, 'web'),
-)
-
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
-
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -152,6 +124,7 @@ INSTALLED_APPS = [
     'django_nose',
     'tastypie',
     'django_bleach',
+    'pipeline',
     'popit',
     'instances',
     'speeches',
@@ -228,6 +201,9 @@ AUTHENTICATION_BACKENDS = ('login_token.auth_backend.LoginTokenBackend', 'django
 
 # Now get the mySociety configuration
 from .mysociety import *
+
+# django-pipeline and static file configuration
+from .pipeline import *
 
 # Cookies, after because we need BASE_HOST from mysociety.py
 SESSION_COOKIE_DOMAIN = BASE_HOST

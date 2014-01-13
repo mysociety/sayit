@@ -1,6 +1,7 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% load i18n %}
+{% load compressed %}
 
 {% block extrastyle %}
 {{ block.super }}
@@ -13,9 +14,7 @@ label.checkbox.inline { float: none; display: inline; }
 
 {% block extrahead %}
 {{ block.super }}
-<script src="{% static "js/jquery-1.8.2.min.js" %}"></script>
-<script src="{% static "speeches/mediaelement/mediaelement-and-player.min.js" %}"></script>
-<!-- <script src="{% static "soundmanager2/script/soundmanager2.js" %}"></script> -->
+{% compressed_js 'admin' %}
 <script>
 $(function(){
     $('audio').mediaelementplayer();
