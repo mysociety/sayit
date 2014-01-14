@@ -64,8 +64,10 @@
               <h1 class="brand-header__title"><a href="{{ settings.BASE_HOST }}">SayIt <span class="subtitle js-typewriter">&mdash; Transcripts for the modern web</span></a></h1>
           </div>
           <nav class="brand-header__navigation">
+            {% if request.instance %}
               <a href="#">About SayIt</a>
               <a href="#">Other SayIt sites</a>
+            {% endif %}
           </nav>
 
           <div class="admin-menu-container">
