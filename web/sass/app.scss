@@ -1092,6 +1092,31 @@ form {
 
     }
 
+    .build-with-sayit {
+        @extend .inverse-section;
+        background-image: url(../img/dev-bg.png);
+         @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/dev-bg@2.png');
+        }
+        @include background-size(250px);
+        background-repeat: repeat;
+        background-position: -18px -24px;
+        .icon-install-options {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            background-image: url(../img/install-options.png);
+            background-repeat: no-repeat;
+            background-position: left top;
+            @include background-size(250px 87px);
+            width: 250px;
+            height: 87px;
+             @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                background-image: url('../img/install-options@2.png');
+            }
+        }
+    }
+
     .list-of-people {
         @include grid-row($behavior:nest);
         @include unstyled-list;
