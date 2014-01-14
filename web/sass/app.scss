@@ -902,6 +902,19 @@ form {
         h2 {
             color: #fff;
         }
+        .status {
+            bottom: 2em;
+            left: 50%;
+            margin-left: -43.5px;
+            @media (min-width: $medium-screen) {
+                bottom: 1em;
+                left: 40%;
+            }
+            @media (min-width: $large-screen) {
+                left: 37%;
+                bottom: 3em;
+            }
+        }
     }
 
     .the-solution__messaging {
@@ -914,7 +927,7 @@ form {
             @include grid-column(6);
              .words {
                 position: absolute;
-                top: 2em;
+                top: 0;
                 left: 2em;
                 text-align: left;
             }
@@ -1154,6 +1167,39 @@ form {
         }
     }
 
+    .status {
+        /* badges used around the homepage */
+        position: absolute;
+        display: block;
+        width: 87px;
+        height: 87px;
+        @include background-size(87px);
+        background-position: center;
+        background-repeat: no-repeat;
+        @extend .image-replacement;
+    }
+
+    .status-complete {
+        background-image: url('../img/done-mark.png');
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/done-mark@2.png');
+        }
+    }
+
+    .status-next {
+        background-image: url('../img/next-mark.png');
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/next-mark@2.png');
+        }
+    }
+
+    .status-alpha {
+        background-image: url('../img/alpha-mark.png');
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/alpha-mark@2.png');
+        }
+    }
+
     .development-roadmap {
         .phases {
             @include grid-row($behavior:nested);
@@ -1189,39 +1235,18 @@ form {
                 }
             }
         }
-
         .status {
-            position: absolute;
-            top: -2.5em;
-            right: -1.5em;
-            display: block;
-            width: 87px;
-            height: 87px;
-            @include background-size(87px);
-            background-position: center;
-            background-repeat: no-repeat;
-            @extend .image-replacement;
-        }
+        top: -2.5em;
+        right: -1.5em;
 
-        .status-complete {
-            background-image: url('../img/done-mark.png');
-            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
-                background-image: url('../img/done-mark@2.png');
-            }
-        }
-
-        .status-next {
-            background-image: url('../img/next-mark.png');
-            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
-                background-image: url('../img/next-mark@2.png');
-            }
-        }
+    }
 
         p {
             color: $colour_dark_grey;
             margin-bottom: 0;
         }
     }
+
     .questions-and-answers  {
         .questions {
             @include grid-row($behavior:nested);
