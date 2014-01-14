@@ -980,9 +980,11 @@ form {
         @include box-shadow(0 0 4px rgba(0, 0, 0, 0.3));
     }
 
+    .build-with-sayit,
+    .a-poplus-component,
     .development-roadmap,
     .questions-and-answers,
-    .who-is-sayit-for,
+    .we-need-help,
     .sayit-demos {
         @extend .homepage-section;
         @include clearfix;
