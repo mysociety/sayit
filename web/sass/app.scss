@@ -907,12 +907,12 @@ form {
             left: 50%;
             margin-left: -43.5px;
             @media (min-width: $medium-screen) {
-                bottom: 1em;
-                left: 40%;
+                top: 1em;
+                right: 1em;
+                left: auto;
             }
             @media (min-width: $large-screen) {
-                left: 37%;
-                bottom: 3em;
+
             }
         }
     }
