@@ -31,6 +31,8 @@
 
           var _gaq = _gaq || [];
           _gaq.push(['_setAccount', '{{ settings.GOOGLE_ANALYTICS_ACCOUNT }}']);
+          _gaq.push (['_gat._anonymizeIp']);
+          _gaq.push(['_setDomainName', 'sayit.mysociety.org']);
           _gaq.push(['_trackPageview']);
 
           (function() {
@@ -129,7 +131,13 @@
 
                     <li{% if request.path == '/' %} class="active"{% endif %}><a href="/">Home</a></li>
                     <li{% if nav_primary == 'speakers' or nav_primary == 'speaker' %} class="active"{% endif %}><a href="{% url 'speeches:speaker-list' %}">Speakers</a></li>
-                    <li{% if nav_primary == 'speeches' or nav_primary == 'speech' or section_tree %} class="active"{% endif %}><a href="{% url 'speeches:section-list' %}">Speeches</a></li>
+                    <li{% if nav_primary == 'speeches' or nav_primary == 'speech' or section_tree %} class="active"{% endif %}>
+                      {% if instance_about_page %}
+                        <a href="/about">{% trans "Speeches" %}</a>
+                      {% else %}
+                        <a href="{% url 'speeches:section-list' %}">{% trans "Speeches" %}</a>
+                      {% endif %}
+                    </li>
                   {% endif %}
                 </ul>
             </nav>

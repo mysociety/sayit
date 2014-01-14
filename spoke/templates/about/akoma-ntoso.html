@@ -2,14 +2,82 @@
 {% block body_class %}content-page{% endblock %}
 {% block instanceheader %}{% endblock %}
 {% block title %}
-Akoma Ntoso
+An introduction for coders
 {% endblock %}
 
 {% block content %}
 
 <div class="page-header">
-    <h1>Akoma Ntoso</h1>
+    <h1>An introduction for coders</h1>
 </div>
+
+<p>SayIt is a Django application designed to radically reduce the effort of
+putting transcripts online in an attractive, searchable, linkable, readable
+way. This site is an example of it deployed as a standalone site.</p>
+
+<p>Whilst SayIt can be deployed as a standalone website, it has really been
+built to work as a feature within bigger, more complicated websites. Our goal
+is that people who are trying to track the activities of powerful people can do
+a better job with less time and energy by building SayIt into their tools, and
+using all the saved time for something else. We are prepared to put a lot of
+time and effort into making SayIt a tool that coders find an attractive system
+to integrate with their websites and apps, so if you want something, please do
+ask.</p>
+
+<p>We’ve set up a
+<a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/sayit">mailing
+list</a> where we encourage you to post questions. We’ll do our best to answer
+them, and other people interested in SayIt will benefit from your
+contributions. Please sign up and send us a ‘hello world’ email.</p>
+
+<h2>Ways to get started with SayIt, as a coder</h2>
+
+<p>At this Alpha stage, there are a few different ways in which you can have a
+go at SayIt:</p>
+
+<ol>
+
+<li>Simply trying using the example sites, and submit bug or UX tickets to our
+<a href="https://github.com/mysociety/sayit">GitHub repository</a>
+
+<li>More desirable &ndash; help someone without coding skills to get transcript
+data that they care about converted and loaded into an instance of SayIt
+
+<li>Also more desirable &ndash; pick some transcripts that you care about, and
+convert them and upload them.
+
+<!--
+<li>Try installing SayIt and give us feedback on that process. We’ve not put
+much effort into making the install process better yet (Lean launch and all
+that), and we need your help to know how to improve that process.
+-->
+
+<li>Try using the nascent export API to do something fun or interesting with
+the data that’s already in the example sites. You could try text processing, or
+data-vis tools, for example.
+
+</ol>
+
+<p>Whichever of these you try, we’d be very grateful if you’d tell us what
+you’re doing by joining the list and letting us know. That way there’ll be much
+more visibility as to the questions being asked the problems being solved.</p>
+
+<p>Currently, installation of SayIt as an app within another Django project
+still needs some work before it&rsquo;s ready for reuse, but we are actively
+doing this ourselves within our
+<a href="http://www.mysociety.org/international/pombola/">Pombola</a>
+project.</p>
+
+
+<h2>How to be match-made with someone non-technical who wants transcripts
+uploading</h2>
+
+<p>If you want to help someone else to upload some transcripts (which would be
+a very nice thing to do), please mail us and we’ll let you know what options we
+have for helping. We love our volunteers, and there’ll be a hoodie in it for
+you :)</p>
+
+<h2>How to convert data to the standard we use &ndash; Akoma Ntoso</h2>
 
 <p>Akoma Ntoso<a name="f1b" href="#f1"><sup>1</sup></a> is a comprehensive XML
 schema for several Parliamentary document types such as bills, acts, and
@@ -19,13 +87,20 @@ document types, the schema is general enough that it can be used for many
 different types of debate.</p>
 
 <p>SayIt can import a subset of Akoma Ntoso, and below we describe which
-aspects of it we currently cover. If you have some transcripts and can
-transcribe them into the format below, we should be able to import it. If you
-use aspects of Akoma Ntoso that we don't yet cover, please get in touch so we
-can discuss improving our import process.</p>
+aspects of it we currently cover.</p>
+
+<p>If you have some transcripts and can put them into the format below
+(hopefully via some form of automated process!), we should be able to import
+it. If you can&rsquo;t put them into that format without a lot of manual work,
+<a href="mailto:sayit&#64;mysociety.org">get in touch</a> and we can hopefully
+help.</p>
+
+<p>If you use aspects of Akoma Ntoso that we don't yet cover, please also
+<a href="mailto:sayit&#64;mysociety.org">get in touch</a> so we can discuss
+improving our import process.</p>
 
 
-<h2>Basic structure</h2>
+<h3>Basic structure</h3>
 
 <p>Akoma Ntoso is XML, with some HTML for its low-level content, which for all
 practical purposes means it looks quite a bit like HTML. Here is a small
@@ -83,7 +158,7 @@ These will both be imported into SayIt as one speech within its own section
 at the start/end of the import.
 -->
 
-<h3>Generic attributes</h3>
+<h4>Generic attributes</h4>
 
 <p>All elements can have the following optional attributes (don&rsquo;t worry
 about these too much, you might only need <code>id</code>):</p>
@@ -103,15 +178,15 @@ about these too much, you might only need <code>id</code>):</p>
     <li>refersTo (a URI to an entry within <code>references</code>) <!-- needs example -->
 </ul>
 
-<h2 id="container">Container elements</h2>
+<h3 id="container">Container elements</h3>
 
-<h3>akomaNtoso and debate</h3>
+<h4>akomaNtoso and debate</h4>
 
 <p>The <code>akomaNtoso</code> and <code>debate</code> element wrap the entire
 document. The debate element has a <code>name</code> attribute providing the
 name of the overall content.
 
-<h3>preface</h3>
+<h4>preface</h4>
 
 <p>The <code>preface</code> element should contain <a href="#block">block</a>
 element children. Within that, you may use various inline elements to signify
@@ -126,12 +201,12 @@ document &ndash; SayIt currently only spots the <code>docDate</code> or
     <legislature|session|docCommittee value="">
 -->
 
-<h3>debateBody</h3>
+<h4>debateBody</h4>
 
 <p>The <code>debateBody</code> element is an overall generic container for the
 main content of the document, containing the hierarchy of speech sections.</p>
 
-<h3>Speech sections</h3>
+<h4>Speech sections</h4>
 
 <pre class="pull-right">
 &lt;questions id="&hellip;"&gt;
@@ -187,11 +262,11 @@ container has a required ID and name, and can contain block elements and itself 
 
 <p>The <code>num</code>, <code>heading</code> and <code>subheading</code>
 elements can contain inline text, and <code>heading</code> must have an
-<code>id</code> attribute (though the official examples do not). Whilst
-semantically you can use these to mark up different information, SayIt will
-munge these together into one string on import.
+<code>id</code> attribute (though examples on the official Akoma Ntoso website
+do not). Whilst semantically you can use these to mark up different
+information, SayIt will munge these together into one string on import.
 
-<h3>Speech-like elements</h3>
+<h4>Speech-like elements</h4>
 
 <pre class="pull-right">
 &lt;narrative&gt;&hellip;&lt;/narrative&gt;
@@ -254,7 +329,7 @@ are not speeches nor scene comments (e.g. lists of papers). It requires an
 
 <!-- formula container speechGroup -->
 
-<h2 id="block">Block elements</h2>
+<h3 id="block">Block elements</h3>
 
 <pre class="pull-right">
 &lt;speech by="#&hellip;" as="#&hellip;"&gt;
@@ -294,7 +369,7 @@ caption, tr, th/td (rowspan/colspan), containing block elements.
 <p>Other Akoma Ntoso block elements <!-- &ndash; blockList, tblock, foreign,
 block &ndash; --> are ignored (though not their contents).
 
-<h2 id="inline">Inline elements</h2>
+<h3 id="inline">Inline elements</h3>
 
 <p>Akoma Ntoso supports the following HTML inline elements, and so does SayIt:
 
@@ -312,8 +387,7 @@ inline text; the only one SayIt currently recognises on import is
 don't have their own times).
 
 <p>Feel free to use other inline elements such as <code>person</code> or
-<code>eop</code> (TODO, find a list); they simply won't be output in the
-HTML.
+<code>eop</code>; they simply won't be output in the HTML.
 
 <!--
 SayIt will ignore any other Akoma Ntoso inline elements used, though some
@@ -351,7 +425,7 @@ noteRef img marker
 </ul>
 -->
 
-<h2>References</h2>
+<h3>References</h3>
 
 <p>Reference elements are empty elements for providing URIs for entities used
 in the document following:</p>
@@ -379,6 +453,11 @@ Please see the Akoma Ntoso website for
 information on Akoma Ntoso metadata</a>.
 
                 <!-- analysis, temporalData, identification, notes, proprietary, presentation -->
+
+<h3>Questions/problems</h3>
+
+<p><a href="mailto:sayit&#64;mysociety.org">Get in touch</a>, we&rsquo;re happy to
+help.</p>
 
 <h2>Footnotes</h2>
 
