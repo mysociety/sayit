@@ -26,6 +26,8 @@
 
           var _gaq = _gaq || [];
           _gaq.push(['_setAccount', '{{ settings.GOOGLE_ANALYTICS_ACCOUNT }}']);
+          _gaq.push (['_gat._anonymizeIp']);
+          _gaq.push(['_setDomainName', 'sayit.mysociety.org']);
           _gaq.push(['_trackPageview']);
 
           (function() {
