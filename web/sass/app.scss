@@ -749,6 +749,14 @@ form {
         }
     }
 
+    h2,
+    h3,
+    .sub-heading {
+        max-width: 33em;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .major-heading {
         font-size: emCalc(28);
         margin-bottom: 0.2em;
@@ -995,6 +1003,28 @@ form {
         }
     }
 
+    .inverse-section {
+        background-color: $colour_primary;
+        color: #fff;
+        @include clearfix;
+        a {
+            color: #fff;
+        }
+        h2,
+        .sub-heading {
+            color: #fff;
+        }
+        h3 {
+            color: lighten($colour_primary, 33%);
+        }
+        .button {
+            background-color: darken($colour_primary, 10%);
+            &:hover {
+                background-color: darken($colour_primary, 15%);
+            }
+        }
+    }
+
     .list-of-demos {
         @include grid-row($behavior:nest);
         list-style: none outside none;
@@ -1109,15 +1139,7 @@ form {
     }
 
     .next-actions {
-        background-color: $colour_primary;
-        color: #fff;
-        @include clearfix;
-        a {
-            color: #fff;
-        }
-        h3 {
-            color: lighten($colour_primary, 27%);
-        }
+        @extend .inverse-section;
         strong {
             font-weight: normal;
             font-size: emCalc(18);
@@ -1127,12 +1149,6 @@ form {
             line-height: 1.25em;
             max-width: 13em;
             display: inline-block;
-        }
-        .button {
-            background-color: darken($colour_primary, 10%);
-            &:hover {
-                background-color: darken($colour_primary, 15%);
-            }
         }
         .action-type {
             @include grid-column(12);
