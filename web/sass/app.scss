@@ -997,7 +997,7 @@ form {
 
     .list-of-demos {
         @include grid-row($behavior:nest);
-        @include unstyled-list;
+        list-style: none outside none;
         li {
             @include grid-column(12);
             margin-bottom: 1em;
