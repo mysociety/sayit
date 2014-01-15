@@ -40,7 +40,18 @@
       {% endif %}
       {% for level in structure.closed_levels %}</li></ul>{% endfor %}
     {% endfor %}
-
+ {% with next=section.get_next_node previous=section.get_previous_node %}
+        {% if previous or next %}
+          <ul class="pager speech-list-pager">
+            {% if previous %}
+              <li class="previous"><a href="{% url "speeches:section-view" previous.get_path %}"><span class="skinny-type">&larr;</span> {{ previous.title }}</a>
+            {% endif %}
+            {% if next %}
+              <li class="next"><a href="{% url "speeches:section-view" next.get_path %}">{{ next.title }} <span class="skinny-type">&rarr;</span></a>
+            {% endif %}
+          </ul>
+        {% endif %}
+      {% endwith %}
   </div>
   <div class="sidebar__unit">
       {% with next=section.get_next_node previous=section.get_previous_node %}
