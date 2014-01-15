@@ -67,8 +67,7 @@
           </div>
           <nav class="brand-header__navigation">
             {% if request.instance %}
-              <a href="#">About SayIt</a>
-              <a href="#">Other SayIt sites</a>
+              <a href="{{ settings.BASE_HOST }}/#demos">Other SayIt sites</a>
             {% endif %}
           </nav>
 
@@ -198,17 +197,17 @@
                 </div>
                 <div class="footer-links__column">
                   <ul>
-                    <li><a href="#">{% trans "About SayIt" %}</a></li>
-                    <li><a href="#">{% trans "Akomo Ntoso" %}</a></li>
-                    <li><a href="#">{% trans "Questions" %}</a></li>
-                    <li><a href="#">{% trans "Blog" %}</a></li>
+                    <li><a href="{{ settings.BASE_HOST }}/about/transcripts">{% trans "Transcripts" %}</a></li>
+                    <li><a href="{{ settings.BASE_HOST }}/about/akoma-ntoso">{% trans "Akomo Ntoso" %}</a></li>
+                    <li><a href="{{ settings.BASE_HOST }}/about/questions">{% trans "Questions" %}</a></li>
+                    <li><a href="http://www.mysociety.org/category/projects/sayit/">{% trans "Blog" %}</a></li>
                   </ul>
                 </div>
                 <div class="footer-links__column">
                   <ul>
-                    <li><a href="#">{% trans "The Leveson Inquiry" %}</a></li>
-                    <li><a href="#">{% trans "Charles Taylor Trial" %}</a></li>
-                    <li><a href="#">{% trans "Plays of Shakespeare" %}</a></li>
+                    <li><a href="http://leveson.sayit.mysociety.org">{% trans "The Leveson Inquiry" %}</a></li>
+                    <li><a href="http://charles-taylor.sayit.mysociety.org">{% trans "Charles Taylor Trial" %}</a></li>
+                    <li><a href="http://shakespeare.sayit.mysociety.org">{% trans "Plays of Shakespeare" %}</a></li>
                   </ul>
                 </div>
               </div>
