@@ -310,35 +310,6 @@ form {
     }
 }
 
-/* Brand footer */
-.brand-footer {
-    padding: 3em 0;
-    color: #fff;
-    background-color: #222;
-    h2 {
-        color: #fff;
-        font-size: 1em;
-        font-weight: $weight_bold;
-    }
-    p {
-        font-size: 0.8125em;
-        letter-spacing: 0.02em;
-    }
-}
-
-.brand-footer__row {
-    @include grid-row;
-}
-
-.brand-footer__unit {
-    @include grid-column(12);
-}
-
-.about-sayit {
-    @media (min-width: $medium-screen) {
-        @include grid-column(4);
-    }
-}
 
 /* Instance header */
 .instance-header {
@@ -1380,5 +1351,59 @@ form {
             font-size: emCalc(21);
         }
 
+    }
+}
+
+/* Brand footer */
+.brand-footer {
+    padding: 3em 0;
+    color: $colour_light_grey;
+    background-color: #222;
+    h2 {
+        color: #fff;
+        font-size: emCalc(18);
+        font-weight: $weight_bold;
+    }
+    p {
+        font-size: emCalc(14);
+        letter-spacing: 0.02em;
+    }
+    a {
+        color: #fff;
+        &:hover,
+        &:active,
+        &:focus {
+            color: $colour_primary;
+        }
+    }
+}
+
+.brand-footer__row {
+    @include grid-row;
+}
+
+.about-sayit {
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(3);
+    }
+}
+
+
+.footer-links {
+    @include grid-column(12);
+    @include clearfix;
+    @media (min-width: $medium-screen) {
+        @include grid-column(5);
+    }
+}
+
+.footer-links__column {
+    width: 33.3333%;
+    float: left;
+    ul {
+        @include unstyled-list;
+        font-size: emCalc(14);
+        margin-top: emCalc(30);
     }
 }
