@@ -19,11 +19,13 @@
     </form>
 
     <div class="page-content__row ">
-        <div class="sidebar__unit">
+
+
+
+      <div class="full-page__unit">
+        {% if query %}
           {% if speaker_results %}
-
-              <h2 class="reduced-heading">{% trans 'Speakers' %}</h2>
-
+              <h2>{% trans 'Speakers' %}</h2>
               <ul class="unstyled-list search-results-speakers">
                   {% for result in speaker_results %}
                   <li class="search"><a href="{% url "speeches:speaker-view" result.object.slug %}">
@@ -31,14 +33,8 @@
                   </a></li>
                   {% endfor %}
               </ul>
-
-          {% endif %}
-        </div>
-
-      <div class="primary-content__unit">
-        {% if query %}
-            <h2>{% trans 'Speeches &amp; sections' %}</h2>
-
+            {% endif %}
+            <h2>{% trans 'Mentions of' %} {% if query %} <strong>&ldquo;{{ query }}&rdquo;</strong> {% endif %} {% trans 'in speeches' %}</h2>
             <ul class="unstyled-list search-results-list">
             {% for result in page.object_list %}
                 {% if result.model_name == 'speech' %}

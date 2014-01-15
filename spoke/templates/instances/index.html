@@ -15,8 +15,8 @@
       </div>
       <div class="the-problem__messaging">
         <div class="words">
-          <h2 class="mid-heading">{% trans "Transcripts of trials, political debates, meetings and interviews are stuck in the last century" %}</h2>
-          <p class="major-heading">{% trans "We think transcripts deserve better" %}</p>
+          <h2 class="mid-heading">{% trans "Transcripts of political debates, campaign speeches, and trials are stuck in the last century" %}</h2>
+          <p class="major-heading">{% trans "We think the public deserve better" %}</p>
         </div>
       </div>
     </div>
@@ -25,10 +25,11 @@
     <div class="full-page__row">
       <div class="the-solution__messaging">
         <div class="words">
-          <h2 class="major-heading">{% trans "So we built <strong>SayIt</strong>" %}</h2>
-          <p class="mid-heading">{% trans "A modern, open platform for transcripts" %}</p>
+          <h2 class="major-heading">{% trans "So we are building <strong>SayIt</strong>" %}</h2>
+          <p class="mid-heading">{% trans "Free, open source technology to bring searchable transcripts to your website." %}</p>
         </div>
       </div>
+      <a href="#" class="status status-alpha">{% trans "Now in Alpha" %}</a>
       <div class="the-solution__figure">
         <div class="sayit-screenshot--desktop">
         </div>
@@ -41,34 +42,60 @@
         <h2>{% trans "SayIt makes it easy to search, browse and share transcripts" %}</h2>
         <p class="sub-heading">{% trans "See our demos" %}</p>
         <ul class="list-of-demos">
-          {# <li><a href="#" class="conservative-icon">{% trans "Read old <strong>Conservative Party</strong> speeches" %}</a></li> #}
+          {# <li><a href="#" class="conservative-icon">{% trans "Read the complete<strong>Conservative Party</strong> speeches" %}</a></li> #}
           <li><a href="#" class="leveson-icon">{% trans "Read the <strong>Leveson Inquiry</strong> transcripts" %}</a></li>
           <li><a href="#" class="taylor-icon">{% trans "Read the <strong>Charles Taylor Trial</strong> transcripts" %}</a></li>
           <li><a href="#" class="shakespeare-icon">{% trans "Read the <strong>Plays of Shakespeare</strong>" %}</a></li>
         </ul>
+        <p class="coming-soon-heading">One of our African partners will be the first to use SayIt as an integrated Django app when they launch a parliamentary monitoring site - watch this space</p>
       </div>
     </div>
   </div>
-  <div class="who-is-sayit-for">
+  <div class="build-with-sayit">
     <div class="full-page__row">
       <div class="full-page__unit">
-        <h2>{% trans "Who can SayIt help?" %}</h2>
-        <ul class="list-of-people">
+        <h2>{% trans "Build sites with SayIt" %}</h2>
+        <p class="sub-heading">{% trans "SayIt is a Django application that can be integrated into your own sites or apps, or run as a standalone site" %}</p>
+        <span class="icon-install-options"></span>
+      </div>
+    </div>
+  </div>
+  <div class="a-poplus-component">
+    <div class="full-page__row">
+      <div class="full-page__unit">
+        <h2>{% trans "SayIt is a Poplus component" %}</h2>
+        <p class="sub-heading">{% trans "Poplus is an international network of civic hackers building open source components. The aim? To decrease the cost of running services that help drive accountability." %}</p>
+        <div class="centered"><a href="#" class="button secondary">Find out more</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="we-need-help">
+    <div class="full-page__row">
+      <div class="full-page__unit">
+        <h2>{% trans "We need your help" %}</h2>
+        <p class="sub-heading">{% trans "We are sharing SayIt early because we need help from:" %}</p>
+        <ul class="list-of-people list-of-people--grid-three">
           <li class="people-reporters">
             <h3>{% trans "Reporters" %}</h3>
-            <p>{% trans "Help your news organisation keep a searchable, linkable record of who said what and when" %}</p>
+            <p>{% trans "To make sure SayIt supports newsmakers" %}</p>
           </li>
           <li class="people-campaigners">
             <h3>{% trans "Campaigners" %}</h3>
-            <p>{% trans "Build a databse of what key people are saying about issues you care about" %}</p>
+            <p>{% trans "To make SayIt work for change-makers" %}</p>
           </li>
-          <li class="people-courts-officials">
-            <h3>{% trans "Courts officials" %}</h3>
-            <p>{% trans "Bring your official records into the internet age" %}</p>
+          <li class="people-servants">
+            <h3>{% trans "Public Servants" %}</h3>
+            <p>{% trans "To start getting standardised official data published" %}</p>
           </li>
-          <li class="people-researchers">
-            <h3>{% trans "Researchers" %}</h3>
-            <p>{% trans "Keep your interviews or your quotations from literature easy to search and cite" %}</p>
+          </ul>
+          <ul class="list-of-people list-of-people--grid-two">
+          <li class="people-developers">
+            <h3>{% trans "Developers" %}</h3>
+            <p>{% trans "To make sure SayIt is easy to integrate with sites" %}</p>
+          </li>
+          <li class="people-interested">
+            <h3>{% trans "Interested people" %}</h3>
+            <p>{% trans "To make help make SayIt's user experience great" %}</p>
           </li>
         </ul>
       </div>
@@ -92,18 +119,18 @@
     <div class="full-page__row">
       <div class="full-page__unit">
         <h2>{% trans "And we’re not done yet" %}</h2>
-        <p class="sub-heading">{% trans "Phase 1 is complete, but SayIt is still in development" %}</p>
+        <p class="sub-heading">{% trans "The Alpha is complete, but SayIt is still in development" %}</p>
         <div class="phases">
           <div class="phase-column">
-            <div class="roadmap-entry roadmap-entry--phase1">
-              <h3>{% trans "Phase 1" %}</h3>
+            <div class="roadmap-entry roadmap-entry--alpha">
+              <h3>{% trans "Alpha" %}</h3>
               <span class="status status-complete">{% trans "Done" %}</span>
               <p>{% trans "Publish transcripts that have been converted into an open standard we have adopted." %}</p>
             </div>
           </div>
           <div class="phase-column">
-            <div class="roadmap-entry roadmap-entry--phase2">
-              <h3>{% trans "Phase 2" %}</h3>
+            <div class="roadmap-entry roadmap-entry--beta">
+              <h3>{% trans "Beta" %}</h3>
               <span class="status status-next">{% trans "Next" %}</span>
               <p>{% trans "The ability to directly author new transcripts through a web-based user interface." %}</p>
             </div>
@@ -123,7 +150,7 @@
               <dt>What is SayIt?</dt>
               <dd>It’s an open source tool for making transcripts really easy to read, search and share on the modern internet.</dd>
               <dt>Why try to make transcripts better?</dt>
-              <dd>Transcripts are a kind of oil that greases the wheels of well-functioning societies. They let people discover when powerful people have made pronouncements that affect other people. We believe that by making transcripts function better, more people will end up learning about decisions and opinions that affect their lives.</dd>
+              <dd>Transcripts are a kind of oil that greases the wheels of well-functioning societies. They let people discover when powerful people have made pronouncements that affect less powerful people. We believe that by making transcripts function better, more people will end up learning about decisions and opinions that affect their lives.</dd>
             </dl>
           </div>
           <div class="question-column">
@@ -131,7 +158,7 @@
               <dt>Does SayIt support languages other than English?</dt>
               <dd>mySociety is an international organisation, and we’re very keen to get the first non-English transcripts online as soon as possible. Please contact us if you want to help us launch a non-English SayIt site.</dd>
               <dt>Is SayIt Open Source? Does it use open standards or open data?</dt>
-              <dd>SayIt is Open Source, licensed under the AGPL 3.0, and you can check out the code in our GitHub repo here. The data standard we use is a subset of the Akoma Ntoso data standard - a standard developed specifically for use in parliaments and assemblies.</dd>
+              <dd>SayIt is Open Source, licensed under the AGPL 3.0, and you can check out the code in <a href="https://github.com/mysociety/sayit/">our GitHub repo</a>. The data standard we use is a subset of the Akoma Ntoso data standard - a standard developed specifically for use in parliaments and assemblies.</dd>
 
             </dl>
           </div>

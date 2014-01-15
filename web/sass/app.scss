@@ -52,7 +52,7 @@
 // @import "foundation/components/tables";
 // @import "foundation/components/thumbs";
 // @import "foundation/components/tooltips";
-// @import "foundation/components/dropdown";
+@import "foundation/components/dropdown";
 
 @import "compass/css3";
 @import "_sayit-mixins.scss";
@@ -278,9 +278,21 @@ form {
 }
 
 .admin-menu-container {
-    @include grid-column(3);
-    text-align: right;
-
+    position: fixed;
+    top: 0;
+    left: 1em;
+    z-index: 500;
+    min-width: 280px;
+    a {
+        &:link {
+            color: $colour_primary;
+        }
+        &:hover,
+        &:active,
+        &:visited {
+            color: darken($colour_primary, 10%);
+        }
+    }
 }
 
 .admin-menu-button {
@@ -298,35 +310,6 @@ form {
     }
 }
 
-/* Brand footer */
-.brand-footer {
-    padding: 3em 0;
-    color: #fff;
-    background-color: #222;
-    h2 {
-        color: #fff;
-        font-size: 1em;
-        font-weight: $weight_bold;
-    }
-    p {
-        font-size: 0.8125em;
-        letter-spacing: 0.02em;
-    }
-}
-
-.brand-footer__row {
-    @include grid-row;
-}
-
-.brand-footer__unit {
-    @include grid-column(12);
-}
-
-.about-sayit {
-    @media (min-width: $medium-screen) {
-        @include grid-column(4);
-    }
-}
 
 /* Instance header */
 .instance-header {
@@ -737,6 +720,14 @@ form {
         }
     }
 
+    h2,
+    h3,
+    .sub-heading {
+        max-width: 33em;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .major-heading {
         font-size: emCalc(28);
         margin-bottom: 0.2em;
@@ -890,6 +881,19 @@ form {
         h2 {
             color: #fff;
         }
+        .status {
+            bottom: 2em;
+            left: 50%;
+            margin-left: -43.5px;
+            @media (min-width: $medium-screen) {
+                top: 1em;
+                right: 1em;
+                left: auto;
+            }
+            @media (min-width: $large-screen) {
+
+            }
+        }
     }
 
     .the-solution__messaging {
@@ -902,7 +906,7 @@ form {
             @include grid-column(6);
              .words {
                 position: absolute;
-                top: 2em;
+                top: 0;
                 left: 2em;
                 text-align: left;
             }
@@ -948,6 +952,7 @@ form {
         position: relative;
         z-index: 400;
     }
+
     .page-wrapper {
         background: #fff;
         overflow-x: hidden;
@@ -955,9 +960,11 @@ form {
         @include box-shadow(0 0 4px rgba(0, 0, 0, 0.3));
     }
 
+    .build-with-sayit,
+    .a-poplus-component,
     .development-roadmap,
     .questions-and-answers,
-    .who-is-sayit-for,
+    .we-need-help,
     .sayit-demos {
         @extend .homepage-section;
         @include clearfix;
@@ -968,9 +975,31 @@ form {
         }
     }
 
+    .inverse-section {
+        background-color: $colour_primary;
+        color: #fff;
+        @include clearfix;
+        a {
+            color: #fff;
+        }
+        h2,
+        .sub-heading {
+            color: #fff;
+        }
+        h3 {
+            color: lighten($colour_primary, 33%);
+        }
+        .button {
+            background-color: darken($colour_primary, 10%);
+            &:hover {
+                background-color: darken($colour_primary, 15%);
+            }
+        }
+    }
+
     .list-of-demos {
         @include grid-row($behavior:nest);
-        @include unstyled-list;
+        list-style: none outside none;
         li {
             @include grid-column(12);
             margin-bottom: 1em;
@@ -980,7 +1009,6 @@ form {
             }
             @media (min-width: $large-screen) {
                 //@include grid-column(3); *put back when fourth speech set is online
-                 margin-bottom: 0;
             }
         }
         a {
@@ -1035,7 +1063,52 @@ form {
 
     }
 
+    .coming-soon-heading {
+        text-align: left;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 31em;
+        font-size: emCalc(18);
+        color: $colour_dark_grey;
+        background-image: url(../img/bulb.png);
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/bulb@2.png');
+        }
+        background-position: left center;
+        background-repeat: no-repeat;
+        @include background-size(42px 69px);
+        padding-left: 62px;
+
+    }
+
+    .build-with-sayit {
+        @extend .inverse-section;
+        background-image: url(../img/dev-bg.png);
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/dev-bg@2.png');
+        }
+        @include background-size(250px);
+        background-repeat: repeat;
+        background-position: -18px -24px;
+        .icon-install-options {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 1em;
+            background-image: url(../img/install-options.png);
+            background-repeat: no-repeat;
+            background-position: left top;
+            @include background-size(250px 87px);
+            width: 250px;
+            height: 87px;
+             @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                background-image: url('../img/install-options@2.png');
+            }
+        }
+    }
+
     .list-of-people {
+
         @include grid-row($behavior:nest);
         @include unstyled-list;
         li {
@@ -1046,11 +1119,6 @@ form {
             background-position: center top;
             background-repeat: no-repeat;
             @include background-size(90px 70px);
-            @media (min-width: $medium-screen) {
-                @include grid-column(3);
-                margin-bottom: 0;
-                margin-top: 2em;
-            }
             &.people-reporters {
                 background-image: url('../img/newspaper.png');
                 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
@@ -1075,6 +1143,44 @@ form {
                     background-image: url('../img/glasses@2.png');
                 }
             }
+            &.people-servants {
+                background-image: url('../img/paperclip.png');
+                @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/paperclip@2.png');
+                }
+            }
+            &.people-developers {
+                background-image: url('../img/chemistry.png');
+                @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/chemistry@2.png');
+                }
+            }
+            &.people-interested {
+                background-image: url('../img/drink.png');
+                @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+                    background-image: url('../img/drink@2.png');
+                }
+            }
+        }
+        &.list-of-people--grid-three {
+            @include grid-column(12);
+            li {
+                @media (min-width: $medium-screen) {
+                    @include grid-column(4);
+                    margin-bottom: 0;
+                    margin-top: 2em;
+                }
+            }
+        }
+        &.list-of-people--grid-two {
+            @include grid-column(8, $offset:2);
+            li {
+                @media (min-width: $medium-screen) {
+                @include grid-column(6);
+                    margin-bottom: 0;
+                    margin-top: 2em;
+                }
+            }
         }
         p {
             color: $colour_dark_grey;
@@ -1082,15 +1188,7 @@ form {
     }
 
     .next-actions {
-        background-color: $colour_primary;
-        color: #fff;
-        @include clearfix;
-        a {
-            color: #fff;
-        }
-        h3 {
-            color: lighten($colour_primary, 27%);
-        }
+        @extend .inverse-section;
         strong {
             font-weight: normal;
             font-size: emCalc(18);
@@ -1100,12 +1198,6 @@ form {
             line-height: 1.25em;
             max-width: 13em;
             display: inline-block;
-        }
-        .button {
-            background-color: darken($colour_primary, 10%);
-            &:hover {
-                background-color: darken($colour_primary, 15%);
-            }
         }
         .action-type {
             @include grid-column(12);
@@ -1139,6 +1231,39 @@ form {
             @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
                 background-image: url('../img/plant@2.png');
             }
+        }
+    }
+
+    .status {
+        /* badges used around the homepage */
+        position: absolute;
+        display: block;
+        width: 87px;
+        height: 87px;
+        @include background-size(87px);
+        background-position: center;
+        background-repeat: no-repeat;
+        @extend .image-replacement;
+    }
+
+    .status-complete {
+        background-image: url('../img/done-mark.png');
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/done-mark@2.png');
+        }
+    }
+
+    .status-next {
+        background-image: url('../img/next-mark.png');
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/next-mark@2.png');
+        }
+    }
+
+    .status-alpha {
+        background-image: url('../img/alpha-mark.png');
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/alpha-mark@2.png');
         }
     }
 
@@ -1177,39 +1302,18 @@ form {
                 }
             }
         }
-
         .status {
-            position: absolute;
-            top: -2.5em;
-            right: -1.5em;
-            display: block;
-            width: 87px;
-            height: 87px;
-            @include background-size(87px);
-            background-position: center;
-            background-repeat: no-repeat;
-            @extend .image-replacement;
-        }
+        top: -2.5em;
+        right: -1.5em;
 
-        .status-complete {
-            background-image: url('../img/done-mark.png');
-            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
-                background-image: url('../img/done-mark@2.png');
-            }
-        }
-
-        .status-next {
-            background-image: url('../img/next-mark.png');
-            @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
-                background-image: url('../img/next-mark@2.png');
-            }
-        }
+    }
 
         p {
             color: $colour_dark_grey;
             margin-bottom: 0;
         }
     }
+
     .questions-and-answers  {
         .questions {
             @include grid-row($behavior:nested);
@@ -1266,5 +1370,164 @@ form {
             font-size: emCalc(21);
         }
 
+    }
+}
+.footer {
+    a {
+        color: #fff;
+        &:hover,
+        &:active,
+        &:focus {
+            color: $colour_primary;
+        }
+    }
+}
+/* Instance footer */
+.instance-footer {
+    background: darken($colour_black, 10%);
+    @media (min-width: $medium-screen) {
+        border-top: 6px solid $colour_primary;
+    }
+}
+
+.instance-footer__row {
+    @include grid-row;
+}
+
+.instance-footer__links {
+    @include grid-column(12);
+    margin-bottom: 1em;
+    @media (min-width: $medium-screen) {
+        @include grid-column(8);
+        margin-bottom: 0;
+    }
+    @media (min-width: $large-screen) {
+        @include grid-column(10);
+    }
+    ul {
+        @extend .unstyled-list;
+        @include inline-list;
+        margin-top: 1.1em;
+        text-align: center;
+        @media (min-width: $medium-screen) {
+            text-align: left;
+        }
+    }
+    li {
+        border-right: 1px solid $colour_black;
+        padding-right: .5em;
+        &:last-child {
+            border-right: none;
+        }
+    }
+    a {
+        font-size: emCalc(14);
+        &.instance-title {
+            font-size: emCalc(16);
+        }
+    }
+}
+
+.instance-footer__top-link {
+    @include grid-column(12);
+    text-align: center;
+    @media (min-width: $medium-screen) {
+        @include grid-column(4);
+        text-align: right;
+    }
+    @media (min-width: $large-screen) {
+        @include grid-column(2);
+    }
+    .button {
+        @media (min-width: $medium-screen) {
+            @include border-radius(0 0 3px 3px);
+        }
+        &:hover,
+        &:active,
+        &:focus {
+            color: #fff;
+        }
+
+    }
+}
+
+/* Brand footer */
+.brand-footer {
+    padding: 3em 0;
+    color: $colour_light_grey;
+    background-color: #222;
+    h2 {
+        color: #fff;
+        font-size: emCalc(18);
+        font-weight: $weight_bold;
+    }
+    p {
+        font-size: emCalc(14);
+        letter-spacing: 0.02em;
+    }
+}
+
+.brand-footer__row {
+    @include grid-row;
+}
+
+.about-sayit {
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(3);
+    }
+}
+
+
+.footer-links {
+    @include grid-column(12);
+    @include clearfix;
+    @media (min-width: $medium-screen) {
+        @include grid-column(5);
+    }
+}
+
+.footer-links__column {
+    width: 33.3333%;
+    float: left;
+    ul {
+        @include unstyled-list;
+        font-size: emCalc(14);
+        margin-top: emCalc(30);
+    }
+}
+
+.footer-logos {
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(4);
+    }
+}
+
+.footer-logos__column {
+    @include grid-column(6);
+    margin-top: emCalc(30);
+    p {
+        font-size: emCalc(11);
+    }
+    .footer-logo {
+        display: block;
+        @extend .image-replacement;
+        width: 93px;
+        height: 19px;
+        @include background-size(93px 19px);
+        margin-bottom: 0.5em;
+    }
+    .footer-logo--mysociety {
+        background-image: url('../img/mysociety-logo.png');
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/mysociety-logo@2.png');
+        }
+    }
+    .footer-logo--poplus {
+        background-image: url('../img/poplus-logo.png');
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/poplus-logo@2.png');
+        }
     }
 }

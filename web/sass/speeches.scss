@@ -332,9 +332,6 @@
 .speaker-list {
   @include grid-layout;
   @include unstyled-list;
-  li {
-
-  }
   a {
     color: $colour_dark_grey;
     &:hover {
