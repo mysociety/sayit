@@ -1426,3 +1426,38 @@ form {
         margin-top: emCalc(30);
     }
 }
+
+.footer-logos {
+    @include grid-column(12);
+    @media (min-width: $medium-screen) {
+        @include grid-column(4);
+    }
+}
+
+.footer-logos__column {
+    @include grid-column(6);
+    margin-top: emCalc(30);
+    p {
+        font-size: emCalc(11);
+    }
+    .footer-logo {
+        display: block;
+        @extend .image-replacement;
+        width: 93px;
+        height: 19px;
+        @include background-size(93px 19px);
+        margin-bottom: 0.5em;
+    }
+    .footer-logo--mysociety {
+        background-image: url('../img/mysociety-logo.png');
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/mysociety-logo@2.png');
+        }
+    }
+    .footer-logo--poplus {
+        background-image: url('../img/poplus-logo.png');
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+            background-image: url('../img/poplus-logo@2.png');
+        }
+    }
+}
