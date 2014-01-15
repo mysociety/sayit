@@ -250,3 +250,12 @@ class SectionSiteTests(InstanceTestCase):
 
         speech_db = Speech.objects.get(id=speech.id)
         self.assertEqual(speech_db.section_id, None)
+
+    def test_section_in_other_instance(self):
+        other_instance = Instance.objects.create(label='other')
+        section = Section.objects.create(title='A test section', instance=other_instance)
+        self.assertEqual(section.slug, 'a-test-section')
+        section = Section.objects.create(title='A test section', instance=self.instance)
+        self.assertEqual(section.slug, 'a-test-section-2')
+        resp = self.client.get('/a-test-section')
+        self.assertContains( resp, 'Not Found', status_code=404 )

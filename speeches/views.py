@@ -348,7 +348,7 @@ class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
         slugs = full_slug.split('/')
         parent = None
         for i, slug in enumerate(slugs):
-            obj = get_object_or_404(self.model, slugs__slug=slug, parent=parent)
+            obj = get_object_or_404(self.model, instance=self.request.instance, slugs__slug=slug, parent=parent)
             if slug != obj.slug:
                 new_url = obj.get_absolute_url()
                 if i < len(slugs) - 1:
