@@ -952,6 +952,7 @@ form {
         position: relative;
         z-index: 400;
     }
+
     .page-wrapper {
         background: #fff;
         overflow-x: hidden;
@@ -1083,7 +1084,7 @@ form {
     .build-with-sayit {
         @extend .inverse-section;
         background-image: url(../img/dev-bg.png);
-         @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+        @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
             background-image: url('../img/dev-bg@2.png');
         }
         @include background-size(250px);
