@@ -91,6 +91,18 @@ $weight_bold: 700;
     }
 }
 
+.hide-on-medium {
+    @media (min-width: $medium-screen) {
+        display: none;
+        visibility: hidden;
+    }
+    @media (min-width: $large-screen) {
+        display: block;
+        visibility: visible;
+    }
+}
+
+
 .hide-medium-upwards {
     display: inline-block;
     visibility: visible;
