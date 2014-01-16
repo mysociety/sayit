@@ -99,12 +99,17 @@
             {% with next=speech.get_next_speech previous=speech.get_previous_speech %}
               {% if previous or next %}
                 <div class="speech-navigation">
-                  {% if previous %}
-                   <a href="{% url "speeches:speech-view" previous.id %}" class="button speech-navigation__button">&laquo; {{ previous.summary|bleach }}</a>
-                  {% endif %}
-                  {% if next %}
-                    <a href="{% url "speeches:speech-view" next.id %}" class="button speech-navigation__button">{{ next.summary|bleach }} &raquo;</a>
-                  {% endif %}
+                  <div class="speech-navigation__column speech-navigation__column--one">
+                    {% if previous %}
+                     <a href="{% url "speeches:speech-view" previous.id %}" class="button speech-navigation__button">&laquo; {{ previous.summary|bleach }}</a>
+                    {% endif %}
+                    {% if next %}
+                      <a href="{% url "speeches:speech-view" next.id %}" class="button speech-navigation__button">{{ next.summary|bleach }} &raquo;</a>
+                    {% endif %}
+                  </div>
+                  <div class="speech-navigation__column speech-navigation__column--two">
+                    <div class="ui-instructions"><h2>Keyboard shortcuts</h2> <p><span class="key-descriptor">j</span> previous speech <span class="key-descriptor">k</span> next speech</p></div>
+                  </div>
                 </div>
               {% endif %}
             {% endwith %}

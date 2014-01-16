@@ -646,12 +646,59 @@
 }
 
 .speech-navigation {
+  @include grid-row($behavior:nest);
   margin-bottom: 1em;
   margin-top: 1em;
   text-align: center;
   @include clearfix;
   @media (min-width: $large-screen) {
     text-align: left;
+  }
+  .ui-instructions {
+    //Instructions for keyboard navigation
+    @extend .hide-on-small;
+    @extend .hide-on-medium;
+    color: $colour_dark_grey;
+    font-size: emCalc(14);
+    text-align: right;
+    opacity: 0.5;
+    top: -0.33em;
+    position: relative;
+    @include transition(opacity 0.2s ease-in-out);
+    h2 {
+      margin: 0;
+      font-weight: normal;
+      font-size: 1em;
+      color: $colour_dark_grey;
+    }
+    &:hover {
+      opacity: 1;
+      @include transition(opacity 0.2s ease-in-out);
+    }
+  }
+}
+
+.key-descriptor {
+  display: inline-block;
+  border: 1px solid $colour_light_grey;
+  @include border-radius(3px);
+  padding: 0 0.5em;
+  margin-left: 0.5em;
+}
+
+.speech-navigation__column {
+  @include grid-column(12);
+}
+
+.speech-navigation__column--one {
+  @media (min-width: $large-screen) {
+      @include grid-column(8);
+  }
+}
+
+.speech-navigation__column--two {
+  @media (min-width: $large-screen) {
+      @include grid-column(4);
   }
 }
 
