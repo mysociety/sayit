@@ -95,6 +95,26 @@
   margin-top: emCalc(14);
 }
 
+.section-navigation {
+  padding-top: 1em;
+  .speech-navigation__button {
+    display: block;
+    width: 100%;
+    margin-bottom: 1em;
+  }
+}
+
+.section-detail-sidebar {
+  .ui-instructions {
+      opacity: 0.5;
+    }
+  &:hover {
+    .ui-instructions {
+      opacity: 1;
+    }
+  }
+}
+
 .pager {
     @include unstyled-list;
     margin: 1em 0;
