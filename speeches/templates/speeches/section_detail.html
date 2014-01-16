@@ -42,14 +42,14 @@
     {% endfor %}
  {% with next=section.get_next_node previous=section.get_previous_node %}
         {% if previous or next %}
-          <ul class="pager speech-list-pager">
+          <div class="section-navigation speech-list-navigation">
             {% if previous %}
-              <li class="previous"><a href="{% url "speeches:section-view" previous.get_path %}"><span class="skinny-type">&larr;</span> {{ previous.title }}</a>
+              <a href="{% url "speeches:section-view" previous.get_path %}" class="button speech-navigation__button">&laquo; {{ previous.title }}</a>
             {% endif %}
             {% if next %}
-              <li class="next"><a href="{% url "speeches:section-view" next.get_path %}">{{ next.title }} <span class="skinny-type">&rarr;</span></a>
+              <a href="{% url "speeches:section-view" next.get_path %}" class="button speech-navigation__button">{{ next.title }} &raquo;</a>
             {% endif %}
-          </ul>
+          </div>
         {% endif %}
       {% endwith %}
   </div>
