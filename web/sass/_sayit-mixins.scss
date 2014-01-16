@@ -172,6 +172,14 @@ $weight_bold: 700;
     }
 }
 
+.button--disabled,
+.button--disabled:hover {
+    background-color: lighten($colour_off_white, 3%);
+    border-color: lighten($colour_light_grey, 3%);
+    color: lighten($colour_dark_grey, 8%);
+    cursor: default;
+}
+
 .small-button {
     font-size: 0.875em;
     padding: 0.5em 1em 0.45em 1em;
