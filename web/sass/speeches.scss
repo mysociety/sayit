@@ -515,11 +515,28 @@
   @extend .secondary-button;
   @extend .small-button;
   margin-right: 0.5em;
+  &:last-child {
+    margin-left: 0.5em;
+    margin-right: 0;
+  }
 }
 
 .pagination {
   width: 100%;
   margin-bottom: 1em;
+}
+
+.pagination__page-number {
+  @extend .button;
+  @extend .secondary-button;
+  @extend .small-button;
+}
+
+.pagination__page-number.current {
+  color: #fff;
+  background-color: $colour_primary;
+  border-color: darken($colour_primary, 10%);
+  cursor: default;
 }
 
 .sidebar {
