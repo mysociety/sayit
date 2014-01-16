@@ -675,9 +675,15 @@
     top: -0.33em;
     position: relative;
     text-align: right;
+    opacity: 0.5;
     h2 {
       margin: 0;
       font-weight: normal;
+    }
+  }
+  &:hover {
+    .ui-instructions {
+      opacity: 1;
     }
   }
 }
@@ -688,14 +694,12 @@
     @extend .hide-on-medium;
     color: $colour_dark_grey;
     font-size: emCalc(14);
-    opacity: 0.5;
     @include transition(opacity 0.2s ease-in-out);
     h2 {
       font-size: 1em;
       color: $colour_dark_grey;
     }
     &:hover {
-      opacity: 1;
       @include transition(opacity 0.2s ease-in-out);
     }
   }
