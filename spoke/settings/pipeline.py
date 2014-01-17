@@ -34,10 +34,31 @@ STATICFILES_FINDERS = (
 # Compress the css and js using yui-compressor.
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
+PIPELINE_COMPILERS = (
+    'pipeline_compass.compass.CompassCompiler',
+)
+PIPELINE_COMPASS_ARGUMENTS = '-c %s/config.rb' % os.path.join(PROJECT_ROOT, 'web')
 
 # On some platforms this might be called "yuicompressor", so it may be
 # necessary to symlink it into your PATH as "yui-compressor".
 PIPELINE_YUI_BINARY = '/usr/bin/env yui-compressor'
+
+PIPELINE_CSS = {
+    'default': {
+        'source_filenames': (
+            'sass/app.scss',
+            'sass/speeches.scss',
+        ),
+        'output_filename': 'css/app.css',
+    },
+    'shakespeare': {
+        'source_filenames': (
+            'sass/app-shakespeare.scss',
+            'sass/speeches-shakespeare.scss',
+        ),
+        'output_filename': 'css/app-shakespeare.css',
+    },
+}
 
 PIPELINE_JS = {
     # Some things in document body (e.g. media player set up) call $()
@@ -45,7 +66,7 @@ PIPELINE_JS = {
         'source_filenames': (
             'javascripts/vendor/jquery.js',
         ),
-        'output_filename': 'javascripts/sayit.head.min.js',
+        'output_filename': 'js/sayit.head.min.js',
     },
     # The JS at the end of each page, before </body>
     'default': {
@@ -56,7 +77,7 @@ PIPELINE_JS = {
             'speeches/js/speeches.js',
             'javascripts/vendor/jquery.text-effects.js',
         ),
-        'output_filename': 'javascripts/sayit.min.js',
+        'output_filename': 'js/sayit.min.js',
     },
     # The media player
     'player': {

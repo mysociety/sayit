@@ -16,6 +16,7 @@ django-tastypie==0.9.16
 django-qmethod
 django-bleach
 django-pipeline
+django-pipeline-compass-rubygem
 # Only for debugging, but very useful and easiest to just have it here
 django-debug-toolbar
 

@@ -4,7 +4,7 @@
 /conf/httpd.conf
 /conf/httpd.conf.deployed
 .sass-cache
-/web/stylesheets
+/web/sass/*.css
 .apdisk
 .DS_Store
 chromedriver.log
