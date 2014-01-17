@@ -222,7 +222,7 @@ if 'test' in sys.argv:
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE': 'spoke.search.backends.SayitElasticSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': SEARCH_INDEX_NAME,
     },

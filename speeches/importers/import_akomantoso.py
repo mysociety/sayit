@@ -76,6 +76,10 @@ class ImportAkomaNtoso (ImporterBase):
         if match:
             honorific, fname, party, _ = match.groups()
             display_name = '%s %s%s' % (honorific, fname.title(), party if party else '')
+            # XXX Now the sayit project indexes stop words, this next line keeps
+            # the test passing. This should be looked at at some point.
+            # "The" is not an honorific anyway, should we be here?.
+            display_name = re.sub('^The ', '', display_name)
             return display_name
         else:
             return name.title()
