@@ -126,7 +126,6 @@ INSTALLED_APPS = [
     'djcelery',
     'kombu.transport.django',
     'south',
-    'pagination',
     'django_select2',
     'django_nose',
     'tastypie',
@@ -138,6 +137,7 @@ INSTALLED_APPS = [
     'about',
     'login_token',
     'popit_resolver',
+    'pagination',
 ]
 if DEBUG_TOOLBAR:
     INSTALLED_APPS.append( 'debug_toolbar' )

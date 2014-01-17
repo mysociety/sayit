@@ -1,6 +1,7 @@
 {% extends 'speeches/base_player.html' %}
 {% load url from future %}
 {% load bleach_tags %}
+{% load pagination_tags %}
 {% load i18n %}
 
 {% block content %}
@@ -47,13 +48,8 @@
             {% endfor %}
             </ul>
 
-            {% if page.has_previous or page.has_next %}
-                <div class="pagination">
-                    {% if page.has_previous %}<a class="button search-pagination-button" href="?q={{ query }}&amp;page={{ page.previous_page_number }}">&laquo; {% trans 'Previous' %}</a>{% endif %}
+            {% with page_obj=page %} {% paginate %} {% endwith %}
 
-                    {% if page.has_next %}<a class="button search-pagination-button" href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% trans 'Next' %} &raquo;</a>{% endif %}
-                </div>
-            {% endif %}
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}

@@ -1,6 +1,7 @@
 {% extends 'speeches/base_player.html' %}
 {% load staticfiles %}
 {% load bleach_tags %}
+{% load pagination_tags %}
 {% load url from future %}
 {% load i18n %}
 {% load humanize %}
@@ -108,7 +109,8 @@
         {% endfor %}
     </ul>
 
-    {% include 'speeches/pagination.html' %}
+    {% paginate %}
+
 </div>
 
 {% endblock %}
