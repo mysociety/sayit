@@ -226,6 +226,11 @@ HAYSTACK_CONNECTIONS = {
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': SEARCH_INDEX_NAME,
     },
+    'write': {
+        'ENGINE': 'spoke.search.backends.SayitElasticSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': '%s_write' % SEARCH_INDEX_NAME,
+    },
 }
 
 if DEBUG:
