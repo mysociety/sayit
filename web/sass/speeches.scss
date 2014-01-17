@@ -95,39 +95,6 @@
   margin-top: emCalc(14);
 }
 
-.pager {
-    @include unstyled-list;
-    margin: 1em 0;
-    border-top: 1px solid $colour_light_grey;
-  a {
-    display: block;
-    padding: .5em 2em;
-    border: 1px solid $colour_light_grey;
-    border-top: none;
-    text-align: center;
-    &:hover,
-    &:focus,
-    &:active {
-      border-color: $colour_primary;
-      background: $colour_primary;
-      color: #fff;
-      text-decoration: none;
-    }
-  }
-}
-
-.speech-list-pager {
-  @extend .hide-on-small;
-  @extend .hide-on-medium;
-  @include clearfix;
-  margin-top: 2em;
-  margin-bottom: 2em;
-  a {
-    width: 50%;
-    float: left;
-  }
-}
-
 .speech + .section-signpost {
   padding-top: 1.5em;
 }
@@ -546,9 +513,6 @@
   h2 {
     margin-top: 0;
   }
-  .reduced-heading {
-    font-size: 1em;
-  }
   a {
     color: darken($colour_primary, 10%);
     &:hover,
@@ -663,6 +627,7 @@
 }
 
 .speech-navigation {
+  @include grid-row($behavior:nest);
   margin-bottom: 1em;
   margin-top: 1em;
   text-align: center;
@@ -670,17 +635,116 @@
   @media (min-width: $large-screen) {
     text-align: left;
   }
+  .ui-instructions {
+    top: -0.33em;
+    position: relative;
+    text-align: right;
+    opacity: 0.5;
+    h2 {
+      margin: 0;
+      font-weight: normal;
+    }
+  }
+  &:hover {
+    .ui-instructions {
+      opacity: 1;
+    }
+  }
+}
+
+.ui-instructions {
+    //Instructions for keyboard navigation
+    @extend .hide-on-small;
+    @extend .hide-on-medium;
+    color: $colour_dark_grey;
+    font-size: emCalc(14);
+    @include transition(opacity 0.2s ease-in-out);
+    h2 {
+      font-size: 1em;
+      color: $colour_dark_grey;
+    }
+    &:hover {
+      @include transition(opacity 0.2s ease-in-out);
+    }
+  }
+
+.key-descriptor {
+  display: inline-block;
+  border: 1px solid $colour_light_grey;
+  @include border-radius(3px);
+  padding: 0 0.5em;
+  margin-left: 0.5em;
+  &:first-child {
+    margin-left: 0;
+  }
 }
 
 .speech-navigation__button {
   @extend .secondary-button;
   @extend .small-button;
-  max-width: 49%;
-  margin: 0 0.5%;
   float: left;
+  max-width: none;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+/* navigation between single speeches (speech_detail) */
+.speech-navigation__column {
+  @include grid-column(12);
+}
+
+.speech-navigation__column--one {
   @media (min-width: $large-screen) {
-    max-width: none;
-    margin: 0 1% 0 0;
+      @include grid-column(8);
+  }
+  @media (min-width: $medium-screen) {
+    .speech-navigation__button {
+      max-width: none;
+      width: auto;
+      margin: 0 1em 0 0;
+    }
   }
 }
 
+.speech-navigation__column--two {
+  @media (min-width: $large-screen) {
+      @include grid-column(4);
+  }
+}
+
+/* navigation between sections in sidebar (section_detail) */
+.section-detail-sidebar {
+   padding-top: 1em;
+   .speech-navigation__button {
+    @media (min-width: $medium-screen) {
+      width: auto;
+      margin-right: 1em;
+    }
+    @media (min-width: $large-screen) {
+      width: 100%;
+      margin-right: 0;
+    }
+   }
+  .ui-instructions {
+    opacity: 0.5;
+  }
+  &:hover {
+    .ui-instructions {
+      opacity: 1;
+    }
+  }
+}
+
+/* navigation at the bottom of sections (section_detail) */
+.speech-list-navigation {
+  @include clearfix;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  @extend .hide-on-small;
+  @extend .hide-on-medium; //we don't need this on smaller screens as we use the sidebar buttons
+  .speech-navigation__button {
+      max-width: none;
+      width: auto;
+      margin: 0 0.5% 0 0;
+    }
+}
