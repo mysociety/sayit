@@ -4,6 +4,7 @@ import hashlib
 import logging
 import os
 
+from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -140,7 +141,7 @@ class Section(AuditedModel, InstanceMixin):
     # Custom manager
     objects = SectionManager()
 
-    title = models.TextField(blank=False, null=False, help_text='The title of the section')
+    title = models.TextField(blank=False, null=False, help_text=_('The title of the section'))
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
     slug = SluggableField(unique_with='parent', populate_from='title')
     slugs = generic.GenericRelation(Slug)
@@ -422,29 +423,29 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
 
     # The speech. Need to check have at least one of the following two (preferably both).
     audio = models.FileField(upload_to='speeches/%Y-%m-%d/', max_length=255, blank=True)
-    text = models.TextField(blank=True, db_index=False, help_text='The text of the speech')
+    text = models.TextField(blank=True, db_index=False, help_text=_('The text of the speech'))
 
     # The section that this speech is part of
     section = models.ForeignKey(Section, blank=True, null=True, on_delete=models.SET_NULL,
-            help_text='The section that this speech is contained in',)
-    title = models.TextField(blank=True, help_text='The title of the speech, if relevant')
+            help_text=('The section that this speech is contained in'),)
+    title = models.TextField(blank=True, help_text=_('The title of the speech, if relevant'))
     # The below two fields could be on the section if we made it a required field of a speech
-    event = models.TextField(db_index=True, blank=True, help_text='Was the speech at a particular event?')
-    location = models.TextField(db_index=True, blank=True, help_text='Where the speech took place')
+    event = models.TextField(db_index=True, blank=True, help_text=_('Was the speech at a particular event?'))
+    location = models.TextField(db_index=True, blank=True, help_text=_('Where the speech took place'))
 
     # Metadata on the speech
     # type = models.ChoiceField() # speech, scene, narrative, summary, etc.
-    speaker = models.ForeignKey(Speaker, blank=True, null=True, help_text='Who gave this speech?', on_delete=models.SET_NULL)
+    speaker = models.ForeignKey(Speaker, blank=True, null=True, help_text=_('Who gave this speech?'), on_delete=models.SET_NULL)
     # may be null, in which case we simply use current strategy to get name
     speaker_display = models.CharField(max_length=256, null=True, blank=True)
 
-    start_date = models.DateField(blank=True, null=True, help_text='What date did the speech start?')
-    start_time = models.TimeField(blank=True, null=True, help_text='What time did the speech start?')
-    end_date = models.DateField(blank=True, null=True, help_text='What date did the speech end?')
-    end_time = models.TimeField(blank=True, null=True, help_text='What time did the speech end?')
+    start_date = models.DateField(blank=True, null=True, help_text=_('What date did the speech start?'))
+    start_time = models.TimeField(blank=True, null=True, help_text=_('What time did the speech start?'))
+    end_date = models.DateField(blank=True, null=True, help_text=_('What date did the speech end?'))
+    end_time = models.TimeField(blank=True, null=True, help_text=_('What time did the speech end?'))
     tags = models.ManyToManyField(Tag, blank=True, null=True)
 
-    public = models.BooleanField(default=True, help_text='Is this speech public?')
+    public = models.BooleanField(default=True, help_text=_('Is this speech public?'))
 
     # What if source material has multiple speeches, same timestamp - need a way of ordering them?
     # pos = models.IntegerField()

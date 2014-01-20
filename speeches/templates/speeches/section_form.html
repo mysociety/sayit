@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}{% if object %}Edit section{% else %}Add section{% endif %}{% endblock %}
+{% block title %}
+{% if object %}
+    {% trans 'Edit section' %}
+{% else %}
+    {% trans 'Add section' %}
+{% endif %}
+{% endblock %}
 
 {% block content %}
 <p class="lead {% if object %}edit{% else %}add{% endif %}-section">
     {% if object %}
-        Here is where you can edit a section.
+        {% trans 'Here is where you can edit a section.' %}
     {% else %}
-        Here is where you can add a new section.
+        {% trans 'Here is where you can add a new section.' %}
     {% endif %}
 </p>
 

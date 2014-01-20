@@ -6,6 +6,7 @@ import pytz
 
 from django_select2.widgets import Select2Widget, Select2MultipleWidget
 
+from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.forms.forms import BoundField
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
@@ -53,13 +54,13 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
         }
 
 class SectionPickForm(forms.Form):
-    section = forms.ModelChoiceField(label='Assign to section', queryset=Section.objects.all(), required=True)
+    section = forms.ModelChoiceField(label=_('Assign to section'), queryset=Section.objects.all(), required=True)
 
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
     speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(),
             empty_label = '',
-            widget = Select2Widget(select2_options={ 'placeholder':'Choose a speaker', 'width': 'resolve' }),
+            widget = Select2Widget(select2_options={ 'placeholder':_('Choose a speaker'), 'width': 'resolve' }),
             required=False)
     section = forms.ModelChoiceField(queryset=Section.objects.all(), required=False)
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],
@@ -76,7 +77,7 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             required=False)
     #tags = TagField()
     tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
-            widget = Select2MultipleWidget(select2_options={ 'placeholder':'Choose tags', 'width': 'resolve' }),
+            widget = Select2MultipleWidget(select2_options={ 'placeholder':_('Choose tags'), 'width': 'resolve' }),
             required=False)
 
     def clean(self):
@@ -86,18 +87,18 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             self.cleaned_data['audio'] = filename
 
         if not cleaned_data.get('text') and not cleaned_data.get('audio'):
-            raise forms.ValidationError('You must provide either text or some audio')
+            raise forms.ValidationError(_('You must provide either text or some audio'))
 
         return cleaned_data
 
     def clean_start_time(self):
         if self.cleaned_data['start_time'] and not self.cleaned_data.get('start_date'):
-            raise forms.ValidationError('If you provide a start time you must give a start date too')
+            raise forms.ValidationError(_('If you provide a start time you must give a start date too'))
         return self.cleaned_data['start_time']
 
     def clean_end_time(self):
         if self.cleaned_data['end_time'] and not self.cleaned_data['end_date']:
-            raise forms.ValidationError('If you provide an end time you must give an end date too')
+            raise forms.ValidationError(_('If you provide an end time you must give an end date too'))
         return self.cleaned_data['end_time']
 
     class Meta:
@@ -197,10 +198,10 @@ class SectionForm(forms.ModelForm):
         parent = self.cleaned_data['parent']
         if self.instance and parent:
             if parent.id == self.instance.id:
-                raise forms.ValidationError('Something cannot be its own parent')
+                raise forms.ValidationError(_('Something cannot be its own parent'))
             descendant_ids = [ d.id for d in self.instance.get_descendants ]
             if parent.id in descendant_ids:
-                raise forms.ValidationError('Something cannot have a parent that is also a descendant')
+                raise forms.ValidationError(_('Something cannot have a parent that is also a descendant'))
         return parent
 
 class SpeakerForm(forms.ModelForm):
@@ -253,7 +254,7 @@ class BaseRecordingTimestampFormSet(BaseInlineFormSet):
         # TODO: check that first timestamp isn't before start of speech?  
 
         if first_timestamp < recording.start_datetime:
-            raise forms.ValidationError("Start time is before recording start time!")
+            raise forms.ValidationError(_("Start time is before recording start time!"))
 
         # TODO: check that delta from first to last timestamp isn't longer
         # than length of audio
@@ -262,14 +263,14 @@ class BaseRecordingTimestampFormSet(BaseInlineFormSet):
 
         delta = (last_timestamp - first_timestamp).seconds
         if delta >= recording.audio_duration:
-            raise forms.ValidationError('Difference between timestamps is too long for the uploaded audio')
+            raise forms.ValidationError(_('Difference between timestamps is too long for the uploaded audio'))
 
         previous_timestamp = None
         for form in _forms:
             timestamp = form.cleaned_data['timestamp']
             if previous_timestamp:
                 if timestamp <= previous_timestamp:
-                    raise forms.ValidationError('Timestamps must be distinct')
+                    raise forms.ValidationError(_('Timestamps must be distinct'))
             previous_timestamp = timestamp
 
 RecordingTimestampFormSet = inlineformset_factory(

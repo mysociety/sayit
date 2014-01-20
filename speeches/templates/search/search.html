@@ -25,7 +25,7 @@
 
       <div class="full-page__unit">
         {% if query %}
-          {% if speaker_results %}
+            {% if speaker_results %}
               <h2>{% trans 'Speakers' %}</h2>
               <ul class="unstyled-list search-results-speakers">
                   {% for result in speaker_results %}
@@ -35,7 +35,7 @@
                   {% endfor %}
               </ul>
             {% endif %}
-            <h2>{% trans 'Mentions of' %} {% if query %} <strong>&ldquo;{{ query }}&rdquo;</strong> {% endif %} {% trans 'in speeches' %}</h2>
+            <h2>{% blocktrans %}Mentions of <strong>&ldquo;{{ query }}&rdquo;</strong> in speeches{% endblocktrans %}</h2>
             <ul class="unstyled-list search-results-list">
             {% for result in page.object_list %}
                 {% if result.model_name == 'speech' %}

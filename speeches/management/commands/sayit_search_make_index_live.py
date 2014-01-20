@@ -2,13 +2,14 @@ from datetime import datetime
 
 import pyelasticsearch
 
+from django.utils.translation import ugettext_lazy as _
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
 from spoke.search.backends import SayitElasticBackend
 
 class Command(BaseCommand):
-    help = 'Update the default alias to point at search index write alias is using'
+    help = _('Update the default alias to point at search index write alias is using')
 
     def handle(self, *args, **options):
         connection_options = settings.HAYSTACK_CONNECTIONS['default']

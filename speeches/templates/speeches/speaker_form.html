@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}{% if object %}Edit speaker{% else %}Add speaker{% endif %}{% endblock %}
+{% block title %}
+{% if object %}
+    {% trans "Edit speaker" %}
+{% else %}
+    {% trans "Add speaker" %}
+{% endif %}
+{% endblock %}
 
 {% block content %}
 <p class="lead {% if object %}edit{% else %}add{% endif %}-speaker">
     {% if object %}
-        Here is where you can edit a speaker.
+        {% trans "Here is where you can edit a speaker." %}
     {% else %}
-        Here is where you can add a new speaker.
+        {% trans "Here is where you can add a new speaker." %}
     {% endif %}
 </p>
 

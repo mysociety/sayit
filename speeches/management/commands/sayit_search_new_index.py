@@ -2,13 +2,14 @@ from datetime import datetime
 
 import pyelasticsearch
 
+from django.utils.translation import ugettext_lazy as _
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
 from spoke.search.backends import SayitElasticBackend
 
 class Command(BaseCommand):
-    help = 'Create a new dated search index for reindexing with no downtime'
+    help = _('Create a new dated search index for reindexing with no downtime')
 
     def handle(self, *args, **options):
         connection_options = settings.HAYSTACK_CONNECTIONS['default']

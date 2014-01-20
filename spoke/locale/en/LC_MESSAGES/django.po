@@ -1,0 +1,367 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-20 14:56+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/base.html:71
+msgid ""
+"This is a staging site &ndash; any data saved here <strong>may be deleted</"
+"strong>."
+msgstr ""
+
+#: templates/base.html:83
+msgid "Modern transcripts"
+msgstr ""
+
+#: templates/base.html:87
+msgid "Other SayIt sites"
+msgstr ""
+
+#: templates/base.html:93
+msgid "Admin"
+msgstr ""
+
+#: templates/base.html:97
+msgid "Add speech"
+msgstr ""
+
+#: templates/base.html:98
+msgid "Add section"
+msgstr ""
+
+#: templates/base.html:99
+msgid "Add speaker"
+msgstr ""
+
+#: templates/base.html:100
+msgid "Add PopIt instance"
+msgstr ""
+
+#: templates/base.html:102 templates/instances/instance_form.html:4
+#: templates/instances/instance_form.html:8
+msgid "Edit instance"
+msgstr ""
+
+#: templates/base.html:104
+msgid "Your recordings"
+msgstr ""
+
+#: templates/base.html:106
+msgid "Your token"
+msgstr ""
+
+#: templates/base.html:109
+msgid "Tokens"
+msgstr ""
+
+#: templates/base.html:111
+msgid "Log out"
+msgstr ""
+
+#: templates/base.html:135
+msgid "More&hellip;"
+msgstr ""
+
+#: templates/base.html:144
+msgid "Menu"
+msgstr ""
+
+#: templates/base.html:148
+msgid "Home"
+msgstr ""
+
+#: templates/base.html:149
+msgid "Speakers"
+msgstr ""
+
+#: templates/base.html:152 templates/base.html.py:154
+msgid "Speeches"
+msgstr ""
+
+#: templates/base.html:163
+msgid "Search"
+msgstr ""
+
+#: templates/base.html:164
+msgid "Go"
+msgstr ""
+
+#: templates/base.html:191
+msgid "About"
+msgstr ""
+
+#: templates/base.html:196
+msgid "Back to top"
+msgstr ""
+
+#: templates/base.html:204
+msgid "SayIt"
+msgstr ""
+
+#: templates/base.html:205
+msgid ""
+"An open source tool for making transcripts really easy to read, search and "
+"share on the modern web"
+msgstr ""
+
+#: templates/base.html:210
+msgid "Blog"
+msgstr ""
+
+#: templates/base.html:211
+msgid "Twitter"
+msgstr ""
+
+#: templates/base.html:212
+msgid "Facebook"
+msgstr ""
+
+#: templates/base.html:213
+msgid "GitHub"
+msgstr ""
+
+#: templates/base.html:218 templates/instances/index.html:111
+msgid "Get involved"
+msgstr ""
+
+#: templates/base.html:219
+msgid "Help"
+msgstr ""
+
+#: templates/base.html:220 templates/instances/index.html:95
+msgid "Developers"
+msgstr ""
+
+#: templates/base.html:221
+msgid "Transcripts"
+msgstr ""
+
+#: templates/base.html:226
+msgid "The Leveson Inquiry"
+msgstr ""
+
+#: templates/base.html:227
+msgid "Charles Taylor Trial"
+msgstr ""
+
+#: templates/base.html:228
+msgid "Plays of Shakespeare"
+msgstr ""
+
+#: templates/base.html:234
+msgid "mySociety"
+msgstr ""
+
+#: templates/base.html:235
+msgid "A mySociety project"
+msgstr ""
+
+#: templates/base.html:238
+msgid "Poplus"
+msgstr ""
+
+#: templates/base.html:239
+msgid "A Poplus component"
+msgstr ""
+
+#: templates/about/community.html:7
+msgid "Community"
+msgstr ""
+
+#: templates/admin/base_site.html:28 templates/admin/base_site.html.py:31
+msgid "SayIt administration"
+msgstr ""
+
+#: templates/instances/index.html:4
+msgid "Welcome to SayIt"
+msgstr ""
+
+#: templates/instances/index.html:18
+msgid ""
+"Transcripts of political debates, campaign speeches, and trials are stuck in "
+"the last century"
+msgstr ""
+
+#: templates/instances/index.html:19
+msgid "We think the public deserve better"
+msgstr ""
+
+#: templates/instances/index.html:28
+msgid "So we are building <strong>SayIt</strong>"
+msgstr ""
+
+#: templates/instances/index.html:29
+msgid ""
+"Free, open source technology to bring searchable transcripts to your website."
+msgstr ""
+
+#: templates/instances/index.html:32
+msgid "Now in Alpha"
+msgstr ""
+
+#: templates/instances/index.html:42
+msgid "SayIt makes it easy to search, browse and share transcripts"
+msgstr ""
+
+#: templates/instances/index.html:43
+msgid "See our demos"
+msgstr ""
+
+#: templates/instances/index.html:46
+msgid "Read the <strong>Leveson Inquiry</strong> transcripts"
+msgstr ""
+
+#: templates/instances/index.html:47
+msgid "Read the <strong>Charles Taylor Trial</strong> transcripts"
+msgstr ""
+
+#: templates/instances/index.html:48
+msgid "Read the <strong>Plays of Shakespeare</strong>"
+msgstr ""
+
+#: templates/instances/index.html:59
+msgid "Build sites with SayIt"
+msgstr ""
+
+#: templates/instances/index.html:60
+msgid ""
+"SayIt is a Django application that can be integrated into your own sites or "
+"apps, or run as a standalone site"
+msgstr ""
+
+#: templates/instances/index.html:68
+msgid "SayIt is a Poplus component"
+msgstr ""
+
+#: templates/instances/index.html:69
+msgid ""
+"Poplus is an international network of civic hackers building open source "
+"components. The aim? To decrease the cost of running services that help "
+"drive accountability."
+msgstr ""
+
+#: templates/instances/index.html:77
+msgid "We need your help"
+msgstr ""
+
+#: templates/instances/index.html:78
+msgid "We are sharing SayIt early because we need help from:"
+msgstr ""
+
+#: templates/instances/index.html:81
+msgid "Reporters"
+msgstr ""
+
+#: templates/instances/index.html:82
+msgid "To make sure SayIt supports newsmakers"
+msgstr ""
+
+#: templates/instances/index.html:85
+msgid "Campaigners"
+msgstr ""
+
+#: templates/instances/index.html:86
+msgid "To make SayIt work for change-makers"
+msgstr ""
+
+#: templates/instances/index.html:89
+msgid "Public Servants"
+msgstr ""
+
+#: templates/instances/index.html:90
+msgid "To start getting standardised official data published"
+msgstr ""
+
+#: templates/instances/index.html:96
+msgid "To help convert transcripts and test integration"
+msgstr ""
+
+#: templates/instances/index.html:99
+msgid "Interested people"
+msgstr ""
+
+#: templates/instances/index.html:100
+msgid "To help make SayIt&rsquo;s user experience great"
+msgstr ""
+
+#: templates/instances/index.html:109
+msgid "Developers!"
+msgstr ""
+
+#: templates/instances/index.html:110
+msgid "SayIt is open source and built on open standards"
+msgstr ""
+
+#: templates/instances/index.html:114
+msgid "Campaigners, Reporters, Public servants, Citizens, Everyone!"
+msgstr ""
+
+#: templates/instances/index.html:115
+msgid "We really want to know what you want from SayIt"
+msgstr ""
+
+#: templates/instances/index.html:116
+msgid "Get in touch"
+msgstr ""
+
+#: templates/instances/index.html:123
+msgid "And we’re not done yet"
+msgstr ""
+
+#: templates/instances/index.html:124
+msgid "The Alpha is complete, but SayIt is still in development"
+msgstr ""
+
+#: templates/instances/index.html:128
+msgid "Alpha"
+msgstr ""
+
+#: templates/instances/index.html:129
+msgid "Done"
+msgstr ""
+
+#: templates/instances/index.html:130
+msgid ""
+"Publish transcripts that have been converted into an open standard we have "
+"adopted."
+msgstr ""
+
+#: templates/instances/index.html:135
+msgid "Beta"
+msgstr ""
+
+#: templates/instances/index.html:136
+msgid "Next"
+msgstr ""
+
+#: templates/instances/index.html:137
+msgid ""
+"The ability to directly author new transcripts through a web-based user "
+"interface."
+msgstr ""
+
+#: templates/instances/index.html:148
+msgid "We're sure you have questions"
+msgstr ""
+
+#: templates/instances/instance_form.html:11
+msgid "Edit the title and description of your instance here."
+msgstr ""
+
+#: templates/registration/login.html:6
+msgid "Log in"
+msgstr ""

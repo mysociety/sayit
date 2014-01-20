@@ -51,7 +51,7 @@
                             <a href="{% url "speeches:speaker-view" object.speaker.slug %}">{{ object.speaker }}</a>
                         </span>
                     {% else %}
-                        Unknown speaker
+                        {% trans 'Unknown speaker' %}
                     {% endif %}
                     {% if object.start_date %}
                         <span class="speech__meta-data__date">
@@ -108,7 +108,10 @@
                     {% endif %}
                   </div>
                   <div class="speech-navigation__column speech-navigation__column--two">
-                    <div class="ui-instructions"><h2>Keyboard shortcuts</h2> <p><span class="key-descriptor">j</span> previous speech <span class="key-descriptor">k</span> next speech</p></div>
+                    <div class="ui-instructions">
+                        <h2>{% trans "Keyboard shortcuts" %}</h2>
+                        <p><span class="key-descriptor">j</span> {% trans "previous speech" %}
+                        <span class="key-descriptor">k</span> {% trans "next speech" %}</p></div>
                   </div>
                 </div>
               {% endif %}

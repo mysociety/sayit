@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse, reverse_lazy, resolve
 from django.core import serializers
 from django.conf import settings
 from django.contrib import messages
+from django.utils.translation import ugettext as _
 
 from django.db.models import Count, Avg
 from django.core.files import File
@@ -392,7 +393,7 @@ class RecordingSetSection(NamespaceMixin, BothObjectAndFormMixin, InstanceFormMi
     def form_valid(self, form):
         self.object = self.get_object()
         num = self.object.add_speeches_to_section(form.cleaned_data['section'])
-        messages.add_message(self.request, messages.SUCCESS, "Speeches assigned.")
+        messages.add_message(self.request, messages.SUCCESS, _("Speeches assigned."))
         return super(RecordingSetSection, self).form_valid(form)
 
 class RecordingView(NamespaceMixin, View):

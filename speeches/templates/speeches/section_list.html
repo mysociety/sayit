@@ -18,11 +18,11 @@
     {% endfor %}
 </ul>
 
-    <h2>Unattached speeches</h2>
+    <h2>{% trans 'Unattached speeches' %}</h2>
 
     <ol class="unstyled">
         {% if not speech_list %}
-            <li>There are no unattached speeches.</li>
+            <li>{% trans 'There are no unattached speeches.' %}</li>
         {% endif %}
         {% for speech in speech_list %}
             {% include "speeches/speech.html" with speech=speech nosection="1" %}
