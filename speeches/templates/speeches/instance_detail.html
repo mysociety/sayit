@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load url from future %}
 {% load i18n %}
 {% load humanize %}
 {% load speech_utils %}
@@ -29,8 +30,8 @@
   <div class="full-page__row">
       <div class="full-page__unit">
           <strong>{{ count_speeches|intcomma }}</strong> speeches{% if count_speakers %}, by
-          <strong>{{ count_speakers|intcomma }}</strong> speakers{% endif %}{% if count_sections %}, in
-          <strong>{{ count_sections|intcomma }}</strong> sections{% endif %}
+          <a href="{% url "speeches:speaker-list" %}"><strong>{{ count_speakers|intcomma }}</strong></a> speakers{% endif %}{% if count_sections %}, in
+          <a href="{% url "speeches:section-list" %}"><strong>{{ count_sections|intcomma }}</strong></a> sections{% endif %}
 
 {% block instance_blocks %}
 {% endblock %}
