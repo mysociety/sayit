@@ -1,22 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import calendar
-
-from speeches.importers.import_base import ImporterBase, SpeechImportException
 from datetime import datetime
 import logging
-import os, sys
-import pickle
-import re, string
+import re
 
 from lxml import etree
 from lxml import objectify
 
-from django.db import models
-from django.utils import timezone
-
-from popit.models import Person, ApiInstance
-from speeches.models import Section, Speech, Speaker
+from speeches.importers.import_base import ImporterBase #, SpeechImportException
+from speeches.models import Section, Speech
 
 logger = logging.getLogger(__name__)
 name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')

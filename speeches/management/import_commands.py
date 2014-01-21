@@ -1,10 +1,8 @@
-import os, sys
+import os
 from optparse import make_option
-import urllib
 
 from django.core.management.base import BaseCommand, CommandError
 
-from speeches.models import Section, Speech, Speaker
 from instances.models import Instance
 from popit.models import ApiInstance
 

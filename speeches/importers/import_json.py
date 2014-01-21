@@ -1,18 +1,10 @@
-import calendar
-
-from speeches.importers.import_base import ImporterBase, SpeechImportException
-from datetime import datetime, date
-import logging
-import os, sys
-import pickle
-import re, string
-
+from datetime import datetime
 import json
+import logging
+import re
 
-from django.db import models
-from django.utils import timezone
-
-from speeches.models import Section, Speech, Speaker, Tag
+from speeches.importers.import_base import ImporterBase
+from speeches.models import Section, Speech, Tag
 
 logger = logging.getLogger(__name__)
 name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')

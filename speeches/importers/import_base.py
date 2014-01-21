@@ -1,21 +1,10 @@
-import calendar
-from datetime import datetime
 import logging
-import os, sys
-import pickle
-import re, string
+import re
 
-from lxml import etree
-from lxml import objectify
-
-from django.db import models
-from django.utils import timezone
-from django.conf import settings
-
-from popit.models import Person, ApiInstance
-from speeches.models import Section, Speech, Speaker
+from popit.models import ApiInstance
 from popit_resolver.resolve import SetupEntities, ResolvePopitName
-from django.core.exceptions import ImproperlyConfigured
+
+from speeches.models import Speech, Speaker
 
 logger = logging.getLogger(__name__)
 name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
