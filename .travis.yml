@@ -1,14 +1,31 @@
+notifications:
+  email: false
+  irc:
+    channels:
+      - "irc.mysociety.org#sayit"
+    use_notice: true
+
 language: python
 
 services:
   - elasticsearch
 
+env:
+  - SELENIUM_TESTS=1 MODULES="Django>=1.4,<1.5"
+  - SELENIUM_TESTS=1 MODULES="Django>=1.5,<1.6"
+  - SELENIUM_TESTS=1 MODULES="Django>=1.6,<1.7"
+#  - SELENIUM_TESTS=1 MODULES="git+https://github.com/django/django.git@master#egg=django"
+
 install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq ffmpeg libavcodec-extra-53 iceweasel xvfb yui-compressor
   - gem install compass zurb-foundation
+  - pip install $MODULES
   - pip install -r requirements.txt
-  - sed -r -e "s,(SAYIT_DB_USER:) 'sayit',\\1 'postgres'," conf/general.yml-example > conf/general.yml
+  - sed -r
+    -e "s,(SAYIT_DB_USER:) 'sayit',\\1 'postgres',"
+    -e "s,(DJANGO_SECRET_KEY:) '',\\1 'secret',"
+    conf/general.yml-example > conf/general.yml
 
 before_script:
   - psql -c 'create database sayit;' -U postgres
@@ -18,14 +35,5 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
-env:
-  - SELENIUM_TESTS=1
-
 script:
   - ./manage.py test
-
-# report results in IRC
-# notifications:
-#   irc: "irc.mysociety.org#pmo"
-#   use_notice: true
-#   skip_join: true

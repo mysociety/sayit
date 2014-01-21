@@ -8,7 +8,7 @@ psycopg2
 python-memcached
 
 ### Django related
-Django>=1.4.2,<1.5
+Django>=1.4.2
 South
 django-pagination
 django_select2
@@ -57,7 +57,7 @@ django-subdomain-instances
 
 # We use nose to run the tests, which gets around various limitations
 # with the built-in test runner:
-django-nose==1.1
+django-nose==1.2
 
 # Parse XML for akomantoso import
 lxml

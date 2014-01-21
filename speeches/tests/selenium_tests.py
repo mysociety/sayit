@@ -59,7 +59,8 @@ class SeleniumTests(InstanceLiveServerTestCase):
         text_input = self.selenium.find_element_by_name('text')
         text_input.send_keys('This is a speech')
         self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
-        self.assertIn('/speech/1', self.selenium.current_url)
+        speech = Speech.objects.order_by('-created')[0]
+        self.assertIn('/speech/%d' % speech.id, self.selenium.current_url)
 
     def test_upload_audio(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
@@ -76,7 +77,8 @@ class SeleniumTests(InstanceLiveServerTestCase):
         
         audio_file_input.send_keys(os.path.join(self._in_fixtures, 'lamb.mp3'))
         self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
-        self.assertIn('/speech/1', self.selenium.current_url)
+        speech = Speech.objects.order_by('-created')[0]
+        self.assertIn('/speech/%d' % speech.id, self.selenium.current_url)
 
     def test_speaker_autocomplete(self):
         # Put a person in the db for the autocomplete to find
@@ -90,7 +92,7 @@ class SeleniumTests(InstanceLiveServerTestCase):
         selection_element = self.selenium.find_element_by_xpath('//div[@id="s2id_id_speaker"]/descendant::span')
         self.assertIn('Name', selection_element.text)
         speaker_input = self.selenium.find_element_by_id("id_speaker")
-        self.assertTrue(speaker_input.get_attribute('value') == "1")
+        self.assertTrue(speaker_input.get_attribute('value') == str(speaker.id))
         # Check we can unselect it
         self.selenium.find_element_by_xpath('//div[@id="s2id_id_speaker"]/descendant::abbr[@class="select2-search-choice-close"]').click()
         speaker_input = self.selenium.find_element_by_id("id_speaker")
