@@ -27,6 +27,9 @@ def title_case_heading(heading):
     return titled
 
 class ImportAkomaNtoso (ImporterBase):
+    def __init__(self, title_case=False, **kwargs):
+        self.title_case = title_case
+        return super(ImportAkomaNtoso, self).__init__(**kwargs)
 
     def import_document(self, document_path):
         #try:
@@ -75,14 +78,18 @@ class ImportAkomaNtoso (ImporterBase):
         match = name_rx.match(name)
         if match:
             honorific, fname, party, _ = match.groups()
-            display_name = '%s %s%s' % (honorific, fname.title(), party if party else '')
+            if self.title_case:
+                fname = fname.title()
+            display_name = '%s %s%s' % (honorific, fname, party if party else '')
             # XXX Now the sayit project indexes stop words, this next line keeps
             # the test passing. This should be looked at at some point.
             # "The" is not an honorific anyway, should we be here?.
             display_name = re.sub('^The ', '', display_name)
             return display_name
         else:
-            return name.title()
+            if self.title_case:
+                name = name.title()
+            return name
 
     def visit(self, node, section):
        for child in node.iterchildren():
@@ -91,7 +98,9 @@ class ImportAkomaNtoso (ImporterBase):
                 # this will already have been extracted
                 continue
             if tagname == 'debateSection':
-                title = title_case_heading(child.heading.text)
+                title = child.heading.text
+                if self.title_case:
+                    title = title_case_heading(title)
                 childSection = self.make(Section, parent=section, title=title)
                 self.visit(child, childSection)
             elif tagname == 'speech':
