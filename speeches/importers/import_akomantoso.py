@@ -7,7 +7,7 @@ import re
 from lxml import etree
 from lxml import objectify
 
-from speeches.importers.import_base import ImporterBase #, SpeechImportException
+from speeches.importers.import_base import ImporterBase
 from speeches.models import Section, Speech
 
 logger = logging.getLogger(__name__)
@@ -24,36 +24,27 @@ class ImportAkomaNtoso (ImporterBase):
         return super(ImportAkomaNtoso, self).__init__(**kwargs)
 
     def import_document(self, document_path):
-        #try:
         tree = objectify.parse(document_path)
         xml = tree.getroot()
 
+        preface = xml.debate.preface
         debateBody = xml.debate.debateBody
         mainSection = debateBody.debateSection
 
         self.title = '%s (%s)' % (
                 mainSection.heading.text,
-                etree.tostring(xml.debate.preface.p, method='text'))
+                etree.tostring(preface.p, method='text'))
 
         section = self.make(Section, title=self.title)
 
-        #try:
-        start_date = xml.debate.preface.p.docDate.get('date')
+        start_date = preface.p.docDate.get('date')
         self.set_resolver_for_date(date_string = start_date)
 
         self.start_date = datetime.strptime(start_date, '%Y-%m-%d')
 
-        #except Exception as e:
-            #raise e
-            # pass
-
         self.visit(mainSection, section)
 
         return section
-
-        #except Exception as e:
-            #raise e
-            # raise SpeechImportException(str(e))
 
     def get_tag(self, node):
         return etree.QName(node.tag).localname
@@ -108,6 +99,7 @@ class ImportAkomaNtoso (ImporterBase):
                         # {start,end}_{date,time}
                         # tags
                         # source_url
+                        start_date = self.start_date,
                         text = text,
                         speaker = speaker,
                         speaker_display = self.name_display(name),
@@ -124,6 +116,7 @@ class ImportAkomaNtoso (ImporterBase):
                         # {start,end}_{date,time}
                         # tags
                         # source_url
+                        start_date = self.start_date,
                         text = text,
                         speaker = speaker,
                         )

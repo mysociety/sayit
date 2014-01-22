@@ -4,7 +4,7 @@ import re
 from popit.models import ApiInstance
 from popit_resolver.resolve import SetupEntities, ResolvePopitName
 
-from speeches.models import Speech, Speaker
+from speeches.models import Speaker
 
 logger = logging.getLogger(__name__)
 name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
@@ -18,7 +18,6 @@ class ImporterBase (object):
         self.instance = instance
         self.popit_url = popit_url
         self.commit = commit
-        self.start_date = None
         self.title = '(untitled)'
 
         if not ai and self.popit_url:
@@ -42,11 +41,6 @@ class ImporterBase (object):
                     date_string = date_string)
 
     def make(self, cls, **kwargs):
-        if cls == Speech:
-            kwargs['title'] = kwargs.get('title', self.title)
-            if 'start_date' not in kwargs:
-                kwargs['start_date'] = self.start_date
-
         s = cls(instance=self.instance, **kwargs)
         if self.commit:
             s.save()
