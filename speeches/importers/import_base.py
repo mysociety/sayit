@@ -14,37 +14,32 @@ class SpeechImportException (Exception):
 
 class ImporterBase (object):
 
-    def __init__(self, popit_url, instance=None, commit=True, ai=None, **kwargs):
+    def __init__(self, popit_url=None, instance=None, commit=True, ai=None, **kwargs):
         self.instance = instance
         self.popit_url = popit_url
         self.commit = commit
         self.start_date = None
         self.title = '(untitled)'
 
-        if not self.popit_url:
-            raise RuntimeError("popit_url required")
-
-        # TODO get this url from the AN document, or from config/parameter
-        if ai:
-            self.ai = ai
-        else:
-            self.ai, _ = ApiInstance.objects.get_or_create(url=self.popit_url)
-        self.use_cache = True
+        if not ai and self.popit_url:
+            ai, _ = ApiInstance.objects.get_or_create(url=self.popit_url)
 
         self.person_cache = {}
-        self.speakers_count   = 0
+        self.speakers_count = 0
         self.speakers_matched = 0
-        self.speakers     = {}
+        self.speakers = {}
 
         self.resolver = None
 
     def init_popit_data(self):
-        SetupEntities(self.popit_url).init_popit_data()
+        if self.popit_url:
+            SetupEntities(self.popit_url).init_popit_data()
 
     def set_resolver_for_date(self, date_string='', date=None):
-        self.resolver = ResolvePopitName(
-                date = date,
-                date_string = date_string)
+        if self.popit_url:
+            self.resolver = ResolvePopitName(
+                    date = date,
+                    date_string = date_string)
 
     def make(self, cls, **kwargs):
         if cls == Speech:
@@ -71,18 +66,19 @@ class ImporterBase (object):
 
         if name:
             self.speakers_count += 1
-            popit_person = self.resolver.get_person(display_name)
+            if self.resolver:
+                popit_person = self.resolver.get_person(display_name)
 
-            if popit_person:
-                self.speakers_matched += 1
-                try:
-                    speaker = Speaker.objects.get(
-                        instance = self.instance,
-                        person = popit_person)
-                except Speaker.DoesNotExist:
-                    pass
-            else:
-                logger.info(" - Failed to get user %s" % display_name)
+                if popit_person:
+                    self.speakers_matched += 1
+                    try:
+                        speaker = Speaker.objects.get(
+                            instance = self.instance,
+                            person = popit_person)
+                    except Speaker.DoesNotExist:
+                        pass
+                else:
+                    logger.info(" - Failed to get user %s" % display_name)
 
         if not speaker:
             speaker, _ = Speaker.objects.get_or_create(

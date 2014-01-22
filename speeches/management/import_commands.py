@@ -32,12 +32,6 @@ class ImportCommand(BaseCommand):
             raise CommandError("Instance specified not found (%s)" % options['instance'])
         options['instance'] = instance
 
-        # TODO configure this
-        if not options['popit_url']:
-            raise CommandError("'--popit_url' argument is required")
-
-        self.ai, _ = ApiInstance.objects.get_or_create(url=options['popit_url'])
-
         if options['file']:
             (section, speakers_matched, speakers_count, speakers) = self.import_document(options['file'], **options)
             if verbosity > 1:
@@ -103,9 +97,7 @@ class ImportCommand(BaseCommand):
         if self.importer_class == None:
             raise CommandError("No importer_class specified!")
 
-        importer = self.importer_class(
-            ai = self.ai,
-            **options)
+        importer = self.importer_class(**options)
 
         if not self.popit_setup:
             importer.init_popit_data()
