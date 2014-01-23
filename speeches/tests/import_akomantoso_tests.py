@@ -10,7 +10,8 @@ from popit_resolver.resolve import SetupEntities, EntityName
 
 import speeches
 from speeches.models import Speaker
-from speeches.importers.import_akomantoso import ImportAkomaNtoso, title_case_heading
+from speeches.importers.import_akomantoso import title_case_heading
+from speeches.importers.import_za_akomantoso import ImportZAAkomaNtoso
 
 import logging
 logging.disable(logging.WARNING)
@@ -37,7 +38,7 @@ class ImportAkomaNtosoTests(InstanceTestCase):
     def test_import(self):
         document_path = os.path.join(self._in_fixtures, 'NA200912.xml')
 
-        an = ImportAkomaNtoso(instance=self.instance, commit=True, popit_url=popit_url, title_case=True)
+        an = ImportZAAkomaNtoso(instance=self.instance, commit=True, popit_url=popit_url)
         section = an.import_document(document_path)
 
         self.assertTrue(section is not None)

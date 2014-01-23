@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 import logging
 import re
 
@@ -19,32 +18,16 @@ def title_case_heading(heading):
     return titled
 
 class ImportAkomaNtoso (ImporterBase):
-    def __init__(self, title_case=False, **kwargs):
-        self.title_case = title_case
-        return super(ImportAkomaNtoso, self).__init__(**kwargs)
+    title_case = False
+    start_date = None
 
     def import_document(self, document_path):
         tree = objectify.parse(document_path)
-        xml = tree.getroot()
+        self.xml = tree.getroot()
+        return self.parse_document()
 
-        preface = xml.debate.preface
-        debateBody = xml.debate.debateBody
-        mainSection = debateBody.debateSection
-
-        self.title = '%s (%s)' % (
-                mainSection.heading.text,
-                etree.tostring(preface.p, method='text'))
-
-        section = self.make(Section, title=self.title)
-
-        start_date = preface.p.docDate.get('date')
-        self.set_resolver_for_date(date_string = start_date)
-
-        self.start_date = datetime.strptime(start_date, '%Y-%m-%d')
-
-        self.visit(mainSection, section)
-
-        return section
+    def parse_document(self):
+        self.visit(self.xml.debate.debateBody, None)
 
     def get_tag(self, node):
         return etree.QName(node.tag).localname
