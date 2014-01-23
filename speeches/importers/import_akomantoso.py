@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import re
 
 from lxml import etree
 from lxml import objectify
@@ -10,7 +9,6 @@ from speeches.importers.import_base import ImporterBase
 from speeches.models import Section, Speech
 
 logger = logging.getLogger(__name__)
-name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 
 def title_case_heading(heading):
     titled = heading.title()
@@ -39,23 +37,7 @@ class ImportAkomaNtoso (ImporterBase):
         return '\n\n'.join(paras)
 
     def name_display(self, name):
-        if not name:
-            return '(narrative)'
-        match = name_rx.match(name)
-        if match:
-            honorific, fname, party, _ = match.groups()
-            if self.title_case:
-                fname = fname.title()
-            display_name = '%s %s%s' % (honorific, fname, party if party else '')
-            # XXX Now the sayit project indexes stop words, this next line keeps
-            # the test passing. This should be looked at at some point.
-            # "The" is not an honorific anyway, should we be here?.
-            display_name = re.sub('^The ', '', display_name)
-            return display_name
-        else:
-            if self.title_case:
-                name = name.title()
-            return name
+        return name
 
     def visit(self, node, section):
        for child in node.iterchildren():
@@ -71,8 +53,8 @@ class ImportAkomaNtoso (ImporterBase):
                 self.visit(child, childSection)
             elif tagname == 'speech':
                 text = self.get_text(child)
-                name = child['from'].text
-                speaker = self.get_person( self.name_display(name) )
+                display_name = self.name_display(child['from'].text)
+                speaker = self.get_person(display_name)
                 speech = self.make(Speech,
                         section = section,
                         # title
@@ -85,8 +67,8 @@ class ImportAkomaNtoso (ImporterBase):
                         start_date = self.start_date,
                         text = text,
                         speaker = speaker,
-                        speaker_display = self.name_display(name),
-                        )
+                        speaker_display = display_name,
+                )
             else:
                 text = etree.tostring(child, method='text')
                 speaker = self.get_person(None)
@@ -102,4 +84,4 @@ class ImportAkomaNtoso (ImporterBase):
                         start_date = self.start_date,
                         text = text,
                         speaker = speaker,
-                        )
+                )

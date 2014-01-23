@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+import re
 
 from lxml import etree
 
 from speeches.importers.import_akomantoso import ImportAkomaNtoso
 from speeches.models import Section
+
+name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 
 class ImportZAAkomaNtoso (ImportAkomaNtoso):
     title_case = True
@@ -31,3 +34,22 @@ class ImportZAAkomaNtoso (ImportAkomaNtoso):
 
         self.visit(mainSection, section)
         return section
+
+    def name_display(self, name):
+        if not name:
+            return '(narrative)'
+        match = name_rx.match(name)
+        if match:
+            honorific, fname, party, _ = match.groups()
+            if self.title_case:
+                fname = fname.title()
+            display_name = '%s %s%s' % (honorific, fname, party if party else '')
+            # XXX Now the sayit project indexes stop words, this next line keeps
+            # the test passing. This should be looked at at some point.
+            # "The" is not an honorific anyway, should we be here?.
+            display_name = re.sub('^The ', '', display_name)
+            return display_name
+        else:
+            if self.title_case:
+                name = name.title()
+            return name
