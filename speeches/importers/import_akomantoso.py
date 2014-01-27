@@ -31,7 +31,7 @@ class ImportAkomaNtoso (ImporterBase):
         return etree.QName(node.tag).localname
 
     def get_text(self, node):
-        paras = [etree.tostring(child, method='text')
+        paras = [etree.tostring(child, method='text', encoding='utf-8')
                 for child in node.iterchildren()
                 if self.get_tag(child) != 'from']
         return '\n\n'.join(paras)
@@ -70,7 +70,7 @@ class ImportAkomaNtoso (ImporterBase):
                         speaker_display = display_name,
                 )
             else:
-                text = etree.tostring(child, method='text')
+                text = etree.tostring(child, method='text', encoding='utf-8')
                 speaker = self.get_person(None)
                 speech = self.make(Speech,
                         section = section,
