@@ -141,7 +141,7 @@ class Section(AuditedModel, InstanceMixin):
     # Custom manager
     objects = SectionManager()
 
-    title = models.TextField(blank=False, null=False, help_text=_('The title of the section'))
+    title = models.TextField(blank=True, help_text=_('The title of the section'))
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
     slug = SluggableField(unique_with='parent', populate_from='title')
     slugs = generic.GenericRelation(Slug)
@@ -151,7 +151,7 @@ class Section(AuditedModel, InstanceMixin):
         unique_together = ('parent', 'slug')
 
     def __unicode__(self):
-        return self.title
+        return self.title or _('Section')
 
     def speech_datetimes(self):
         return (datetime.datetime.combine(s.start_date, s.start_time or datetime.time(0,0) )

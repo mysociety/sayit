@@ -181,6 +181,7 @@ class RecordingForm(forms.ModelForm):
         exclude = ['instance', 'audio']
 
 class SectionForm(forms.ModelForm):
+    title = forms.CharField(required=True)
     parent = GroupedModelChoiceField(Section.objects.all(), 'parent', required=False)
 
     def __init__(self, *args, **kwargs):
