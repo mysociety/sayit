@@ -31,10 +31,11 @@ class ImportAkomaNtoso (ImporterBase):
         return etree.QName(node.tag).localname
 
     def get_text(self, node):
-        paras = [etree.tostring(child, method='text', encoding='utf-8')
-                for child in node.iterchildren()
-                if self.get_tag(child) != 'from']
-        return '\n\n'.join(paras)
+        paras = [ node.text ]
+        paras += [ etree.tostring(child, encoding='utf-8')
+                    for child in node.iterchildren()
+                    if self.get_tag(child) not in ('num', 'heading', 'subheading', 'from') ]
+        return ''.join(filter(None, paras))
 
     def name_display(self, name):
         return name
@@ -45,13 +46,19 @@ class ImportAkomaNtoso (ImporterBase):
             if tagname == 'heading':
                 # this will already have been extracted
                 continue
-            if tagname == 'debateSection':
+            if tagname in ('debateSection', 'administrationOfOath', 'rollCall',
+                    'prayers', 'oralStatements', 'writtenStatements',
+                    'personalStatements', 'ministerialStatements',
+                    'resolutions', 'nationalInterest', 'declarationOfVote',
+                    'communication', 'petitions', 'papers', 'noticesOfMotion',
+                    'questions', 'address', 'proceduralMotions',
+                    'pointOfOrder', 'adjournment'):
                 title = child.heading.text
                 if self.title_case:
                     title = title_case_heading(title)
                 childSection = self.make(Section, parent=section, title=title)
                 self.visit(child, childSection)
-            elif tagname == 'speech':
+            elif tagname in ('speech', 'question', 'answer'):
                 text = self.get_text(child)
                 display_name = self.name_display(child['from'].text)
                 speaker = self.get_person(display_name)
@@ -69,8 +76,8 @@ class ImportAkomaNtoso (ImporterBase):
                         speaker = speaker,
                         speaker_display = display_name,
                 )
-            else:
-                text = etree.tostring(child, method='text', encoding='utf-8')
+            elif tagname in ('scene', 'narrative', 'summary', 'other'):
+                text = self.get_text(child)
                 speaker = self.get_person(None)
                 speech = self.make(Speech,
                         section = section,
@@ -85,3 +92,5 @@ class ImportAkomaNtoso (ImporterBase):
                         text = text,
                         speaker = speaker,
                 )
+            else:
+                raise Exception, '%s unrecognised, "%s" - %s' % (child.tag, child, self.get_text(child))
