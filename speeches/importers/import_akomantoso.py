@@ -2,6 +2,7 @@
 
 import logging
 
+from dateutil import parser as dateutil
 from lxml import etree
 from lxml import objectify
 
@@ -25,7 +26,13 @@ class ImportAkomaNtoso (ImporterBase):
         return self.parse_document()
 
     def parse_document(self):
-        self.visit(self.xml.debate.debateBody, None)
+        debate = self.xml.debate
+
+        docDate = debate.find('preface//docDate')
+        if docDate is not None:
+            self.start_date = dateutil.parse(docDate.get('date'))
+
+        self.visit(debate.debateBody, None)
 
     def get_tag(self, node):
         return etree.QName(node.tag).localname
@@ -53,6 +60,12 @@ class ImportAkomaNtoso (ImporterBase):
             title = title_case_heading(title)
         return title
 
+    def construct_datetime(self, time):
+        if not time:
+            return (None, None)
+        dt = dateutil.parse(time)
+        return dt.date, dt.time
+
     def visit(self, node, section):
        for child in node.iterchildren():
             tagname = self.get_tag(child)
@@ -74,10 +87,15 @@ class ImportAkomaNtoso (ImporterBase):
                 text = self.get_text(child)
                 display_name = self.name_display(child['from'].text)
                 speaker = self.get_person(display_name)
+                start_date, start_time = self.construct_datetime(child.get('startTime'))
+                end_date, end_time = self.construct_datetime(child.get('endTime'))
                 speech = self.make(Speech,
                         section = section,
                         title = title,
-                        start_date = self.start_date,
+                        start_date = start_date or self.start_date,
+                        start_time = start_time,
+                        end_date = end_date,
+                        end_time = end_time,
                         text = text,
                         speaker = speaker,
                         speaker_display = display_name,
