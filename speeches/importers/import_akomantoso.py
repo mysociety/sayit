@@ -6,8 +6,10 @@ from dateutil import parser as dateutil
 from lxml import etree
 from lxml import objectify
 
+from popit.models import Person
+
 from speeches.importers.import_base import ImporterBase
-from speeches.models import Section, Speech
+from speeches.models import Section, Speech, Speaker
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +21,8 @@ def title_case_heading(heading):
 class ImportAkomaNtoso (ImporterBase):
     title_case = False
     start_date = None
+    speakers = {}
+    use_by_refs = True
 
     def import_document(self, document_path):
         tree = objectify.parse(document_path)
@@ -27,6 +31,27 @@ class ImportAkomaNtoso (ImporterBase):
 
     def parse_document(self):
         debate = self.xml.debate
+
+        people = debate.find('meta/references/TLCPerson')
+        if people is None: people = []
+        for person in people:
+            id = person.get('id')
+            href = person.get('href')
+            try:
+                p = Person.objects.get(popit_id=href)
+            except Person.DoesNotExist:
+                p = Person(popit_id=href, api_instance=self.ai)
+                if self.commit:
+                    p.save()
+
+            try:
+                speaker = Speaker.objects.get(instance=self.instance, person=p)
+            except Speaker.DoesNotExist:
+                speaker = Speaker(instance=self.instance, name=person.get('showAs'), person=p)
+                if self.commit:
+                    speaker.save()
+
+            self.speakers[id] = speaker
 
         docDate = debate.find('preface//docDate')
         if docDate is not None:
@@ -67,7 +92,7 @@ class ImportAkomaNtoso (ImporterBase):
         return dt.date, dt.time
 
     def visit(self, node, section):
-       for child in node.iterchildren():
+        for child in node.iterchildren():
             tagname = self.get_tag(child)
             if tagname in ('num', 'heading', 'subheading'):
                 # this will already have been extracted
@@ -86,9 +111,13 @@ class ImportAkomaNtoso (ImporterBase):
                 title = self.construct_title(child)
                 text = self.get_text(child)
                 display_name = self.name_display(child['from'].text)
-                speaker = self.get_person(display_name)
                 start_date, start_time = self.construct_datetime(child.get('startTime'))
                 end_date, end_time = self.construct_datetime(child.get('endTime'))
+                by_ref = child.get('by')
+                if by_ref and self.use_by_refs:
+                    speaker = self.speakers[by_ref[1:]]
+                else:
+                    speaker = self.get_person(display_name)
                 speech = self.make(Speech,
                         section = section,
                         title = title,

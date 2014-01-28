@@ -12,6 +12,7 @@ name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 
 class ImportZAAkomaNtoso (ImportAkomaNtoso):
     title_case = True
+    use_by_refs = False
 
     def parse_document(self):
         """We know we only have one top level section, which we want to

@@ -14,14 +14,17 @@ class SpeechImportException (Exception):
 
 class ImporterBase (object):
 
-    def __init__(self, popit_url=None, instance=None, commit=True, ai=None, **kwargs):
+    def __init__(self, popit_url=None, instance=None, commit=True, **kwargs):
         self.instance = instance
         self.popit_url = popit_url
         self.commit = commit
         self.title = '(untitled)'
 
-        if not ai and self.popit_url:
-            ai, _ = ApiInstance.objects.get_or_create(url=self.popit_url)
+        if self.popit_url:
+            self.ai, _ = ApiInstance.objects.get_or_create(url=self.popit_url)
+        else:
+            # XXX TODO This is not right.
+            self.ai, _ = ApiInstance.objects.get_or_create(url='http://import.example.org/')
 
         self.person_cache = {}
         self.speakers_count = 0
@@ -75,13 +78,17 @@ class ImporterBase (object):
                     logger.info(" - Failed to get user %s" % display_name)
 
         if not speaker:
-            speaker, _ = Speaker.objects.get_or_create(
-                instance = self.instance,
-                name = display_name)
+            try:
+                speaker = Speaker.objects.get(instance=self.instance, name=display_name)
+            except Speaker.DoesNotExist:
+                speaker = Speaker(instance=self.instance, name=display_name)
+                if self.commit:
+                    speaker.save()
 
             if popit_person:
                 speaker.person = popit_person
-                speaker.save()
+                if self.commit:
+                    speaker.save()
 
         self.person_cache[name] = speaker
         return speaker
