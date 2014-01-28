@@ -91,6 +91,11 @@ class ImportAkomaNtoso (ImporterBase):
         dt = dateutil.parse(time)
         return dt.date, dt.time
 
+    def handle_tag(self, node, section):
+        """If we need to do something out of the ordinary handling elements,
+        subclass it here"""
+        return False
+
     def visit(self, node, section):
         for child in node.iterchildren():
             tagname = self.get_tag(child)
@@ -131,12 +136,13 @@ class ImportAkomaNtoso (ImporterBase):
                 )
             elif tagname in ('scene', 'narrative', 'summary', 'other'):
                 text = self.get_text(child)
-                speaker = self.get_person(None)
+
                 speech = self.make(Speech,
                         section = section,
                         start_date = self.start_date,
                         text = text,
-                        speaker = speaker,
                 )
             else:
-                raise Exception, '%s unrecognised, "%s" - %s' % (child.tag, child, self.get_text(child))
+                success = self.handle_tag(child, section)
+                if not success:
+                    raise Exception, '%s unrecognised, "%s" - %s' % (child.tag, child, self.get_text(child))

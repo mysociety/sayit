@@ -6,7 +6,7 @@ import re
 from lxml import etree
 
 from speeches.importers.import_akomantoso import ImportAkomaNtoso
-from speeches.models import Section
+from speeches.models import Section, Speech
 
 name_rx = re.compile(r'^(\w+) (.*?)( \((\w+)\))?$')
 
@@ -54,3 +54,17 @@ class ImportZAAkomaNtoso (ImportAkomaNtoso):
             if self.title_case:
                 name = name.title()
             return name
+
+    def handle_tag(self, node, section):
+        """We handle anything coming in. In practice, this is currently
+        <p>s as direct children of <debateSection>s."""
+
+        text = self.get_text(node)
+        speaker = self.get_person(None)
+        speech = self.make(Speech,
+            section = section,
+            start_date = self.start_date,
+            text = text,
+            speaker = speaker,
+        )
+        return True
