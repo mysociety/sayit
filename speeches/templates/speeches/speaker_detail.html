@@ -102,7 +102,7 @@
     <ul class="unstyled js-masonry" data-masonry-options='{"columnWidth":".speech","itemSelector":".speech","gutter":".gutter-sizer"}'>
         <li class="gutter-sizer"></li>
         {% if not page_obj %}
-            <li>{% blocktrans with speaker=speaker.name %}{{ speaker }} has no recorded speeches yet.{% endblocktrans %}</li>
+            <li class="speech">{% blocktrans with speaker=speaker.name %}{{ speaker }} has no recorded speeches yet.{% endblocktrans %}</li>
         {% endif %}
         {% for speech in page_obj %}
             {% include "speeches/speech.html" with speech=speech nospeaker="1" truncate="1" %}
