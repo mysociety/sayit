@@ -143,12 +143,12 @@ class Section(AuditedModel, InstanceMixin):
 
     title = models.TextField(blank=True, help_text=_('The title of the section'))
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
-    slug = SluggableField(unique_with='parent', populate_from='title')
+    slug = SluggableField(unique_with=('parent', 'instance'), populate_from='title')
     slugs = generic.GenericRelation(Slug)
 
     class Meta:
         ordering = ('id',)
-        unique_together = ('parent', 'slug')
+        unique_together = ('parent', 'slug', 'instance')
 
     def __unicode__(self):
         return self.title or _('Section')
