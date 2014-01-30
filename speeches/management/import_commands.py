@@ -4,7 +4,6 @@ from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
 
 from instances.models import Instance
-from popit.models import ApiInstance
 
 class ImportCommand(BaseCommand):
 
@@ -14,7 +13,7 @@ class ImportCommand(BaseCommand):
 
     option_list = BaseCommand.option_list + (
         make_option('--commit', action='store_true', help='Whether to commit to the database or not'),
-        make_option('--instance', action='store', default='default', help='Label of instance to add data to'),
+        make_option('--instance', action='store', help='Label of instance to add data to'),
         make_option('--file', action='store', help='document to import'),
         make_option('--dir',  action='store', help='directory of documents to import'),
         make_option('--start-date',  action='store', default='', help='earliest date to process, in yyyy-mm-dd format'),
@@ -25,11 +24,12 @@ class ImportCommand(BaseCommand):
     def handle(self, *args, **options):
         verbosity = int(options['verbosity'])
 
-        instance = None
-        try:
-            instance = Instance.objects.get(label=options['instance'])
-        except Instance.DoesNotExist:
-            raise CommandError("Instance specified not found (%s)" % options['instance'])
+        if options['commit']:
+            if not options['instance']:
+                raise CommandError("You must specify an instance")
+            instance, _ = Instance.objects.get_or_create(label=options['instance'])
+        else:
+            instance = Instance(label=options['instance'])
         options['instance'] = instance
 
         if options['file']:
