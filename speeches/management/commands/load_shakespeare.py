@@ -129,11 +129,12 @@ class Command(BaseCommand):
                             text += '<i>%s</i>' % line[0].text
                             if line[0].tail:
                                 text += ' %s' % line[0].tail.strip()
-                            text += '\n'
+                            text += '<br>\n'
                         elif line.tag == 'LINE':
-                            text += '%s\n' % line.text
+                            text += '%s<br>\n' % line.text
                         elif line.tag == 'STAGEDIR':
-                            text += '<i>%s</i>\n' % line.text
+                            text += '<i>%s</i><br>\n' % line.text
         
+                    text = '<p>%s</p>' % text
                     self.make(Speech, speaker=speaker, section=scene_section, text=text)
 

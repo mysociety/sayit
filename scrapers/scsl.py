@@ -51,7 +51,8 @@ for date, url, text in get_transcripts():
             speaker = get_or_create(Speaker, instance=instance, name=speaker)
         else:
             speaker = None
-        text = '\n\n'.join([ ' '.join(s) for s in speech.text ])
+        text = '</p>\n<p>'.join([ ' '.join(s) for s in speech.text ])
+        text = '<p>%s</p>' % text
         #print speech.section, speaker, text
         speech = Speech(instance=instance, section=section, text=text, speaker=speaker, start_date=date, start_time=speech.time)
         if commit:
