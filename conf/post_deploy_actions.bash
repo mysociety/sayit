@@ -26,7 +26,6 @@ export GEM_HOME="../gems"
 mkdir -p "$GEM_HOME"
 export PATH="$GEM_HOME/bin:$PATH"
 gem install --conservative --no-ri --no-rdoc compass zurb-foundation
-compass compile web
 
 # gather all the static files in one place
 ./manage.py collectstatic --noinput
