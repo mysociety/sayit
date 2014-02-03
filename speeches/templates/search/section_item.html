@@ -1,5 +1,5 @@
 {% load url from future %}
-{% load bleach_tags %}
+{% load speech_utils %}
 
 <li class="section-signpost section-signpost--as-search-result">
 <ul class="breadcrumbs">
@@ -9,6 +9,6 @@
         {% endif %}
     {% endfor %}
 </ul>
-    <a href="{{ section.get_absolute_url }}">{{ highlight|bleach }}</a>
+    <a href="{{ section.get_absolute_url }}">{{ highlight|striptags_highlight }}</a>
 
 </li>

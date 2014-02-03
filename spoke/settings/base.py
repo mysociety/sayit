@@ -213,6 +213,9 @@ from .mysociety import *
 # django-pipeline and static file configuration
 from .pipeline import *
 
+# django-bleach configuration
+from .bleach import *
+
 # Cookies, after because we need BASE_HOST from mysociety.py
 SESSION_COOKIE_DOMAIN = BASE_HOST
 SESSION_COOKIE_NAME = 's'

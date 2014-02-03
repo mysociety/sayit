@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load staticfiles %}
 {% load bleach_tags %}
+{% load speech_utils %}
 
 {% if not noli %}
 <li id="s{{ speech.id }}" class="speech {% if result.object %}speech--search-result{% endif %} {% if speech.speaker and not nospeaker %}speech--with-portrait{% endif %} {% if not speech.speaker  %}speech--narrative{% endif %} speech--border"
@@ -100,13 +101,13 @@
       {% else %}
         <a title="{% trans "Link" %}" href="{% url 'speeches:speech-view' speech.id %}">
       {% endif %}
-            {{ highlight|bleach }}
+            {{ highlight|striptags_highlight }}
       </a>
     </p>
   {% elif truncate %}
     {{ speech.text|bleach|truncatewords_html:"50" }}
   {% else %}
-    {{ speech.text|bleach|linebreaks }}
+    {{ speech.text|bleach }}
   {% endif %}
 </div>
 

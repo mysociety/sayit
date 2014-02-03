@@ -81,7 +81,7 @@
 
               {% if object.text %}
                 <div class="speech__content speech__content-single-speech">
-                    {{ object.text|bleach|linebreaks }}
+                    {{ object.text|bleach }}
                 </div>
               {% endif %}
                 {% if object.section %}

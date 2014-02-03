@@ -1,6 +1,6 @@
 {% extends 'speeches/base_player.html' %}
 {% load url from future %}
-{% load bleach_tags %}
+{% load speech_utils %}
 {% load pagination_tags %}
 {% load i18n %}
 
@@ -30,7 +30,7 @@
               <ul class="unstyled-list search-results-speakers">
                   {% for result in speaker_results %}
                   <li class="search"><a href="{% url "speeches:speaker-view" result.object.slug %}">
-                      {{ result.highlighted.0|bleach }}
+                      {{ result.highlighted.0|striptags_highlight }}
                   </a></li>
                   {% endfor %}
               </ul>

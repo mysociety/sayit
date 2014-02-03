@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.html import strip_tags
 from django.template.defaultfilters import timesince, slugify
 from django.conf import settings
 from django.core.files import File
@@ -486,7 +487,8 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
         if self.audio and (not self.text or self.text == default_transcription):
             return "[ recorded audio ]"
         else:
-            return self.text[:summary_length] + '...' if len(self.text) > summary_length else self.text
+            text = strip_tags(self.text)
+            return text[:summary_length] + '...' if len(text) > summary_length else text
 
     @models.permalink
     def get_absolute_url(self):
