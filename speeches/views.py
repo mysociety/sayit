@@ -26,7 +26,6 @@ from django.views.generic import View, CreateView, UpdateView, DeleteView, Detai
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import BaseFormView
 
-import celery
 import logging
 
 logger = logging.getLogger(__name__)

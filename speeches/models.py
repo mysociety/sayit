@@ -483,8 +483,7 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     @property
     def summary(self):
         summary_length = settings.SPEECH_SUMMARY_LENGTH
-        default_transcription = settings.DEFAULT_TRANSCRIPTION
-        if self.audio and (not self.text or self.text == default_transcription):
+        if self.audio and not self.text:
             return "[ recorded audio ]"
         else:
             text = strip_tags(self.text)
@@ -567,18 +566,8 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
         return s and s[0] or None
 
     def start_transcribing(self):
-        """Kick off a celery task to transcribe this speech"""
-        # We only do anything if there's no text already
-        if not self.text:
-            # If someone is adding a new audio file and there's already a task
-            # We need to clear it
-            if self.celery_task_id:
-                celery.task.control.revoke(self.celery_task_id)
-            # Now we can start a new one
-            result = speeches.tasks.transcribe_speech.delay(self.id)
-            # Finally, we can remember the new task in the model
-            self.celery_task_id = result.task_id
-            self.save()
+        """In the past, kicked off a celery task to transcribe this speech"""
+        return
 
 # A timestamp of a particular speaker at a particular time.
 # Used to record events like "This speaker started speaking at 00:33"

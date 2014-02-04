@@ -4,7 +4,6 @@ import os
 import sys
 from django.conf import global_settings
 from .paths import *
-import djcelery
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -128,8 +127,6 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.admindocs',
     'haystack',
-    'djcelery',
-    'kombu.transport.django',
     'south',
     'django_select2',
     'django_nose',
@@ -200,9 +197,6 @@ PAGINATION_DEFAULT_ORPHANS = 2
 PAGINATION_INVALID_PAGE_RAISES_404 = True
 
 APPEND_SLASH = False
-
-# Celery
-djcelery.setup_loader()
 
 # South
 # Don't use migrations in testing - makes things faster and avoids

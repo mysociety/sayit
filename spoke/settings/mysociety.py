@@ -33,20 +33,6 @@ if BASE_HOST is None:
     raise ImproperlyConfigured, "BASE_HOST must be defined in %s" % (config_file,)
 BASE_PORT = config.get('BASE_PORT')
 
-
-# AT&T api details
-ATT_OAUTH_URL = config.get('ATT_OAUTH_URL')
-ATT_CLIENT_ID = config.get('ATT_CLIENT_ID')
-ATT_SECRET = config.get('ATT_SECRET')
-ATT_API_URL = config.get('ATT_API_URL')
-# How long to wait for the api before timing out
-ATT_TIMEOUT = config.get('ATT_TIMEOUT')
-
-# Celery Broker details
-BROKER_URL = config.get('CELERY_BROKER_URL')
-
 # Content formatting
 # How many characters of speech text to show
 SPEECH_SUMMARY_LENGTH = config.get('SPEECH_SUMMARY_LENGTH')
-# Default auto-transcription text
-DEFAULT_TRANSCRIPTION = config.get('DEFAULT_TRANSCRIPTION')

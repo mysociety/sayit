@@ -145,7 +145,6 @@ class RecordingAPITests(InstanceTestCase):
             else:
                 self.assertEquals(speech.end_date, expected_timestamps[i+1].date())
                 self.assertEquals(speech.end_time, expected_timestamps[i+1].time())
-            self.assertIsNotNone(speech.celery_task_id)
             self.assertIsNotNone(speech.audio.path)
             self.assertRegexpMatches(speech.audio.path, r'\.mp3$')
             self.assertEquals(speech, ordered_timestamps[i].speech)

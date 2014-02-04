@@ -7,6 +7,7 @@ PyYAML
 psycopg2
 python-memcached
 python-dateutil<2
+pytz
 
 ### Django related
 Django>=1.4.2
@@ -20,10 +21,6 @@ django-pipeline
 django-pipeline-compass-rubygem
 # Only for debugging, but very useful and easiest to just have it here
 django-debug-toolbar
-
-# Celery
-celery
-django-celery
 
 # Testing
 selenium

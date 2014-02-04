@@ -219,7 +219,7 @@ class SpeechTests(InstanceTestCase):
         # Assert that it uploads and we're told to wait
         speech = Speech.objects.order_by('-id')[0]
         resp = self.client.get('/speech/%d' % speech.id)
-        self.assertTrue('Please wait' in resp.content)
+        self.assertContains( resp, 'recorded audio' )
 
         # Assert that it's in the model
         self.assertIsNotNone(speech.audio)
@@ -253,54 +253,6 @@ class SpeechTests(InstanceTestCase):
 
         # Assert that it fails and gives us an error
         self.assertFormError(resp, 'form', 'audio', 'That file does not appear to be an audio file')
-
-    def test_add_speech_creates_celery_task(self):
-        # Load the mp3 fixture
-        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
-        resp = self.client.post('/speech/add', {
-            'audio': audio
-        })
-
-        # Assert that a celery task id is in the model
-        speech = Speech.objects.order_by('-id')[0]
-        self.assertIsNotNone(speech.celery_task_id)
-
-    def test_add_speech_with_text_does_not_create_celery_task(self):
-        # Load the mp3 fixture
-        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
-        text = 'This is a speech with some text'
-
-        resp = self.client.post('/speech/add', {
-            'audio': audio,
-            'text': text
-        })
-
-        # Assert that a celery task id is in the model
-        speech = Speech.objects.order_by('-id')[0]
-        self.assertIsNone(speech.celery_task_id)
-
-    def test_speech_displayed_when_celery_task_finished(self):
-        # Load the mp3 fixture
-        audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
-        text = 'This is a speech with some text'
-
-        resp = self.client.post('/speech/add', {
-            'audio': audio
-        })
-
-        # Assert that a celery task id is in the model
-        speech = Speech.objects.order_by('-id')[0]
-        self.assertIsNotNone(speech.celery_task_id)
-
-        # Remove the celery task
-        speech.celery_task_id = None
-        speech.text = text
-        speech.save()
-
-        # Check the page doesn't show "Please wait" but shows our text instead
-        resp = self.client.get('/speech/%d' % speech.id)
-        self.assertFalse('Please wait' in resp.content)
-        self.assertTrue(text in resp.content)
 
     def test_add_speech_with_dates_only(self):
         # Test form with dates (but not times)
@@ -350,11 +302,10 @@ class SpeechTests(InstanceTestCase):
             'audio': audio
         })
 
-        # Assert that it uploads and we're told to wait
-
+        # Assert that it uploads
         speech = Speech.objects.order_by('-id')[0]
         resp = self.client.get('/speech/%d' % speech.id)
-        self.assertTrue('Please wait' in resp.content)
+        self.assertContains(resp, 'recorded audio')
 
         self.assertIsNotNone(speech.audio)
         self.assertTrue(".mp3" in speech.audio.path)
