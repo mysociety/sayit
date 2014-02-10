@@ -121,7 +121,7 @@
               <div class="instance-header__title">
                 <h1>
                   {% if request.instance %}
-                    <a href="/">{% firstof request.instance.title request.instance.label %}</a>
+                    <a href="/">{% filter force_escape %}{% firstof request.instance.title request.instance.label %}{% endfilter %}</a>
                   {% else %}
                     <a href="{{ settings.BASE_HOST }}">SayIt</a>
                   {% endif %}
@@ -186,7 +186,7 @@
           <div class="instance-footer__row">
             <div class="instance-footer__links">
               <ul>
-                <li><a href="/" class="instance-title">{% firstof request.instance.title request.instance.label %}</a></li>
+                <li><a href="/" class="instance-title">{% filter force_escape %}{% firstof request.instance.title request.instance.label %}{% endfilter %}</a></li>
                 {% if instance_about_page %}
                      <li><a href="/about">{% trans "About" %}</a></li>
                   {% endif %}
