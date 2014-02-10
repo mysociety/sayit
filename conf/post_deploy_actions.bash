@@ -25,7 +25,9 @@ find . -name '*.pyc' -delete
 export GEM_HOME="../gems"
 mkdir -p "$GEM_HOME"
 export PATH="$GEM_HOME/bin:$PATH"
-gem install --conservative --no-ri --no-rdoc compass zurb-foundation
+gem install --conservative --no-ri --no-rdoc sass -v 3.2.14
+gem install --conservative --no-ri --no-rdoc compass -v 0.12.2
+gem install --conservative --no-ri --no-rdoc zurb-foundation -v 4.3.2
 
 # gather all the static files in one place
 ./manage.py collectstatic --noinput
