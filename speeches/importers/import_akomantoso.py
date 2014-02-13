@@ -89,7 +89,7 @@ class ImportAkomaNtoso (ImporterBase):
         if not time:
             return (None, None)
         dt = dateutil.parse(time)
-        return dt.date, dt.time
+        return dt.date(), dt.time()
 
     def handle_tag(self, node, section):
         """If we need to do something out of the ordinary handling elements,
