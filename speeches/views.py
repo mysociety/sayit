@@ -358,10 +358,31 @@ class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
         return obj
 
     def get_context_data(self, **kwargs):
+        all_speeches = kwargs.pop('all_speeches', False)
         # Call the base implementation first to get a context
         context = super(SectionView, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the speeches in this section
-        context['section_tree'] = kwargs['object'].get_descendants_tree_with_speeches(self.request)
+        context['section_tree'] = kwargs['object'].get_descendants_tree_with_speeches(
+            self.request, all_speeches = all_speeches
+        )
+        return context
+
+class SectionViewAN(SectionView):
+    template_name = 'speeches/section_detail.an'
+
+    def render_to_response(self, context, **response_kwargs):
+        response_kwargs['content_type'] = 'text/xml'
+        return super(SectionView, self).render_to_response(context, **response_kwargs)
+
+    def get_context_data(self, **kwargs):
+        kwargs['all_speeches'] = True
+        context = super(SectionViewAN, self).get_context_data(**kwargs)
+        speakers = set(
+            s[0].speaker
+                for s in context['section_tree']
+                if isinstance(s[0], Speech) and s[0].speaker
+        )
+        context['speakers'] = speakers
         return context
 
 class BothObjectAndFormMixin(object):

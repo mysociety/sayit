@@ -46,6 +46,7 @@ urlpatterns = patterns('',
 
     url(r'^api/', include(v01_api.urls)),
 
+    url(r'^(?P<full_slug>.+)\.an$', SectionViewAN.as_view(), name='section-view'),
     url(r'^(?P<full_slug>.+)$', SectionView.as_view(), name='section-view'),
 )
 

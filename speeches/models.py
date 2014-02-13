@@ -26,6 +26,10 @@ from sluggable.models import Slug as SlugModel
 
 logger = logging.getLogger(__name__)
 
+max_date = datetime.date(datetime.MAXYEAR, 12, 31)
+max_time = datetime.time(23,59)
+max_datetime = datetime.datetime.combine(max_date, max_time)
+
 class cache(object):
     '''Computes attribute value and caches it in the instance.
     Python Cookbook (Denis Otkidach) http://stackoverflow.com/users/168352/denis-otkidach
@@ -218,50 +222,91 @@ class Section(AuditedModel, InstanceMixin):
 
     @cache
     def get_descendants_tree(self):
+        """Given a flat list of Sections ordered by speech_min, create a
+        hierarchical structure containing the same information."""
         d = self._get_descendants_by_speech(include_count=True)
-        prev_level = 0
-        prev_path = None
-        out = []
+        prev = self
+        parents = [ ]
         for node in d:
-            s = {}
-            if node.level > prev_level:
-                s['new_level'] = True
-            elif node.level < prev_level:
-                out[-1][1]['closed_levels'] = range(prev_level, node.level, -1)
-            elif node.path[:-1] != prev_path[:-1]: # Swapping parentage in some way
-                sw = ( i for i in xrange(len(node.path)) if node.path[i] != prev_path[i] ).next()
-                out[-1][1]['closed_levels'] = range(node.level, sw, -1)
-                s = {}
+            if node.level > getattr(prev, 'level', 0):
+                parents.append( prev )
+                prev._childs = []
+            elif node.level < prev.level:
+                parents = parents[:node.level-prev.level]
+            elif node.path[:-1] != prev.path[:-1]: # Swapping parentage in some way
+                sw = ( i for i in xrange(len(node.path)) if node.path[i] != prev.path[i] ).next()
+                parents = parents[:sw-node.level]
                 for i in range(sw, node.level):
-                    out.append( (Section.objects.get(id=node.path[i]), s) )
-                    s = { 'new_level': True }
-            prev_level, prev_path = node.level, node.path
-            out.append( (node, s) )
-        if out:
-            out[-1][1]['closed_levels'] = range(prev_level, 0, -1)
-        return out
+                    section = Section.objects.get(id=node.path[i])
+                    section_copy = Section(title=section.title, parent=section.parent)
+                    section_copy._childs = []
+                    parents[-1]._childs.append( section_copy )
+                    parents.append( section_copy )
+            prev = node
+            parents[-1]._childs.append( node )
+        return d
 
-    def get_descendants_tree_with_speeches(self, request):
-        max_date = datetime.date(datetime.MAXYEAR, 12, 31)
-        max_time = datetime.time(23,59)
-        max_datetime = datetime.datetime.combine(max_date, max_time)
-
+    def get_descendants_tree_with_speeches(self, request, all_speeches=False):
         # Get the descendants tree of sections
         tree = self.get_descendants_tree
+
+        # Fetch all speeches in this section, or all descendant sections
+        section_list = [ self ]
+        if all_speeches:
+            section_list.extend( tree )
+
+        speech_list = Speech.objects.filter(section__in=section_list).visible(request).select_related('speaker').prefetch_related('tags')
+        self._speeches_by_section = {}
+        for s in speech_list:
+            self._speeches_by_section.setdefault(s.section_id, []).append(s)
+
+        self._interleave_speeches(self)
+
+        # Finally, work back into a flat format for template display
+        tree_final = []
+        def rec(s, l):
+            for i, c in enumerate(s._childs):
+                attrs = {}
+                if i == 0: attrs['new_level'] = True
+                if isinstance(c, Speech): attrs['speech'] = True
+
+                tree_final.append( ( c, attrs ) )
+
+                if isinstance(c, Section):
+                    rec(c, l+1)
+
+                if i == len(s._childs) - 1:
+                    tree_final[-1][1].setdefault('closed_levels', []).append(l)
+        rec(self, 1)
+
+        # Return an iterator because otherwise passing this down in context to
+        # subtemplates is really slow. I mean, upwards of 30 seconds slow.
+        # As a class so it can be reused after use (e.g. by the tests).
+        class _iterable(object):
+            def __iter__(self):
+                return iter(tree_final)
+        return _iterable()
+
+    def _interleave_speeches(self, section):
+        if not hasattr(section, '_childs'):
+            section._childs = []
+
+        # Recurse through the tree
+        for child in section._childs:
+            self._interleave_speeches(child)
+
         # Create a sorting key for each entry of the tree
         tree_with_key = [
             (
                 (
-                    getattr(d[0], 'speech_min', None) or max_datetime,
+                    getattr(d, 'speech_min', None) or max_datetime,
                     '',
                     i
                 ),
                 d
-            ) for i, d in enumerate(tree)
+            ) for i, d in enumerate(section._childs)
         ]
 
-        # Fetch all speeches in this section
-        speech_list = self.speech_set.all().visible(request).select_related('speaker').prefetch_related('tags')
         # Create a sorting key for each speech
         speech_list_with_key = [
             (
@@ -271,43 +316,13 @@ class Section(AuditedModel, InstanceMixin):
                     ),
                     s.id
                 ),
-                ( s, { 'speech': True } )
-            ) for s in speech_list
+                s
+            ) for s in self._speeches_by_section.get(section.id, [])
         ]
 
         # Sort by our sorting keys to interleave the two
         tree_sorted = [ s[1] for s in sorted( tree_with_key + speech_list_with_key ) ]
-
-        # Finally, work out the out/indenting of start/end speeches
-        tree_final = []
-        if tree:
-            first_section = tree_sorted.index(tree[0])
-            last_section = tree_sorted.index(tree[-1])
-        for i, t in enumerate(tree_sorted):
-            if t[1].get('speech'):
-                # If the first item is a speech, it must start the hierarchy
-                if i == 0:
-                    t[1]['new_level'] = True
-                # If the last item is a speech, it wants to do the closing of the hierarchy
-                if i == len(tree_sorted)-1:
-                    if tree:
-                        t[1]['closed_levels'] = tree[-1][1]['closed_levels']
-                        del tree[-1][1]['closed_levels']
-                    else:
-                        t[1]['closed_levels'] = [1]
-            else:
-                # If the first section isn't the first item, then we did this already in the first speech
-                if i == first_section and i != 0:
-                    del t[1]['new_level']
-            tree_final.append(t)
-
-        # Return an iterator because otherwise passing this down in context to
-        # subtemplates is really slow. I mean, upwards of 30 seconds slow.
-        # As a class so it can be reused after use (e.g. by the tests).
-        class _iterable(object):
-            def __iter__(self):
-                return iter(tree_final)
-        return _iterable()
+        section._childs = tree_sorted
 
     @cache
     def get_descendants(self):
@@ -488,6 +503,20 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
         else:
             text = strip_tags(self.text)
             return text[:summary_length] + '...' if len(text) > summary_length else text
+
+    @property
+    def start_datetime(self):
+        if self.start_date:
+            return datetime.datetime.combine(self.start_date, self.start_time or datetime.time(0,0))
+        else:
+            return None
+
+    @property
+    def end_datetime(self):
+        if self.end_date:
+            return datetime.datetime.combine(self.end_date, self.end_time or datetime.time(0,0))
+        else:
+            return None
 
     @models.permalink
     def get_absolute_url(self):
