@@ -4,6 +4,7 @@ from django.utils.html import linebreaks
 from django.utils.safestring import mark_safe, SafeData
 
 import bleach
+from django_bleach.templatetags.bleach_tags import bleach_args
 
 register = template.Library()
 
@@ -18,4 +19,12 @@ def linebreaks_with_lead(value, autoescape=None):
 @register.filter()
 def striptags_highlight(value):
     bleached_value = bleach.clean(value, tags=['em'], strip=True)
+    return mark_safe(bleached_value)
+
+@register.filter('bleach')
+def bleach_value(value):
+    """Same as django_bleach, but convert the <br> we get back to valid XML,
+    for the AN export."""
+    bleached_value = bleach.clean(value, **bleach_args)
+    bleached_value = bleached_value.replace('<br>', '<br/>')
     return mark_safe(bleached_value)
