@@ -59,7 +59,14 @@ def create_sections( subsections, parent=None, instance=None):
         if 'subsections' in subsection:
             create_sections(subsection['subsections'], parent=s)
         if 'speeches' in subsection:
-            num, d, t = subsection['speeches']
+            # If there's a 4th element in speeches, that's a boolean
+            # indicating whether the speeches should be public:
+            speeches_details = subsection['speeches']
+            if len(speeches_details) >= 4:
+                public = speeches_details[3]
+            else:
+                public = True
+            num, d, t = speeches_details[:3]
             for i in range(0, num):
                 Speech.objects.create(
                     instance = instance,
@@ -67,6 +74,7 @@ def create_sections( subsections, parent=None, instance=None):
                     text = 'rhubarb rhubarb',
                     start_date = d,
                     start_time = t,
+                    public = public,
                 )
                 if t:
                     t = (datetime.combine(date.today(), t) + timedelta(minutes=10)).time()
