@@ -75,6 +75,7 @@ def create_sections( subsections, parent=None, instance=None):
                     start_date = d,
                     start_time = t,
                     public = public,
+                    source_url = "http://somewhere.or.other/{0}".format(i)
                 )
                 if t:
                     t = (datetime.combine(date.today(), t) + timedelta(minutes=10)).time()
