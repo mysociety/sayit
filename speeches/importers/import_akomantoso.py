@@ -19,12 +19,16 @@ class ImportAkomaNtoso (ImporterBase):
     def import_document(self, document_path):
         tree = objectify.parse(document_path)
         self.xml = tree.getroot()
+        self.ns = self.xml.nsmap.get(None, None)
         return self.parse_document()
 
     def parse_document(self):
         debate = self.xml.debate
 
-        people = debate.find('meta/references/TLCPerson')
+        if self.ns:
+            people = debate.findall('an:meta/an:references/an:TLCPerson', namespaces={'an': self.ns})
+        else:
+            people = debate.findall('meta/references/TLCPerson')
         if people is None: people = []
         for person in people:
             id = person.get('id')
@@ -45,7 +49,10 @@ class ImportAkomaNtoso (ImporterBase):
 
             self.speakers[id] = speaker
 
-        docDate = debate.find('preface//docDate')
+        if self.ns:
+            docDate = debate.find('an:preface//an:docDate', namespaces={'an': self.ns})
+        else:
+            docDate = debate.find('preface//docDate')
         if docDate is not None:
             self.start_date = dateutil.parse(docDate.get('date'))
 
