@@ -33,14 +33,15 @@ class ImportCommand(BaseCommand):
         options['instance'] = instance
 
         if options['file']:
-            (section, speakers_matched, speakers_count, speakers) = self.import_document(options['file'], **options)
+            filename = os.path.expanduser(options['file'])
+            (section, speakers_matched, speakers_count, speakers) = self.import_document(filename, **options)
             if verbosity > 1:
                 if section and section.id:
                     self.stdout.write("Imported section %d\n\n" % section.id)
                 self.stdout.write("    % 3d matched\n" % speakers_matched)
                 self.stdout.write(" of % 3d persons\n" % speakers_count)
         elif options['dir']:
-            dir = options['dir']
+            dir = os.path.expanduser(options['dir'])
 
             start_date = options['start_date']
             valid = lambda f: f > start_date if start_date else lambda _: True
@@ -69,7 +70,7 @@ class ImportCommand(BaseCommand):
                 self.stdout.write("    % 5d matched\n" % speakers_matched)
                 self.stdout.write(" of % 5d persons\n" % speakers_count)
 
-            dump_users = options['dump_users']
+            dump_users = os.path.expanduser(options['dump_users'])
             if dump_users:
                 speakers = {}
                 for (_,_,_,d) in imports:
