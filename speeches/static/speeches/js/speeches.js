@@ -82,8 +82,8 @@ function sayit_ajax_file_uploads() {
                 }
             });
             if (!valid) {
-                audio.closest('div.control-group').addClass('error');
-                audio.closest('div.control-group').find('.help-inline').html('Please pick an audio file');
+                audio.closest('div.row').addClass('error');
+                audio.closest('div.row').find('.help-inline').html('Please pick an audio file');
                 return;
             }
             audio.prop('disabled', true).parent().addClass('disabled');

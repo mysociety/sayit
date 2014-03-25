@@ -165,6 +165,12 @@ a:focus {
 .errorlist {
     @include unstyled-list();
 }
+.error {
+    @include form-error-color;
+}
+.select2-container {
+    margin-bottom: 1em;
+}
 
 form {
     margin-bottom: 0;

@@ -29,6 +29,8 @@
         <link href="{% static "img/apple-touch-icon-120x120.png" %}" rel="apple-touch-icon" sizes="120x120" />
         <link href="{% static "img/apple-touch-icon-152x152.png" %}" rel="apple-touch-icon" sizes="152x152" />
         {% block extra_headers %}{% endblock %}
+
+        {% block extra_css %}
         {% if request.instance.label == 'shakespeare' %}
             {% compressed_css 'shakespeare' %}
         {% else %}
@@ -36,7 +38,7 @@
         {% endif %}
         <!-- <link href="{% static "speeches/css/speeches.css" %}" rel="stylesheet"> -->
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
-        {% block extra_css %}{% endblock %}
+        {% endblock extra_css %}
 
         <script>
             var docEl = document.documentElement;

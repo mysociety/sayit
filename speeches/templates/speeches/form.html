@@ -2,7 +2,7 @@
 {% csrf_token %}
 
 {% if form.non_field_errors %}
-    <div class="alert alert-error alert-block">
+    <div class="error">
         {{ form.non_field_errors }}
     </div>
 {% endif %}
@@ -12,15 +12,14 @@
 {% endfor %}
 
 {% for field in form.visible_fields %}
-    <div class="control-group {% if field.errors %}error{% endif %}" id="{{ field.auto_id}}_controls">
+    <div class="row{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+      <div class="large-8 columns">
         {{ field.label_tag }}
-        <div class="controls">
-            {{ field }}
-          {% if field.errors %}
-            <span class="help-inline">{{ field.errors }}</span>
-          {% endif %}
-            <span class="help-inline">{{ field.help_text }}</span>
-        </div>
+        <span class="help-inline">{{ field.help_text }}</span>
+        {{ field }}
+      {% if field.errors %}
+        <span class="help-inline error">{% for error in field.errors %}{{ error }}{% endfor %}</span>
+      {% endif %}
       {% if field.name == 'audio' %}
         <div class="progress-result">
           {% if form.audio_filename.value %}
@@ -31,6 +30,7 @@
             <div class="bar" style="width: 0%;"></div>
         </div>
       {% endif %}
+      </div>
     </div>
 {% endfor %}
 

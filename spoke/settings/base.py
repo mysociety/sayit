@@ -205,6 +205,9 @@ SOUTH_TESTS_MIGRATE = False
 
 AUTHENTICATION_BACKENDS = ('login_token.auth_backend.LoginTokenBackend', 'django.contrib.auth.backends.ModelBackend')
 
+# Select2
+AUTO_RENDER_SELECT2_STATICS = False
+
 # Now get the mySociety configuration
 from .mysociety import *
 

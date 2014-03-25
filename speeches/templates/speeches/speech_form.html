@@ -3,14 +3,17 @@
 {% load staticfiles %}
 {% load compressed %}
 {% load url from future %}
+{% load django_select2_tags %}
 
 {% block extra_css %}
+{% import_django_select2_css 1 %}
 {{ block.super }}
 {# <link rel="stylesheet" href="{% static "css/bootstrap-datepicker.css" %}" /> #}
 {% endblock %}
 
 {% block extra_js %}
 {{ block.super }}
+{% import_django_select2_js 1 %}
 {% compressed_js 'upload' %}
 {% endblock %}
 
