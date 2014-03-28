@@ -60,7 +60,11 @@ def get_transcripts():
                 if date.isoformat() == '2009-06-09':
                     date = date.replace(day=8)
 
-                yield date, url, get_transcript(url, date)
+                yield {
+                    'date': date,
+                    'url': url,
+                    'text': get_transcript(url, date),
+                }
 
             else:
                 date = datetime.strptime(thing, '%B %Y').date()

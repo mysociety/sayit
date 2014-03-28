@@ -3,37 +3,7 @@ import re
 import string
 
 from leveson.names import fix_name
-
-class Section(object):
-    object = None
-    def __init__(self, title):
-        self.title = title
-
-class Speech(object):
-    # Some state variables
-    current_time = None
-    current_section = None
-    witness = None
-
-    def __init__(self, speaker, text):
-        self.speaker = speaker
-        self.text = [ [ text ] ]
-        self.time = self.current_time
-        self.section = self.current_section
-
-    def add_para(self, text):
-        self.text.append([ text ])
-
-    def add_text(self, text):
-        self.text[-1].append(text)
-
-    @classmethod
-    def reset(cls, morning):
-        cls.current_time = None
-        if morning:
-            cls.current_section = None
-            cls.witness = None
-
+from utils import ParserSection as Section, ParserSpeech as Speech
 
 def parse_transcript(text, url):
     print "PARSING %s" % url

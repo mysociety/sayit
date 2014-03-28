@@ -2,29 +2,10 @@ import datetime
 import re
 
 from scsl.names import fix_name
+from utils import ParserSpeech, ParserSection as Section
 
-class Section(object):
-    def __init__(self, title):
-        self.title = title
-
-class Speech(object):
-    # Some state variables
-    current_time = None
-    current_section = None
-    witness = None
+class Speech(ParserSpeech):
     presiding = None
-
-    def __init__(self, speaker, text):
-        self.speaker = speaker
-        self.text = [ [ text ] ]
-        self.time = self.current_time
-        self.section = self.current_section
-
-    def add_para(self, text):
-        self.text.append([ text ])
-
-    def add_text(self, text):
-        self.text[-1].append(text)
 
     @classmethod
     def reset(cls):

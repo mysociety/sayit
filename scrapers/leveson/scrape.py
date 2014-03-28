@@ -122,4 +122,8 @@ def get_transcripts():
         for link in am.a, pm.a:
             if not link: continue
             url = link.get('href')
-            yield date, url, get_transcript(url)
+            yield {
+                'date': date,
+                'url': url,
+                'text': get_transcript(url),
+            }
