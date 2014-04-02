@@ -29,9 +29,21 @@
 <div class="homepage-stats">
   <div class="full-page__row">
       <div class="full-page__unit">
-          <strong>{{ count_speeches|intcomma }}</strong> speeches{% if count_speakers %}, by
-          <a href="{% url "speeches:speaker-list" %}"><strong>{{ count_speakers|intcomma }}</strong></a> speakers{% endif %}{% if count_sections %}, in
-          <a href="{% url "speeches:section-list" %}"><strong>{{ count_sections|intcomma }}</strong></a> sections{% endif %}
+        {% url "speeches:speaker-list" as url_speaker_list %}
+        {% url "speeches:section-list" as url_section_list %}
+        {% if LANGUAGE_CODE == 'en' %}
+          <strong>{{ count_speeches|intcomma }}</strong>
+          speech{{ count_speeches|pluralize:"es" }}{% if count_speakers %}, by
+          <a href="{{ url_speaker_list }}"><strong>{{ count_speakers|intcomma }}</strong></a>
+          speaker{{ count_speakers|pluralize }}{% endif %}{% if count_sections %}, in
+          <a href="{{ url_section_list }}"><strong>{{ count_sections|intcomma }}</strong></a>
+          section{{ count_sections|pluralize }}{% endif %}
+        {% else %}
+          {# Hideously long lines, until blocktrans adds trimmed option in Django 1.7... #}
+          {% blocktrans with n=count_speeches|intcomma count c=count_speeches %}<strong>One</strong> speech{% plural %}<strong>{{ n }}</strong> speeches{% endblocktrans %}{% if count_speakers %};
+          {% blocktrans with n=count_speakers|intcomma count c=count_speakers %}<a href="{{ url_speaker_list }}"><strong>one</strong></a> speaker{% plural %}<a href="{{ url_speaker_list }}"><strong>{{ n }}</strong></a> speakers{% endblocktrans %}{% endif %}{% if count_sections %};
+          {% blocktrans with n=count_sections|intcomma count c=count_sections %}<a href="{{ url_section_list }}"><strong>one</strong></a> section{% plural %}<a href="{{ url_section_list }}"><strong>{{ n }}</strong></a> sections{% endblocktrans %}{% endif %}
+        {% endif %}
 
 {% block instance_blocks %}
 {% endblock %}
