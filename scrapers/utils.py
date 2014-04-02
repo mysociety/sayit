@@ -5,6 +5,9 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'spoke.settings'
 
 from optparse import OptionParser
 
+import bs4
+import requests
+
 from instances.models import Instance
 from speeches.models import Section, Speaker, Speech
 
@@ -17,6 +20,14 @@ class BaseParser(object):
 
         self.instance = self.get_or_create(Instance, label=self.instance)
 
+    def get_url(self, url, type='none'):
+        resp = requests.get(url)
+        if type == 'binary':
+            return resp.content
+        elif type == 'html':
+            return bs4.BeautifulSoup(resp.text)
+        return resp.text
+
     def run(self):
         for data in self.get_transcripts():
             self.parse(data)
@@ -24,12 +35,15 @@ class BaseParser(object):
     def skip_transcript(self, data):
         return False
 
+    def top_section_title(self, data):
+        return 'Hearing, %s' % data['date'].strftime('%d %B %Y').lstrip('0')
+
     def parse(self, data):
         if self.skip_transcript(data):
             return
 
         date = data.get('date')
-        date_section = self.get_or_create(Section, instance=self.instance, title='Hearing, %s' % date.strftime('%d %B %Y').lstrip('0'))  
+        top_section = self.get_or_create(Section, instance=self.instance, title=self.top_section_title(data))
 
         for speech in self.parse_transcript(data):
             if not speech: continue
@@ -38,12 +52,12 @@ class BaseParser(object):
                     section = speech.section.object
                 else:
                     title = self.prettify(speech.section.title)
-                    section = Section(instance=self.instance, title=title, parent=date_section)
+                    section = Section(instance=self.instance, title=title, parent=top_section)
                     if self.commit:
                         section.save()
                     speech.section.object = section
             else:
-                section = date_section
+                section = top_section
             if speech.speaker:
                 speaker = self.prettify(speech.speaker)
                 speaker = self.get_or_create(Speaker, instance=self.instance, name=speaker)
@@ -51,7 +65,8 @@ class BaseParser(object):
                 speaker = None
             text = '</p>\n<p>'.join([ ' '.join(s) for s in speech.text ])
             text = '<p>%s</p>' % text
-            speech = Speech(instance=self.instance, section=section, text=text, speaker=speaker, start_date=date, start_time=speech.time)
+            speech_date = speech.date or date
+            speech = Speech(instance=self.instance, section=section, text=text, speaker=speaker, start_date=speech_date, start_time=speech.time)
             if self.commit:
                 speech.save()
 
@@ -75,6 +90,7 @@ class ParserSection(object):
 
 class ParserSpeech(object):
     # Some state variables
+    current_date = None
     current_time = None
     current_section = None
     witness = None
@@ -82,6 +98,7 @@ class ParserSpeech(object):
     def __init__(self, speaker, text):
         self.speaker = speaker
         self.text = [ [ text ] ]
+        self.date = self.current_date
         self.time = self.current_time
         self.section = self.current_section
 
@@ -93,6 +110,7 @@ class ParserSpeech(object):
 
     @classmethod
     def reset(cls, morning):
+        cls.current_date = None
         cls.current_time = None
         if morning:
             cls.current_section = None
