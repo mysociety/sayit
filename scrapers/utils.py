@@ -66,7 +66,11 @@ class BaseParser(object):
             text = '</p>\n<p>'.join([ ' '.join(s) for s in speech.text ])
             text = '<p>%s</p>' % text
             speech_date = speech.date or date
-            speech = Speech(instance=self.instance, section=section, text=text, speaker=speaker, start_date=speech_date, start_time=speech.time)
+            speech = Speech(
+                instance=self.instance, section=section, text=text,
+                speaker=speaker, speaker_display=speech.speaker_display,
+                start_date=speech_date, start_time=speech.time
+            )
             if self.commit:
                 speech.save()
 
@@ -95,8 +99,9 @@ class ParserSpeech(object):
     current_section = None
     witness = None
 
-    def __init__(self, speaker, text):
+    def __init__(self, speaker, text, speaker_display=None):
         self.speaker = speaker
+        self.speaker_display = speaker_display
         self.text = [ [ text ] ]
         self.date = self.current_date
         self.time = self.current_time

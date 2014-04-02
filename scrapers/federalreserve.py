@@ -126,12 +126,12 @@ class FedParser(BaseParser):
             # print page, line
 
             # New speaker
-            m = re.match(' *((?:M[RS]\.?|CHAIRMAN) [A-Z]+|PARTICIPANTS)\. ?[0-9]? (.*)', line)
+            m = re.match(' *((?:M[RS][. ]+|CHAIRMAN |VICE CHAIRMAN )[A-Z]+|PARTICIPANTS)[.:]? ?[0-9]? ?(.*)', line)
             if m:
                 yield speech
                 new_page = False
-                speaker = m.group(1)
-                speech = Speech( speaker=speaker, text=m.group(2) )
+                speaker, speaker_display = self.fix_name(m.group(1))
+                speech = Speech( speaker=speaker, text=m.group(2), speaker_display=speaker_display )
                 continue
 
             # We must now already have a speech by the time we're here
@@ -172,6 +172,20 @@ class FedParser(BaseParser):
             raise Exception, 'Never found the title to begin'
 
         yield speech
+
+    def fix_name(self, name):
+        name = name.title().replace('.', '')
+        name = re.sub('Mc[a-z]', lambda mo: mo.group(0)[:-1] + mo.group(0)[-1].upper(), name)
+        name_fixes = {
+            'Chairman Greenpan': 'Chairman Greenspan',
+            'Chairman Greenpsan': 'Chairman Greenspan',
+            'Chairman Greespan': 'Chairman Greenspan',
+            'Mr Moscow': 'Mr Moskow',
+        }
+        name = name_fixes.get(name, name)
+        if name == 'Mr Bernanke':
+            return ('Chairman Bernanke', name)
+        return (name, None)
 
 parser = FedParser()
 parser.run()
