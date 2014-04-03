@@ -10,22 +10,21 @@ import requests_cache
 from scsl.parse import parse_transcript
 from utils import *
 
-INSTANCE = 'charles-taylor'
 BASE_DIR = os.path.dirname(__file__)
-session = requests_cache.core.CachedSession(os.path.join(BASE_DIR, 'data', INSTANCE))
-session_day = requests_cache.core.CachedSession(os.path.join(BASE_DIR, 'data', INSTANCE), expire_after=86400)
+session_day = requests_cache.core.CachedSession(os.path.join(BASE_DIR, 'data', 'charles-taylor'), expire_after=86400)
 
 class SCSLParser(BaseParser):
-    instance = INSTANCE
+    instance = 'charles-taylor'
 
     def skip_transcript(self, data):
         if data['date'].isoformat() == '2006-07-21': return True # Is garbled
         return False
 
     def get_transcripts(self):
+        old_requests = self.requests
         self.requests = session_day
         transcripts = self.get_url('http://www.sc-sl.org/CASES/ProsecutorvsCharlesTaylor/Transcripts/tabid/160/Default.aspx', 'html')
-        self.requests = session
+        self.requests = old_requests
         # Loop through the rows in reverse order (so oldest first)
         for row in transcripts('p'):
             for thing in row.findAll(text=re.compile('\d')):

@@ -1,3 +1,4 @@
+import itertools
 import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -7,6 +8,7 @@ from optparse import OptionParser
 import re
 
 import bs4
+import requests_cache
 import subprocess
 
 from instances.models import Instance
@@ -14,18 +16,26 @@ from speeches.models import Section, Speaker, Speech
 
 BASE_DIR = os.path.dirname(__file__)
 
+def prevnext(it):
+    prev, curr, next = itertools.tee(it, 3)
+    prev = itertools.chain([None], prev)
+    next = itertools.chain(itertools.islice(next, 1, None), [None])
+    return itertools.izip(prev, curr, next)
+
 class BaseParser(object):
+    name_fixes = {}
+
     def __init__(self):
         parser = OptionParser()
         parser.add_option('--commit', dest='commit', help='commit to database', action='store_true')
         (options, args) = parser.parse_args()
         self.commit = options.commit
 
+        self.requests = requests_cache.core.CachedSession(os.path.join(BASE_DIR, 'data', self.instance))
         self.instance = self.get_or_create(Instance, label=self.instance)
 
-    def get_pdf(self, pdf_url, cache_dir=None, name=None):
-        if not cache_dir:
-            cache_dir = self.instance.label
+    def get_pdf(self, pdf_url, name=None):
+        cache_dir = self.instance.label
         if not name:
             name = os.path.basename(pdf_url)
 
@@ -104,6 +114,12 @@ class BaseParser(object):
             )
             if self.commit:
                 speech.save()
+
+    def fix_name(self, name):
+        name = name.title().replace('.', '')
+        name = re.sub('Mc[a-z]', lambda mo: mo.group(0)[:-1] + mo.group(0)[-1].upper(), name)
+        name = self.name_fixes.get(name, name)
+        return name
 
     def prettify(self, s):
         return s

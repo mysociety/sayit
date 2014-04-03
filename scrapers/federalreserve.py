@@ -1,30 +1,24 @@
 #!/usr/bin/env python
 
 import datetime
-import itertools
 import os
 import re
 import urlparse
 
-import requests_cache
-
-from utils import BaseParser
+from utils import BaseParser, prevnext
 from utils import ParserSpeech as Speech, ParserSection as Section
-
-INSTANCE = 'federal-reserve'
-BASE_DIR = os.path.dirname(__file__)
 
 months = '(?:January|February|March|April|May|June|July|August|September|October|November|December)'
 
-def prevnext(it):
-    prev, curr, next = itertools.tee(it, 3)
-    prev = itertools.chain([None], prev)
-    next = itertools.chain(itertools.islice(next, 1, None), [None])
-    return itertools.izip(prev, curr, next)
-
 class FedParser(BaseParser):
-    instance = INSTANCE
-    requests = requests_cache.core.CachedSession(os.path.join(BASE_DIR, 'data', INSTANCE))
+    instance = 'federal-reserve'
+
+    name_fixes = {
+        'Chairman Greenpan': 'Chairman Greenspan',
+        'Chairman Greenpsan': 'Chairman Greenspan',
+        'Chairman Greespan': 'Chairman Greenspan',
+        'Mr Moscow': 'Mr Moskow',
+    }
 
     def get_transcripts(self):
         for y in range(2008, 2001, -1):
@@ -159,15 +153,7 @@ class FedParser(BaseParser):
         yield speech
 
     def fix_name(self, name):
-        name = name.title().replace('.', '')
-        name = re.sub('Mc[a-z]', lambda mo: mo.group(0)[:-1] + mo.group(0)[-1].upper(), name)
-        name_fixes = {
-            'Chairman Greenpan': 'Chairman Greenspan',
-            'Chairman Greenpsan': 'Chairman Greenspan',
-            'Chairman Greespan': 'Chairman Greenspan',
-            'Mr Moscow': 'Mr Moskow',
-        }
-        name = name_fixes.get(name, name)
+        name = super(FedParser, self).fix_name(name)
         if name == 'Mr Bernanke':
             return ('Chairman Bernanke', name)
         return (name, None)
