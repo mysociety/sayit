@@ -47,10 +47,12 @@ class BaseParser(object):
         file_pdf = os.path.join(dir_pdf, name)
         file_text = file_pdf.replace('.pdf', '.txt')
         if not os.path.exists(file_text):
-            pdf_transcript = self.get_url(pdf_url, 'binary')
-            fp = open(file_pdf, 'w')
-            fp.write(pdf_transcript)
-            fp.close()
+            if not os.path.exists(file_pdf):
+                with self.requests.cache_disabled():
+                    pdf_transcript = self.get_url(pdf_url, 'binary')
+                fp = open(file_pdf, 'w')
+                fp.write(pdf_transcript)
+                fp.close()
             subprocess.call([ 'pdftotext', '-layout', file_pdf ])
         text = open(file_text).read()
 
