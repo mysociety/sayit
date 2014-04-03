@@ -4,12 +4,15 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'spoke.settings'
 
 from optparse import OptionParser
+import re
 
 import bs4
-import requests
+import subprocess
 
 from instances.models import Instance
 from speeches.models import Section, Speaker, Speech
+
+BASE_DIR = os.path.dirname(__file__)
 
 class BaseParser(object):
     def __init__(self):
@@ -20,8 +23,36 @@ class BaseParser(object):
 
         self.instance = self.get_or_create(Instance, label=self.instance)
 
+    def get_pdf(self, pdf_url, cache_dir=None, name=None):
+        if not cache_dir:
+            cache_dir = self.instance.label
+        if not name:
+            name = os.path.basename(pdf_url)
+
+        dir_pdf = os.path.join(BASE_DIR, 'data', cache_dir)
+        try:
+            os.makedirs(dir_pdf)
+        except:
+            pass
+        file_pdf = os.path.join(dir_pdf, name)
+        file_text = file_pdf.replace('.pdf', '.txt')
+        if not os.path.exists(file_text):
+            pdf_transcript = self.get_url(pdf_url, 'binary')
+            fp = open(file_pdf, 'w')
+            fp.write(pdf_transcript)
+            fp.close()
+            subprocess.call([ 'pdftotext', '-layout', file_pdf ])
+        text = open(file_text).read()
+
+        # Be sure to have ^L on its own line
+        text = text.replace('\014', '\014\n')
+        # Return an array of lines
+        return re.split('\r?\n', text)
+
     def get_url(self, url, type='none'):
-        resp = requests.get(url)
+        resp = self.requests.get(url)
+        if resp.status_code != 200:
+            raise Exception
         if type == 'binary':
             return resp.content
         elif type == 'html':

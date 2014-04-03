@@ -4,7 +4,6 @@ import datetime
 import itertools
 import os
 import re
-import subprocess
 import urlparse
 
 import requests_cache
@@ -12,8 +11,8 @@ import requests_cache
 from utils import BaseParser
 from utils import ParserSpeech as Speech, ParserSection as Section
 
+INSTANCE = 'federal-reserve'
 BASE_DIR = os.path.dirname(__file__)
-requests_cache.install_cache(os.path.join(BASE_DIR, 'data', 'federal-reserve'))
 
 months = '(?:January|February|March|April|May|June|July|August|September|October|November|December)'
 
@@ -24,22 +23,8 @@ def prevnext(it):
     return itertools.izip(prev, curr, next)
 
 class FedParser(BaseParser):
-    instance = 'federal-reserve'
-
-    def get_transcript(self, pdf_url):
-        file_pdf = os.path.join(BASE_DIR, 'data', 'federal-reserve', os.path.basename(pdf_url))
-        file_text = file_pdf.replace('.pdf', '.txt')
-        if not os.path.exists(file_text):
-            pdf_transcript = self.get_url(pdf_url, 'binary')
-            fp = open(file_pdf, 'w')
-            fp.write(pdf_transcript)
-            fp.close()
-            subprocess.call([ 'pdftotext', '-layout', file_pdf ])
-        text = open(file_text).read()
-
-        # Be sure to have ^L on its own line
-        text = text.replace('\014', '\014\n')
-        return re.split('\n', text)
+    instance = INSTANCE
+    requests = requests_cache.core.CachedSession(os.path.join(BASE_DIR, 'data', INSTANCE))
 
     def get_transcripts(self):
         for y in range(2008, 2001, -1):
@@ -50,7 +35,7 @@ class FedParser(BaseParser):
                 url = urlparse.urljoin(url_index, url)
                 title = sesh.find(text=True).split(None, 2)
                 title = '%s, %s %s %s' % (title[2], title[1], title[0], y)
-                yield { 'year': y, 'title': title, 'url': url, 'text': self.get_transcript(url) }
+                yield { 'year': y, 'title': title, 'url': url, 'text': self.get_pdf(url) }
 
     def top_section_title(self, data):
         return data['title']
