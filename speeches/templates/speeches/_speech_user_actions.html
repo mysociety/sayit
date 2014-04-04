@@ -2,15 +2,11 @@
 {% load i18n %}
 
 {% if user.is_authenticated %}
-<div class="btn-group pull-right">
-  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+    <a href="#" data-dropdown="drop2" class="tiny secondary button dropdown action-button">{% trans "Actions" %}</a><br>
+      <ul id="drop2" class="f-dropdown admin-menu">
+        <li><a href="{{ speech.get_delete_url }}">{% trans "Delete speech" %}</a>
+        <li><a href="{{ speech.get_edit_url }}">{% trans "Edit speech" %}</a>
+      </ul>
     {% trans "Actions" %}
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu">
-    <li><a href="{{ speech.get_delete_url }}">{% trans "Delete speech" %}</a>
-    <li><a href="{{ speech.get_edit_url }}">{% trans "Edit speech" %}</a>
-  </ul>
-</div>
 {% endif %}
 

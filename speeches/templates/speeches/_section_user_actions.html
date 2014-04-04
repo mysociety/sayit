@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% if user.is_authenticated %}
-  <a href="#" data-dropdown="drop2" class="tiny secondary button dropdown action-button">{% trans "Edit" %}</a><br>
+  <a href="#" data-dropdown="drop2" class="tiny secondary button dropdown action-button">{% trans "Actions" %}</a><br>
   <ul id="drop2" class="f-dropdown admin-menu">
     <li><a href="{{ section.get_edit_url }}">{% trans "Edit section" %}</a>
     <li><a href="{{ section.get_delete_url }}">{% trans "Delete section" %}</a>
