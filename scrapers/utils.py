@@ -86,7 +86,10 @@ class BaseParser(object):
             return
 
         date = data.get('date')
-        top_section = self.get_or_create(Section, instance=self.instance, title=self.top_section_title(data))
+        top_section = self.get_or_create(
+            Section, instance=self.instance, source_url=data['url'],
+            title=self.top_section_title(data),
+        )
 
         for speech in self.parse_transcript(data):
             if not speech: continue
