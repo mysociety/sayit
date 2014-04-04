@@ -147,8 +147,11 @@ class Section(AuditedModel, InstanceMixin):
     objects = SectionManager()
 
     title = models.TextField(blank=True, help_text=_('The title of the section'))
+    description = models.TextField(blank=True, help_text=_('Longer description, HTML'))
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
     slug = SluggableField(unique_with=('parent', 'instance'), populate_from='title')
+    source_url = models.TextField(blank=True)
+
     slugs = generic.GenericRelation(Slug)
 
     class Meta:

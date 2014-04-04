@@ -24,6 +24,12 @@
 
     <h1>{{ section.title }}</h1>
 
+    {% if section.source_url %}
+    <p><a href="{{ object.source_url }}">{% trans "Source" %}</a></p>
+    {% endif %}
+
+    {{ section.description }}
+
 </div>
 
 <div class="page-content__row">
