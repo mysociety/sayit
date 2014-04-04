@@ -103,6 +103,7 @@
   width: 100%;
   border-bottom: 1px solid $colour_light_grey;
   margin-bottom: 1em;
+  padding-top: 1em;
   padding-bottom: 1em;
   a {
     font-weight: $weight_bold;
@@ -121,13 +122,8 @@
 }
 
 .speech--with-portrait {
-  padding-top: 1em;
   @media (min-width: $medium-screen) {
     background: transparent url('../img/speech-timeline-bg.png') 4% top repeat-y;
-    padding-top: 1em;
-    &:first-child {
-      padding-top: 1em;
-    }
   }
 }
 
