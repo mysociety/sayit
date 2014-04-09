@@ -13,16 +13,8 @@ from speeches.models import Section, Speech, Speaker
 
 logger = logging.getLogger(__name__)
 
-def title_case_heading(heading):
-    titled = heading.title()
-    titled = titled.replace("'S", "'s").replace("’S", "’s")
-    return titled
-
 class ImportAkomaNtoso (ImporterBase):
-    title_case = False
     start_date = None
-    speakers = {}
-    use_by_refs = True
 
     def import_document(self, document_path):
         tree = objectify.parse(document_path)
@@ -69,9 +61,6 @@ class ImportAkomaNtoso (ImporterBase):
                     if self.get_tag(child) not in ('num', 'heading', 'subheading', 'from') ]
         return ''.join(filter(None, paras))
 
-    def name_display(self, name):
-        return name
-
     def construct_title(self, node):
         title = []
         if hasattr(node, 'num'):
@@ -81,8 +70,6 @@ class ImportAkomaNtoso (ImporterBase):
         if hasattr(node, 'subheading'):
             title.append(node.subheading.text)
         title = ' '.join(title)
-        if self.title_case:
-            title = title_case_heading(title)
         return title
 
     def construct_datetime(self, time):
@@ -90,6 +77,12 @@ class ImportAkomaNtoso (ImporterBase):
             return (None, None)
         dt = dateutil.parse(time)
         return dt.date(), dt.time()
+
+    def get_speaker(self, child):
+        display_name = child['from'].text
+        by_ref = child.get('by')
+        speaker = self.speakers[by_ref[1:]]
+        return speaker, display_name
 
     def handle_tag(self, node, section):
         """If we need to do something out of the ordinary handling elements,
@@ -115,14 +108,9 @@ class ImportAkomaNtoso (ImporterBase):
             elif tagname in ('speech', 'question', 'answer'):
                 title = self.construct_title(child)
                 text = self.get_text(child)
-                display_name = self.name_display(child['from'].text)
                 start_date, start_time = self.construct_datetime(child.get('startTime'))
                 end_date, end_time = self.construct_datetime(child.get('endTime'))
-                by_ref = child.get('by')
-                if by_ref and self.use_by_refs:
-                    speaker = self.speakers[by_ref[1:]]
-                else:
-                    speaker = self.get_person(display_name)
+                speaker, display_name = self.get_speaker(child)
                 speech = self.make(Speech,
                         section = section,
                         title = title,

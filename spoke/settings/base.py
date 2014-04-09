@@ -138,7 +138,6 @@ INSTALLED_APPS = [
     'speeches',
     'about',
     'login_token',
-    'popit_resolver',
     'pagination',
 ]
 if DEBUG_TOOLBAR:

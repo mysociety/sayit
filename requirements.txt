@@ -49,7 +49,6 @@ django-haystack
 
 # mySociety modules
 -e git+https://github.com/mysociety/popit-django#egg=popit-django
--e git+https://github.com/mysociety/popit-resolver#egg=popit-resolver
 -e git+https://github.com/mysociety/django-sluggable@with_unique_with#egg=django-sluggable
 django-subdomain-instances
 
