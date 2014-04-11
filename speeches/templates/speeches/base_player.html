@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'speeches/base.html' %}
 {% load staticfiles %}
 {% load compressed %}
 
@@ -10,7 +10,4 @@
 {% block extra_js_head %}
 {{ block.super }}
 {% compressed_js 'player' %}
-{% endblock %}
-
-{% block content %}
 {% endblock %}

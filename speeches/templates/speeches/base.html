@@ -1,0 +1,53 @@
+{% load staticfiles %}{% load url from future %}{% load compressed %}<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block fulltitle %}{% block title %}{% endblock %} :: SayIt{% endblock %}</title>
+        <meta charset="utf-8">
+
+        {% block extra_headers %}{% endblock %}
+
+        {% block extra_css %}
+            {% compressed_css 'default' %}
+        {% endblock extra_css %}
+
+        {% compressed_js 'default-head' %}
+        {% block extra_js_head %}{% endblock %}
+    </head>
+
+    <body id="top">
+
+        <header>
+            <h1><a href="{{ settings.BASE_HOST }}">SayIt</a></h1>
+
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="{% url 'speeches:speaker-list' %}">Speakers</a></li>
+                <li><a href="{% url 'speeches:section-list' %}">Speeches</a></li>
+            </ul>
+        </header>
+
+        <div class="full-page">
+          <div class="full-page__row">
+            <div class="full-page__unit">
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+
+              {% block content %}{% endblock %}
+
+            </div>
+          </div>
+        </div>
+
+        <footer>
+            <p>A <a href="http://www.mysociety.org/">mySociety</a> project.
+            A <a href="http://poplus.org/">Poplus</a> component</p>
+        </footer>
+
+        {% compressed_js 'default' %}
+        {% block extra_js %}{% endblock %}
+
+    </body>
+</html>

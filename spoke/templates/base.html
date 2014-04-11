@@ -44,6 +44,8 @@
             var docEl = document.documentElement;
             docEl.className = docEl.className.replace(/\bno-js\b/,'') + ' js';
         </script>
+        {% compressed_js 'default-head' %}
+        <script src="{% static "javascripts/vendor/custom.modernizr.js" %}"></script>
         {% block extra_js_head %}{% endblock %}
         {% if settings.GOOGLE_ANALYTICS_ACCOUNT %}
         <script type="text/javascript">
@@ -61,8 +63,6 @@
           })();
         </script>
         {% endif %}
-        {% compressed_js 'default-head' %}
-        <script src="{% static "javascripts/vendor/custom.modernizr.js" %}"></script>
     </head>
 
     <body class="{% block body_class %}{% endblock %}" id="top">

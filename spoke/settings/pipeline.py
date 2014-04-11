@@ -75,7 +75,7 @@ PIPELINE_JS = {
             'javascripts/foundation/foundation.alerts.js',
             'javascripts/foundation/foundation.dropdown.js',
             'speeches/js/speeches.js',
-            'javascripts/vendor/jquery.text-effects.js',
+            # 'javascripts/vendor/jquery.text-effects.js',
         ),
         'output_filename': 'js/sayit.min.js',
     },
