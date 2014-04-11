@@ -5,7 +5,7 @@
     <meta>
       <references>
       {% for speaker in speakers %}
-        <TLCPerson href="/ontology/person/sayit/{{ request.instance.label }}/{{ speaker.slug }}" id="{{ speaker.slug }}" showAs="{{ speaker.name }}"/>
+        <TLCPerson href="/ontology/person/{{ request.META.SERVER_NAME }}/{{ speaker.slug }}" id="{{ speaker.slug }}" showAs="{{ speaker.name }}"/>
       {% endfor %}
       </references>
     </meta>
