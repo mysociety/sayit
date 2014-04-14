@@ -5,6 +5,7 @@
 /conf/httpd.conf.deployed
 .sass-cache
 /web/sass/*.css
+/speeches/static/speeches/sass/*.css
 django.mo
 .apdisk
 .DS_Store

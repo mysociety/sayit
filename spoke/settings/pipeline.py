@@ -37,7 +37,8 @@ PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
 PIPELINE_COMPILERS = (
     'pipeline_compass.compass.CompassCompiler',
 )
-PIPELINE_COMPASS_ARGUMENTS = '-c %s/config.rb' % os.path.join(PROJECT_ROOT, 'web')
+import speeches
+PIPELINE_COMPASS_ARGUMENTS = '-I %s -r zurb-foundation' % os.path.join(speeches.__path__[0], 'static')
 
 # On some platforms this might be called "yuicompressor", so it may be
 # necessary to symlink it into your PATH as "yui-compressor".

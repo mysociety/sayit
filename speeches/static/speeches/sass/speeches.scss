@@ -1,0 +1,14 @@
+/* Speeches stylesheet, with Foundation settings/components and normalize */
+
+@import "settings";
+@import "normalize";
+@import "foundation/components/global";
+@import "foundation/components/type";
+@import "foundation/components/buttons";
+@import "foundation/components/forms"; // *requires components/buttons
+@import "foundation/components/dropdown-buttons"; // *requires components/buttons
+@import "foundation/components/breadcrumbs";
+@import "foundation/components/inline-lists";
+@import "foundation/components/dropdown";
+
+@import "speeches-bare";

@@ -1,5 +1,5 @@
 // Global Foundation Settings
-@import "settings";
+@import "speeches/sass/settings";
 
 // Comment out this import if you don't want to use normalize
 @import "normalize";
@@ -55,7 +55,7 @@
 @import "foundation/components/dropdown";
 
 @import "compass/css3";
-@import "_sayit-mixins.scss";
+@import "speeches/sass/sayit-mixins";
 
 
 
