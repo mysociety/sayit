@@ -64,7 +64,7 @@ PIPELINE_JS = {
     # Some things in document body (e.g. media player set up) call $()
     'default-head': {
         'source_filenames': (
-            'javascripts/vendor/jquery.js',
+            'speeches/js/jquery.js',
         ),
         'output_filename': 'js/sayit.head.min.js',
     },
@@ -88,7 +88,7 @@ PIPELINE_JS = {
     },
     'admin': {
         'source_filenames': (
-            'javascripts/vendor/jquery.js',
+            'speeches/js/jquery.js',
             'speeches/mediaelement/mediaelement-and-player.js',
             # "soundmanager2/script/soundmanager2.js"
         ),

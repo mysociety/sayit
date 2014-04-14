@@ -1,0 +1,65 @@
+/* To allow better handling when JavaScript is not available */
+
+.js .hidden-js {
+    display: none;
+}
+.js .visible-js {
+    display: block;
+    visibility: visible;
+}
+
+/* File upload with JavaScript */
+
+.fileinput-button span, .fileinput-button i {
+    display: none;
+}
+
+.js .fileinput-button span, .js .fileinput-button i {
+    display: inline-block;
+}
+
+.progress, .progress-result {
+    margin-left: 180px;
+}
+.progress {
+    display: none;
+    margin-top: 1em;
+}
+
+.fileinput-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.js .fileinput-button input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    transform: translate(-300px, 0) scale(4);
+    font-size: 23px;
+    direction: ltr;
+    cursor: pointer;
+}
+
+.off-screen {
+    text-indent: -9999px;
+    opacity: 0.5;
+}
+
+/* Small audio control */
+
+.audio-small {
+    display: inline-block;
+}
+.audio-small .mejs-controls {
+    height: 24px;
+}
+.audio-small .mejs-controls .mejs-button button {
+    margin: 4px 5px;
+}
+.audio-small .mejs-controls .mejs-time {
+    padding-top: 6px;
+}
