@@ -32,9 +32,9 @@
 
         {% block extra_css %}
         {% if request.instance.label == 'shakespeare' %}
-            {% compressed_css 'shakespeare' %}
+            {% compressed_css 'sayit-shakespeare' %}
         {% else %}
-            {% compressed_css 'default' %}
+            {% compressed_css 'sayit-default' %}
         {% endif %}
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
         {% endblock extra_css %}
@@ -43,7 +43,7 @@
             var docEl = document.documentElement;
             docEl.className = docEl.className.replace(/\bno-js\b/,'') + ' js';
         </script>
-        {% compressed_js 'default-head' %}
+        {% compressed_js 'sayit-default-head' %}
         <script src="{% static "javascripts/vendor/custom.modernizr.js" %}"></script>
         {% block extra_js_head %}{% endblock %}
         {% if settings.GOOGLE_ANALYTICS_ACCOUNT %}
@@ -243,7 +243,7 @@
           </div>
         </footer>
 
-        {% compressed_js 'default' %}
+        {% compressed_js 'sayit-default' %}
         {% block extra_js %}{% endblock %}
 
         <script>

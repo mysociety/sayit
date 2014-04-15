@@ -14,7 +14,7 @@
 {% block extra_js %}
 {{ block.super }}
 {% import_django_select2_js 1 %}
-{% compressed_js 'upload' %}
+{% compressed_js 'sayit-upload' %}
 {% endblock %}
 
 {% block title %}{% if object %}{% trans "Edit speech" %} {% else %}{% trans "Add speech" %}{% endif %}{% endblock %}

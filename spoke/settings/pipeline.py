@@ -45,14 +45,14 @@ PIPELINE_COMPASS_ARGUMENTS = '-I %s -r zurb-foundation' % os.path.join(speeches.
 PIPELINE_YUI_BINARY = '/usr/bin/env yui-compressor'
 
 PIPELINE_CSS = {
-    'default': {
+    'sayit-default': {
         'source_filenames': (
             'sass/app.scss',
             'sass/speeches.scss',
         ),
         'output_filename': 'css/app.css',
     },
-    'shakespeare': {
+    'sayit-shakespeare': {
         'source_filenames': (
             'sass/app-shakespeare.scss',
             'sass/speeches-shakespeare.scss',
@@ -63,14 +63,14 @@ PIPELINE_CSS = {
 
 PIPELINE_JS = {
     # Some things in document body (e.g. media player set up) call $()
-    'default-head': {
+    'sayit-default-head': {
         'source_filenames': (
             'speeches/js/jquery.js',
         ),
         'output_filename': 'js/sayit.head.min.js',
     },
     # The JS at the end of each page, before </body>
-    'default': {
+    'sayit-default': {
         'source_filenames': (
             'speeches/js/foundation/foundation.js',
             'speeches/js/foundation/foundation.dropdown.js',
@@ -81,13 +81,13 @@ PIPELINE_JS = {
         'output_filename': 'js/sayit.min.js',
     },
     # The media player
-    'player': {
+    'sayit-player': {
         'source_filenames': (
             'speeches/mediaelement/mediaelement-and-player.js',
         ),
         'output_filename': 'javascripts/sayit.mediaplayer.min.js',
     },
-    'admin': {
+    'sayit-admin': {
         'source_filenames': (
             'speeches/js/jquery.js',
             'speeches/mediaelement/mediaelement-and-player.js',
@@ -95,7 +95,7 @@ PIPELINE_JS = {
         ),
         'output_filename': 'javascripts/sayit.admin.min.js',
     },
-    'upload': {
+    'sayit-upload': {
         'source_filenames': (
             'speeches/js/jQuery-File-Upload/js/vendor/jquery.ui.widget.js',
             'speeches/js/jQuery-File-Upload/js/jquery.iframe-transport.js',

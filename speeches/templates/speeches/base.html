@@ -7,10 +7,10 @@
         {% block extra_headers %}{% endblock %}
 
         {% block extra_css %}
-            {% compressed_css 'default' %}
+            {% compressed_css 'sayit-default' %}
         {% endblock extra_css %}
 
-        {% compressed_js 'default-head' %}
+        {% compressed_js 'sayit-default-head' %}
         {% block extra_js_head %}{% endblock %}
     </head>
 
@@ -54,7 +54,7 @@
           </div>
         </footer>
 
-        {% compressed_js 'default' %}
+        {% compressed_js 'sayit-default' %}
         {% block extra_js %}{% endblock %}
         <script>
           if (typeof $ != 'undefined' && typeof $(document).foundation != 'undefined') {
