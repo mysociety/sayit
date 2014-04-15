@@ -107,7 +107,7 @@ class Command(BaseCommand):
                 speeches = []
                 for sp in speeches_xml:
                     if sp.tag == 'STAGEDIR' or sp.tag == 'SUBHEAD' or sp.tag == 'SUBTITLE':
-                        self.make(Speech, section=scene_section, text='<i>%s</i>' % sp.text)
+                        self.make(Speech, section=scene_section, text='<p><i>%s</i></p>' % sp.text)
                         continue
         
                     if  not sp[0].text:
