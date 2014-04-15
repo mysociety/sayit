@@ -89,7 +89,7 @@
       </div>
 
       <div class="speaker-page__search">
-        <form class="site-search site-search" action="/search/" method="get" >
+        <form class="site-search site-search" action="{% url "speeches:haystack_search" %}" method="get" >
           <input type="hidden" name="p" value="{{ speaker.id }}">
           <div class="search-wrapper">
               <input type="search" class="site-search__input" placeholder="{% trans "Search this person's speeches" %}" name="q"/>

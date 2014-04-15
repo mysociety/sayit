@@ -14,7 +14,7 @@
 
     <div class="homepage-search">
         <h2>{% block instance_search_title %}{% blocktrans with instance=request.instance.title %}Search the {{ instance }}{% endblocktrans %}{% endblock %}</h2>
-        <form class="site-search site-search--homepage" action="/search/" method="get" >
+        <form class="site-search site-search--homepage" action="{% url "speeches:haystack_search" %}" method="get" >
             <div class="search-wrapper">
                 <input type="search" class="site-search__input" placeholder="{% trans 'Search' %}" name="q"/>
                 <input type="submit" class="icon-search icon-search" value="{% trans 'Search' %}"/>
@@ -51,7 +51,9 @@
   {% else %}
 
     <div class="nothing-here-yet-message">
-        <h2>{% trans "Nothing has been uploaded yet. Why not <a href='/speech/add'>add a speech</a> or a <a href='/sections/add'>section</a>?" %}</h2>
+        {% url "speeches:speech-add" as url_add_speech %}
+        {% url "speeches:section-add" as url_add_section %}
+        <h2>{% blocktrans %}Nothing has been uploaded yet. Why not <a href='{{ url_add_speech }}'>add a speech</a> or a <a href='{{ url_add_section }}'>section</a>?{% endblocktrans %}</h2>
     </div>
 
   {% endif %}

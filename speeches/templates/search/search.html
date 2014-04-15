@@ -6,7 +6,7 @@
 
 {% block content %}
     <h1 {% if query %}class="search-title-with-result"{% endif %}>{% trans 'Search' %} {% if query %}/ <strong>{{ query }}</strong>{% endif %}</h1>
-    <form class="site-search site-search--on-results-page" action="/search/" method="get" >
+    <form class="site-search site-search--on-results-page" action="{% url "speeches:haystack_search" %}" method="get" >
       <div class="search-wrapper">
           <input type="search" class="site-search__input" placeholder="{% trans 'Search' %}" name="q" value="{{ form.q.value }}"/>
           <input type="submit" class="icon-search" value="{% trans 'Search' %}"/>
