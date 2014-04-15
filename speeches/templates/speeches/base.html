@@ -17,13 +17,17 @@
     <body id="top">
 
         <header>
-            <h1><a href="{% url 'speeches:home' %}">SayIt</a></h1>
+          <div class="full-page__row">
+            <div class="full-page__unit">
+              <h1><a href="{% url 'speeches:home' %}">SayIt</a></h1>
 
-            <ul>
+              <ul class="inline-list">
                 <li><a href="{% url 'speeches:home' %}">Home</a></li>
                 <li><a href="{% url 'speeches:speaker-list' %}">Speakers</a></li>
                 <li><a href="{% url 'speeches:section-list' %}">Speeches</a></li>
-            </ul>
+              </ul>
+            </div>
+          </div>
         </header>
 
         <div class="full-page">
@@ -42,8 +46,12 @@
         </div>
 
         <footer>
-            <p>A <a href="http://www.mysociety.org/">mySociety</a> project.
-            A <a href="http://poplus.org/">Poplus</a> component</p>
+          <div class="full-page__row">
+            <div class="full-page__unit">
+              <p>A <a href="http://www.mysociety.org/">mySociety</a> project.
+              A <a href="http://poplus.org/">Poplus</a> component</p>
+            </div>
+          </div>
         </footer>
 
         {% compressed_js 'default' %}
