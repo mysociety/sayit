@@ -215,8 +215,8 @@ class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
     # Use a slightly different template
     def get_template_names(self):
         return [
-            "speeches/%s/instance_detail.html" % self.request.instance.label,
-            "speeches/instance_detail.html"
+            "speeches/%s/home.html" % self.request.instance.label,
+            "speeches/home.html"
         ]
 
     def get_context_data(self, **kwargs):
@@ -383,6 +383,7 @@ class SectionViewAN(SectionView):
                 if isinstance(s[0], Speech) and s[0].speaker
         )
         context['speakers'] = speakers
+        context['server_name'] = self.request.META.get('SERVER_NAME')
         return context
 
 class BothObjectAndFormMixin(object):

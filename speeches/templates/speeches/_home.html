@@ -4,7 +4,7 @@
 {% load humanize %}
 {% load speech_utils %}
 
-{% block title %}{{ request.instance.title }}{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
 
@@ -13,7 +13,7 @@
   {% if paginator.count %}
 
     <div class="homepage-search">
-        <h2>{% block instance_search_title %}{% blocktrans with instance=request.instance.title %}Search the {{ instance }}{% endblocktrans %}{% endblock %}</h2>
+        <h2>{% block instance_search_title %}{% trans 'Search' %}{% endblock %}</h2>
         <form class="site-search site-search--homepage" action="{% url "speeches:haystack_search" %}" method="get" >
             <div class="search-wrapper">
                 <input type="search" class="site-search__input" placeholder="{% trans 'Search' %}" name="q"/>
