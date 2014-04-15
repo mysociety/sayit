@@ -72,9 +72,9 @@ PIPELINE_JS = {
     # The JS at the end of each page, before </body>
     'default': {
         'source_filenames': (
-            'javascripts/foundation/foundation.js',
+            'speeches/js/foundation/foundation.js',
+            'speeches/js/foundation/foundation.dropdown.js',
             'javascripts/foundation/foundation.alerts.js',
-            'javascripts/foundation/foundation.dropdown.js',
             'speeches/js/speeches.js',
             # 'javascripts/vendor/jquery.text-effects.js',
         ),

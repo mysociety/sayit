@@ -48,6 +48,11 @@
 
         {% compressed_js 'default' %}
         {% block extra_js %}{% endblock %}
+        <script>
+          if (typeof $ != 'undefined' && typeof $(document).foundation != 'undefined') {
+            $(document).foundation();
+          }
+        </script>
 
     </body>
 </html>
