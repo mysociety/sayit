@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from spoke.search.backends import SayitElasticBackend
+from haystack.utils import loading
 
 class Command(BaseCommand):
     help = _('Create a new dated search index for reindexing with no downtime')
@@ -18,7 +18,8 @@ class Command(BaseCommand):
         new_alias = '%s_%s' % (index_name, datetime.now().isoformat().lower())
         connection_options['INDEX_NAME'] = new_alias
 
-        backend = SayitElasticBackend('default', **connection_options)
+        BackendClass = loading.import_class(connection_options['ENGINE']).backend
+        backend = BackendClass('default', **connection_options)
         backend.setup()
 
         index_write = '%s_write' % index_name

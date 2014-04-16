@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from spoke.search.backends import SayitElasticBackend
+from haystack.utils import loading
 
 class Command(BaseCommand):
     help = _('Update the default alias to point at search index write alias is using')
@@ -17,7 +17,8 @@ class Command(BaseCommand):
         index_name = connection_options['INDEX_NAME']
         index_write = '%s_write' % index_name
 
-        backend = SayitElasticBackend('default', **connection_options)
+        BackendClass = loading.import_class(connection_options['ENGINE']).backend
+        backend = BackendClass('default', **connection_options)
 
         actions = []
         current_alias = None
