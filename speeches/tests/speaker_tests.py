@@ -1,5 +1,4 @@
-from instances.tests import InstanceTestCase
-
+from speeches.tests import InstanceTestCase
 from speeches.models import Speaker, Speech, Section
 from popit.models import Person, ApiInstance
 

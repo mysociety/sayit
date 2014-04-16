@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.utils import simplejson as json
 
-from instances.tests import InstanceTestCase
+from speeches.tests import InstanceTestCase
 from speeches.models import Speech
 
 class SpeechAPITests(InstanceTestCase):

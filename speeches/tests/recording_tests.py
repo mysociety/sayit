@@ -8,10 +8,9 @@ import pytz
 from django.test.utils import override_settings
 from django.conf import settings
 
-from instances.tests import InstanceTestCase
-
 import speeches
 from speeches.models import Speech, Recording, Section
+from speeches.tests import InstanceTestCase
 
 logging.disable(logging.WARNING)
 

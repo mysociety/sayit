@@ -5,15 +5,13 @@ import shutil
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 
-from django.test import LiveServerTestCase
 from django.test.utils import override_settings
 from django.utils import unittest
 from django.conf import settings
 
-from instances.tests import InstanceLiveServerTestCase
-
 import speeches
 from speeches.models import Speaker, Speech
+from speeches.tests import InstanceLiveServerTestCase
 
 skip_selenium = not os.environ.get('SELENIUM_TESTS', False)
 

@@ -5,7 +5,7 @@ from django.conf import settings
 from django.test.utils import override_settings
 
 from popit.models import ApiInstance, Person
-from instances.tests import InstanceTestCase
+from speeches.tests import InstanceTestCase
 from speeches.models import Speaker
 
 class PopulateSpeakersCommandTests(InstanceTestCase):

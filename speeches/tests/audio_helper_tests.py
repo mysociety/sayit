@@ -9,9 +9,8 @@ from datetime import timedelta
 from django.core.files import File
 from django.utils import timezone
 
-from instances.tests import InstanceTestCase
-
 import speeches
+from speeches.tests import InstanceTestCase
 from speeches.utils import AudioHelper
 from speeches.models import Recording, RecordingTimestamp, Speaker
 

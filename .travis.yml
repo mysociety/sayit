@@ -24,13 +24,9 @@ install:
   - gem install --conservative --no-ri --no-rdoc zurb-foundation -v 4.3.2
   - pip install $MODULES
   - pip install -r requirements.txt
-  - sed -r
-    -e "s,(SAYIT_DB_USER:) 'sayit',\\1 'postgres',"
-    -e "s,(DJANGO_SECRET_KEY:) '',\\1 'secret',"
-    conf/general.yml-example > conf/general.yml
 
 before_script:
-  - psql -c 'create database sayit;' -U postgres
+  - psql -c 'create database "sayit-example-project";' -U postgres
   - ./manage.py syncdb --noinput --migrate
   - ./manage.py collectstatic --noinput
   - export DISPLAY=:99.0

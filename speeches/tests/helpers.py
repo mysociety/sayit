@@ -1,9 +1,34 @@
 from datetime import datetime, date, time, timedelta
 
-from django.test import TestCase
+from django.test import TestCase, LiveServerTestCase
+from django.test.utils import override_settings
+from django.contrib.auth.models import User
 
 from speeches.models import Section, Speech
 from instances.models import Instance
+
+@override_settings(
+    PASSWORD_HASHERS = ( 'django.contrib.auth.hashers.MD5PasswordHasher', ),
+)
+class InstanceTestCase(TestCase):
+    def setUp(self):
+        self.instance = Instance.objects.create(label='default')
+        user = User.objects.create_user(username='admin', email='admin@example.org', password='admin')
+        user.instances.add(self.instance)
+        self.client.login(username='admin', password='admin')
+
+class InstanceLiveServerTestCase(LiveServerTestCase):
+    def setUp(self):
+        self.instance = Instance.objects.create(label='default')
+        user = User.objects.create_user(username='admin', email='admin@example.org', password='admin')
+        user.instances.add(self.instance)
+
+        self.selenium.get('%s%s' % (self.live_server_url, '/accounts/login/?next=/'))
+        username_input = self.selenium.find_element_by_name("username")
+        username_input.send_keys('admin')
+        password_input = self.selenium.find_element_by_name("password")
+        password_input.send_keys('admin')
+        self.selenium.find_element_by_xpath('//input[@value="Log in"]').click()
 
 
 class ParentInstanceMismatchError(Exception):
@@ -81,7 +106,7 @@ def create_sections( subsections, parent=None, instance=None):
                     t = (datetime.combine(date.today(), t) + timedelta(minutes=10)).time()
 
 
-class CeateSectionsTests(TestCase):
+class CreateSectionsTests(TestCase):
     def test_parent_instance_mismatch(self):
         foo_instance = Instance.objects.create(label="foo")
         bar_instance = Instance.objects.create(label="bar")

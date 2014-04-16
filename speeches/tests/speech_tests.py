@@ -6,7 +6,7 @@ import datetime
 from django.test.utils import override_settings
 from django.conf import settings
 
-from instances.tests import InstanceTestCase
+from speeches.tests import InstanceTestCase
 
 import speeches
 from speeches.models import Speech, Speaker, Section

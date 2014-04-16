@@ -1,8 +1,8 @@
 from django.core.management import call_command
 from haystack.query import SearchQuerySet
-from instances.tests import InstanceTestCase
 
 from speeches.models import Speech, Speaker, Section
+from speeches.tests import InstanceTestCase
 
 class SearchTests(InstanceTestCase):
     def test_search(self):

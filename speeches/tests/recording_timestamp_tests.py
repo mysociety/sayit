@@ -8,11 +8,10 @@ from django.test.utils import override_settings
 from django.utils import simplejson
 from django.conf import settings
 
-from instances.tests import InstanceTestCase
-
 import speeches
 from speeches.models import Speech, Speaker, Recording, RecordingTimestamp
 from speeches.utils import AudioHelper
+from speeches.tests import InstanceTestCase
 
 import logging
 logging.disable(logging.WARNING)

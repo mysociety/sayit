@@ -1,5 +1,4 @@
-from instances.tests import InstanceTestCase
-
+from speeches.tests import InstanceTestCase
 from speeches.models import Speech, Speaker, Section
 
 class SmokeTests(InstanceTestCase):

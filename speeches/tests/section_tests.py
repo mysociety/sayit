@@ -5,7 +5,7 @@ from django.test import TestCase
 from speeches.models import Section, Speech
 from speeches.tests import create_sections
 from instances.models import Instance
-from instances.tests import InstanceTestCase
+from speeches.tests import InstanceTestCase
 
 class SectionModelTests(TestCase):
 

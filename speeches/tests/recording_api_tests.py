@@ -8,10 +8,9 @@ from django.test.utils import override_settings
 from django.utils import simplejson
 from django.conf import settings
 
-from instances.tests import InstanceTestCase
-
 import speeches
 from speeches.models import Speech, Speaker, Recording, RecordingTimestamp
+from speeches.tests import InstanceTestCase
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class RecordingAPITests(InstanceTestCase):
