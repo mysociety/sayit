@@ -15,16 +15,23 @@ def install_requires():
 
 setup(
     name="django-sayit",
-    version='0.1',
-    description='A data store for speeches.',
-    long_description=read_file('README.md'),
+    version='1.0.0',
+    description='A data store for speeches and transcripts to make them searchable and pretty.',
+    long_description=read_file('README.rst'),
     author='mySociety',
-    author_email='matthew@mysociety.org',
+    author_email='sayit@mysociety.org',
     url='https://github.com/mysociety/sayit',
-    packages=find_packages(),
+    packages=find_packages(exclude=('example_project', 'example_project.*')),
     include_package_data=True,
     install_requires=install_requires(),
     classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Environment :: Web Environment',
         'Framework :: Django',
+        'License :: OSI Approved :: GNU Affero General Public License v3',
+        'Intended Audience :: Developers',
+        'Programming Language :: Python',
+        'Topic :: Database :: Front-Ends',
+        'Topic :: Internet :: WWW/HTTP',
     ],
 )
