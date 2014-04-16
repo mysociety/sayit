@@ -500,7 +500,7 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
 
     @property
     def summary(self):
-        summary_length = settings.SPEECH_SUMMARY_LENGTH
+        summary_length = getattr(settings, 'SPEECH_SUMMARY_LENGTH', 30)
         if self.audio and not self.text:
             return "[ recorded audio ]"
         else:
