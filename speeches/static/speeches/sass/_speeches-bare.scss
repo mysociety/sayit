@@ -381,6 +381,33 @@ $image-path: '../img' !default;
   }
 }
 
+.search-wrapper {
+    position: relative;
+    max-width: 40em;
+    .icon-search {
+        position: absolute;
+        right: 0.6em;
+        top: 23%;
+    }
+}
+
+.icon-search {
+    display: block;
+    height: emCalc(20);
+    width: emCalc(20);
+    @include background-size(69px 78px);
+    background-image: url(#{$image-path}/search-icons.png);
+    background-position: 0 -40px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    padding: 0;
+    @extend .image-replacement;
+    &.icon-search--white {
+        background-position: 0 0
+    }
+}
+
 .js-masonry {
   @media (min-width: $medium-screen) {
     .speech {
