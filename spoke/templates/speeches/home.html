@@ -1,6 +1,0 @@
-{% extends 'speeches/_home.html' %}
-{% load i18n %}
-
-{% block title %}{{ request.instance.title }}{% endblock %}
-
-{% block instance_search_title %}{% blocktrans with instance=request.instance.title %}Search the {{ instance }}{% endblocktrans %}{% endblock %}
