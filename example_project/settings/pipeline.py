@@ -16,7 +16,6 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_ROOT, 'web'),
 )
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
@@ -47,17 +46,9 @@ PIPELINE_YUI_BINARY = '/usr/bin/env yui-compressor'
 PIPELINE_CSS = {
     'sayit-default': {
         'source_filenames': (
-            'sass/app.scss',
-            'sass/speeches.scss',
+            'speeches/sass/speeches.scss',
         ),
-        'output_filename': 'css/app.css',
-    },
-    'sayit-shakespeare': {
-        'source_filenames': (
-            'sass/app-shakespeare.scss',
-            'sass/speeches-shakespeare.scss',
-        ),
-        'output_filename': 'css/app-shakespeare.css',
+        'output_filename': 'css/speeches.css',
     },
 }
 
@@ -74,9 +65,7 @@ PIPELINE_JS = {
         'source_filenames': (
             'speeches/js/foundation/foundation.js',
             'speeches/js/foundation/foundation.dropdown.js',
-            'javascripts/foundation/foundation.alerts.js',
             'speeches/js/speeches.js',
-            # 'javascripts/vendor/jquery.text-effects.js',
         ),
         'output_filename': 'js/sayit.min.js',
     },
@@ -85,24 +74,22 @@ PIPELINE_JS = {
         'source_filenames': (
             'speeches/mediaelement/mediaelement-and-player.js',
         ),
-        'output_filename': 'javascripts/sayit.mediaplayer.min.js',
+        'output_filename': 'js/sayit.mediaplayer.min.js',
     },
     'sayit-admin': {
         'source_filenames': (
             'speeches/js/jquery.js',
             'speeches/mediaelement/mediaelement-and-player.js',
-            # "soundmanager2/script/soundmanager2.js"
         ),
-        'output_filename': 'javascripts/sayit.admin.min.js',
+        'output_filename': 'js/sayit.admin.min.js',
     },
     'sayit-upload': {
         'source_filenames': (
             'speeches/js/jQuery-File-Upload/js/vendor/jquery.ui.widget.js',
             'speeches/js/jQuery-File-Upload/js/jquery.iframe-transport.js',
             'speeches/js/jQuery-File-Upload/js/jquery.fileupload.js',
-            # "js/bootstrap-datepicker.js"
         ),
-        'output_filename': 'javascripts/sayit.upload.min.js',
+        'output_filename': 'js/sayit.upload.min.js',
     },
 }
 

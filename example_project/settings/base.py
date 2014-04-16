@@ -1,4 +1,4 @@
-# Django settings for spoke project.
+# Django settings for example_project project.
 
 import os
 import sys
@@ -17,14 +17,18 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PARENT_DIR, 'sqlite.db'),
-        'USER': '',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'sayit-example-project',
+        'USER': 'postgres',
         'PASSWORD': '',
         'HOST': '',
         'PORT': '',
     }
 }
+
+ALLOWED_HOSTS = []
+
+SECRET_KEY = 'secret'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -41,10 +45,6 @@ SITE_ID = 1
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
-
-LOCALE_PATHS = (
-    os.path.join(PROJECT_DIR, 'locale'),
-)
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
@@ -86,8 +86,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'pagination.middleware.PaginationMiddleware',
-    'instances.middleware.MultiInstanceMiddleware',
-    'spoke.middleware.WhoDidMiddleware',
+    'speeches.middleware.InstanceMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -97,23 +96,16 @@ if DEBUG_TOOLBAR:
 
 INTERNAL_IPS = ( '127.0.0.1', )
 
-ROOT_URLCONF = 'spoke.urls'
-ROOT_URLCONF_HOST = 'spoke.urls-host'
+ROOT_URLCONF = 'example_project.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'spoke.wsgi.application'
+WSGI_APPLICATION = 'example_project.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(PROJECT_DIR, 'templates'),
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
-    "django.core.context_processors.request",
-    "spoke.context_processors.add_settings",
-    "spoke.context_processors.nav_section",
 )
 
 INSTALLED_APPS = [
@@ -136,8 +128,6 @@ INSTALLED_APPS = [
     'popit',
     'instances',
     'speeches',
-    'about',
-    'login_token',
     'pagination',
 ]
 if DEBUG_TOOLBAR:
@@ -202,13 +192,8 @@ APPEND_SLASH = False
 # errors with difference between sqlite and postgres
 SOUTH_TESTS_MIGRATE = False
 
-AUTHENTICATION_BACKENDS = ('login_token.auth_backend.LoginTokenBackend', 'django.contrib.auth.backends.ModelBackend')
-
 # Select2
 AUTO_RENDER_SELECT2_STATICS = False
-
-# Now get the mySociety configuration
-from .mysociety import *
 
 # django-pipeline and static file configuration
 from .pipeline import *
@@ -216,9 +201,7 @@ from .pipeline import *
 # django-bleach configuration
 from .bleach import *
 
-# Cookies, after because we need BASE_HOST from mysociety.py
-SESSION_COOKIE_DOMAIN = BASE_HOST
-SESSION_COOKIE_NAME = 's'
+# Haystack search settings
 
 SEARCH_INDEX_NAME = DATABASES['default']['NAME']
 if 'test' in sys.argv:
@@ -226,16 +209,18 @@ if 'test' in sys.argv:
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'spoke.search.backends.SayitElasticSearchEngine',
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': SEARCH_INDEX_NAME,
     },
     'write': {
-        'ENGINE': 'spoke.search.backends.SayitElasticSearchEngine',
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': '%s_write' % SEARCH_INDEX_NAME,
     },
 }
+
+# Cache settings
 
 if DEBUG:
     cache = { 'BACKEND': 'django.core.cache.backends.dummy.DummyCache' }

@@ -33,4 +33,4 @@ WSGIDaemonProcess example.com \
 
 WSGIProcessGroup example.com
 
-WSGIScriptAlias / /data/vhost/example.com/sayit/spoke/wsgi.py
+WSGIScriptAlias / /data/vhost/example.com/sayit/example_project/wsgi.py

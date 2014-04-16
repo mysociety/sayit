@@ -1,5 +1,5 @@
 """
-WSGI config for spoke project.
+WSGI config for example_project project.
 
 This module contains the WSGI application used by Django's development server
 and any production WSGI deployments. It should expose a module-level variable
@@ -14,18 +14,8 @@ framework.
 
 """
 import os
-import sys
-import yaml
 
-config_path = os.path.abspath( os.path.join( os.path.dirname(__file__), '..', 'conf', 'general.yml' ) )
-config = yaml.load(open(config_path))
-
-if int(config.get('STAGING')) and sys.argv[1:2] != ['runserver']:
-    import spoke.wsgi_monitor
-    spoke.wsgi_monitor.start(interval=1.0)
-    spoke.wsgi_monitor.track(config_path)
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "spoke.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "example_project.settings")
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
