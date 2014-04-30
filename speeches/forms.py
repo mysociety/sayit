@@ -208,7 +208,7 @@ class SectionForm(forms.ModelForm):
 class SpeakerForm(forms.ModelForm):
     class Meta:
         model = Speaker
-        exclude = ('instance', 'slug')
+        exclude = ('instance', 'slug', 'person')
         widgets = {
             'name': forms.TextInput(),
         }
