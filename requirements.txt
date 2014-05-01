@@ -50,7 +50,7 @@ django-haystack
 # mySociety modules
 popit-django==0.0.3
 mysociety-django-sluggable==0.2.4
-django-subdomain-instances==0.1
+django-subdomain-instances==0.2
 
 # We use nose to run the tests, which gets around various limitations
 # with the built-in test runner:
