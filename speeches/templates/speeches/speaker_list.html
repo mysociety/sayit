@@ -7,9 +7,11 @@
 
 {% block content %}
 
-<div class="page-header">
-    <h1>{% trans "All Speakers" %}</h1>
-</div>
+  {% if speaker_list %}
+
+    <div class="page-header">
+        <h1>{% trans "All Speakers" %}</h1>
+    </div>
 
     <ul class="speaker-list">
       {% for speaker in speaker_list %}
@@ -26,5 +28,15 @@
         </li>
       {% endfor %}
     </ul>
+
+  {% else %}
+
+    <div class="nothing-here-yet-message">
+        <h1>{% trans 'There are no speakers yet' %}</h1>
+        <p class="lead">{% trans 'Attributing speeches to speakers makes them easy to find and navigate.' %}</p>
+        <p><a href="{% url "speeches:speaker-add" %}" class="button">{% trans 'Add your first speaker' %}</a></p>
+    </div>
+
+  {% endif %}
 
 {% endblock %}

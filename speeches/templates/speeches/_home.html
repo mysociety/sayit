@@ -51,9 +51,9 @@
   {% else %}
 
     <div class="nothing-here-yet-message">
-        {% url "speeches:speech-add" as url_add_speech %}
-        {% url "speeches:section-add" as url_add_section %}
-        <h2>{% blocktrans %}Nothing has been uploaded yet. Why not <a href='{{ url_add_speech }}'>add a speech</a> or a <a href='{{ url_add_section }}'>section</a>?{% endblocktrans %}</h2>
+        <h1>{% trans 'Welcome to SayIt!' %}</h1>
+        <p class="lead">{% trans 'This SayIt doesn&rsquo;t contain any speakers or speeches yet.' %}</p>
+        <p><a href="{% url "speeches:speaker-add" %}" class="button">{% trans 'Add your first speaker' %}</a></p>
     </div>
 
   {% endif %}

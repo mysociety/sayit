@@ -6,27 +6,39 @@
 
 {% block content %}
 
-<div class="page-header">
-    <h1>{% trans "Speeches" %}</h1>
-</div>
+  {% if object_list or speech_list %}
 
-<ul class="unstyled">
-    {% for top in object_list %}
-    <li>
-        <span class="section-title"><a href="{% url "speeches:section-view" top.get_path %}">{{ top.title }}</a></span>
-    </li>
-    {% endfor %}
-</ul>
+    <div class="page-header">
+        <h1>{% trans "Speeches" %}</h1>
+    </div>
 
-    <h2>{% trans 'Unattached speeches' %}</h2>
+      {% if object_list %}
+        <ul class="unstyled">
+            {% for top in object_list %}
+            <li>
+                <span class="section-title"><a href="{% url "speeches:section-view" top.get_path %}">{{ top.title }}</a></span>
+            </li>
+            {% endfor %}
+        </ul>
+      {% endif %}
 
-    <ol class="unstyled">
-        {% if not speech_list %}
-            <li>{% trans 'There are no unattached speeches.' %}</li>
-        {% endif %}
-        {% for speech in speech_list %}
-            {% include "speeches/speech.html" with speech=speech nosection="1" %}
-        {% endfor %}
-    </ol>
+      {% if speech_list %}
+        <h2>{% trans 'Unattached speeches' %}</h2>
+        <ol class="unstyled">
+            {% for speech in speech_list %}
+                {% include "speeches/speech.html" with speech=speech nosection="1" %}
+            {% endfor %}
+        </ol>
+      {% endif %}
+
+  {% else %}
+
+    <div class="nothing-here-yet-message">
+        <h1>{% trans 'There are no speeches yet' %}</h1>
+        <p class="lead">{% trans 'It&rsquo;s easiest to create a new speaker first, then write their first speech.' %}</p>
+        <p><a href="{% url "speeches:speaker-add" %}" class="button">{% trans 'Add your first speaker' %}</a> or <a href="{% url "speeches:speech-add" %}" class="button secondary">{% trans 'Write a speech' %}</a></p>
+    </div>
+
+  {% endif %}
 
 {% endblock %}

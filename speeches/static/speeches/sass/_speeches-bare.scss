@@ -775,3 +775,20 @@ $image-path: '../img' !default;
       margin: 0 0.5% 0 0;
     }
 }
+
+.nothing-here-yet-message {
+    p.lead {
+        font-size: 1.4em;
+        font-weight: 300;
+    }
+    .button {
+        /* useful for padding around the "or" between multiple buttons */
+        margin: 0 1em;
+        &:first-child {
+            margin-left: 0;
+        }
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
