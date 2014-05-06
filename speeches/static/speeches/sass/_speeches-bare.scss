@@ -795,3 +795,9 @@ $image-path: '../img' !default;
         }
     }
 }
+
+/* form pages (add/edit a speaker/speech) */
+form > .row {
+    margin-left: -0.75em;
+    margin-right: -0.75em;
+}
