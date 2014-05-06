@@ -46,6 +46,9 @@ $image-path: '../img' !default;
     margin-bottom: 1em;
     border-bottom: 1px solid $colour_light_grey;
     @include clearfix();
+    .button {
+        margin-bottom: 0;
+    }
     .action-button {
         position: absolute;
         top: 4em;
