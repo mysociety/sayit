@@ -49,6 +49,9 @@ $image-path: '../img' !default;
     .button {
         margin-bottom: 0;
     }
+    .button.right + .button.right {
+        margin-right: 1em;
+    }
     .action-button {
         position: absolute;
         top: 4em;
