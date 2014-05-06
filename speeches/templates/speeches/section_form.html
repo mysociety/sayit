@@ -5,18 +5,19 @@
 {% if object %}
     {% trans 'Edit section' %}
 {% else %}
-    {% trans 'Add section' %}
+    {% trans 'Add a section' %}
 {% endif %}
 {% endblock %}
 
 {% block content %}
-<p class="lead {% if object %}edit{% else %}add{% endif %}-section">
-    {% if object %}
-        {% trans 'Here is where you can edit a section.' %}
-    {% else %}
-        {% trans 'Here is where you can add a new section.' %}
-    {% endif %}
-</p>
+
+<div class="page-header">
+  {% if object %}
+    <h1>{% trans "Edit section" %}</h1>
+  {% else %}
+    <h1>{% trans "Add a section" %}</h1>
+  {% endif %}
+</div>
 
 <form id="section-form" class="form-horizontal" method="post">
     {% if object %}
