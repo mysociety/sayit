@@ -17,24 +17,30 @@
 {% compressed_js 'sayit-upload' %}
 {% endblock %}
 
-{% block title %}{% if object %}{% trans "Edit speech" %} {% else %}{% trans "Add speech" %}{% endif %}{% endblock %}
+{% block title %}
+  {% if object %}
+    {% trans "Edit speech" %}
+  {% else %}
+    {% trans "Add a speech" %}
+  {% endif %}
+{% endblock %}
 
 {% block content %}
 
 {% if added %}
-<div class="alert alert-success"> 
+<div class="alert alert-success">
     Your speech has been <a href="{% url "speeches:speech-view" added %}">created</a>
     in the section <a href="{% url "speeches:section-view" section.get_path %}#s{{ added }}">{{ section.title }}</a>!
 </div>
 {% endif %}
 
-<p class="lead {% if object %}edit{% else %}add{% endif %}-speech">
-    {% if object %}
-        {% trans "Here is where you can edit a speech." %}
-    {% else %}
-        {% trans "Here is where you can add a new speech." %}
-    {% endif %}
-</p>
+<div class="page-header">
+  {% if object %}
+    <h1>{% trans "Edit speech" %}</h1>
+  {% else %}
+    <h1>{% trans "Add a speech" %}</h1>
+  {% endif %}
+</div>
 
 <form id="speech-form" class="form-horizontal{% if not object and not form.non_field_errors %} {% endif %}" method="post" enctype="multipart/form-data">
     {% if object %}

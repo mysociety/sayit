@@ -5,18 +5,19 @@
 {% if object %}
     {% trans "Edit speaker" %}
 {% else %}
-    {% trans "Add speaker" %}
+    {% trans "Add a speaker" %}
 {% endif %}
 {% endblock %}
 
 {% block content %}
-<p class="lead {% if object %}edit{% else %}add{% endif %}-speaker">
-    {% if object %}
-        {% trans "Here is where you can edit a speaker." %}
-    {% else %}
-        {% trans "Here is where you can add a new speaker." %}
-    {% endif %}
-</p>
+
+<div class="page-header">
+  {% if object %}
+    <h1>{% trans "Edit speaker" %}</h1>
+  {% else %}
+    <h1>{% trans "Add a speaker" %}</h1>
+  {% endif %}
+</div>
 
 <form id="speaker-form" class="form-horizontal" method="post">
     {% if object %}

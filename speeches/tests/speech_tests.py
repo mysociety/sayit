@@ -30,7 +30,7 @@ class SpeechTests(InstanceTestCase):
         # Test that the page exists and has the right title
         resp = self.client.get('/speech/add')
         self.assertEqual(resp.status_code, 200)
-        self.assertTrue('add a new speech' in resp.content)
+        self.assertTrue('Add a speech' in resp.content)
 
     def test_add_speech_fails_on_empty_form(self):
         # Test that the form won't submit if empty
