@@ -824,11 +824,11 @@ form > .row {
         }
     }
 
-    button {
+    .button {
         float: right;
     }
 
-    button + button {
+    .button + .button {
         margin-right: 1em;
     }
 }

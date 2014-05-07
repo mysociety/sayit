@@ -248,10 +248,10 @@
       {% endwith %}
 
       {% if object %}
-        <button type="submit" id="speech_submit" class="button">{% trans 'Save changes' %}</button>
+        <input type="submit" id="speech_submit" class="button" value="{% trans 'Save changes' %}">
       {% else %}
-        <button type="submit" name="add_another" id="id_add_another" class="button secondary">{% trans 'Save and add another' %}</button>
-        <button type="submit" id="speech_submit" class="button">{% trans 'Save speech' %}</button>
+        <input type="submit" name="add_another" id="id_add_another" class="button secondary" value="{% trans 'Save and add another' %}">
+        <input type="submit" id="speech_submit" class="button" value="{% trans 'Save speech' %}">
       {% endif %}
     </div>
 

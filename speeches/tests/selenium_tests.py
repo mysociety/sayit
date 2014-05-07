@@ -56,7 +56,7 @@ class SeleniumTests(InstanceLiveServerTestCase):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
         text_input = self.selenium.find_element_by_name('text')
         text_input.send_keys('This is a speech')
-        self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
+        self.selenium.find_element_by_xpath('//input[@value="Save speech"]').click()
         speech = Speech.objects.order_by('-created')[0]
         self.assertIn('/speech/%d' % speech.id, self.selenium.current_url)
 
@@ -74,7 +74,7 @@ class SeleniumTests(InstanceLiveServerTestCase):
         """);
         
         audio_file_input.send_keys(os.path.join(self._in_fixtures, 'lamb.mp3'))
-        self.selenium.find_element_by_xpath('//input[@value="Add speech"]').click()
+        self.selenium.find_element_by_xpath('//input[@value="Save speech"]').click()
         speech = Speech.objects.order_by('-created')[0]
         self.assertIn('/speech/%d' % speech.id, self.selenium.current_url)
 
