@@ -62,7 +62,9 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
             empty_label = '',
             widget = Select2Widget(select2_options={ 'placeholder':_('Choose a speaker'), 'width': 'resolve' }),
             required=False)
-    section = forms.ModelChoiceField(queryset=Section.objects.all(), required=False)
+    section = forms.ModelChoiceField(queryset=Section.objects.all(),
+            widget = Select2Widget(select2_options={ 'placeholder':_('Choose a section'), 'width': 'resolve' }),
+            required=False)
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],
             widget=BootstrapDateWidget,
             required=False)
@@ -252,7 +254,7 @@ class BaseRecordingTimestampFormSet(BaseInlineFormSet):
         first_timestamp = _forms[0].cleaned_data['timestamp']
         last_timestamp =  _forms[-1].cleaned_data['timestamp']
 
-        # TODO: check that first timestamp isn't before start of speech?  
+        # TODO: check that first timestamp isn't before start of speech?
 
         if first_timestamp < recording.start_datetime:
             raise forms.ValidationError(_("Start time is before recording start time!"))

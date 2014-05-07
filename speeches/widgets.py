@@ -4,7 +4,7 @@ from django.utils.safestring import mark_safe
 from django.forms.widgets import ClearableFileInput, CheckboxInput, DateInput, TimeInput
 
 class AudioFileInput(ClearableFileInput):
-    pretty_input_start = u'<span class="btn fileinput-button"> <i class="icon-plus"></i> <span>Choose audio file</span>'
+    pretty_input_start = u'<span class="button tiny secondary fileinput-button">Choose audio file'
     pretty_input_end = u'</span>'
     template_with_initial = u'%(initial_text)s: %(initial)s %(clear_template)s<br />%(input_text)s: %(pretty_input_start)s%(input)s%(pretty_input_end)s'
     template_with_clear = u'%(clear)s <label class="inline checkbox" for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
@@ -55,7 +55,7 @@ class BootstrapDateWidget(DateInput):
             attrs['class'] = attrs['class'] + " datepicker"
         else:
             attrs['class'] = 'datepicker'
-        
+
         widget = DateInput.render(self, name, value, attrs)
 
         return mark_safe(u'<div class="input-append datepicker">' + widget + '<span class="add-on"><i class="icon-calendar"></i></span></div>')
@@ -73,7 +73,7 @@ class BootstrapTimeWidget(TimeInput):
 
         # Set a placeholder attribute
         attrs['placeholder'] = 'hh:mm'
-        
+
         widget = TimeInput.render(self, name, value, attrs)
 
         return mark_safe(u'<div class="input-append">' + widget + '<span class="add-on"><i class="icon-time"></i></span></div>')

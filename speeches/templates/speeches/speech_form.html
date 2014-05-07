@@ -43,11 +43,218 @@
 </div>
 
 <form id="speech-form" class="form-horizontal{% if not object and not form.non_field_errors %} {% endif %}" method="post" enctype="multipart/form-data">
-    {% if object %}
-        {% include 'speeches/form.html' with type="speech" submit="Update speech" %}
-    {% else %}
-        {% include 'speeches/form.html' with type="speech" submit="Add speech" pre_submit_name="add_another" pre_submit_text="Save and add another speech" %}
-    {% endif %}
+
+  {% csrf_token %}
+
+  {% if form.non_field_errors %}
+    <div class="error">
+        {{ form.non_field_errors }}
+    </div>
+  {% endif %}
+
+  {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+  {% endfor %}
+
+    <div class="row">
+        <div class="medium-8 column speech-form__primary-column">
+
+          {% with form.title as field %}
+            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.errors %}
+                <small class="error">{{ field.errors }}</small>
+              {% endif %}
+            </div>
+          {% endwith %}
+
+          {% with form.text as field %}
+            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.errors %}
+                <small class="error">{{ field.errors }}</small>
+              {% endif %}
+            </div>
+          {% endwith %}
+
+          {% with form.audio as field %}
+            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                <label class="control-label" for="id_audio">Or upload a recording:</label>
+              {{ field }}
+              {% if field.errors %}
+                <small class="error">{{ field.errors }}</small>
+              {% endif %}
+              <div class="progress-result">
+                {% if form.audio_filename.value %}
+                  Uploaded: {{ form.audio_filename.value }}
+                {% endif %}
+              </div>
+              <div class="progress">
+                  <div class="bar" style="width: 0%;"></div>
+              </div>
+            </div>
+          {% endwith %}
+
+        </div>
+        <div class="medium-4 column speech-form__secondary-column">
+
+          {% with form.location as field %}
+            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.errors %}
+                <small class="error">{{ field.errors }}</small>
+              {% endif %}
+            </div>
+          {% endwith %}
+
+          {% with form.event as field %}
+            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.errors %}
+                <small class="error">{{ field.errors }}</small>
+              {% endif %}
+            </div>
+          {% endwith %}
+
+            <div class="row">
+                <div class="small-5 column">
+                  {% with form.start_time as field %}
+                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                      {{ field.label_tag }}
+                      {{ field }}
+                      {% if field.errors %}
+                        <small class="error">{{ field.errors }}</small>
+                      {% endif %}
+                    </div>
+                  {% endwith %}
+                </div>
+                <div class="small-7 column">
+                  {% with form.start_date as field %}
+                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                      {{ field.label_tag }}
+                      {{ field }}
+                      {% if field.errors %}
+                        <small class="error">{{ field.errors }}</small>
+                      {% endif %}
+                    </div>
+                  {% endwith %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-5 column">
+                  {% with form.end_time as field %}
+                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                      {{ field.label_tag }}
+                      {{ field }}
+                      {% if field.errors %}
+                        <small class="error">{{ field.errors }}</small>
+                      {% endif %}
+                    </div>
+                  {% endwith %}
+                </div>
+                <div class="small-7 column">
+                  {% with form.end_date as field %}
+                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                      {{ field.label_tag }}
+                      {{ field }}
+                      {% if field.errors %}
+                        <small class="error">{{ field.errors }}</small>
+                      {% endif %}
+                    </div>
+                  {% endwith %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="medium-8 columns speech-form__primary-column">
+
+            <div class="row">
+                <div class="small-6 columns">
+                  {% with form.speaker as field %}
+                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                      {{ field.label_tag }}
+                      {{ field }}
+                      {% if field.errors %}
+                        <small class="error">{{ field.errors }}</small>
+                      {% endif %}
+                    </div>
+                  {% endwith %}
+                </div>
+                <div class="small-6 columns">
+                  {% with form.speaker_display as field %}
+                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                        <label class="control-label" for="id_speaker_display">Displayed as:</label>
+                      {{ field }}
+                      {% if field.errors %}
+                        <small class="error">{{ field.errors }}</small>
+                      {% endif %}
+                    </div>
+                  {% endwith %}
+                </div>
+            </div>
+
+          {% with form.section as field %}
+            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.errors %}
+                <small class="error">{{ field.errors }}</small>
+              {% endif %}
+            </div>
+          {% endwith %}
+
+        </div>
+        <div class="medium-4 columns speech-form__secondary-column">
+
+          {% with form.tags as field %}
+            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.errors %}
+                <small class="error">{{ field.errors }}</small>
+              {% endif %}
+            </div>
+          {% endwith %}
+
+          {% with form.source_url as field %}
+            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.errors %}
+                <small class="error">{{ field.errors }}</small>
+              {% endif %}
+            </div>
+          {% endwith %}
+
+        </div>
+    </div>
+
+    <div class="form-actions speech-form__footer">
+      {% with form.public as field %}
+        <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+          <label class="control-label">{{ field }} Make this speech public</label>
+          {% if field.errors %}
+            <small class="error">{{ field.errors }}</small>
+          {% endif %}
+        </div>
+      {% endwith %}
+
+      {% if object %}
+        <button type="submit" id="speech_submit" class="button">{% trans 'Save changes' %}</button>
+      {% else %}
+        <button type="submit" name="add_another" id="id_add_another" class="button secondary">{% trans 'Save and add another' %}</button>
+        <button type="submit" id="speech_submit" class="button">{% trans 'Save speech' %}</button>
+      {% endif %}
+    </div>
+
 </form>
 
 {% endblock %}
