@@ -38,7 +38,7 @@
             <ul class="unstyled js-masonry" data-masonry-options='{"columnWidth":".speech","itemSelector":".speech","gutter":".gutter-sizer"}'>
                 <li class="gutter-sizer"></li>
               {% for speech in speech_list %}
-                {% include "speeches/speech.html" with speech=speech nosection="1" truncate="1" %}
+                {% include "speeches/speech.html" with speech=speech nosection="1" standalone="1" truncate="1" %}
               {% endfor %}
             </ul>
         </div>

@@ -4,7 +4,7 @@
 {% load speech_utils %}
 
 {% if not noli %}
-<li id="s{{ speech.id }}" class="speech {% if result.object %}speech--search-result{% endif %} {% if speech.speaker and not nospeaker %}speech--with-portrait{% endif %} {% if not speech.speaker  %}speech--narrative{% endif %} speech--border"
+<li id="s{{ speech.id }}" class="speech {% if result.object %}speech--search-result{% endif %} {% if speech.speaker and not nospeaker and not standalone %}speech--with-portrait{% endif %} {% if not speech.speaker  %}speech--narrative{% endif %} speech--border"
 {% if speech.speaker.colour %} style="border-left-color: #{{ speech.speaker.colour }};"{% endif %}>
 {% endif %}
 
@@ -12,7 +12,7 @@
     <span class="label label-info">{% trans "Invisible" %}</span>
   {% endif %}
 
-  {% if not nospeaker %}
+  {% if not nospeaker and not standalone %}
     {% if speech.speaker %}
     <div class="speaker-portrait-wrapper">
     <img src="{% if speech.speaker.person.image %}
