@@ -25,12 +25,17 @@
       {% endif %}
 
       {% if speech_list %}
-        <h2>{% trans 'Unattached speeches' %}</h2>
-        <ol class="unstyled">
-            {% for speech in speech_list %}
-                {% include "speeches/speech.html" with speech=speech nosection="1" %}
-            {% endfor %}
-        </ol>
+        <div class="section-page__speeches-collection">
+          {% if object_list %}
+            <h2>{% trans 'Speeches not in a section' %}</h2>
+          {% endif %}
+            <ul class="unstyled js-masonry" data-masonry-options='{"columnWidth":".speech","itemSelector":".speech","gutter":".gutter-sizer"}'>
+                <li class="gutter-sizer"></li>
+              {% for speech in speech_list %}
+                {% include "speeches/speech.html" with speech=speech nosection="1" truncate="1" %}
+              {% endfor %}
+            </ul>
+        </div>
       {% endif %}
 
   {% else %}
