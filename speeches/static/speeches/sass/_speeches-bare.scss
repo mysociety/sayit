@@ -15,11 +15,13 @@ $image-path: '../img' !default;
  */
 .breadcrumbs {
     margin-bottom: 0;
-     > *:before {
+
+    > *:before {
         content: " ";
         margin: 0;
     }
-     > *:after {
+
+    > *:after {
        content: "/";
        color: #ccc7c3;
        margin: 0 0;
@@ -27,17 +29,17 @@ $image-path: '../img' !default;
        top: 1px;
        padding: 0 0.5em;
     }
+
+    .no-content-after {
+      &:after {
+        content: none;
+      }
+    }
 }
 
 .breadcrumbs__date {
   color: $colour_dark_grey;
 
-}
-
-.no-content-after {
-  &:after {
-    content: none;
-  }
 }
 
 .page-header {
@@ -442,8 +444,8 @@ $image-path: '../img' !default;
   }
 }
 
-.speaker-page__speeches-collection {
-  margin-top: 1em;
+.speaker-page__speeches-collection,
+.section-page__speeches-collection {
   .speech-wrapper {
     width: 100%;
     @include border-radius(7px);
@@ -462,6 +464,35 @@ $image-path: '../img' !default;
     padding-bottom: 0.5em;
   }
 }
+
+.speaker-page__speeches-collection {
+    margin-top: 1em;
+}
+
+.section-page__speeches-collection {
+    margin: 3em 0;
+
+    h2 {
+        padding: 0 0 0.5em 0;
+        margin: 0 0 0.2em 0;
+        border-bottom: 1px solid $colour_light_grey;
+        font-weight: 300;
+    }
+
+    // Speeches without a speaker are considered narrative by the templates.
+    // However, this might not be true: they might just be speeches without
+    // a known speaker. So, on the "unattached speeches" page, in particular,
+    // we override the boxy grey .speech-narrative styling.
+    .speech--narrative {
+        background: transparent;
+        border: none;
+
+        .speech-wrapper {
+            margin-left: 0;
+        }
+    }
+}
+
 
 /* Search results page */
 .search-title-with-result {
