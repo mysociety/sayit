@@ -44,36 +44,17 @@ class SeleniumTests(InstanceLiveServerTestCase):
         url = super(SeleniumTests, self).live_server_url
         return url.replace('localhost', 'testing.127.0.0.1.xip.io')
 
-    def test_select_text_and_audio(self):
+    def test_select_text(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
 
         # Assert form is shown with audio input and text input
         self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
-        self.assertTrue(self.selenium.find_element_by_id("id_audio_controls").is_displayed())
         self.assertTrue(self.selenium.find_element_by_id("id_text_controls").is_displayed())
 
     def test_add_speech(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
         text_input = self.selenium.find_element_by_name('text')
         text_input.send_keys('This is a speech')
-        self.selenium.find_element_by_xpath('//input[@value="Save speech"]').click()
-        speech = Speech.objects.order_by('-created')[0]
-        self.assertIn('/speech/%d' % speech.id, self.selenium.current_url)
-
-    def test_upload_audio(self):
-        self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-        audio_file_input = self.selenium.find_element_by_name("audio")
-        
-        # The file input is covered by the button. This javascript takes the
-        # input and moves it out so that when selenium tries to click on it (to
-        # focus it for the send_keys) the click does not 'fall' on another
-        # element.
-        self.selenium.execute_script("""
-            var $audio = $('input[name=audio]');
-            $audio.insertAfter( $audio.parent() );
-        """);
-        
-        audio_file_input.send_keys(os.path.join(self._in_fixtures, 'lamb.mp3'))
         self.selenium.find_element_by_xpath('//input[@value="Save speech"]').click()
         speech = Speech.objects.order_by('-created')[0]
         self.assertIn('/speech/%d' % speech.id, self.selenium.current_url)

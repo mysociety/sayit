@@ -34,17 +34,20 @@
 </div>
 {% endif %}
 
-<div class="page-header">
-  {% if object %}
-    <h1>{% trans "Edit speech" %}</h1>
-  {% else %}
-    <h1>{% trans "Add a speech" %}</h1>
-  {% endif %}
-</div>
-
 <form id="speech-form" class="form-horizontal{% if not object and not form.non_field_errors %} {% endif %}" method="post" enctype="multipart/form-data">
 
-  {% csrf_token %}
+    <div class="page-header">
+      {% if object %}
+        <input type="submit" id="speech_submit" class="button small right" value="{% trans 'Save changes' %}">
+        <h1>{% trans "Edit speech" %}</h1>
+      {% else %}
+        <input type="submit" id="speech_submit" class="button small right" value="{% trans 'Save speech' %}">
+        <input type="submit" name="add_another" id="id_add_another" class="button small right secondary" value="{% trans 'Save and add another' %}">
+        <h1>{% trans "Add a speech" %}</h1>
+      {% endif %}
+    </div>
+
+    {% csrf_token %}
 
   {% if form.non_field_errors %}
     <div class="error">
@@ -57,17 +60,7 @@
   {% endfor %}
 
     <div class="row">
-        <div class="medium-8 column speech-form__primary-column">
-
-          {% with form.title as field %}
-            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-              {{ field.label_tag }}
-              {{ field }}
-              {% if field.errors %}
-                <small class="error">{{ field.errors }}</small>
-              {% endif %}
-            </div>
-          {% endwith %}
+        <div class="medium-8 column">
 
           {% with form.text as field %}
             <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
@@ -79,131 +72,17 @@
             </div>
           {% endwith %}
 
-          {% with form.audio as field %}
-            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                <label class="control-label" for="id_audio">Or upload a recording:</label>
-              {{ field }}
-              {% if field.errors %}
-                <small class="error">{{ field.errors }}</small>
-              {% endif %}
-              <div class="progress-result">
-                {% if form.audio_filename.value %}
-                  Uploaded: {{ form.audio_filename.value }}
-                {% endif %}
-              </div>
-              <div class="progress">
-                  <div class="bar" style="width: 0%;"></div>
-              </div>
-            </div>
-          {% endwith %}
-
         </div>
-        <div class="medium-4 column speech-form__secondary-column">
+        <div class="medium-4 column">
 
-          {% with form.location as field %}
+          {% with form.speaker as field %}
             <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
               {{ field.label_tag }}
-              {{ field }}
-              {% if field.errors %}
-                <small class="error">{{ field.errors }}</small>
-              {% endif %}
-            </div>
-          {% endwith %}
-
-          {% with form.event as field %}
-            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-              {{ field.label_tag }}
-              {{ field }}
-              {% if field.errors %}
-                <small class="error">{{ field.errors }}</small>
-              {% endif %}
-            </div>
-          {% endwith %}
-
-            <div class="row">
-                <div class="small-5 column">
-                  {% with form.start_time as field %}
-                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                      {{ field.label_tag }}
-                      {{ field }}
-                      {% if field.errors %}
-                        <small class="error">{{ field.errors }}</small>
-                      {% endif %}
-                    </div>
-                  {% endwith %}
-                </div>
-                <div class="small-7 column">
-                  {% with form.start_date as field %}
-                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                      {{ field.label_tag }}
-                      {{ field }}
-                      {% if field.errors %}
-                        <small class="error">{{ field.errors }}</small>
-                      {% endif %}
-                    </div>
-                  {% endwith %}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="small-5 column">
-                  {% with form.end_time as field %}
-                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                      {{ field.label_tag }}
-                      {{ field }}
-                      {% if field.errors %}
-                        <small class="error">{{ field.errors }}</small>
-                      {% endif %}
-                    </div>
-                  {% endwith %}
-                </div>
-                <div class="small-7 column">
-                  {% with form.end_date as field %}
-                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                      {{ field.label_tag }}
-                      {{ field }}
-                      {% if field.errors %}
-                        <small class="error">{{ field.errors }}</small>
-                      {% endif %}
-                    </div>
-                  {% endwith %}
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="medium-8 columns speech-form__primary-column">
-
-            <div class="row">
-                <div class="small-6 columns">
-                  {% with form.speaker as field %}
-                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                      {{ field.label_tag }}
-                      {{ field }}
-                      {% if field.errors %}
-                        <small class="error">{{ field.errors }}</small>
-                      {% endif %}
-                    </div>
-                  {% endwith %}
-                </div>
-                <div class="small-6 columns">
-                  {% with form.speaker_display as field %}
-                    <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                        <label class="control-label" for="id_speaker_display">Displayed as:</label>
-                      {{ field }}
-                      {% if field.errors %}
-                        <small class="error">{{ field.errors }}</small>
-                      {% endif %}
-                    </div>
-                  {% endwith %}
-                </div>
-            </div>
-
-          {% with form.section as field %}
-            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-              {{ field.label_tag }}
+              <ul class="suggested-speakers">
+                <li>Luke Skywalker</li>
+                <li>Obi-Wan Kenobi</li>
+                <li>Stormtrooper</li>
+              </ul>
               {{ field }}
               {% if field.errors %}
                 <small class="error">{{ field.errors }}</small>
@@ -212,17 +91,10 @@
           {% endwith %}
 
         </div>
-        <div class="medium-4 columns speech-form__secondary-column">
+    </div>
 
-          {% with form.tags as field %}
-            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-              {{ field.label_tag }}
-              {{ field }}
-              {% if field.errors %}
-                <small class="error">{{ field.errors }}</small>
-              {% endif %}
-            </div>
-          {% endwith %}
+    <div class="row">
+        <div class="medium-8 column">
 
           {% with form.source_url as field %}
             <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
@@ -235,25 +107,140 @@
           {% endwith %}
 
         </div>
-    </div>
+        <div class="medium-4 column">
 
-    <div class="form-actions speech-form__footer">
-      {% with form.public as field %}
-        <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-          <label class="control-label">{{ field }} Make this speech public</label>
-          {% if field.errors %}
-            <small class="error">{{ field.errors }}</small>
-          {% endif %}
+          {% with form.section as field %}
+            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.errors %}
+                <small class="error">{{ field.errors }}</small>
+              {% endif %}
+            </div>
+          {% endwith %}
+
         </div>
-      {% endwith %}
-
-      {% if object %}
-        <input type="submit" id="speech_submit" class="button" value="{% trans 'Save changes' %}">
-      {% else %}
-        <input type="submit" name="add_another" id="id_add_another" class="button secondary" value="{% trans 'Save and add another' %}">
-        <input type="submit" id="speech_submit" class="button" value="{% trans 'Save speech' %}">
-      {% endif %}
     </div>
+
+    <div class="row">
+        <div class="medium-4 column">
+
+            <div class="unimportant-form-section-header">{% trans "Date &amp; Time" %}</div>
+            <div class="unimportant-form-section">
+                  <div class="row">
+                      <div class="small-5 column">
+                        {% with form.start_time as field %}
+                          <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                              <small class="error">{{ field.errors }}</small>
+                            {% endif %}
+                          </div>
+                        {% endwith %}
+                      </div>
+                      <div class="small-7 column">
+                        {% with form.start_date as field %}
+                          <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                              <small class="error">{{ field.errors }}</small>
+                            {% endif %}
+                          </div>
+                        {% endwith %}
+                      </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="small-5 column">
+                        {% with form.end_time as field %}
+                          <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                              <small class="error">{{ field.errors }}</small>
+                            {% endif %}
+                          </div>
+                        {% endwith %}
+                      </div>
+                      <div class="small-7 column">
+                        {% with form.end_date as field %}
+                          <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                              <small class="error">{{ field.errors }}</small>
+                            {% endif %}
+                          </div>
+                        {% endwith %}
+                      </div>
+                  </div>
+            </div>
+
+        </div>
+        <div class="medium-4 column">
+
+            <div class="unimportant-form-section-header">{% trans "Event &amp; Location" %}</div>
+            <div class="unimportant-form-section">
+              {% with form.location as field %}
+                <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                  {{ field.label_tag }}
+                  {{ field }}
+                  {% if field.errors %}
+                    <small class="error">{{ field.errors }}</small>
+                  {% endif %}
+                </div>
+              {% endwith %}
+              {% with form.event as field %}
+                <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                  {{ field.label_tag }}
+                  {{ field }}
+                  {% if field.errors %}
+                    <small class="error">{{ field.errors }}</small>
+                  {% endif %}
+                </div>
+              {% endwith %}
+            </div>
+
+        </div>
+        <div class="medium-4 column">
+
+            <div class="unimportant-form-section-header">{% trans "Title &amp; Tags" %}</div>
+            <div class="unimportant-form-section">
+              {% with form.title as field %}
+                <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                  {{ field.label_tag }}
+                  {{ field }}
+                  {% if field.errors %}
+                    <small class="error">{{ field.errors }}</small>
+                  {% endif %}
+                </div>
+              {% endwith %}
+              {% with form.tags as field %}
+                <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
+                  {{ field.label_tag }}
+                  {{ field }}
+                  {% if field.errors %}
+                    <small class="error">{{ field.errors }}</small>
+                  {% endif %}
+                </div>
+              {% endwith %}
+            </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    // TODO Temporary javascript
+    // an idea of how the sections could be hidden/shown
+    jQuery(function(){
+      var $ = jQuery;
+      $('.unimportant-form-section-header').addClass('collapsed').on('click', function(){
+        $(this).toggleClass('collapsed').next().toggle();
+      }).next().hide();
+    })
+    </script>
 
 </form>
 

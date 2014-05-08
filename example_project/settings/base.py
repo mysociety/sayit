@@ -19,10 +19,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sayit-example-project',
-        'USER': 'postgres',
+        'USER': '',
         'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -164,7 +164,7 @@ LOGGING = {
         'speeches': {
             'handlers': [ 'mail_admins', 'console' ],
             'level': 'DEBUG',
-            'propagate': True,  
+            'propagate': True,
         },
         'pyelasticsearch': {
             'handlers': ['console'],

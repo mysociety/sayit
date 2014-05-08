@@ -60,10 +60,11 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
     speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(),
             empty_label = '',
-            widget = Select2Widget(select2_options={ 'placeholder':_('Choose a speaker'), 'width': 'resolve' }),
+            widget = Select2Widget(select2_options={ 'placeholder': ' ', 'width': 'resolve' }),
             required=False)
     section = forms.ModelChoiceField(queryset=Section.objects.all(),
-            widget = Select2Widget(select2_options={ 'placeholder':_('Choose a section'), 'width': 'resolve' }),
+            empty_label = '',
+            widget = Select2Widget(select2_options={ 'placeholder': ' ', 'width': 'resolve' }),
             required=False)
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],
             widget=BootstrapDateWidget,
