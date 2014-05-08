@@ -1,8 +1,14 @@
 {% extends 'speeches/base_player.html' %}
+{% load staticfiles %}
 {% load url from future %}
 {% load i18n %}
 
 {% block title %}{% trans "Speeches" %}{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static 'speeches/js/masonry.pkgd.min.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 
