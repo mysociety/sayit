@@ -4,7 +4,11 @@ import logging
 from datetime import datetime
 import pytz
 
-from django_select2.widgets import Select2Widget, Select2MultipleWidget
+from django_select2.widgets import (
+    Select2Widget, Select2MultipleWidget, AutoHeavySelect2Widget,
+    JSFunctionInContext, HeavySelect2Widget
+    )
+from django_select2.fields import AutoModelSelect2Field
 
 from django.utils.translation import ugettext_lazy as _
 from django import forms
@@ -56,12 +60,58 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
 class SectionPickForm(forms.Form):
     section = forms.ModelChoiceField(label=_('Assign to section'), queryset=Section.objects.all(), required=True)
 
+class SpeakerWidget(AutoHeavySelect2Widget):
+    def __init__(self, *args, **kwargs):
+        # AutoHeavySelect2Mixin's __init__ hard codes 'data_view' without giving
+        # us the chance to add in the namespace we need. Let's hard code it
+        # ourselves and then skip past AutoHeavySelect2Mixin in the MRO
+        # to HeavySelect2Widget and continue from there.
+        kwargs['data_view'] = "speeches:django_select2_central_json"
+
+        HeavySelect2Widget.__init__(self, *args, **kwargs)
+
+    def init_options(self):
+        super(SpeakerWidget, self).init_options()
+        self.options['createSearchChoice'] = JSFunctionInContext('django_select2.createSearchChoice')
+
+class SpeakerField(AutoModelSelect2Field):
+    empty_values = [ None, '', [], (), {} ]
+    search_fields = [ 'name__icontains' ]
+
+    # If anything tries to run a query on .queryset, it means we've missed
+    # somewhere where we needed to limit things to the instance
+    queryset = 'UNUSED'
+    widget = SpeakerWidget
+
+    # instance will be set to an instance in the django-subdomain-instances
+    # sense by the form
+    instance = None
+
+    def to_python(self, value):
+        # Inspiration from HeavyModelSelect2TagField
+        if value in self.empty_values:
+            return None
+        try:
+            key = self.to_field_name or 'pk'
+            value = self.queryset.get(**{key: value})
+        except (ValueError, self.queryset.model.DoesNotExist):
+            # Note that value could currently arrive as two different things:
+            # a stringified integer representing the id of an existing Speaker, or
+            # any other string representing the name of a new Speaker.
+            value = self.queryset.create(name=value, instance=self.instance)
+        return value
+
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
-    speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(),
-            empty_label = '',
-            widget = Select2Widget(select2_options={ 'placeholder':_('Choose a speaker'), 'width': 'resolve' }),
-            required=False)
+    speaker = SpeakerField(
+        empty_label='',
+        widget=SpeakerWidget(
+            select2_options={
+                'placeholder': _('Choose a speaker'),
+                'width': 'resolve',
+                }
+            ),
+        required=False)
     section = forms.ModelChoiceField(queryset=Section.objects.all(),
             widget = Select2Widget(select2_options={ 'placeholder':_('Choose a section'), 'width': 'resolve' }),
             required=False)

@@ -6,14 +6,14 @@
 {% load django_select2_tags %}
 
 {% block extra_css %}
-{% import_django_select2_css 1 %}
+{% import_django_select2_css 0 %}
 {{ block.super }}
 {# <link rel="stylesheet" href="{% static "css/bootstrap-datepicker.css" %}" /> #}
 {% endblock %}
 
 {% block extra_js %}
 {{ block.super }}
-{% import_django_select2_js 1 %}
+{% import_django_select2_js 0 %}
 {% compressed_js 'sayit-upload' %}
 {% endblock %}
 

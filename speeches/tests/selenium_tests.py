@@ -82,10 +82,17 @@ class SeleniumTests(InstanceLiveServerTestCase):
         # Put a person in the db for the autocomplete to find
         speaker = Speaker.objects.create(name='Name', instance=self.instance)
 
-        # Type a name in and select it
+        # Type a name in
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
         speaker_input = self.selenium.find_element_by_xpath("//div[@id='s2id_id_speaker']/child::a").click()
-        self.selenium.find_element_by_xpath('//div[@class="select2-result-label"]').click()
+        text_input = self.selenium.find_element_by_xpath('//div[@id="select2-drop"]//input')
+        text_input.send_keys('Na')
+        # Wait for autocomplete
+        WebDriverWait(self.selenium, 10).until(
+            lambda x: x.find_element_by_xpath('//div[@class="select2-result-label"]')
+        )
+        # First result is what was typed (for creating new entry), so click second
+        self.selenium.find_element_by_xpath('(//div[@class="select2-result-label"])[2]').click()
         # Check it is selected
         selection_element = self.selenium.find_element_by_xpath('//div[@id="s2id_id_speaker"]/descendant::span')
         self.assertIn('Name', selection_element.text)

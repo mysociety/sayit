@@ -45,6 +45,25 @@ class SpeechTests(InstanceTestCase):
         speech = Speech.objects.order_by('-id')[0]
         self.assertRedirects(resp, '/speech/%d' % speech.id)
         self.assertEqual(speech.text, 'This is a speech')
+        self.assertEqual(speech.speaker, None)
+
+    def test_add_speech_with_unknown_speaker(self):
+        """Try adding a speech with a speaker not yet in the database.
+
+        Adding a speech with a speaker name which is unknown to us should cause
+        that speaker to be created.
+        """
+        self.assertEqual(Speaker.objects.filter(name='New Speaker').count(), 0)
+        self.client.post(
+            '/speech/add',
+            {'text': 'Speech from new speaker',
+             'speaker': 'New Speaker'},
+            )
+
+        speaker = Speaker.objects.get(name='New Speaker')
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertEqual(speech.text, 'Speech from new speaker')
+        self.assertEqual(speech.speaker, speaker)
 
     def test_add_speech_and_add_another(self):
         # Test form with 'add_another' but without a section
