@@ -78,11 +78,13 @@
           {% with form.speaker as field %}
             <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
               {{ field.label_tag }}
+              <!-- Coming soon!!
               <ul class="suggested-speakers">
                 <li>Luke Skywalker</li>
                 <li>Obi-Wan Kenobi</li>
                 <li>Stormtrooper</li>
               </ul>
+              -->
               {{ field }}
               {% if field.errors %}
                 <small class="error">{{ field.errors }}</small>
@@ -90,13 +92,7 @@
             </div>
           {% endwith %}
 
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="medium-8 column">
-
-          {% with form.source_url as field %}
+          {% with form.section as field %}
             <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
               {{ field.label_tag }}
               {{ field }}
@@ -106,10 +102,7 @@
             </div>
           {% endwith %}
 
-        </div>
-        <div class="medium-4 column">
-
-          {% with form.section as field %}
+          {% with form.source_url as field %}
             <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
               {{ field.label_tag }}
               {{ field }}
