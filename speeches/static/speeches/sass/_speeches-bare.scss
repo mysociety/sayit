@@ -866,6 +866,15 @@ form > .row {
     #id_text {
         height: 12.1em; // the height of two labels, three inputs, and their respective margins
     }
+
+    .form-actions {
+      @include clearfix;
+      margin: 2em 0 0 0;
+
+      .button {
+        margin-bottom: 0;
+      }
+    }
 }
 
 .suggested-speakers {
@@ -937,5 +946,4 @@ form > .row {
     margin-top: 1px;
     background-color: #f6f6f6;
 }
-
 
