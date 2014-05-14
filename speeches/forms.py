@@ -74,6 +74,28 @@ class SpeakerWidget(AutoHeavySelect2Widget):
         super(SpeakerWidget, self).init_options()
         self.options['createSearchChoice'] = JSFunctionInContext('django_select2.createSearchChoice')
 
+    def value_from_datadict(self, data, files, name):
+        # Inspiration from MultipleSelect2HiddenInput
+        """We need to actually alter the form's self.data so that the form rendering
+        works, as that's how the Select2 TagFields function. So always return
+        the underlying list from the datadict."""
+
+        # We want the value to always be a list when it's non-empty so that
+        # below in the clean method on SpeakerField we can change the value
+        # in place rather than replacing it.
+
+        # If data is non-trivial and not a MultiValueDict, then an error will
+        # be thrown, which is a good thing.
+        if data:
+            return data.getlist(name)
+
+    def render(self, name, value, attrs=None, choices=()):
+        """Because of the above; if we are given a list here, we don't want it."""
+        if isinstance(value, list):
+            value = value[0] if len(value) else None
+        return super(SpeakerWidget, self).render(name, value, attrs, choices)
+
+
 class SpeakerField(AutoModelSelect2Field):
     empty_values = [ None, '', [], (), {} ]
     search_fields = [ 'name__icontains' ]
@@ -100,6 +122,26 @@ class SpeakerField(AutoModelSelect2Field):
             # any other string representing the name of a new Speaker.
             value = self.queryset.create(name=value, instance=self.instance)
         return value
+
+    def clean(self, value):
+        # Inspiration from HeavyModelSelect2TagField
+        """We'll get a list here, due to the widget; we'll clean the first item,
+        and be sure to alter the list that's been passed in. Because that list
+        is used in any future render, and if we don't do it this way we get
+        exceptions as it's not an integer..."""
+        if value:
+            v = value.pop()
+            v = super(SpeakerField, self).clean(v)
+            if v:
+                value.append(v.pk)
+                value = v
+            else:
+                value = None
+        else:
+            value = None
+
+        return value
+
 
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
