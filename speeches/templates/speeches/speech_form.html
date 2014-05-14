@@ -40,7 +40,8 @@
       {% if object %}
         <h1>{% trans "Edit speech" %}</h1>
       {% else %}
-        <h1>{% trans "Add a speech" %}</h1>
+        <h1 class="has-tip">{% trans "Add a speech" %}</h1>
+        <p class="tip">{% trans "You can cut and paste quotes from news sites, social media or blogs,<br>or transcribe any audio or video records you may have access to" %}</p>
       {% endif %}
     </div>
 

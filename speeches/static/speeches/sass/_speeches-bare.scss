@@ -61,9 +61,26 @@ $image-path: '../img' !default;
     }
     h1 {
         margin: 0;
-        @media (min-width: $small-screen) {
-            line-height: 1em;
-        }
+        line-height: 1em;
+    }
+    .tip {
+      font-size: 0.8em;
+      line-height: 1.2em;
+      color: #999;
+      margin-top: 0.8em;
+      margin-bottom: 0;
+    }
+
+    @media (min-width: $medium-screen) {
+      h1 {
+      }
+      h1.has-tip {
+        float: left;
+      }
+      .tip {
+        text-align: right;
+        margin-top: 0.3em;
+      }
     }
 }
 
