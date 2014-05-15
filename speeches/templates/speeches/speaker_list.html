@@ -33,9 +33,15 @@
   {% else %}
 
     <div class="nothing-here-yet-message">
-        <h1>{% trans 'There are no speakers yet' %}</h1>
-        <p class="lead">{% trans 'Attributing speeches to speakers makes them easy to find and navigate.' %}</p>
-        <p><a href="{% url "speeches:speaker-add" %}" class="button">{% trans 'Add your first speaker' %}</a></p>
+      {% if request.is_user_instance %}
+        <h1>{% trans 'You haven&rsquo;t added any speeches or statements yet' %}</h1>
+        <p class="lead">{% trans 'Once you have, this page will contain a list of all the different people who made each statement in this SayIt site.' %}</p>
+        <p><a href="{% url "speeches:speech-add" %}" class="button">{% trans 'Add your first statement' %}</a></p>
+      {% else %}
+        <h1>{% trans 'This is a brand new SayIt site.' %}</h1>
+        <p class="lead">{% trans 'Its creator hasn&rsquo;t yet added any speeches or statements for you to see.' %}</p>
+        <p><a href="http://sayit.mysociety.org" class="button">{% trans 'Learn more about SayIt' %}</a></p>
+      {% endif %}
     </div>
 
   {% endif %}
