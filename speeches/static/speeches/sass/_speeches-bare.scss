@@ -636,10 +636,6 @@ $image-path: '../img' !default;
 /* Single speech page */
 .single-speech-layout {
   @include grid-row(nest);
-
-  @media (min-width: $large-screen) {
-      background: transparent url("#{$image-path}/speech-timeline-bg.png") 8% top repeat-y;
-  }
 }
 
 .single-speech-layout__speech-column {
