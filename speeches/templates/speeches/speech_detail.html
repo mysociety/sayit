@@ -39,11 +39,11 @@
     <div class="single-speech-layout__speech-column">
             <div class="speech speech-single-speech">
               {% if speech.speaker %}
-                <div class="speech-single-speech__speaker-portrait">
+                <a class="speech-single-speech__speaker-portrait" href="{% url "speeches:speaker-view" object.speaker.slug %}">
                 <img src="{% if speech.speaker.person.image %}
                   {{ speech.speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
                   style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-portrait speaker-portrait--left round-image speaker-portrait--large">
-                </div>
+                </a>
               {% endif %}
                 <div class="speech__meta-data">
                     {% if object.speaker %}
