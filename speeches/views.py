@@ -97,6 +97,7 @@ class SpeechMixin(NamespaceMixin, InstanceFormMixin):
 
         # Instance in the sense of https://github.com/mysociety/django-subdomain-instances
         form.fields['speaker'].instance = self.request.instance
+        form.fields['section'].instance = self.request.instance
 
         return form
 
@@ -521,8 +522,9 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
         return self.render_to_response({ 'errors': json.dumps(form.errors) }, status=400)
 
 
-class SpeakerAutoResponseView(AutoResponseView):
+class Select2AutoResponseView(AutoResponseView):
     def check_all_permissions(self, request, *args, **kwargs):
-        super(SpeakerAutoResponseView, self).check_all_permissions(request, *args, **kwargs)
+        super(Select2AutoResponseView, self).check_all_permissions(request, *args, **kwargs)
 
-        request._AutoResponseView__django_select2_local.queryset = Speaker.objects.for_instance(request.instance)
+        model = request._AutoResponseView__django_select2_local.model
+        request._AutoResponseView__django_select2_local.queryset = model.objects.for_instance(request.instance)

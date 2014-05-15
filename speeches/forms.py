@@ -5,7 +5,7 @@ from datetime import datetime
 import pytz
 
 from django_select2.widgets import (
-    Select2Widget, Select2MultipleWidget, AutoHeavySelect2Widget,
+    Select2MultipleWidget, AutoHeavySelect2Widget,
     JSFunctionInContext, HeavySelect2Widget
     )
 from django_select2.fields import AutoModelSelect2Field
@@ -60,7 +60,7 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
 class SectionPickForm(forms.Form):
     section = forms.ModelChoiceField(label=_('Assign to section'), queryset=Section.objects.all(), required=True)
 
-class SpeakerWidget(AutoHeavySelect2Widget):
+class Select2Widget(AutoHeavySelect2Widget):
     def __init__(self, *args, **kwargs):
         # AutoHeavySelect2Mixin's __init__ hard codes 'data_view' without giving
         # us the chance to add in the namespace we need. Let's hard code it
@@ -71,7 +71,7 @@ class SpeakerWidget(AutoHeavySelect2Widget):
         HeavySelect2Widget.__init__(self, *args, **kwargs)
 
     def init_options(self):
-        super(SpeakerWidget, self).init_options()
+        super(Select2Widget, self).init_options()
         self.options['createSearchChoice'] = JSFunctionInContext('django_select2.createSearchChoice')
 
     def value_from_datadict(self, data, files, name):
@@ -81,8 +81,8 @@ class SpeakerWidget(AutoHeavySelect2Widget):
         the underlying list from the datadict."""
 
         # We want the value to always be a list when it's non-empty so that
-        # below in the clean method on SpeakerField we can change the value
-        # in place rather than replacing it.
+        # below in the clean method on CreateAutoModelSelect2Field we can
+        # change the value in place rather than replacing it.
 
         # If data is non-trivial and not a MultiValueDict, then an error will
         # be thrown, which is a good thing.
@@ -93,21 +93,28 @@ class SpeakerWidget(AutoHeavySelect2Widget):
         """Because of the above; if we are given a list here, we don't want it."""
         if isinstance(value, list):
             value = value[0] if len(value) else None
-        return super(SpeakerWidget, self).render(name, value, attrs, choices)
+        return super(Select2Widget, self).render(name, value, attrs, choices)
 
 
-class SpeakerField(AutoModelSelect2Field):
+class CreateAutoModelSelect2Field(AutoModelSelect2Field):
     empty_values = [ None, '', [], (), {} ]
-    search_fields = [ 'name__icontains' ]
 
     # If anything tries to run a query on .queryset, it means we've missed
     # somewhere where we needed to limit things to the instance
     queryset = 'UNUSED'
-    widget = SpeakerWidget
 
     # instance will be set to an instance in the django-subdomain-instances
     # sense by the form
     instance = None
+
+    def __init__(self, *args, **kwargs):
+        self.search_fields = [ '%s__icontains' % self.column ]
+        if 'widget' in kwargs or 'empty_label' in kwargs:
+            logger.warn('widget/empty_label will be overwritten by using this field')
+        kwargs['widget'] = Select2Widget(select2_options={ 'placeholder': ' ', 'width': '100%' })
+        kwargs['empty_label'] = ''
+        kwargs['required'] = kwargs.get('required', False)
+        return super(CreateAutoModelSelect2Field, self).__init__(*args, **kwargs)
 
     def to_python(self, value):
         # Inspiration from HeavyModelSelect2TagField
@@ -116,11 +123,11 @@ class SpeakerField(AutoModelSelect2Field):
         try:
             key = self.to_field_name or 'pk'
             value = self.queryset.get(**{key: value})
-        except (ValueError, self.queryset.model.DoesNotExist):
+        except (ValueError, self.model.DoesNotExist):
             # Note that value could currently arrive as two different things:
-            # a stringified integer representing the id of an existing Speaker, or
-            # any other string representing the name of a new Speaker.
-            value = self.queryset.create(name=value, instance=self.instance)
+            # a stringified integer representing the id of an existing object, or
+            # any other string representing the representative string of the object.
+            value = self.queryset.create(**{ self.column: value, 'instance': self.instance })
         return value
 
     def clean(self, value):
@@ -131,7 +138,7 @@ class SpeakerField(AutoModelSelect2Field):
         exceptions as it's not an integer..."""
         if value:
             v = value.pop()
-            v = super(SpeakerField, self).clean(v)
+            v = super(CreateAutoModelSelect2Field, self).clean(v)
             if v:
                 value.append(v.pk)
                 value = v
@@ -142,22 +149,18 @@ class SpeakerField(AutoModelSelect2Field):
 
         return value
 
+class SpeakerField(CreateAutoModelSelect2Field):
+    model = Speaker
+    column = 'name'
+
+class SectionField(CreateAutoModelSelect2Field):
+    model = Section
+    column = 'title'
 
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
-    speaker = SpeakerField(
-        empty_label='',
-        widget=SpeakerWidget(
-            select2_options={
-                'placeholder': ' ',
-                'width': 'resolve',
-                }
-            ),
-        required=False)
-    section = forms.ModelChoiceField(queryset=Section.objects.all(),
-            empty_label = '',
-            widget = Select2Widget(select2_options={ 'placeholder': ' ', 'width': 'resolve' }),
-            required=False)
+    speaker = SpeakerField()
+    section = SectionField()
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],
             widget=BootstrapDateWidget,
             required=False)
