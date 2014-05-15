@@ -697,6 +697,7 @@ $image-path: '../img' !default;
 
 .speech__content-single-speech {
   border: none;
+  padding-bottom: 0;
   p {
     @media (min-width: $medium-screen) {
       font-size: 1.105263158em;

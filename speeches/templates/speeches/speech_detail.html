@@ -53,16 +53,6 @@
                     {% else %}
                         {% trans 'Unknown speaker' %}
                     {% endif %}
-                    {% if object.start_date %}
-                        <span class="speech__meta-data__date">
-                            {{ object.start_date }}
-                        </span>
-                    {% endif %}
-
-                    {% if object.location %}
-                       <small>{% trans "Location:" %} </small>{{ object.location }}
-                    {% endif %}
-
                 </div>
               {% if object.audio %}
                 <p>
@@ -84,9 +74,11 @@
                     {{ object.text|bleach }}
                 </div>
               {% endif %}
-                {% if object.section %}
-                    {% include "speeches/_breadcrumbs.html" with section=object.section all=1 %}
-                {% endif %}
+
+              {% if object.section %}
+                {% include "speeches/_breadcrumbs.html" with section=object.section all=1 %}
+              {% endif %}
+
                 <div class="speech__links">
                     {% if object.section %}
                       <a href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}"><i class="speech-icon icon-link-in-context"></i>{% trans "Link in context" %}</a>
