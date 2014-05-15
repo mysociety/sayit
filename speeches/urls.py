@@ -6,6 +6,8 @@ from speeches.search import InstanceSearchView
 from tastypie.api import NamespacedApi
 from speeches.api import SpeechResource, SpeakerResource, SectionResource
 
+from speeches.views import SpeakerAutoResponseView
+
 # XXX The below assumes this app is being included with a 'speeches' namespace.
 # Unclear how to have this inherit whichever namespace is being used.
 v01_api = NamespacedApi(api_name='v0.1', urlconf_namespace='speeches')
@@ -15,6 +17,12 @@ v01_api.register(SectionResource())
 
 urlpatterns = patterns('',
     url(r'^$', InstanceView.as_view(), name='home'),
+
+    # Override the usual AutoResponseView from django_select2 so as to limit
+    # results by instance
+    url(r"^select2/fields/auto.json$",
+        SpeakerAutoResponseView.as_view(),
+        name="django_select2_central_json"),
 
     url(r'^(?P<path>speaker|recording)/?$', AddAnSRedirectView.as_view()),
     url(r'^(?P<path>speech)/?$', AddAnSRedirectView.as_view(suffix='es')),

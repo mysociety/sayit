@@ -4,7 +4,11 @@ import logging
 from datetime import datetime
 import pytz
 
-from django_select2.widgets import Select2Widget, Select2MultipleWidget
+from django_select2.widgets import (
+    Select2Widget, Select2MultipleWidget, AutoHeavySelect2Widget,
+    JSFunctionInContext, HeavySelect2Widget
+    )
+from django_select2.fields import AutoModelSelect2Field
 
 from django.utils.translation import ugettext_lazy as _
 from django import forms
@@ -56,12 +60,100 @@ class SpeechAudioForm(forms.ModelForm, CleanAudioMixin):
 class SectionPickForm(forms.Form):
     section = forms.ModelChoiceField(label=_('Assign to section'), queryset=Section.objects.all(), required=True)
 
+class SpeakerWidget(AutoHeavySelect2Widget):
+    def __init__(self, *args, **kwargs):
+        # AutoHeavySelect2Mixin's __init__ hard codes 'data_view' without giving
+        # us the chance to add in the namespace we need. Let's hard code it
+        # ourselves and then skip past AutoHeavySelect2Mixin in the MRO
+        # to HeavySelect2Widget and continue from there.
+        kwargs['data_view'] = "speeches:django_select2_central_json"
+
+        HeavySelect2Widget.__init__(self, *args, **kwargs)
+
+    def init_options(self):
+        super(SpeakerWidget, self).init_options()
+        self.options['createSearchChoice'] = JSFunctionInContext('django_select2.createSearchChoice')
+
+    def value_from_datadict(self, data, files, name):
+        # Inspiration from MultipleSelect2HiddenInput
+        """We need to actually alter the form's self.data so that the form rendering
+        works, as that's how the Select2 TagFields function. So always return
+        the underlying list from the datadict."""
+
+        # We want the value to always be a list when it's non-empty so that
+        # below in the clean method on SpeakerField we can change the value
+        # in place rather than replacing it.
+
+        # If data is non-trivial and not a MultiValueDict, then an error will
+        # be thrown, which is a good thing.
+        if data:
+            return data.getlist(name)
+
+    def render(self, name, value, attrs=None, choices=()):
+        """Because of the above; if we are given a list here, we don't want it."""
+        if isinstance(value, list):
+            value = value[0] if len(value) else None
+        return super(SpeakerWidget, self).render(name, value, attrs, choices)
+
+
+class SpeakerField(AutoModelSelect2Field):
+    empty_values = [ None, '', [], (), {} ]
+    search_fields = [ 'name__icontains' ]
+
+    # If anything tries to run a query on .queryset, it means we've missed
+    # somewhere where we needed to limit things to the instance
+    queryset = 'UNUSED'
+    widget = SpeakerWidget
+
+    # instance will be set to an instance in the django-subdomain-instances
+    # sense by the form
+    instance = None
+
+    def to_python(self, value):
+        # Inspiration from HeavyModelSelect2TagField
+        if value in self.empty_values:
+            return None
+        try:
+            key = self.to_field_name or 'pk'
+            value = self.queryset.get(**{key: value})
+        except (ValueError, self.queryset.model.DoesNotExist):
+            # Note that value could currently arrive as two different things:
+            # a stringified integer representing the id of an existing Speaker, or
+            # any other string representing the name of a new Speaker.
+            value = self.queryset.create(name=value, instance=self.instance)
+        return value
+
+    def clean(self, value):
+        # Inspiration from HeavyModelSelect2TagField
+        """We'll get a list here, due to the widget; we'll clean the first item,
+        and be sure to alter the list that's been passed in. Because that list
+        is used in any future render, and if we don't do it this way we get
+        exceptions as it's not an integer..."""
+        if value:
+            v = value.pop()
+            v = super(SpeakerField, self).clean(v)
+            if v:
+                value.append(v.pk)
+                value = v
+            else:
+                value = None
+        else:
+            value = None
+
+        return value
+
+
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
-    speaker = forms.ModelChoiceField(queryset=Speaker.objects.all(),
-            empty_label = '',
-            widget = Select2Widget(select2_options={ 'placeholder': ' ', 'width': 'resolve' }),
-            required=False)
+    speaker = SpeakerField(
+        empty_label='',
+        widget=SpeakerWidget(
+            select2_options={
+                'placeholder': ' ',
+                'width': 'resolve',
+                }
+            ),
+        required=False)
     section = forms.ModelChoiceField(queryset=Section.objects.all(),
             empty_label = '',
             widget = Select2Widget(select2_options={ 'placeholder': ' ', 'width': 'resolve' }),

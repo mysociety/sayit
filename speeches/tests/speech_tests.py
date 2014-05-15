@@ -45,6 +45,42 @@ class SpeechTests(InstanceTestCase):
         speech = Speech.objects.order_by('-id')[0]
         self.assertRedirects(resp, '/speech/%d' % speech.id)
         self.assertEqual(speech.text, 'This is a speech')
+        self.assertEqual(speech.speaker, None)
+
+    def test_add_speech_with_unknown_speaker(self):
+        """Try adding a speech with a speaker not yet in the database.
+
+        Adding a speech with a speaker name which is unknown to us should cause
+        that speaker to be created.
+        """
+        self.assertEqual(Speaker.objects.filter(name='New Speaker').count(), 0)
+        self.client.post(
+            '/speech/add',
+            {'text': 'Speech from new speaker',
+             'speaker': 'New Speaker'},
+            )
+
+        speaker = Speaker.objects.get(name='New Speaker')
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertEqual(speech.text, 'Speech from new speaker')
+        self.assertEqual(speech.speaker, speaker)
+
+    def test_add_speech_with_unknown_speaker_and_bad_form(self):
+        """Try adding a speech with new speaker and no other data.
+
+        What we want to happen in this case is for the new speaker
+        to be created, and the form given back to the user to
+        correct the other error with the new speaker displayed
+        correctly.
+        """
+
+        self.assertEqual(Speaker.objects.filter(name='New Bod').count(), 0)
+
+        resp = self.client.post( '/speech/add', { 'speaker': 'New Bod' } )
+
+        self.assertEqual(Speaker.objects.filter(name='New Bod').count(), 1)
+        self.assertContains(resp, ".txt(['New Bod'])")
+        self.assertContains(resp, "You must provide either text or some audio")
 
     def test_add_speech_and_add_another(self):
         # Test form with 'add_another' but without a section
@@ -208,6 +244,10 @@ class SpeechTests(InstanceTestCase):
         # Check in db
         speech = Speech.objects.get(speaker=speaker.id)
         self.assertEqual(speech.text, 'This is a Steve speech')
+
+        # Check that the edit page for this speech contains the speaker's name
+        resp = self.client.get('/speech/{}/edit'.format(speech.id))
+        self.assertContains(resp, ".txt(['Steve'])")
 
     def test_add_speech_with_audio(self):
         # Load the mp3 fixture

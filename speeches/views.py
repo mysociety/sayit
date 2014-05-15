@@ -26,6 +26,8 @@ from django.views.generic import View, CreateView, UpdateView, DeleteView, Detai
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import BaseFormView
 
+from django_select2.views import AutoResponseView
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -88,9 +90,14 @@ class SpeechMixin(NamespaceMixin, InstanceFormMixin):
 
     def get_form(self, form_class):
         form = super(SpeechMixin, self).get_form(form_class)
+
         form.fields['section'].queryset = Section.objects.for_instance(self.request.instance)
         form.fields['speaker'].queryset = Speaker.objects.for_instance(self.request.instance)
         form.fields['tags'].queryset = Tag.objects.for_instance(self.request.instance)
+
+        # Instance in the sense of https://github.com/mysociety/django-subdomain-instances
+        form.fields['speaker'].instance = self.request.instance
+
         return form
 
 class SpeechDelete(SpeechMixin, DeleteView):
@@ -512,3 +519,10 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
 
     def form_invalid(self, form):
         return self.render_to_response({ 'errors': json.dumps(form.errors) }, status=400)
+
+
+class SpeakerAutoResponseView(AutoResponseView):
+    def check_all_permissions(self, request, *args, **kwargs):
+        super(SpeakerAutoResponseView, self).check_all_permissions(request, *args, **kwargs)
+
+        request._AutoResponseView__django_select2_local.queryset = Speaker.objects.for_instance(request.instance)
