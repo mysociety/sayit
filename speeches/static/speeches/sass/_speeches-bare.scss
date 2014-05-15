@@ -636,6 +636,8 @@ $image-path: '../img' !default;
 /* Single speech page */
 .single-speech-layout {
   @include grid-row(nest);
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
 
 .single-speech-layout__speech-column {
@@ -720,6 +722,9 @@ $image-path: '../img' !default;
     h2 {
       margin: 0;
       font-weight: normal;
+    }
+    p:last-child {
+      margin-bottom: 0;
     }
   }
   &:hover {
