@@ -88,6 +88,12 @@
         <h2>{% trans "Speeches" %}</h2>
       </div>
 
+      <div class="speaker-page__add-speech">
+        {% if request.is_user_instance %}
+          <a href="{% url "speeches:speech-add" %}?speaker={{ speaker.id }}" class="button small right">{% trans "Add speech" %}</a>
+        {% endif %}
+      </div>
+
       <div class="speaker-page__search">
         <form class="site-search site-search" action="{% url "speeches:haystack_search" %}" method="get" >
           <input type="hidden" name="p" value="{{ speaker.id }}">
