@@ -34,7 +34,6 @@
 </div>
 {% else %}
 
-{% include "speeches/_speech_user_actions.html" %}
 <div class="single-speech-layout">
     <div class="single-speech-layout__speech-column">
             <div class="speech speech-single-speech">
@@ -81,10 +80,14 @@
 
                 <div class="speech__links">
                     {% if object.section %}
-                      <a href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}"><i class="speech-icon icon-link-in-context"></i>{% trans "Link in context" %}</a>
+                      <a href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}"><i class="speech-icon icon-link-in-context"></i>{% trans "Show context" %}</a>
                     {% endif %}
                     {% if object.source_url %}
                       <a href="{{ object.source_url }}"><i class="speech-icon icon-link"></i>{% trans "Source" %}</a>
+                    {% endif %}
+                    {% if request.is_user_instance %}
+                      <a href="{{ speech.get_edit_url }}"><i class="speech-icon icon-edit"></i>{% trans "Edit" %}</a>
+                      <a href="{{ speech.get_delete_url }}"><i class="speech-icon icon-delete"></i>{% trans "Delete" %}</a>
                     {% endif %}
                   </div>
 

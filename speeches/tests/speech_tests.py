@@ -383,8 +383,8 @@ class SpeechTests(InstanceTestCase):
         # Call the speech's page
         resp = self.client.get('/speech/%d' % speech.id)
 
-        self.assertContains(resp, '<a href="/speech/%d/edit">Edit speech</a>' % speech.id, html=True)
-        self.assertContains(resp, '<a href="/speech/%d/delete">Delete speech</a>' % speech.id, html=True)
+        self.assertContains(resp, '<a href="/speech/%d/edit"><i class="speech-icon icon-edit"></i>Edit</a>' % speech.id, html=True)
+        self.assertContains(resp, '<a href="/speech/%d/delete"><i class="speech-icon icon-delete"></i>Delete</a>' % speech.id, html=True)
 
     def test_speech_deletion(self):
         # Set up the section

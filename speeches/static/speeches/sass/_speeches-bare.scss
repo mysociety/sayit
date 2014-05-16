@@ -276,7 +276,7 @@ $image-path: '../img' !default;
   height: 21px;
   width: 21px;
   display: inline-block;
-  @include background-size(60px 20px); /* This is to render the @2 size sprite correctly, change this if more sprites are added to the .png */
+  @include background-size(80px 20px); /* This is to render the @2 size sprite correctly, change this if more sprites are added to the .png */
   background-image: url('#{$image-path}/link-icons.png');
   @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
       background-image: url('#{$image-path}/link-icons@2.png');
@@ -287,10 +287,16 @@ $image-path: '../img' !default;
   top: 0.1em;
   left: -0.75em;
   &.icon-link {
-    background-position-x: -40px
+    background-position-x: 0
   }
   &.icon-link-in-context {
     background-position-x: -20px
+  }
+  &.icon-edit {
+    background-position-x: -40px
+  }
+  &.icon-delete {
+    background-position-x: -60px
   }
 }
 
