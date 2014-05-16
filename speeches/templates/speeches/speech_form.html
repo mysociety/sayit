@@ -36,6 +36,8 @@
 
 <form id="speech-form" class="form-horizontal{% if not object and not form.non_field_errors %} {% endif %}" method="post" enctype="multipart/form-data">
 
+    <input type="hidden" name="public" value="on">
+
     <div class="page-header">
       {% if object %}
         <h1>{% trans "Edit speech" %}</h1>
