@@ -402,7 +402,12 @@ $image-path: '../img' !default;
 }
 
 .speaker-page__add-speech {
-  @include grid-column(2);
+  @include grid-column(4);
+  padding-top: 0.5em;
+
+  .button {
+    margin-bottom: 0;
+  }
 }
 
 .speaker-page__search {
@@ -461,9 +466,9 @@ $image-path: '../img' !default;
 }
 
 .speaker-page__speeches-title {
-  @include grid-column(10);
+  @include grid-column(8);
   @media (min-width: $medium-screen) {
-      @include grid-column(6);
+      @include grid-column(4);
   }
   h2 {
     font-size: emCalc(24);
