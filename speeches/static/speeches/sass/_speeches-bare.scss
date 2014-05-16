@@ -647,10 +647,7 @@ $image-path: '../img' !default;
 }
 
 .single-speech-layout__speech-column {
-  @include grid-column(12);
-  @media (min-width: $large-screen) {
-      @include grid-column(10, $offset: 2);
-  }
+  @include grid-column(10, $offset: 2);
 }
 
 .speech-single-speech {
@@ -665,6 +662,14 @@ $image-path: '../img' !default;
   .speech__meta-data {
     margin-bottom: 1em;
     font-size: 1.125em;
+
+    @media (min-width: $large-screen) {
+        position: absolute;
+        width: 16.6667%;
+        left: -20%;
+        top: 110px; // 16.6667% of 10-column grid (~800px)
+        text-align: center;
+    }
   }
   .speech__links {
     bottom: 0.5em;
@@ -678,26 +683,55 @@ $image-path: '../img' !default;
       top: -0.15em;
     }
   }
+
+  @media (min-width: $medium-screen) {
+    &:before {
+      position: absolute;
+      top: (96px / 2) - (20px / 2);
+      left: -21px;
+      z-index: 1;
+      @include css-triangle(10px, darken($colour_light_grey, 15%), right);
+    }
+
+    &:after {
+      position: absolute;
+      top: (96px / 2) - 10px;
+      left: -20px;
+      z-index: 2;
+      @include css-triangle(10px, #fff, right);
+    }
+  }
+
+  @media (min-width: $large-screen) {
+    .speech__meta-data__speaker-name {
+      margin-right: 0;
+    }
+
+    &:before {
+      top: (96px / 2) - (30px / 2);
+      left: -31px;
+      @include css-triangle(15px, darken($colour_light_grey, 15%), right);
+    }
+
+    &:after {
+      top: (96px / 2) - (30px / 2);
+      left: -30px;
+      @include css-triangle(15px, #fff, right);
+    }
+  }
 }
 
 .speech-single-speech__speaker-portrait {
+  position:  absolute;
+  width: 16.66667%;
+  left: -20%;
+  top: 0;
+  text-align: center;
   .speaker-portrait {
-    max-width: 3em;
+    max-width: 100%;
     margin-left: 0;
-    margin-right: 1em;
-  }
-  @media (min-width: $large-screen) {
-      position:  absolute;
-      width: 16.66667%;
-      left: -20%;
-      top: 0;
-      text-align: center;
-      .speaker-portrait {
-        max-width: 100%;
-
-        margin-right: 0;
-        float: none;
-      }
+    margin-right: 0;
+    float: none;
   }
 }
 
