@@ -65,22 +65,42 @@ class SpeechTests(InstanceTestCase):
         self.assertEqual(speech.text, 'Speech from new speaker')
         self.assertEqual(speech.speaker, speaker)
 
-    def test_add_speech_with_unknown_speaker_and_bad_form(self):
-        """Try adding a speech with new speaker and no other data.
+    def test_add_speech_with_unknown_data_and_bad_form(self):
+        """Try adding a speech with new speaker/section and no other data.
 
-        What we want to happen in this case is for the new speaker
+        What we want to happen in this case is for the new data
         to be created, and the form given back to the user to
-        correct the other error with the new speaker displayed
+        correct the other error with the new data displayed
         correctly.
         """
 
         self.assertEqual(Speaker.objects.filter(name='New Bod').count(), 0)
+        self.assertEqual(Section.objects.filter(title='New Section').count(), 0)
 
-        resp = self.client.post( '/speech/add', { 'speaker': 'New Bod' } )
+        resp = self.client.post( '/speech/add', { 'speaker': 'New Bod', 'section': 'New Section' } )
 
         self.assertEqual(Speaker.objects.filter(name='New Bod').count(), 1)
+        self.assertEqual(Section.objects.filter(title='New Section').count(), 1)
         self.assertContains(resp, ".txt(['New Bod'])")
+        self.assertContains(resp, ".txt(['New Section'])")
         self.assertContains(resp, "You must provide either text or some audio")
+
+    def test_add_speech_with_unknown_section(self):
+        """Try adding a speech with a section not yet in the database.
+
+        Adding a speech with a section which is unknown to us should cause
+        that section to be created.
+        """
+        self.assertEqual(Section.objects.filter(title='New Section').count(), 0)
+        self.client.post(
+            '/speech/add',
+            { 'text': 'Speech in new section', 'section': 'New Section' },
+        )
+
+        section = Section.objects.get(title='New Section')
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertEqual(speech.text, 'Speech in new section')
+        self.assertEqual(speech.section, section)
 
     def test_add_speech_and_add_another(self):
         # Test form with 'add_another' but without a section
