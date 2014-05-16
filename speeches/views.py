@@ -189,6 +189,9 @@ class SpeechCreate(SpeechMixin, CreateView):
                 pass
         return initial
 
+    def get_success_url(self):
+        return "{}?created".format(self.object.get_absolute_url())
+
     def form_valid(self, form):
         resp = super(SpeechCreate, self).form_valid(form)
 

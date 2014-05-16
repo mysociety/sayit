@@ -35,6 +35,19 @@
 {% else %}
 
 <div class="single-speech-layout">
+
+  {% if 'created' in request.GET %}
+    <div class="single-speech-layout__speech-created">
+        <h2>{% trans 'Your speech has been saved!' %}</h2>
+      {% if object.section %}
+        <a href="{% url "speeches:speech-add" %}?section={{ object.section.id }}" class="button small">{% trans 'Add another speech like this' %}</a>
+        <a href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}" class="button secondary small">{% trans "Show speech in context" %}</a>
+      {% else %}
+        <a href="{% url "speeches:speech-add" %}" class="button small right">{% trans 'Add another speech' %}</a>
+      {% endif %}
+    </div>
+  {% endif %}
+
     <div class="single-speech-layout__speech-column">
             <div class="speech speech-single-speech">
               {% if speech.speaker %}

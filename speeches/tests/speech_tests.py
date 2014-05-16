@@ -43,7 +43,7 @@ class SpeechTests(InstanceTestCase):
             'text': 'This is a speech'
         })
         speech = Speech.objects.order_by('-id')[0]
-        self.assertRedirects(resp, '/speech/%d' % speech.id)
+        self.assertRedirects(resp, '/speech/%d?created' % speech.id)
         self.assertEqual(speech.text, 'This is a speech')
         self.assertEqual(speech.speaker, None)
 
@@ -302,7 +302,7 @@ class SpeechTests(InstanceTestCase):
             'end_date': '01/01/2000'
         })
         speech = Speech.objects.order_by('-id')[0]
-        self.assertRedirects(resp, '/speech/%d' % speech.id)
+        self.assertRedirects(resp, '/speech/%d?created' % speech.id)
         self.assertEqual(speech.start_date, datetime.date(year=2000, month=1, day=1))
         self.assertIsNone(speech.start_time)
         self.assertEqual(speech.end_date, datetime.date(year=2000, month=1, day=1))
@@ -318,7 +318,7 @@ class SpeechTests(InstanceTestCase):
             'end_time': '17:53'
         })
         speech = Speech.objects.order_by('-id')[0]
-        self.assertRedirects(resp, '/speech/%d' % speech.id)
+        self.assertRedirects(resp, '/speech/%d?created' % speech.id)
         self.assertEqual(speech.start_date, datetime.date(year=2000, month=1, day=1))
         self.assertEqual(speech.start_time, datetime.time(hour=12, minute=45))
         self.assertEqual(speech.end_date, datetime.date(year=2000, month=1, day=1))
