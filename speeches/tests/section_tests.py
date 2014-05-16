@@ -218,11 +218,10 @@ class SectionSiteTests(InstanceTestCase):
         # Call the section's page
         resp = self.client.get('/sections/%d' % section.id)
 
-        self.assertContains(resp, '<a href="/speech/add?section=%d">Add a new speech</a>' % section.id, html=True)
-        self.assertContains(resp, '<a href="/sections/add?section=%d">Add a new subsection</a>' % section.id, html=True)
+        self.assertContains(resp, '<a href="/speech/add?section=%d" class="button small right">Add speech</a>' % section.id, html=True)
+        self.assertContains(resp, '<a href="/sections/add?section=%d" class="button small right">Add subsection</a>' % section.id, html=True)
+        self.assertContains(resp, '<a href="/sections/%d/edit" class="button small right">Edit section</a>' % section.id, html=True)
 
-        self.assertContains(resp, '<a href="/sections/%d/edit">Edit section</a>' % section.id, html=True)
-        self.assertContains(resp, '<a href="/sections/%d/delete">Delete section</a>' % section.id, html=True)
 
     def test_section_deletion(self):
         # Set up the section
