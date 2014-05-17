@@ -159,8 +159,14 @@ class SectionField(CreateAutoModelSelect2Field):
     model = Section
     column = 'title'
 
+class SpeechTextField(forms.CharField):
+    def clean(self, value):
+        value = super(SpeechTextField, self).clean(value)
+        return value.strip()
+
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
+    text = SpeechTextField(required=False)
     speaker = SpeakerField()
     section = SectionField()
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],

@@ -304,6 +304,13 @@ class SpeechTests(InstanceTestCase):
         # Test edit page
         resp = self.client.get('/speech/%d/edit' % speech.id)
 
+    def test_add_speech_with_whitespace_around_text(self):
+        text = ' This is a speech with whitespace at the ends. '
+        resp = self.client.post('/speech/add', {'text': text})
+
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertEqual(speech.text, 'This is a speech with whitespace at the ends.')
+
     def test_add_speech_fails_with_unsupported_audio(self):
         # Load the .aiff fixture
         audio = open(os.path.join(self._in_fixtures, 'lamb.aiff'), 'rb')
