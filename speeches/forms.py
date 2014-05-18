@@ -11,11 +11,13 @@ from django_select2.widgets import (
 from django_select2.fields import AutoModelSelect2Field
 
 from django.utils.translation import ugettext_lazy as _
-from django.utils.html import linebreaks
+from django.utils.html import linebreaks, format_html, remove_tags
+from django.utils.encoding import force_text
 from django import forms
 from django.forms.forms import BoundField
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.forms.widgets import Textarea
+from django.forms.util import flatatt
 from django.core.files.uploadedfile import UploadedFile
 
 from speeches.fields import FromStartIntegerField
@@ -160,7 +162,20 @@ class SectionField(CreateAutoModelSelect2Field):
     model = Section
     column = 'title'
 
+class SpeechTextFieldWidget(forms.Textarea):
+    def render(self, name, value, attrs=None):
+        if value is None:
+            value = ''
+        final_attrs = self.build_attrs(attrs, name=name)
+        value = force_text(value)
+        value = value.replace('<br />', '<br />\n')
+        value = remove_tags(value, 'p br')
+        return format_html('<textarea{0}>\r\n{1}</textarea>',
+                           flatatt(final_attrs),
+                           value)
+
 class SpeechTextField(forms.CharField):
+    widget = SpeechTextFieldWidget
     def clean(self, value):
         value = super(SpeechTextField, self).clean(value)
         if value:

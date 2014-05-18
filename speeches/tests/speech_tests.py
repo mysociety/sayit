@@ -311,6 +311,27 @@ class SpeechTests(InstanceTestCase):
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(speech.text, '<p>This is a speech with whitespace at the ends.</p>')
 
+    def test_add_speech_with_newlines(self):
+        text = "First line.\nAfter break.\n\nNew paragraph."
+        resp = self.client.post('/speech/add', {'text': text})
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertEqual(
+            speech.text,
+            '<p>First line.<br />After break.</p>\n\n<p>New paragraph.</p>'
+            )
+
+        resp = self.client.get("/speech/%d/edit" %speech.id)
+        self.assertContains(resp, text)
+
+    def test_add_speech_with_html(self):
+        """If a user adds a speech which starts with a <p>, we probably
+        don't want to add more of them to it."""
+
+        text = "<p>Test<br />string</p>"
+        resp = self.client.post('/speech/add', {'text': text})
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertEqual(speech.text, "<p>Test<br />string</p>")
+
     def test_add_speech_fails_with_unsupported_audio(self):
         # Load the .aiff fixture
         audio = open(os.path.join(self._in_fixtures, 'lamb.aiff'), 'rb')
