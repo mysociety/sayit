@@ -44,7 +44,7 @@ class SpeechTests(InstanceTestCase):
         })
         speech = Speech.objects.order_by('-id')[0]
         self.assertRedirects(resp, '/speech/%d?created' % speech.id)
-        self.assertEqual(speech.text, 'This is a speech')
+        self.assertEqual(speech.text, '<p>This is a speech</p>')
         self.assertEqual(speech.speaker, None)
 
     def test_add_speech_with_unknown_speaker(self):
@@ -63,7 +63,7 @@ class SpeechTests(InstanceTestCase):
 
         speaker = Speaker.objects.get(name='New Speaker')
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(speech.text, 'Speech from new speaker')
+        self.assertEqual(speech.text, '<p>Speech from new speaker</p>')
         self.assertEqual(speech.speaker, speaker)
 
     def test_add_speech_with_unknown_data_and_bad_form(self):
@@ -100,7 +100,7 @@ class SpeechTests(InstanceTestCase):
 
         section = Section.objects.get(title='New Section')
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(speech.text, 'Speech in new section')
+        self.assertEqual(speech.text, '<p>Speech in new section</p>')
         self.assertEqual(speech.section, section)
 
     def test_add_speech_and_add_another(self):
@@ -111,7 +111,7 @@ class SpeechTests(InstanceTestCase):
             'add_another': 1,
         })
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(speech.text, 'This is a speech')
+        self.assertEqual(speech.text, '<p>This is a speech</p>')
         self.assertRedirects(resp, '/speech/add')
 
         section = Section.objects.create(title='Test', instance=self.instance)
@@ -121,7 +121,7 @@ class SpeechTests(InstanceTestCase):
             'add_another': 1,
         })
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(speech.text, 'This is a speech')
+        self.assertEqual(speech.text, '<p>This is a speech</p>')
         self.assertEqual(speech.section_id, section.id)
         get_url = '/speech/add?section=%d&added=%d' % (section.id, speech.id)
         self.assertRedirects(resp, get_url)
@@ -264,7 +264,7 @@ class SpeechTests(InstanceTestCase):
         })
         # Check in db
         speech = Speech.objects.get(speaker=speaker.id)
-        self.assertEqual(speech.text, 'This is a Steve speech')
+        self.assertEqual(speech.text, '<p>This is a Steve speech</p>')
 
         # Check that the edit page for this speech contains the speaker's name
         resp = self.client.get('/speech/{}/edit'.format(speech.id))
@@ -309,7 +309,7 @@ class SpeechTests(InstanceTestCase):
         resp = self.client.post('/speech/add', {'text': text})
 
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(speech.text, 'This is a speech with whitespace at the ends.')
+        self.assertEqual(speech.text, '<p>This is a speech with whitespace at the ends.</p>')
 
     def test_add_speech_fails_with_unsupported_audio(self):
         # Load the .aiff fixture

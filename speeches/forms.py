@@ -11,6 +11,7 @@ from django_select2.widgets import (
 from django_select2.fields import AutoModelSelect2Field
 
 from django.utils.translation import ugettext_lazy as _
+from django.utils.html import linebreaks
 from django import forms
 from django.forms.forms import BoundField
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
@@ -162,7 +163,9 @@ class SectionField(CreateAutoModelSelect2Field):
 class SpeechTextField(forms.CharField):
     def clean(self, value):
         value = super(SpeechTextField, self).clean(value)
-        return value.strip()
+        if value:
+            value = linebreaks(value.strip())
+        return value
 
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
