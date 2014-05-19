@@ -178,7 +178,10 @@ class SpeechTextField(forms.CharField):
     widget = SpeechTextFieldWidget
     def clean(self, value):
         value = super(SpeechTextField, self).clean(value)
-        if value:
+
+        # It there is a value, and it's not already been HTMLified
+        # then we want to use linebreaks to give it appropriate newlines.
+        if value and not value.startswith('<p>'):
             value = linebreaks(value.strip())
         return value
 
