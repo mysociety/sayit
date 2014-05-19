@@ -325,12 +325,20 @@ class SpeechTests(InstanceTestCase):
 
     def test_add_speech_with_html(self):
         """If a user adds a speech which starts with a <p>, we probably
-        don't want to add more of them to it."""
+        don't want to add more <p>s to it.
 
-        text = "<p>Test<br />string</p>"
+        What we do want to do though is make sure that every </p> is followed by two
+        newlines (\n) so that when we take the <p>s etc out to edit we can see where
+        to put them back in again.
+        """
+
+        text = "<p>Test<br />string</p><p>Second paragraph</p>\n<p>Third paragraph</p>\n\n<p>Fourth paragraph</p>"
         resp = self.client.post('/speech/add', {'text': text})
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(speech.text, "<p>Test<br />string</p>")
+        self.assertEqual(
+            speech.text,
+            "<p>Test<br />string</p>\n\n<p>Second paragraph</p>\n\n<p>Third paragraph</p>\n\n<p>Fourth paragraph</p>"
+            )
 
     def test_add_speech_fails_with_unsupported_audio(self):
         # Load the .aiff fixture

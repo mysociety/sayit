@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import logging
 from datetime import datetime
 import pytz
@@ -182,8 +183,12 @@ class SpeechTextField(forms.CharField):
 
         # It there is a value, and it's not already been HTMLified
         # then we want to use linebreaks to give it appropriate newlines.
-        if value and not value.startswith('<p>'):
-            value = linebreaks(value.strip())
+        if value:
+            value = value.strip()
+            if value.startswith('<p>'):
+                value = re.sub(r'</p>\n*<p>', '</p>\n\n<p>', value)
+            else:
+                value = linebreaks(value)
         return value
 
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
