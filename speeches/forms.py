@@ -11,7 +11,7 @@ from django_select2.widgets import (
 from django_select2.fields import AutoModelSelect2Field
 
 from django.utils.translation import ugettext_lazy as _
-from django.utils.html import linebreaks, format_html, remove_tags
+from django.utils.html import linebreaks, remove_tags
 from django.utils.encoding import force_text
 from django import forms
 from django.forms.forms import BoundField
@@ -164,15 +164,16 @@ class SectionField(CreateAutoModelSelect2Field):
 
 class SpeechTextFieldWidget(forms.Textarea):
     def render(self, name, value, attrs=None):
+        # These first two steps are also done in the superclass, but it's
+        # safe to repeat them here to get value to the right state.
         if value is None:
             value = ''
-        final_attrs = self.build_attrs(attrs, name=name)
         value = force_text(value)
+
         value = value.replace('<br />', '<br />\n')
         value = remove_tags(value, 'p br')
-        return format_html('<textarea{0}>\r\n{1}</textarea>',
-                           flatatt(final_attrs),
-                           value)
+
+        return super(SpeechTextFieldWidget, self).render(name, value, attrs)
 
 class SpeechTextField(forms.CharField):
     widget = SpeechTextFieldWidget
