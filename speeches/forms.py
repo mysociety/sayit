@@ -12,7 +12,22 @@ from django_select2.widgets import (
 from django_select2.fields import AutoModelSelect2Field
 
 from django.utils.translation import ugettext_lazy as _
-from django.utils.html import linebreaks, remove_tags
+from django.utils.html import linebreaks
+
+try:
+    # Hack for Django 1.4 compatibility as remove_tags
+    # wasn't invented yet.
+    from django.utils.html import remove_tags
+
+    def remove_p_and_br(value):
+        return remove_tags(value, 'p br')
+
+except ImportError:
+    def remove_p_and_br(value):
+        value = re.sub(r'</?p>', '', value)
+        value = re.sub(r'<br ?/?>', '', value)
+        return value
+
 from django.utils.encoding import force_text
 from django import forms
 from django.forms.forms import BoundField
@@ -170,9 +185,8 @@ class SpeechTextFieldWidget(forms.Textarea):
         if value is None:
             value = ''
         value = force_text(value)
-
-        value = value.replace('<br />', '<br />\n')
-        value = remove_tags(value, 'p br')
+        value = re.sub(r'<br ?/?>', '<br />\n', value)
+        value = remove_p_and_br(value)
 
         return super(SpeechTextFieldWidget, self).render(name, value, attrs)
 
