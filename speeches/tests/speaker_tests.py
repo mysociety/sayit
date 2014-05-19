@@ -15,7 +15,7 @@ class SpeakerTests(InstanceTestCase):
 
         popit_person = Person.objects.create(name='Steve', summary='A froody dude', image='http://example.com/image.jpg', api_instance=ai)
         speaker = Speaker.objects.create(name='Steve', instance=self.instance, person=popit_person)
-        
+
         # Call the speaker's page
         resp = self.client.get('/speaker/%s' % speaker.slug)
 
@@ -39,7 +39,7 @@ class SpeakerTests(InstanceTestCase):
     def test_speaker_page_has_button_to_add_speech(self):
         # Add a speaker
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
-        
+
         # Call the speaker's page
         resp = self.client.get('/speaker/%s' % speaker.slug)
 
