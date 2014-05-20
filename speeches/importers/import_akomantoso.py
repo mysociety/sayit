@@ -50,9 +50,9 @@ class ImportAkomaNtoso (ImporterBase):
             self.speakers[id] = speaker
 
         if self.ns:
-            docDate = debate.find('an:preface//an:docDate', namespaces={'an': self.ns})
+            docDate = debate.find('an:coverPage//an:docDate|an:preface//an:docDate', namespaces={'an': self.ns})
         else:
-            docDate = debate.find('preface//docDate')
+            docDate = debate.find('coverPage//docDate|preface//docDate')
         if docDate is not None:
             self.start_date = dateutil.parse(docDate.get('date'))
 
