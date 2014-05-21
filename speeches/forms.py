@@ -117,6 +117,8 @@ class CreateAutoModelSelect2Field(AutoModelSelect2Field):
         return super(CreateAutoModelSelect2Field, self).__init__(*args, **kwargs)
 
     def to_python(self, value):
+        value = value.strip()
+
         # Inspiration from HeavyModelSelect2TagField
         if value in self.empty_values:
             return None

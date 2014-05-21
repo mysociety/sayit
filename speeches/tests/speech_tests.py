@@ -53,12 +53,12 @@ class SpeechTests(InstanceTestCase):
         Adding a speech with a speaker name which is unknown to us should cause
         that speaker to be created.
         """
+        self.assertEqual(Speaker.objects.filter(name='New Speaker').count(), 0)
         # Note whitespace around speaker name to check it is stripped
-        self.assertEqual(Speaker.objects.filter(name=' New Speaker ').count(), 0)
         self.client.post(
             '/speech/add',
             {'text': 'Speech from new speaker',
-             'speaker': 'New Speaker'},
+             'speaker': ' New Speaker '},
             )
 
         speaker = Speaker.objects.get(name='New Speaker')
