@@ -8,10 +8,6 @@
 {% if speech.speaker.colour %} style="border-left-color: #{{ speech.speaker.colour }};"{% endif %}>
 {% endif %}
 
-  {% if not speech.is_public %}
-    <span class="label label-info">{% trans "Invisible" %}</span>
-  {% endif %}
-
   {% if not nospeaker and not standalone %}
     {% if speech.speaker %}
     <div class="speaker-portrait-wrapper">
@@ -23,8 +19,11 @@
   {% endif %}
 
   <div class="speech-wrapper">
+    {% if not speech.is_public %}
+      <span class="label secondary radius right">{% trans "Invisible" %}</span>
+    {% endif %}
+    {% if not nosection and speech.section_id %}
     <div class="speech__breadcrumb">
-      {% if not nosection and speech.section_id %}
       <ul class="breadcrumbs">
         {% for n in speech.section.get_ancestors %}
             <li><a href="{{ n.get_absolute_url }}">{{ n.title }}</a></li>
@@ -45,8 +44,8 @@
         </li>
         {% endif %}
       </ul>
-      {% endif %}
     </div>
+    {% endif %}
     <div class="speech__meta-data">
       {% if speech.speaker and not nospeaker %}
         <span class="speech__meta-data__speaker-name">
@@ -114,6 +113,10 @@
 
 {% if not result.object %}
   <div class="speech__links">
+    {% if request.is_user_instance %}
+      <a href="{{ speech.get_edit_url }}"><i class="speech-icon icon-edit"></i>{% trans "Edit" %}</a>
+      <a href="{{ speech.get_delete_url }}"><i class="speech-icon icon-delete"></i>{% trans "Delete" %}</a>
+    {% endif %}
     {% if speech.section_id %}
       <a title="{% trans "Link in context" %}" href="{% if section %}{% url 'speeches:section-view' section.get_path %}{% else %}{% url 'speeches:section-view' speech.section.get_path %}{% endif %}#s{{ speech.id }}"><i class="speech-icon icon-link-in-context"></i>{% trans "Link in context" %}</a>
     {% endif %}
