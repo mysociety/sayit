@@ -34,16 +34,28 @@
 </div>
 {% else %}
 
-{% include "speeches/_speech_user_actions.html" %}
 <div class="single-speech-layout">
+
+  {% if 'created' in request.GET %}
+    <div class="single-speech-layout__speech-created">
+        <h2>{% trans 'Your speech has been saved!' %}</h2>
+      {% if object.section %}
+        <a href="{% url "speeches:speech-add" %}?section={{ object.section.id }}" class="button small">{% trans 'Add another speech like this' %}</a>
+        <a href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}" class="button secondary small">{% trans "Show speech in context" %}</a>
+      {% else %}
+        <a href="{% url "speeches:speech-add" %}" class="button small right">{% trans 'Add another speech' %}</a>
+      {% endif %}
+    </div>
+  {% endif %}
+
     <div class="single-speech-layout__speech-column">
             <div class="speech speech-single-speech">
               {% if speech.speaker %}
-                <div class="speech-single-speech__speaker-portrait">
+                <a class="speech-single-speech__speaker-portrait" href="{% url "speeches:speaker-view" object.speaker.slug %}">
                 <img src="{% if speech.speaker.person.image %}
                   {{ speech.speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
                   style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-portrait speaker-portrait--left round-image speaker-portrait--large">
-                </div>
+                </a>
               {% endif %}
                 <div class="speech__meta-data">
                     {% if object.speaker %}
@@ -53,16 +65,6 @@
                     {% else %}
                         {% trans 'Unknown speaker' %}
                     {% endif %}
-                    {% if object.start_date %}
-                        <span class="speech__meta-data__date">
-                            {{ object.start_date }}
-                        </span>
-                    {% endif %}
-
-                    {% if object.location %}
-                       <small>{% trans "Location:" %} </small>{{ object.location }}
-                    {% endif %}
-
                 </div>
               {% if object.audio %}
                 <p>
@@ -84,15 +86,21 @@
                     {{ object.text|bleach }}
                 </div>
               {% endif %}
-                {% if object.section %}
-                    {% include "speeches/_breadcrumbs.html" with section=object.section all=1 %}
-                {% endif %}
+
+              {% if object.section %}
+                {% include "speeches/_breadcrumbs.html" with section=object.section all=1 %}
+              {% endif %}
+
                 <div class="speech__links">
                     {% if object.section %}
-                      <a href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}"><i class="speech-icon icon-link-in-context"></i>{% trans "Link in context" %}</a>
+                      <a href="{% url 'speeches:section-view' object.section.get_path %}#s{{ object.id }}"><i class="speech-icon icon-link-in-context"></i>{% trans "Show context" %}</a>
                     {% endif %}
                     {% if object.source_url %}
                       <a href="{{ object.source_url }}"><i class="speech-icon icon-link"></i>{% trans "Source" %}</a>
+                    {% endif %}
+                    {% if request.is_user_instance %}
+                      <a href="{{ speech.get_edit_url }}"><i class="speech-icon icon-edit"></i>{% trans "Edit" %}</a>
+                      <a href="{{ speech.get_delete_url }}"><i class="speech-icon icon-delete"></i>{% trans "Delete" %}</a>
                     {% endif %}
                   </div>
 

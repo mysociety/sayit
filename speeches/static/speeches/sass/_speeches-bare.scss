@@ -276,7 +276,7 @@ $image-path: '../img' !default;
   height: 21px;
   width: 21px;
   display: inline-block;
-  @include background-size(60px 20px); /* This is to render the @2 size sprite correctly, change this if more sprites are added to the .png */
+  @include background-size(80px 20px); /* This is to render the @2 size sprite correctly, change this if more sprites are added to the .png */
   background-image: url('#{$image-path}/link-icons.png');
   @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
       background-image: url('#{$image-path}/link-icons@2.png');
@@ -287,10 +287,16 @@ $image-path: '../img' !default;
   top: 0.1em;
   left: -0.75em;
   &.icon-link {
-    background-position-x: -40px
+    background-position-x: 0
   }
   &.icon-link-in-context {
     background-position-x: -20px
+  }
+  &.icon-edit {
+    background-position-x: -40px
+  }
+  &.icon-delete {
+    background-position-x: -60px
   }
 }
 
@@ -636,17 +642,12 @@ $image-path: '../img' !default;
 /* Single speech page */
 .single-speech-layout {
   @include grid-row(nest);
-
-  @media (min-width: $large-screen) {
-      background: transparent url("#{$image-path}/speech-timeline-bg.png") 8% top repeat-y;
-  }
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
 
 .single-speech-layout__speech-column {
-  @include grid-column(12);
-  @media (min-width: $large-screen) {
-      @include grid-column(10, $offset: 2);
-  }
+  @include grid-column(10, $offset: 2);
 }
 
 .speech-single-speech {
@@ -661,6 +662,14 @@ $image-path: '../img' !default;
   .speech__meta-data {
     margin-bottom: 1em;
     font-size: 1.125em;
+
+    @media (min-width: $large-screen) {
+        position: absolute;
+        width: 16.6667%;
+        left: -20%;
+        top: 110px; // 16.6667% of 10-column grid (~800px)
+        text-align: center;
+    }
   }
   .speech__links {
     bottom: 0.5em;
@@ -674,35 +683,106 @@ $image-path: '../img' !default;
       top: -0.15em;
     }
   }
+
+  @media (min-width: $medium-screen) {
+    &:before {
+      position: absolute;
+      top: (96px / 2) - (20px / 2);
+      left: -21px;
+      z-index: 1;
+      @include css-triangle(10px, darken($colour_light_grey, 15%), right);
+    }
+
+    &:after {
+      position: absolute;
+      top: (96px / 2) - 10px;
+      left: -20px;
+      z-index: 2;
+      @include css-triangle(10px, #fff, right);
+    }
+  }
+
+  @media (min-width: $large-screen) {
+    .speech__meta-data__speaker-name {
+      margin-right: 0;
+    }
+
+    &:before {
+      top: (96px / 2) - (30px / 2);
+      left: -31px;
+      @include css-triangle(15px, darken($colour_light_grey, 15%), right);
+    }
+
+    &:after {
+      top: (96px / 2) - (30px / 2);
+      left: -30px;
+      @include css-triangle(15px, #fff, right);
+    }
+  }
 }
 
 .speech-single-speech__speaker-portrait {
+  position:  absolute;
+  width: 16.66667%;
+  left: -20%;
+  top: 0;
+  text-align: center;
   .speaker-portrait {
-    max-width: 3em;
+    max-width: 100%;
     margin-left: 0;
-    margin-right: 1em;
-  }
-  @media (min-width: $large-screen) {
-      position:  absolute;
-      width: 16.66667%;
-      left: -20%;
-      top: 0;
-      text-align: center;
-      .speaker-portrait {
-        max-width: 100%;
-
-        margin-right: 0;
-        float: none;
-      }
+    margin-right: 0;
+    float: none;
   }
 }
 
 .speech__content-single-speech {
   border: none;
+  padding-bottom: 0;
   p {
     @media (min-width: $medium-screen) {
       font-size: 1.105263158em;
       line-height: 1.523809524em;
+    }
+  }
+}
+
+.single-speech-layout__speech-created {
+  @include border-radius(4px);
+  @include clearfix();
+  margin-left: 0.75em;
+  margin-right: 0.75em;
+  margin-bottom: 1.5em;
+  padding: 1em 1em 1em 1.5em;
+  background: #FFFFD2;
+  border: 1px solid #EBE6B7;
+  text-align: center;
+
+  h2 {
+    font-weight: 300;
+    margin: 0 0 0.6em 0;
+  }
+
+  .button {
+    margin-bottom: 0;
+  }
+
+  .button + .button {
+    margin-left: 1em;
+  }
+
+  @media (min-width: $medium-screen) {
+    h2 {
+      float: left;
+      margin: 0;
+    }
+
+    .button {
+      float: right;
+    }
+
+    .button + .button {
+      margin-left: 0;
+      margin-right: 1em;
     }
   }
 }
@@ -724,6 +804,9 @@ $image-path: '../img' !default;
     h2 {
       margin: 0;
       font-weight: normal;
+    }
+    p:last-child {
+      margin-bottom: 0;
     }
   }
   &:hover {
