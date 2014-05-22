@@ -17,7 +17,9 @@
 
 <div class="page-header page-header--with-portrait">
 
-    {% include "speeches/_speaker_user_actions.html" %}
+  {% if request.is_user_instance %}
+    <a href="{{ speaker.get_edit_url }}" class="button secondary small right">{% trans "Edit speaker" %}</a>
+  {% endif %}
 
   <div class="page-header__row">
     <div class="speaker-page__details">
@@ -26,60 +28,60 @@
           class="speaker-portrait speaker-portrait--left speaker-portrait--large round-image"
           alt="Headshot of {{ speaker.name|escape}}" />
       <div class="speaker-information">
-        <p class="pretitle"> <a href="{% url "speeches:speaker-list" %}">{% trans "Speakers" %}</a> / </p>
         <h1>{{ speaker.name }}</h1>
         {% if speaker.person.summary %}
           <p class="person-summary"> {{ speaker.person.summary }}
           </p>
         {% endif %}
       </div>
-    </div>
-    <div class="speaker-page__stats">
-      <div class="stat">
-        <div class="stat__figure">
-          {{ section_count|intcomma }}
+      <div class="speaker-page__stats">
+        <div class="stat">
+          <div class="stat__figure">
+            {{ section_count|intcomma }}
+          </div>
+          <div class="stat__descriptor">
+              {% blocktrans count c=section_count %}Appearance{% plural %}Appearances{% endblocktrans %}
+          </div>
         </div>
-        <div class="stat__descriptor">
-            {% blocktrans count c=section_count %}Session appearance{% plural %}Session appearances{% endblocktrans %}
+        <div class="stat">
+          <div class="stat__figure">
+            {{ paginator.count|intcomma }}
+          </div>
+          <div class="stat__descriptor">
+            {% blocktrans count c=paginator.count %}Speech{% plural %}Speeches{% endblocktrans %}
+          </div>
         </div>
-      </div>
-      <div class="stat">
-        <div class="stat__figure">
-          {{ paginator.count|intcomma }}
+        <!--
+        <div class="stat">
+          <div class="stat__figure">
+            4<sup>th</sup>
+          </div>
+          <div class="stat__descriptor">
+           of 60 speakers
+          </div>
         </div>
-        <div class="stat__descriptor">
-          {% blocktrans count c=paginator.count %}Speech made{% plural %}Speeches made{% endblocktrans %}
-        </div>
-      </div>
-      <!--
-      <div class="stat">
-        <div class="stat__figure">
-          4<sup>th</sup>
-        </div>
-        <div class="stat__descriptor">
-         of 60 speakers
-        </div>
-      </div>
-      -->
-      {% if longest_speech %}{% with longest_speech.0 as speech %}
-      <div class="stat">
-        <div class="stat__descriptor">
-          {% trans "Longest speech" %}
-        </div>
-        <div class="stat__figure">
-          {% if speech.section %}
-          <a href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}">
-          {% else %}
-          <a href="{% url 'speeches:speech-view' speech.id %}">
-          {% endif %}
-            {% if speech.title %}{{ speech.title }}{% else %}
-            &#8220;{{ speech.summary|bleach }}&#8221;
+        -->
+        {% if longest_speech %}{% with longest_speech.0 as speech %}
+        <div class="stat">
+          <div class="stat__figure">
+            {% if speech.section %}
+            <a href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}">
+            {% else %}
+            <a href="{% url 'speeches:speech-view' speech.id %}">
             {% endif %}
-          </a>
+              {% if speech.title %}{{ speech.title }}{% else %}
+              &#8220;{{ speech.summary|bleach }}&#8221;
+              {% endif %}
+            </a>
+          </div>
+          <div class="stat__descriptor">
+            {% trans "Longest speech" %}
+          </div>
         </div>
+        {% endwith %}{% endif %}
       </div>
-      {% endwith %}{% endif %}
     </div>
+
   </div>
 </div>
 <div class="speaker-page__speeches-collection">

@@ -93,14 +93,14 @@ $image-path: '../img' !default;
 }
 
 .page-header--with-portrait {
-  .speaker-information {
+  .speaker-information,
+  .speaker-page__stats {
     margin-left: 80px;
     @media (min-width: $medium-screen) {
         margin-left: 130px;
     }
   }
-  h1 {
-  }
+
   .lead {
     margin-top: 1em;
     margin-bottom: 0;
@@ -108,7 +108,7 @@ $image-path: '../img' !default;
   }
 
   .speaker-portrait {
-    margin-top: 0;
+    margin-top: -5px;
   }
 }
 
@@ -200,7 +200,10 @@ $image-path: '../img' !default;
 }
 
 .speaker-portrait--large {
-  width: 96px;
+  width: 64px;
+  @media (min-width: $medium-screen) {
+      width: 96px;
+  }
 }
 
 .speech__meta-data {
@@ -381,24 +384,33 @@ $image-path: '../img' !default;
     }
 }
 
+
 /*Individual Speaker Page */
-.speaker-page__details {
-  @include grid-column(12);
-  @media (min-width: $large-screen) {
-      @include grid-column(7);
+
+.speaker-page__stats {
+  margin-top: 10px; // space between speaker name and stats
+  padding-left: 2px; // visually compensate for large font size of name above
+}
+
+.stat {
+  margin-bottom: 1em;
+  display: inline-block;
+  padding-right: 1em;
+  margin-right: 1em;
+  border-right: 1px solid $colour_light_grey;
+  &:last-child {
+    border-right: none;
   }
 }
-.speaker-page__stats {
-  @include grid-column(12);
-  @media (min-width: $medium-screen) {
-      margin-left: 114px;
-      margin-top: -1.4em;
-  }
-  @media (min-width: $large-screen) {
-      @include grid-column(5);
-      margin-left: 0;
-      margin-top: 0;
-  }
+
+.stat__descriptor {
+  font-size: emCalc(12);
+  color: $colour_dark_grey;
+}
+.stat__figure {
+  font-weight: $weight_bold;
+  font-size: 1.3125em;
+  margin-bottom: 0.15em;
 }
 
 .speaker-page__add-speech {
@@ -617,27 +629,6 @@ $image-path: '../img' !default;
       color: darken($colour_primary, 15%);
     }
   }
-}
-
-.stat {
-  margin-bottom: 1em;
-  display: inline-block;
-  padding-right: 1em;
-  margin-left: 1em;
-  border-right: 1px solid $colour_light_grey;
-  &:last-child {
-    border-right: none;
-  }
-}
-
-.stat__descriptor {
-  font-size: emCalc(12);
-  color: $colour_dark_grey;
-}
-.stat__figure {
-  font-weight: $weight_bold;
-  font-size: 1.3125em;
-  margin-bottom: 0.15em;
 }
 
 .speaker-card__name {

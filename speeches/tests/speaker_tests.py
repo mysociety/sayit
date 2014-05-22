@@ -43,7 +43,7 @@ class SpeakerTests(InstanceTestCase):
         # Call the speaker's page
         resp = self.client.get('/speaker/%s' % speaker.slug)
 
-        self.assertContains(resp, '<a href="/speech/add?speaker=%d">Add a new speech</a>' % speaker.id, html=True)
+        self.assertContains(resp, '<a href="/speech/add?speaker=%d" class="button small right">Add speech</a>' % speaker.id, html=True)
 
     def test_speaker_popit_headshots_in_speeches_section(self):
         # Test that headshots vs default image work OK
