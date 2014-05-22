@@ -22,8 +22,8 @@
     {% if not speech.is_public %}
       <span class="label secondary radius right">{% trans "Invisible" %}</span>
     {% endif %}
+    {% if not nosection and speech.section_id %}
     <div class="speech__breadcrumb">
-      {% if not nosection and speech.section_id %}
       <ul class="breadcrumbs">
         {% for n in speech.section.get_ancestors %}
             <li><a href="{{ n.get_absolute_url }}">{{ n.title }}</a></li>
@@ -44,8 +44,8 @@
         </li>
         {% endif %}
       </ul>
-      {% endif %}
     </div>
+    {% endif %}
     <div class="speech__meta-data">
       {% if speech.speaker and not nospeaker %}
         <span class="speech__meta-data__speaker-name">
