@@ -113,6 +113,10 @@
 
 {% if not result.object %}
   <div class="speech__links">
+    {% if request.is_user_instance %}
+      <a href="{{ speech.get_edit_url }}"><i class="speech-icon icon-edit"></i>{% trans "Edit" %}</a>
+      <a href="{{ speech.get_delete_url }}"><i class="speech-icon icon-delete"></i>{% trans "Delete" %}</a>
+    {% endif %}
     {% if speech.section_id %}
       <a title="{% trans "Link in context" %}" href="{% if section %}{% url 'speeches:section-view' section.get_path %}{% else %}{% url 'speeches:section-view' speech.section.get_path %}{% endif %}#s{{ speech.id }}"><i class="speech-icon icon-link-in-context"></i>{% trans "Link in context" %}</a>
     {% endif %}
