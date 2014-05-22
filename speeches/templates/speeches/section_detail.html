@@ -21,8 +21,8 @@
 
   {% if request.is_user_instance %}
     <a href="{% url 'speeches:speech-add' %}?section={{ section.id }}" class="button small right">{% trans "Add speech" %}</a>
-    <a href="{% url 'speeches:section-add' %}?section={{ section.id }}" class="button small right">{% trans "Add subsection" %}</a>
-    <a href="{% url 'speeches:section-edit' pk=section.id %}" class="button small right">{% trans "Edit section" %}</a>
+    <a href="{% url 'speeches:section-add' %}?section={{ section.id }}" class="button secondary small right">{% trans "Add subsection" %}</a>
+    <a href="{% url 'speeches:section-edit' pk=section.id %}" class="button secondary small right">{% trans "Edit section" %}</a>
   {% endif %}
 
     {% include "speeches/_breadcrumbs.html" %}
