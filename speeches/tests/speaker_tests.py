@@ -15,7 +15,7 @@ class SpeakerTests(InstanceTestCase):
 
         popit_person = Person.objects.create(name='Steve', summary='A froody dude', image='http://example.com/image.jpg', api_instance=ai)
         speaker = Speaker.objects.create(name='Steve', instance=self.instance, person=popit_person)
-        
+
         # Call the speaker's page
         resp = self.client.get('/speaker/%s' % speaker.slug)
 
@@ -39,7 +39,7 @@ class SpeakerTests(InstanceTestCase):
     def test_speaker_page_has_button_to_add_speech(self):
         # Add a speaker
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
-        
+
         # Call the speaker's page
         resp = self.client.get('/speaker/%s' % speaker.slug)
 
@@ -66,3 +66,10 @@ class SpeakerTests(InstanceTestCase):
         self.assertRegexpMatches(resp.content, r'(?s)<img src="\s*http://example.com/image.jpg\s*".*?<a href="/speaker/%s">\s*' % (speaker1.slug))
 
         self.assertRegexpMatches(resp.content, r'(?s)<img src="\s*/static/speeches/i/a.\w+.png\s*".*?<a href="/speaker/%s">\s*' % (speaker2.slug))
+
+    def test_add_speaker_with_whitespace(self):
+        name = ' Bob\n'
+        self.client.post('/speaker/add', {'name': name})
+
+        speaker = Speaker.objects.order_by('-id')[0]
+        self.assertEqual(speaker.name, 'Bob')

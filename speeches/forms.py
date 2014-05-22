@@ -117,6 +117,8 @@ class CreateAutoModelSelect2Field(AutoModelSelect2Field):
         return super(CreateAutoModelSelect2Field, self).__init__(*args, **kwargs)
 
     def to_python(self, value):
+        value = value.strip()
+
         # Inspiration from HeavyModelSelect2TagField
         if value in self.empty_values:
             return None
@@ -303,13 +305,19 @@ class SectionForm(forms.ModelForm):
                 raise forms.ValidationError(_('Something cannot have a parent that is also a descendant'))
         return parent
 
+class StripWhitespaceField(forms.CharField):
+    def clean(self, value):
+        value = super(StripWhitespaceField, self).clean(value)
+        if value:
+            value = value.strip()
+        return value
+
 class SpeakerForm(forms.ModelForm):
+    name = StripWhitespaceField()
+
     class Meta:
         model = Speaker
         exclude = ('instance', 'slug', 'person')
-        widgets = {
-            'name': forms.TextInput(),
-        }
 
 class SpeakerPopitForm(forms.Form):
     url = forms.URLField(label="PopIt URL")

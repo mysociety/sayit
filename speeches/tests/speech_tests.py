@@ -54,10 +54,11 @@ class SpeechTests(InstanceTestCase):
         that speaker to be created.
         """
         self.assertEqual(Speaker.objects.filter(name='New Speaker').count(), 0)
+        # Note whitespace around speaker name to check it is stripped
         self.client.post(
             '/speech/add',
             {'text': 'Speech from new speaker',
-             'speaker': 'New Speaker'},
+             'speaker': ' New Speaker '},
             )
 
         speaker = Speaker.objects.get(name='New Speaker')
