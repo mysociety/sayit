@@ -256,10 +256,11 @@ $image-path: '../img' !default;
 
 .speech__links {
   position: absolute;
-  bottom: 0.25em;
-  right: 0;
-  padding: .5em 1em .5em 0;
+  bottom: 1em;
+  right: 1px;
+  padding: 0 1em 0 0;
   z-index: 300;
+  background-color: #fff; // in case the links overlap text below them
   a {
     color: $colour_dark_grey;
     font-size: emCalc(14);
@@ -494,6 +495,10 @@ $image-path: '../img' !default;
   .speech__breadcrumb {
     margin-bottom: 5px;
   }
+
+  .speech__links {
+    bottom: 0.75em;
+  }
 }
 
 .speaker-page__speeches-collection {
@@ -680,10 +685,10 @@ $image-path: '../img' !default;
     }
   }
   .speech__links {
-    bottom: 0.5em;
-    left: 1%;
+    bottom: 1em;
+    left: 0;
     @media (min-width: $medium-screen) {
-        right: 1%;
+        right: 0;
         left: auto;
     }
     display: block;
