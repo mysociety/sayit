@@ -167,6 +167,10 @@ $image-path: '../img' !default;
   @media (min-width: $medium-screen) {
     @include grid-column(11);
   }
+
+  & > .label.right {
+    margin-top: 5px;
+  }
 }
 
 .speaker-portrait {
@@ -252,7 +256,7 @@ $image-path: '../img' !default;
 
 .speech__links {
   position: absolute;
-  bottom: -0.25em;
+  bottom: 0.25em;
   right: 0;
   padding: .5em 1em .5em 0;
   z-index: 300;
