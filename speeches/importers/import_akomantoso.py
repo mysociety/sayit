@@ -56,7 +56,16 @@ class ImportAkomaNtoso (ImporterBase):
         if docDate is not None:
             self.start_date = dateutil.parse(docDate.get('date'))
 
-        self.visit(debate.debateBody, None)
+        if self.ns:
+            docTitle = debate.find('an:coverPage//an:docTitle|an:preface//an:docTitle', namespaces={'an': self.ns})
+        else:
+            docTitle = debate.find('coverPage//docTitle|preface//docTitle')
+        if docTitle is None:
+            section = None
+        else:
+            section = self.make(Section, parent=None, title=docTitle.text)
+
+        self.visit(debate.debateBody, section)
 
     def get_tag(self, node):
         return etree.QName(node.tag).localname
