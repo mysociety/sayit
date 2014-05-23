@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import logging
 from datetime import datetime
 import pytz
@@ -11,10 +12,28 @@ from django_select2.widgets import (
 from django_select2.fields import AutoModelSelect2Field
 
 from django.utils.translation import ugettext_lazy as _
+from django.utils.html import linebreaks
+
+try:
+    # Hack for Django 1.4 compatibility as remove_tags
+    # wasn't invented yet.
+    from django.utils.html import remove_tags
+
+    def remove_p_and_br(value):
+        return remove_tags(value, 'p br')
+
+except ImportError:
+    def remove_p_and_br(value):
+        value = re.sub(r'</?p>', '', value)
+        value = re.sub(r'<br ?/?>', '', value)
+        return value
+
+from django.utils.encoding import force_text
 from django import forms
 from django.forms.forms import BoundField
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.forms.widgets import Textarea
+from django.forms.util import flatatt
 from django.core.files.uploadedfile import UploadedFile
 
 from speeches.fields import FromStartIntegerField
@@ -95,6 +114,12 @@ class Select2Widget(AutoHeavySelect2Widget):
             value = value[0] if len(value) else None
         return super(Select2Widget, self).render(name, value, attrs, choices)
 
+class StripWhitespaceField(forms.CharField):
+    def clean(self, value):
+        value = super(StripWhitespaceField, self).clean(value)
+        if value:
+            value = value.strip()
+        return value
 
 class CreateAutoModelSelect2Field(AutoModelSelect2Field):
     empty_values = [ None, '', [], (), {} ]
@@ -159,8 +184,35 @@ class SectionField(CreateAutoModelSelect2Field):
     model = Section
     column = 'title'
 
+class SpeechTextFieldWidget(forms.Textarea):
+    def render(self, name, value, attrs=None):
+        # These first two steps are also done in the superclass, but it's
+        # safe to repeat them here to get value to the right state.
+        if value is None:
+            value = ''
+        value = force_text(value)
+        value = re.sub(r'<br ?/?>', '<br />\n', value)
+        value = remove_p_and_br(value)
+
+        return super(SpeechTextFieldWidget, self).render(name, value, attrs)
+
+class SpeechTextField(StripWhitespaceField):
+    widget = SpeechTextFieldWidget
+    def clean(self, value):
+        value = super(SpeechTextField, self).clean(value)
+
+        # It there is a value, and it's not already been HTMLified
+        # then we want to use linebreaks to give it appropriate newlines.
+        if value:
+            if value.startswith('<p>'):
+                value = re.sub(r'</p>\n*<p>', '</p>\n\n<p>', value)
+            else:
+                value = linebreaks(value)
+        return value
+
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
+    text = SpeechTextField(required=False)
     speaker = SpeakerField()
     section = SectionField()
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],
@@ -304,13 +356,6 @@ class SectionForm(forms.ModelForm):
             if parent.id in descendant_ids:
                 raise forms.ValidationError(_('Something cannot have a parent that is also a descendant'))
         return parent
-
-class StripWhitespaceField(forms.CharField):
-    def clean(self, value):
-        value = super(StripWhitespaceField, self).clean(value)
-        if value:
-            value = value.strip()
-        return value
 
 class SpeakerForm(forms.ModelForm):
     name = StripWhitespaceField()
