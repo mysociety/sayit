@@ -114,6 +114,12 @@ class Select2Widget(AutoHeavySelect2Widget):
             value = value[0] if len(value) else None
         return super(Select2Widget, self).render(name, value, attrs, choices)
 
+class StripWhitespaceField(forms.CharField):
+    def clean(self, value):
+        value = super(StripWhitespaceField, self).clean(value)
+        if value:
+            value = value.strip()
+        return value
 
 class CreateAutoModelSelect2Field(AutoModelSelect2Field):
     empty_values = [ None, '', [], (), {} ]
@@ -190,7 +196,7 @@ class SpeechTextFieldWidget(forms.Textarea):
 
         return super(SpeechTextFieldWidget, self).render(name, value, attrs)
 
-class SpeechTextField(forms.CharField):
+class SpeechTextField(StripWhitespaceField):
     widget = SpeechTextFieldWidget
     def clean(self, value):
         value = super(SpeechTextField, self).clean(value)
@@ -198,7 +204,6 @@ class SpeechTextField(forms.CharField):
         # It there is a value, and it's not already been HTMLified
         # then we want to use linebreaks to give it appropriate newlines.
         if value:
-            value = value.strip()
             if value.startswith('<p>'):
                 value = re.sub(r'</p>\n*<p>', '</p>\n\n<p>', value)
             else:
@@ -351,13 +356,6 @@ class SectionForm(forms.ModelForm):
             if parent.id in descendant_ids:
                 raise forms.ValidationError(_('Something cannot have a parent that is also a descendant'))
         return parent
-
-class StripWhitespaceField(forms.CharField):
-    def clean(self, value):
-        value = super(StripWhitespaceField, self).clean(value)
-        if value:
-            value = value.strip()
-        return value
 
 class SpeakerForm(forms.ModelForm):
     name = StripWhitespaceField()
