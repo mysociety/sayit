@@ -44,7 +44,7 @@ class SpeechTests(InstanceTestCase):
         })
         speech = Speech.objects.order_by('-id')[0]
         self.assertRedirects(resp, '/speech/%d?created' % speech.id)
-        self.assertEqual(speech.text, '<p>This is a speech</p>')
+        self.assertEqual(speech.text, 'This is a speech')
         self.assertEqual(speech.speaker, None)
 
     def test_add_speech_with_unknown_speaker(self):
@@ -100,7 +100,7 @@ class SpeechTests(InstanceTestCase):
 
         section = Section.objects.get(title='New Section')
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(speech.text, '<p>Speech in new section</p>')
+        self.assertEqual(speech.text, 'Speech in new section')
         self.assertEqual(speech.section, section)
 
     def test_add_speech_and_add_another(self):
@@ -111,7 +111,7 @@ class SpeechTests(InstanceTestCase):
             'add_another': 1,
         })
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(speech.text, '<p>This is a speech</p>')
+        self.assertEqual(speech.text, 'This is a speech')
         self.assertRedirects(resp, '/speech/add')
 
         section = Section.objects.create(title='Test', instance=self.instance)
@@ -121,7 +121,7 @@ class SpeechTests(InstanceTestCase):
             'add_another': 1,
         })
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(speech.text, '<p>This is a speech</p>')
+        self.assertEqual(speech.text, 'This is a speech')
         self.assertEqual(speech.section_id, section.id)
         get_url = '/speech/add?section=%d&added=%d' % (section.id, speech.id)
         self.assertRedirects(resp, get_url)
@@ -309,11 +309,27 @@ class SpeechTests(InstanceTestCase):
         resp = self.client.post('/speech/add', {'text': text})
 
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(speech.text, '<p>This is a speech with whitespace at the ends.</p>')
+        self.assertEqual(speech.text, 'This is a speech with whitespace at the ends.')
 
     def test_add_speech_with_newlines(self):
-        text = "First line.\nAfter break.\n\nNew paragraph."
+        text = "First line.\nAfter break.\n\nAfter another break."
         resp = self.client.post('/speech/add', {'text': text})
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertEqual(
+            speech.text,
+            'First line.<br />After break.<br />\nAfter another break.'
+            )
+
+        resp = self.client.get("/speech/%d/edit" %speech.id)
+        self.assertContains(resp, text)
+
+    def test_add_speech_with_newlines_and_speaker(self):
+        speaker = Speaker.objects.create(name='Steve', instance=self.instance)
+        text = "First line.\nAfter break.\n\nNew paragraph."
+        resp = self.client.post(
+            '/speech/add',
+            {'text': text, 'speaker': speaker.id},
+            )
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(
             speech.text,
@@ -324,8 +340,8 @@ class SpeechTests(InstanceTestCase):
         self.assertContains(resp, text)
 
     def test_add_speech_with_html(self):
-        """If a user adds a speech which starts with a <p>, we probably
-        don't want to add more <p>s to it.
+        """If a user adds a speech which starts with a <p>, we're going to have
+        to take those out, as Akoma Ntoso doesn't allow them in <narrative> elemnts.
 
         What we do want to do though is make sure that every </p> is followed by two
         newlines (\n) so that when we take the <p>s etc out to edit we can see where
@@ -334,6 +350,23 @@ class SpeechTests(InstanceTestCase):
 
         text = "<p>Test<br />string</p><p>Second paragraph</p>\n<p>Third paragraph</p>\n\n<p>Fourth paragraph</p>"
         resp = self.client.post('/speech/add', {'text': text})
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertEqual(
+            speech.text,
+            "Test<br />string<br />\nSecond paragraph<br />\nThird paragraph<br />\nFourth paragraph"
+            )
+
+    def test_add_speech_with_html_and_speaker(self):
+        """If a user adds a speech which starts with a <p>, we probably
+        don't want to add more <p>s to it.
+
+        What we do want to do though is make sure that every </p> is followed by two
+        newlines (\n) so that when we take the <p>s etc out to edit we can see where
+        to put them back in again.
+        """
+        speaker = Speaker.objects.create(name='Steve', instance=self.instance)
+        text = "<p>Test<br />string</p><p>Second paragraph</p>\n<p>Third paragraph</p>\n\n<p>Fourth paragraph</p>"
+        resp = self.client.post('/speech/add', {'text': text, 'speaker': speaker.id})
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(
             speech.text,

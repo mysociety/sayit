@@ -241,6 +241,15 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
         if not cleaned_data.get('text') and not cleaned_data.get('audio'):
             raise forms.ValidationError(_('You must provide either text or some audio'))
 
+        # If we have text but no speaker, then this should become a <narrative> element
+        # in the Akoma Ntoso, which can't contain <p> elements, so we should replace any
+        # in the middle with <br /> and get rid of the ones round the outside.
+        if 'text' in cleaned_data and not cleaned_data.get('speaker'):
+            text = cleaned_data['text']
+            text = re.sub(r'</p>\n\n<p>', '<br />\n', text)
+            text = re.sub(r'</?p>', '', text)
+            cleaned_data['text'] = text
+
         return cleaned_data
 
     def clean_start_time(self):
