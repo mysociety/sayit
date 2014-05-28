@@ -270,6 +270,44 @@ class SpeechTests(InstanceTestCase):
         resp = self.client.get('/speech/{}/edit'.format(speech.id))
         self.assertContains(resp, ".txt(['Steve'])")
 
+    def test_add_and_remove_speaker_from_speech(self):
+        # Test form with speaker, we need to add a speaker first
+        speaker = Speaker.objects.create(name='Steve', instance=self.instance)
+
+        orig_text = 'This is a Steve speech\nAfter break\n\nNew paragraph'
+        with_speaker_text = '<p>This is a Steve speech<br />After break</p>\n\n<p>New paragraph</p>'
+        no_speaker_text = 'This is a Steve speech<br />After break<br />\nNew paragraph'
+
+        resp = self.client.post('/speech/add', {
+            'text': orig_text,
+            'speaker': speaker.id,
+        })
+
+        speech = Speech.objects.get(speaker_id=speaker.id)
+        self.assertEqual(speech.text, with_speaker_text)
+
+        resp = self.client.get('/speech/{}/edit'.format(speech.id))
+        self.assertTrue(orig_text in resp.content)
+
+        self.client.post(
+            '/speech/{}/edit'.format(speech.id),
+            {'text': orig_text},
+            )
+
+        speech = Speech.objects.get(id=speech.id)
+        self.assertEqual(speech.text, no_speaker_text)
+
+        resp = self.client.get('/speech/{}/edit'.format(speech.id))
+        self.assertTrue(orig_text in resp.content)
+
+        self.client.post(
+            '/speech/{}/edit'.format(speech.id),
+            {'text': orig_text, 'speaker': speaker.id},
+            )
+
+        speech = Speech.objects.get(speaker_id=speaker.id)
+        self.assertEqual(speech.text, with_speaker_text)
+
     def test_add_speech_with_audio(self):
         # Load the mp3 fixture
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
