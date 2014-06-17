@@ -1,0 +1,5 @@
+# These packages are required for using utils.scraping
+# but don't otherwise need to be installed
+
+beautifulsoup4
+requests_cache
