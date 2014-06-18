@@ -21,7 +21,7 @@ from speeches.utils import AudioHelper
 from speeches.utils.base32 import int_to_base32
 
 from djqmethod import Manager, querymethod
-from popit.models import Person
+from popolo.models import Person
 from sluggable.fields import SluggableField
 from sluggable.models import Slug as SlugModel
 
@@ -76,9 +76,7 @@ class Slug(SlugModel):
 
 # Speaker - someone who gave a speech
 @python_2_unicode_compatible
-class Speaker(InstanceMixin, AuditedModel):
-    person = models.ForeignKey(Person, blank=True, null=True, on_delete=models.PROTECT, help_text='Associated PopIt object, optional')
-    name = models.TextField(db_index=True)
+class Speaker(InstanceMixin, Person):
     slug = SluggableField(unique_with='instance', populate_from='name')
     slugs = generic.GenericRelation(Slug)
 
@@ -87,17 +85,11 @@ class Speaker(InstanceMixin, AuditedModel):
         unique_together = ('instance', 'slug')
 
     def __str__(self):
-        if self.name:
-            return self.name
-        return "[no name]"
+        return self.name
 
     @property
     def colour(self):
-        return hashlib.sha1('%s' % (self.person_id or self.id)).hexdigest()[:6]
-
-    @property
-    def id32(self):
-        return int_to_base32(self.id)
+        return hashlib.sha1('%s' % self.person_ptr_id).hexdigest()[:6]
 
     @models.permalink
     def get_absolute_url(self):
@@ -105,17 +97,7 @@ class Speaker(InstanceMixin, AuditedModel):
 
     @models.permalink
     def get_edit_url(self):
-        return ( 'speeches:speaker-edit', (), { 'pk': self.id } )
-
-    # http://stackoverflow.com/a/5772272/669631
-    def save(self, *args, **kwargs):
-        if self.person:
-            conflicting_instance = Speaker.objects.filter(instance=self.instance, person=self.person)
-            if self.id:
-                conflicting_instance = conflicting_instance.exclude(pk=self.id)
-            if conflicting_instance.exists():
-                raise Exception('Speaker with this instance and popit person already exists.')
-        super(Speaker, self).save(*args, **kwargs)
+        return ( 'speeches:speaker-edit', (), { 'pk': self.person_ptr_id } )
 
 
 @python_2_unicode_compatible

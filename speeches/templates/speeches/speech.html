@@ -11,8 +11,8 @@
   {% if not nospeaker and not standalone %}
     {% if speech.speaker %}
     <div class="speaker-portrait-wrapper">
-    <img src="{% if speech.speaker.person.image %}
-        {{ speech.speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
+    <img src="{% if speech.speaker.image %}
+        {{ speech.speaker.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
         style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-portrait speaker-portrait--left round-image speaker-portrait--medium">
     </div>
     {% endif %}

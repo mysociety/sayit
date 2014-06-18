@@ -1,6 +1,5 @@
 from speeches.tests import InstanceTestCase
 from speeches.models import Speaker, Speech, Section
-from popit.models import Person, ApiInstance
 
 import sys
 
@@ -9,19 +8,14 @@ class SpeakerTests(InstanceTestCase):
 
     def test_speaker_page_lists_speeches(self):
         # Add a speaker
-
-        api_url = 'http://popit.mysociety.org/api/v1/'
-        ai = ApiInstance.objects.create(url=api_url)
-
-        popit_person = Person.objects.create(name='Steve', summary='A froody dude', image='http://example.com/image.jpg', api_instance=ai)
-        speaker = Speaker.objects.create(name='Steve', instance=self.instance, person=popit_person)
+        speaker = Speaker.objects.create(name='Steve', instance=self.instance, summary='A froody dude', image='http://example.com/image.jpg')
 
         # Call the speaker's page
         resp = self.client.get('/speaker/%s' % speaker.slug)
 
-        self.assertSequenceEqual("Steve", resp.context['speaker'].person.name)
-        self.assertSequenceEqual("A froody dude", resp.context['speaker'].person.summary)
-        self.assertSequenceEqual("http://example.com/image.jpg", resp.context['speaker'].person.image)
+        self.assertSequenceEqual("Steve", resp.context['speaker'].name)
+        self.assertSequenceEqual("A froody dude", resp.context['speaker'].summary)
+        self.assertSequenceEqual("http://example.com/image.jpg", resp.context['speaker'].image)
 
         # Assert no speeches
         self.assertSequenceEqual([], resp.context['speech_list'])
@@ -45,14 +39,9 @@ class SpeakerTests(InstanceTestCase):
 
         self.assertContains(resp, '<a href="/speech/add?speaker=%d" class="button small right">Add speech</a>' % speaker.id, html=True)
 
-    def test_speaker_popit_headshots_in_speeches_section(self):
+    def test_speaker_headshots_in_speeches_section(self):
         # Test that headshots vs default image work OK
-
-        api_url = 'http://popit.mysociety.org/api/v1/'
-        ai = ApiInstance.objects.create(url=api_url)
-
-        person1 = Person.objects.create(name='Marilyn', summary='movie star', image='http://example.com/image.jpg', api_instance=ai)
-        speaker1 = Speaker.objects.create(name='Marilyn', person=person1, instance=self.instance)
+        speaker1 = Speaker.objects.create(name='Marilyn', instance=self.instance, summary='movie star', image='http://example.com/image.jpg')
         speaker2 = Speaker.objects.create(name='Salinger', instance=self.instance)
 
         section = Section.objects.create(title='Test Section', instance=self.instance)

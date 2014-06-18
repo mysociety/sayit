@@ -6,8 +6,6 @@ from dateutil import parser as dateutil
 from lxml import etree
 from lxml import objectify
 
-from popit.models import Person
-
 from speeches.importers.import_base import ImporterBase
 from speeches.models import Section, Speech, Speaker
 
@@ -34,18 +32,12 @@ class ImportAkomaNtoso (ImporterBase):
             id = person.get('id')
             href = person.get('href')
             try:
-                p = Person.objects.get(popit_id=href)
-            except Person.DoesNotExist:
-                p = Person(popit_id=href, api_instance=self.ai)
-                if self.commit:
-                    p.save()
-
-            try:
-                speaker = Speaker.objects.get(instance=self.instance, person=p)
+                speaker = Speaker.objects.get(instance=self.instance, identifiers__identifier=href)
             except Speaker.DoesNotExist:
-                speaker = Speaker(instance=self.instance, name=person.get('showAs'), person=p)
+                speaker = Speaker(instance=self.instance, name=person.get('showAs'))
                 if self.commit:
                     speaker.save()
+                    speaker.identifiers.create(identifier=href, scheme='Akoma Ntoso import')
 
             self.speakers[id] = speaker
 

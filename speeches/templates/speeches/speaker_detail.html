@@ -23,14 +23,14 @@
 
   <div class="page-header__row">
     <div class="speaker-page__details">
-      <img src="{% if speaker.person.image %}{{ speaker.person.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
+      <img src="{% if speaker.image %}{{ speaker.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
           style="border-color #{{ speaker.colour }}; background-color: #{{ speaker.colour }};"
           class="speaker-portrait speaker-portrait--left speaker-portrait--large round-image"
           alt="Headshot of {{ speaker.name|escape}}" />
       <div class="speaker-information">
         <h1>{{ speaker.name }}</h1>
-        {% if speaker.person.summary %}
-          <p class="person-summary"> {{ speaker.person.summary }}
+        {% if speaker.summary %}
+          <p class="person-summary"> {{ speaker.summary }}
           </p>
         {% endif %}
       </div>

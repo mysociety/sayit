@@ -14,10 +14,9 @@ from django.core.files import File
 from django.shortcuts import get_object_or_404
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
-from popit.models import ApiInstance
 
 from speeches.aggregates import Length
-from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, SpeakerPopitForm, RecordingForm, RecordingTimestampFormSet
+from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, RecordingForm, RecordingTimestampFormSet
 from speeches.models import Speech, Speaker, Section, Recording, Tag, RecordingTimestamp
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
@@ -272,28 +271,6 @@ class SpeakerCreate(SpeakerMixin, CreateView):
 
 class SpeakerUpdate(SpeakerMixin, UpdateView):
     pass
-
-class SpeakerPopit(NamespaceMixin, InstanceFormMixin, FormView):
-    template_name = 'speeches/speaker_popit.html'
-    form_class = SpeakerPopitForm
-
-    def get_success_url(self):
-        return self.reverse_lazy('speeches:speaker-popit')
-
-    def form_valid(self, form):
-        ai, _ = ApiInstance.objects.get_or_create(url=form.cleaned_data['url'])
-        ai.fetch_all_from_api()
-        new = 0
-        for person in ai.person_set.all():
-            speaker, created = Speaker.objects.get_or_create(
-                instance=self.request.instance,
-                person=person,
-                defaults={ 'name': person.name }
-            )
-            if created: new += 1
-
-        messages.add_message(self.request, messages.SUCCESS, "PopIt instance added, %d new speakers added." % new)
-        return super(SpeakerPopit, self).form_valid(form)
 
 class SectionList(NamespaceMixin, InstanceViewMixin, ListView):
     model = Section

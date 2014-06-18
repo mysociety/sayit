@@ -371,10 +371,7 @@ class SpeakerForm(forms.ModelForm):
 
     class Meta:
         model = Speaker
-        exclude = ('instance', 'slug', 'person')
-
-class SpeakerPopitForm(forms.Form):
-    url = forms.URLField(label="PopIt URL")
+        exclude = ('instance', 'slug')
 
 class RecordingTimestampForm(forms.ModelForm):
     timestamp = FromStartIntegerField()
