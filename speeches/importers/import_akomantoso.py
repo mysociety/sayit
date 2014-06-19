@@ -149,4 +149,4 @@ class ImportAkomaNtoso (ImporterBase):
             else:
                 success = self.handle_tag(child, section)
                 if not success:
-                    raise Exception, '%s unrecognised, "%s" - %s' % (child.tag, child, self.get_text(child))
+                    raise Exception('%s unrecognised, "%s" - %s' % (child.tag, child, self.get_text(child)))

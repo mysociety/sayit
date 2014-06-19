@@ -237,7 +237,7 @@ class Section(AuditedModel, InstanceMixin):
             elif node.level < prev.level:
                 parents = parents[:node.level-prev.level]
             elif node.path[:-1] != prev.path[:-1]: # Swapping parentage in some way
-                sw = ( i for i in xrange(len(node.path)) if node.path[i] != prev.path[i] ).next()
+                sw = next(( i for i in range(len(node.path)) if node.path[i] != prev.path[i] ))
                 parents = parents[:sw-node.level]
                 for i in range(sw, node.level):
                     section = Section.objects.get(id=node.path[i])

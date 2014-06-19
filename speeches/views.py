@@ -1,5 +1,6 @@
 import datetime
 import json
+from six import string_types
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse, reverse_lazy, resolve
@@ -47,7 +48,7 @@ class JSONResponseMixin(object):
 
     def render_to_response(self, context, **kwargs):
         kwargs['content_type'] = 'application/json'
-        if not isinstance(context, basestring):
+        if not isinstance(context, string_types):
             context = json.dumps(context)
         location = kwargs.pop('location', None)
         response = HttpResponse(context, **kwargs)
@@ -348,7 +349,7 @@ class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
     def get(self, request, *args, **kwargs):
         try:
             return super(SectionView, self).get(request, *args, **kwargs)
-        except UnmatchingSlugException, e:
+        except UnmatchingSlugException as e:
             return HttpResponseRedirect(e.args[0])
 
     def get_object(self, queryset=None):

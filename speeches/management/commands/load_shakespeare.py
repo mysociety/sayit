@@ -1,5 +1,5 @@
 from optparse import make_option
-import urllib
+from six.moves.urllib.request import urlopen
 import xml.etree.ElementTree as etree
 
 from django.core.management.base import BaseCommand, CommandError
@@ -61,7 +61,7 @@ class Command(BaseCommand):
         if self.commit:
             s.save()
         elif s.title:
-            print s.title
+            print(s.title)
         return s
 
     def handle(self, *args, **options):
@@ -90,7 +90,7 @@ class Command(BaseCommand):
 
         self.commit = options['commit']
 
-        xml = urllib.urlopen('http://www.ibiblio.org/xml/examples/shakespeare/%s' % file).read()
+        xml = urlopen('http://www.ibiblio.org/xml/examples/shakespeare/%s' % file).read()
         play_xml = etree.fromstring(xml)
         play_section = self.make(Section, title=play)
 

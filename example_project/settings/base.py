@@ -63,7 +63,7 @@ MEDIA_ROOT = os.path.join(PARENT_DIR, 'uploads')
 MEDIA_URL = '/media/'
 
 # All uploaded files world-readable
-FILE_UPLOAD_PERMISSIONS = 0644
+FILE_UPLOAD_PERMISSIONS = 420 # 644 in octal, 'rw-r--r--'
 
 # List of callables that know how to import templates from various sources.
 loaders = (

@@ -13,7 +13,7 @@ class Base32SingleObjectMixin(SingleObjectMixin):
     def get(self, request, *args, **kwargs):
         try:
             return super(Base32SingleObjectMixin, self).get(request, *args, **kwargs)
-        except UnmatchingSlugException, e:
+        except UnmatchingSlugException as e:
             return HttpResponseRedirect(e.args[0].get_absolute_url())
 
     def get_context_data(self, **kwargs):
@@ -34,7 +34,7 @@ class Base32SingleObjectMixin(SingleObjectMixin):
         if pk is not None:
             try:
                 pk = base32_to_int(pk)
-            except MistypedIDException, e:
+            except MistypedIDException as e:
                 mistyped = True
                 pk = e.args[0]
             except:

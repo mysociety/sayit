@@ -29,7 +29,7 @@ class Command(BaseCommand):
                 current_alias = n
 
         if not current_alias:
-            raise Exception, 'There is no "%s" alias to use' % index_write
+            raise Exception('There is no "%s" alias to use' % index_write)
 
         actions.append( { 'add': { 'index': current_alias, 'alias': index_name } } )
         backend.conn.update_aliases({ 'actions': actions })

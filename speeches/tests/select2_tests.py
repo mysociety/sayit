@@ -1,4 +1,4 @@
-import urllib
+from six.moves.urllib.parse import urlencode
 import json
 
 from django_select2.util import register_field
@@ -34,7 +34,7 @@ class AjaxTests(InstanceTestCase):
 
         # The ajax queries look something like this:
         # /select2/fields/auto.json?term=al&page=1&context=&field_id=f5af12d0dbb3800ea6b8d88b4720ad7b625f1ae4&_=1399984568706
-        data = urllib.urlencode({
+        data = urlencode({
             'term': 'al',
             'field_id': field_id,
             'page': 1,
@@ -53,7 +53,7 @@ class AjaxTests(InstanceTestCase):
 
     def test_lookup_section(self):
         field_id = register_field('speeches.forms.SectionField', SectionField())
-        data = urllib.urlencode({
+        data = urlencode({
             'term': 'se',
             'field_id': field_id,
             'page': 1,
