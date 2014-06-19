@@ -13,6 +13,7 @@ from django.template.defaultfilters import timesince, slugify
 from django.conf import settings
 from django.core.files import File
 from django.contrib.contenttypes import generic
+from django.utils.encoding import python_2_unicode_compatible
 
 from instances.models import InstanceMixin, InstanceManager
 import speeches
@@ -74,6 +75,7 @@ class Slug(SlugModel):
     pass
 
 # Speaker - someone who gave a speech
+@python_2_unicode_compatible
 class Speaker(InstanceMixin, AuditedModel):
     person = models.ForeignKey(Person, blank=True, null=True, on_delete=models.PROTECT, help_text='Associated PopIt object, optional')
     name = models.TextField(db_index=True)
@@ -84,7 +86,7 @@ class Speaker(InstanceMixin, AuditedModel):
         ordering = ('name',)
         unique_together = ('instance', 'slug')
 
-    def __unicode__(self):
+    def __str__(self):
         if self.name:
             return self.name
         return "[no name]"
@@ -116,10 +118,11 @@ class Speaker(InstanceMixin, AuditedModel):
         super(Speaker, self).save(*args, **kwargs)
 
 
+@python_2_unicode_compatible
 class Tag(InstanceMixin, AuditedModel):
     name = models.CharField(unique=True, max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -142,6 +145,7 @@ class SectionManager(InstanceManager, Manager):
         return section
 
 
+@python_2_unicode_compatible
 class Section(AuditedModel, InstanceMixin):
     # Custom manager
     objects = SectionManager()
@@ -158,7 +162,7 @@ class Section(AuditedModel, InstanceMixin):
         ordering = ('id',)
         unique_together = ('parent', 'slug', 'instance')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title or _('Section')
 
     def speech_datetimes(self):
@@ -436,6 +440,7 @@ class SpeechManager(InstanceManager, Manager):
 
 
 # Speech that a speaker gave
+@python_2_unicode_compatible
 class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     # Custom manager
     objects = SpeechManager()
@@ -479,7 +484,7 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
         verbose_name_plural = 'speeches'
         ordering = ( 'start_date', 'start_time', 'id' )
 
-    def __unicode__(self):
+    def __str__(self):
         out = 'Speech'
         if self.title: out += ', %s,' % self.title
         if self.speaker: out += ' by %s' % self.speaker
@@ -620,6 +625,7 @@ class RecordingTimestamp(InstanceMixin, AuditedModel):
 
 
 # A raw recording, might be divided up into multiple speeches
+@python_2_unicode_compatible
 class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
     audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=False)
     start_datetime = models.DateTimeField(blank=True, null=True, help_text='Datetime of first timestamp associated with recording')
@@ -629,7 +635,7 @@ class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
         kwargs['duration'] = True
         super(Recording, self).save(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'Recording made %s ago' % timesince(self.created)
 
     @models.permalink
