@@ -173,7 +173,7 @@ class SectionSiteTests(InstanceTestCase):
         self.assertRedirects(resp, '%s' % new_section.slug)
         # Check in db
         section = Section.objects.get(id=new_section.id)
-        self.assertEquals(section.title, 'A test section')
+        self.assertEqual(section.title, 'A test section')
 
     def test_add_section_in_section(self):
         section = Section.objects.create(title='Test section', instance=self.instance)
@@ -185,8 +185,8 @@ class SectionSiteTests(InstanceTestCase):
         self.assertRedirects(resp, '%s/%s' % (section.slug, new_section.slug))
         # Check in db
         subsection = Section.objects.get(id=new_section.id)
-        self.assertEquals(subsection.title, 'A test subsection')
-        self.assertEquals(subsection.parent, section)
+        self.assertEqual(subsection.title, 'A test subsection')
+        self.assertEqual(subsection.parent, section)
 
     def test_section_page_lists_speeches(self):
         section = Section.objects.create(title='A test section', instance=self.instance)

@@ -44,8 +44,8 @@ class RecordingTimestampTests(InstanceTestCase):
         def check_response(resp, expected_code=201, expected_type='application/json'):
             recording = Recording.objects.order_by('-id')[0]
             # Check response headers
-            self.assertEquals(resp.status_code, expected_code)
-            self.assertEquals(resp['Content-Type'], expected_type)
+            self.assertEqual(resp.status_code, expected_code)
+            self.assertEqual(resp['Content-Type'], expected_type)
             self.assertIn('/recording/%d' % recording.id, resp['Location'])
             return recording
 
@@ -53,13 +53,13 @@ class RecordingTimestampTests(InstanceTestCase):
         timestamps = recording.timestamps.all()
 
         # Check the right number of timestamps and speeches were made
-        self.assertEquals(recording.timestamps.count(), SPEECHES)
-        self.assertEquals(Speech.objects.count(), SPEECHES)
+        self.assertEqual(recording.timestamps.count(), SPEECHES)
+        self.assertEqual(Speech.objects.count(), SPEECHES)
 
         def check_audio_durations(recording, durations):
             audio_helper = AudioHelper()
             for (rt, d) in zip(recording.timestamps.all(), durations):
-                self.assertEquals( 
+                self.assertEqual( 
                     audio_helper.get_audio_duration(rt.speech.audio.path),
                     d)
 
@@ -197,10 +197,10 @@ class RecordingTimestampTests(InstanceTestCase):
         })
 
         recording = Recording.objects.order_by('-id')[0]
-        self.assertEquals(resp.status_code, 201)
+        self.assertEqual(resp.status_code, 201)
 
         resp = self.client.get('/recording/%d/edit' % recording.id)
-        self.assertEquals(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 200)
 
     def test_change_speaker(self, filename='lamb.mp3'):
         audio = open(os.path.join(self._in_fixtures, filename), 'rb')
@@ -213,10 +213,10 @@ class RecordingTimestampTests(InstanceTestCase):
         })
 
         recording = Recording.objects.order_by('-id')[0]
-        self.assertEquals(resp.status_code, 201)
+        self.assertEqual(resp.status_code, 201)
 
         resp = self.client.get('/recording/%d/edit' % recording.id)
-        self.assertEquals(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 200)
 
         speaker_1 = Speaker.objects.create(name='Steve', instance=self.instance)
         speaker_2 = Speaker.objects.create(name='Yasmin', instance=self.instance)
@@ -241,5 +241,5 @@ class RecordingTimestampTests(InstanceTestCase):
         recording = Recording.objects.order_by('-id')[0]
 
         timestamps = recording.timestamps.all()
-        self.assertEquals(timestamps[0].speaker, speaker_1)
-        self.assertEquals(timestamps[1].speaker, speaker_2)
+        self.assertEqual(timestamps[0].speaker, speaker_1)
+        self.assertEqual(timestamps[1].speaker, speaker_2)

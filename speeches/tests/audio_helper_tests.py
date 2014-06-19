@@ -59,7 +59,7 @@ class AudioHelperTests(InstanceTestCase):
         self.tmp_filename = getattr(self.helper, method)(os.path.join(self._in_fixtures, known_input))
         expected = self.expected_output_file(expected_output)
         # Check that the type of the file is exactly the same first of all:
-        self.assertEquals(strip_kbps_from_file_info(magic.from_file(self.tmp_filename)),
+        self.assertEqual(strip_kbps_from_file_info(magic.from_file(self.tmp_filename)),
                           strip_kbps_from_file_info(magic.from_file(expected)))
         # Now check that the files are identical:
         self.assertSameAudioLength(self.tmp_filename, expected)
@@ -91,7 +91,7 @@ class AudioHelperTests(InstanceTestCase):
 
         files_created = self.helper.split_recording(recording)
 
-        self.assertEquals(len(files_created), 1)
+        self.assertEqual(len(files_created), 1)
         self.assertSameAudioLength(files_created[0], self.expected_output_file('lamb_whole.mp3'))
 
     def test_recording_splitting_one_timestamp(self):
@@ -104,7 +104,7 @@ class AudioHelperTests(InstanceTestCase):
 
         files_created = self.helper.split_recording(recording)
 
-        self.assertEquals(len(files_created), 1)
+        self.assertEqual(len(files_created), 1)
         self.assertSameAudioLength(files_created[0], self.expected_output_file('lamb_whole.mp3'))
 
     def test_recording_splitting_several_timestamps(self):
@@ -126,7 +126,7 @@ class AudioHelperTests(InstanceTestCase):
 
         files_created = self.helper.split_recording(recording)
 
-        self.assertEquals(len(files_created), 3)
+        self.assertEqual(len(files_created), 3)
         files = [ 'lamb_first_three_seconds.mp3', 'lamb_from_three_to_four_seconds.mp3', 'lamb_from_four_seconds_onwards.mp3' ]
         for i in range(3):
             self.assertSameAudioLength(files_created[i], self.expected_output_file(files[i]))
@@ -134,5 +134,5 @@ class AudioHelperTests(InstanceTestCase):
     def test_audio_length(self):
         audio_path = os.path.join(self._in_fixtures, 'lamb.mp3')
         duration = self.helper.get_audio_duration(audio_path)
-        self.assertEquals( duration, 5 )
+        self.assertEqual( duration, 5 )
         

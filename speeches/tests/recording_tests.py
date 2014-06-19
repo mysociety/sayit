@@ -48,11 +48,11 @@ class RecordingTests(InstanceTestCase):
 
         recording = Recording.objects.order_by('-id')[0]
         self.assertIsNotNone(recording.audio)
-        self.assertEquals(recording.audio_duration, 5)
+        self.assertEqual(recording.audio_duration, 5)
         expected_timestamp = datetime.utcfromtimestamp(946684800).replace(tzinfo=pytz.utc)
-        self.assertEquals(recording.start_datetime, expected_timestamp)
-        self.assertEquals(recording.timestamps.count(), SPEECHES)
-        self.assertEquals(Speech.objects.count(), SPEECHES)
+        self.assertEqual(recording.start_datetime, expected_timestamp)
+        self.assertEqual(recording.timestamps.count(), SPEECHES)
+        self.assertEqual(Speech.objects.count(), SPEECHES)
 
         # Test each speech is a second apart
         last_start = None
@@ -64,11 +64,11 @@ class RecordingTests(InstanceTestCase):
 
         # Test assignment of section
         section = Section.objects.create(title='A Section', instance=self.instance)
-        self.assertEquals(Speech.objects.filter(section=section).count(), 0)
+        self.assertEqual(Speech.objects.filter(section=section).count(), 0)
         resp = self.client.get('/recording/%s' % recording.id)
         self.assertContains(resp, 'A Section')
         resp = self.client.post('/recording/%s' % recording.id, { 'section': section.id })
-        self.assertEquals(Speech.objects.filter(section=section).count(), SPEECHES)
+        self.assertEqual(Speech.objects.filter(section=section).count(), SPEECHES)
 
         # XXX Perhaps django-webtest (which has form.submit()) or 
         # get things out of the view and test them independently.
