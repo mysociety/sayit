@@ -1,3 +1,4 @@
+import json
 import os
 import tempfile
 import shutil
@@ -5,7 +6,6 @@ from datetime import datetime
 import pytz
 
 from django.test.utils import override_settings
-from django.utils import simplejson
 from django.conf import settings
 
 import speeches
@@ -30,7 +30,7 @@ class RecordingAPITests(InstanceTestCase):
         resp = self.client.post('/api/v0.1/recording/')
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(resp['Content-Type'], 'application/json')
-        response_content = simplejson.loads(resp.content)
+        response_content = json.loads(resp.content)
         self.assertEqual(response_content['errors'], '{"audio": ["This field is required."]}')
 
     def test_add_recording_with_audio(self):
@@ -49,7 +49,7 @@ class RecordingAPITests(InstanceTestCase):
         self.assertIn('/recording/%d' % recording.id, resp['Location'])
 
         # Check response JSON
-        response_content = simplejson.loads(resp.content)
+        response_content = json.loads(resp.content)
         self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
@@ -75,7 +75,7 @@ class RecordingAPITests(InstanceTestCase):
         self.assertIn('/recording/%d' % recording.id, resp['Location'])
 
         # Check response JSON
-        response_content = simplejson.loads(resp.content)
+        response_content = json.loads(resp.content)
         self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
@@ -118,7 +118,7 @@ class RecordingAPITests(InstanceTestCase):
         self.assertIn('/recording/%d' % recording.id, resp['Location'])
 
         # Check response JSON
-        response_content = simplejson.loads(resp.content)
+        response_content = json.loads(resp.content)
         self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
@@ -166,7 +166,7 @@ class RecordingAPITests(InstanceTestCase):
         self.assertIn('/recording/%d' % recording.id, resp['Location'])
 
         # Check response JSON
-        response_content = simplejson.loads(resp.content)
+        response_content = json.loads(resp.content)
         self.assertTrue(".mp3" in response_content['fields']['audio'])
 
         # Check in db
@@ -185,6 +185,6 @@ class RecordingAPITests(InstanceTestCase):
         # Assert that it fails and gives us an error
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(resp['Content-Type'], 'application/json')
-        response_content = simplejson.loads(resp.content)
-        response_errors = simplejson.loads(response_content['errors'])
+        response_content = json.loads(resp.content)
+        response_errors = json.loads(response_content['errors'])
         self.assertEqual(response_errors['audio'], ["That file does not appear to be an audio file"])

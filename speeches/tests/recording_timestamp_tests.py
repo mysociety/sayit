@@ -5,7 +5,6 @@ from datetime import datetime
 import pytz
 
 from django.test.utils import override_settings
-from django.utils import simplejson
 from django.conf import settings
 
 import speeches
