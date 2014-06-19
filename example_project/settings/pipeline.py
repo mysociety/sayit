@@ -31,8 +31,8 @@ STATICFILES_FINDERS = (
 )
 
 # Compress the css and js using yui-compressor.
-PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
-PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
+PIPELINE_CSS_COMPRESSOR = None
+PIPELINE_JS_COMPRESSOR = None
 PIPELINE_COMPILERS = (
     'pipeline_compass.compass.CompassCompiler',
 )
