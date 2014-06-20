@@ -30,7 +30,7 @@ class SpeechTests(InstanceTestCase):
         # Test that the page exists and has the right title
         resp = self.client.get('/speech/add')
         self.assertEqual(resp.status_code, 200)
-        self.assertTrue('Add a speech' in resp.content)
+        self.assertTrue('Add a speech' in resp.content.decode())
 
     def test_add_speech_fails_on_empty_form(self):
         # Test that the form won't submit if empty
@@ -502,7 +502,7 @@ class SpeechTests(InstanceTestCase):
         )
 
         resp = self.client.get('/sections/%d' % section.id)
-        self.assertRegexpMatches( resp.content, '>\s+1 Jan 2000\s+&ndash;\s+2 Jan 2000\s+<' )
+        self.assertRegexpMatches( resp.content.decode(), '>\s+1 Jan 2000\s+&ndash;\s+2 Jan 2000\s+<' )
 
     def test_speech_page_has_buttons_to_edit(self):
         # Add a section

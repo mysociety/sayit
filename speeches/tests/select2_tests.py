@@ -42,7 +42,7 @@ class AjaxTests(InstanceTestCase):
             })
         resp = self.client.get('/select2/fields/auto.json?' + data)
 
-        results = json.loads(resp.content)['results']
+        results = json.loads(resp.content.decode())['results']
 
         # We should see Alice and Alastair, but not Bob (doesn't match),
         # or Alan (wrong instance).
@@ -61,7 +61,7 @@ class AjaxTests(InstanceTestCase):
         })
         resp = self.client.get('/select2/fields/auto.json?' + data)
 
-        results = json.loads(resp.content)['results']
+        results = json.loads(resp.content.decode())['results']
 
         # We should see Sections, but not Not This (doesn't match),
         # or Other (wrong instance).

@@ -59,8 +59,8 @@ class AudioHelperTests(InstanceTestCase):
         self.tmp_filename = getattr(self.helper, method)(os.path.join(self._in_fixtures, known_input))
         expected = self.expected_output_file(expected_output)
         # Check that the type of the file is exactly the same first of all:
-        self.assertEqual(strip_kbps_from_file_info(magic.from_file(self.tmp_filename)),
-                          strip_kbps_from_file_info(magic.from_file(expected)))
+        self.assertEqual(strip_kbps_from_file_info(magic.from_file(self.tmp_filename).decode()),
+                          strip_kbps_from_file_info(magic.from_file(expected).decode()))
         # Now check that the files are identical:
         self.assertSameAudioLength(self.tmp_filename, expected)
 

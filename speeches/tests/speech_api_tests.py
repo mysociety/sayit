@@ -23,7 +23,7 @@ class SpeechAPITests(InstanceTestCase):
 
     def test_speech_list(self):
         resp = self.client.get('/api/v0.1/speech/?format=json')
-        data = json.loads(resp.content)
+        data = json.loads(resp.content.decode())
         objects = data['objects']
 
         self.assertEqual(len(objects), 1)

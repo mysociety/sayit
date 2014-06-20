@@ -52,9 +52,9 @@ class SpeakerTests(InstanceTestCase):
 
         resp = self.client.get('/sections/' + str(section.id))
 
-        self.assertRegexpMatches(resp.content, r'(?s)<img src="\s*http://example.com/image.jpg\s*".*?<a href="/speaker/%s">\s*' % (speaker1.slug))
+        self.assertRegexpMatches(resp.content.decode(), r'(?s)<img src="\s*http://example.com/image.jpg\s*".*?<a href="/speaker/%s">\s*' % (speaker1.slug))
 
-        self.assertRegexpMatches(resp.content, r'(?s)<img src="\s*/static/speeches/i/a.\w+.png\s*".*?<a href="/speaker/%s">\s*' % (speaker2.slug))
+        self.assertRegexpMatches(resp.content.decode(), r'(?s)<img src="\s*/static/speeches/i/a.\w+.png\s*".*?<a href="/speaker/%s">\s*' % (speaker2.slug))
 
     def test_add_speaker_with_whitespace(self):
         name = ' Bob\n'
