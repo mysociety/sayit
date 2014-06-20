@@ -42,6 +42,7 @@ that you're missing, hopefully you're e.g. already using South!):
     'pipeline',
     'django_select2',
     'django_bleach',
+    'popolo',
     'popit',
     'instances',
     'speeches',
