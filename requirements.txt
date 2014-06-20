@@ -5,7 +5,6 @@
 ### General useful bits
 PyYAML
 psycopg2
-python-memcached
 python-dateutil<2
 pytz
 six
