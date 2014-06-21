@@ -1,0 +1,8 @@
+-r requirements-testing.txt
+
+# Only for debugging, but very useful and easiest to just have it here
+django-debug-toolbar
+
+# For akomantoso import
+python-dateutil<2
+lxml

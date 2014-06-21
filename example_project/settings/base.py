@@ -7,7 +7,11 @@ from .paths import *
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-DEBUG_TOOLBAR = True
+try:
+    import debug_toolbar
+    DEBUG_TOOLBAR = True
+except:
+    DEBUG_TOOLBAR = False
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -121,7 +125,6 @@ INSTALLED_APPS = [
     'haystack',
     'south',
     'django_select2',
-    'django_nose',
     'django_bleach',
     'pipeline',
     'popit',
@@ -136,10 +139,15 @@ try:
 except:
     pass
 
+try:
+    import nose
+    INSTALLED_APPS.append( 'django_nose' )
+    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+except:
+    pass
+
 if DEBUG_TOOLBAR:
     INSTALLED_APPS.append( 'debug_toolbar' )
-
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # Log WARN and above to stderr; ERROR and above by email when DEBUG is False.
 LOGGING = {
