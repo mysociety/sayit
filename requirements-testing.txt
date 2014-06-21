@@ -4,9 +4,8 @@
 selenium
 mock
 
-# For testing the types of files (using libmagic1):
-python-magic
-
 # We use nose to run the tests, which gets around various limitations
 # with the built-in test runner:
 django-nose==1.2
+
+Mutagen
