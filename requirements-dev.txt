@@ -6,3 +6,7 @@ django-debug-toolbar
 # For akomantoso import
 python-dateutil<2
 lxml
+
+# For migrations
+South
+popit-django==0.0.3
