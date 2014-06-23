@@ -3,17 +3,19 @@ from django.views.decorators.csrf import csrf_exempt
 
 from speeches.views import *
 from speeches.search import InstanceSearchView
-from tastypie.api import NamespacedApi
-from speeches.api import SpeechResource, SpeakerResource, SectionResource
-
 from speeches.views import Select2AutoResponseView
 
-# XXX The below assumes this app is being included with a 'speeches' namespace.
-# Unclear how to have this inherit whichever namespace is being used.
-v01_api = NamespacedApi(api_name='v0.1', urlconf_namespace='speeches')
-v01_api.register(SpeakerResource())
-v01_api.register(SpeechResource())
-v01_api.register(SectionResource())
+try:
+    from tastypie.api import NamespacedApi
+    from speeches.api import SpeechResource, SpeakerResource, SectionResource
+    # XXX The below assumes this app is being included with a 'speeches' namespace.
+    # Unclear how to have this inherit whichever namespace is being used.
+    v01_api = NamespacedApi(api_name='v0.1', urlconf_namespace='speeches')
+    v01_api.register(SpeakerResource())
+    v01_api.register(SpeechResource())
+    v01_api.register(SectionResource())
+except:
+    v01_api = None
 
 urlpatterns = patterns('',
     url(r'^$', InstanceView.as_view(), name='home'),
@@ -50,9 +52,12 @@ urlpatterns = patterns('',
     url(r'^recording/(?P<pk>\d+)$', RecordingView.as_view(), name='recording-view'),
     url(r'^recording/(?P<pk>\d+)/edit$', RecordingUpdate.as_view(), name='recording-edit'),
     url(r'^api/v0.1/recording/$', csrf_exempt(RecordingAPICreate.as_view()), name='recording-api-add'),
+)
 
-    url(r'^api/', include(v01_api.urls)),
+if v01_api is not None:
+    urlpatterns += patterns('', url(r'^api/', include(v01_api.urls)) )
 
+urlpatterns += patterns('',
     url(r'^(?P<full_slug>.+)\.an$', SectionViewAN.as_view(), name='section-view'),
     url(r'^(?P<full_slug>.+)$', SectionView.as_view(), name='section-view'),
 )

@@ -1,10 +1,18 @@
 import json
 
 from django.conf import settings
+from django.utils import unittest
 
 from speeches.tests import InstanceTestCase
 from speeches.models import Speech
 
+try:
+    import tastypie
+    skip_tastypie = False
+except:
+    skip_tastypie = True
+
+@unittest.skipIf(skip_tastypie, 'Tastypie tests skipping, as not installed')
 class SpeechAPITests(InstanceTestCase):
 
     def setUp(self):

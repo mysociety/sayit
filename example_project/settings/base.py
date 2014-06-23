@@ -122,7 +122,6 @@ INSTALLED_APPS = [
     'south',
     'django_select2',
     'django_nose',
-    'tastypie',
     'django_bleach',
     'pipeline',
     'popit',
@@ -131,6 +130,12 @@ INSTALLED_APPS = [
     'speeches',
     'pagination',
 ]
+try:
+    import tastypie
+    INSTALLED_APPS.append( 'tastypie' )
+except:
+    pass
+
 if DEBUG_TOOLBAR:
     INSTALLED_APPS.append( 'debug_toolbar' )
 
