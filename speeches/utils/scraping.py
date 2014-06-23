@@ -129,6 +129,16 @@ class BaseParser(object):
     def top_section_title(self, data):
         return 'Hearing, %s' % data['date'].strftime('%d %B %Y').lstrip('0')
 
+    def get_parent_section(self, data):
+        """Find the section to create the top section in.
+
+        All speeches for this transcript will be created in a section with title
+        provided by top_section_title.
+
+        Override this method to put this section inside another section.
+        """
+        return None
+
     def parse_transcript(self, data):
         """Takes transcript and returns an iterator of Speech objects.
 
@@ -147,6 +157,7 @@ class BaseParser(object):
         top_section = self.get_or_create(
             Section, instance=self.instance, source_url=data['url'],
             title=self.top_section_title(data),
+            parent=self.get_parent_section(data),
         )
 
         for speech in self.parse_transcript(data):
