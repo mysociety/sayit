@@ -144,8 +144,8 @@ class BaseParser(object):
     def get_parent_section(self, data):
         """Find the section to create the top section in.
 
-        All speeches for this transcript will be created in a section with title
-        provided by top_section_title.
+        All speeches for this transcript will be created in a section with
+        title provided by top_section_title.
 
         Override this method to put this section inside another section.
         """
