@@ -75,9 +75,16 @@ class BaseParser(object):
             help='commit to database',
             action='store_true',
             )
+        self.parser.add_option(
+            '--skip-existing',
+            dest='skip_existing',
+            help="Skip any files which we've already downloaded",
+            action='store_true',
+            )
 
     def _process_parser_options(self):
         self.commit = self.options.commit
+        self.skip_existing = self.options.skip_existing
 
     def get_transcripts(self):
         """Returns an iterator of dictionaries representing single transcripts.
@@ -94,14 +101,19 @@ class BaseParser(object):
 
         file_pdf = os.path.join(self.cache_dir, name)
         file_text = file_pdf.replace('.pdf', '.txt')
-        if not os.path.exists(file_text):
-            if not os.path.exists(file_pdf):
-                with self.requests.cache_disabled():
-                    pdf_transcript = self.get_url(pdf_url, 'binary')
-                fp = open(file_pdf, 'w')
+
+        if os.path.exists(file_text):
+            if self.skip_existing:
+                return
+        else:
+            with self.requests.cache_disabled():
+                pdf_transcript = self.get_url(pdf_url, 'binary')
+
+            with open(file_pdf, 'w') as fp:
                 fp.write(pdf_transcript)
-                fp.close()
+
             subprocess.call(['pdftotext', '-layout', file_pdf])
+
         text = open(file_text).read()
 
         # Be sure to have ^L on its own line
