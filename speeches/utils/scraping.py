@@ -123,8 +123,7 @@ class BaseParser(object):
 
     def get_url(self, url, type='none'):
         resp = self.requests.get(url)
-        if resp.status_code != 200:
-            raise Exception
+        resp.raise_for_status()
         if type == 'binary':
             return resp.content
         elif type == 'html':
