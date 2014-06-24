@@ -3,31 +3,18 @@
 # more details: http://www.pip-installer.org/en/latest/requirements.html
 
 ### General useful bits
-PyYAML
 psycopg2
-python-dateutil<2
 pytz
 six
 
 ### Django related
 Django>=1.4.2
-South
 django-pagination
 Django-Select2==4.2.2
 django-qmethod
 django-bleach
 django-pipeline
 django-pipeline-compass-rubygem
-
-# Only for debugging, but very useful and easiest to just have it here
-django-debug-toolbar
-
-# Testing
-selenium
-mock
-
-# For testing the types of files (using libmagic1):
-python-magic
 
 # For finding the lengths of MP3 files
 audioread
@@ -43,14 +30,6 @@ pyelasticsearch
 django-haystack
 
 # mySociety modules
-popit-django==0.0.3
-mysociety-django-popolo==0.0.1
-mysociety-django-sluggable==0.2.4
+mysociety-django-popolo==0.0.2
+mysociety-django-sluggable==0.2.5
 django-subdomain-instances==0.2
-
-# We use nose to run the tests, which gets around various limitations
-# with the built-in test runner:
-django-nose==1.2
-
-# Parse XML for akomantoso import
-lxml

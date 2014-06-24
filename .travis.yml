@@ -32,16 +32,16 @@ matrix:
 
 install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq ffmpeg libavcodec-extra-53 iceweasel xvfb yui-compressor
+  - sudo apt-get install -qq ffmpeg libavcodec-extra-53 iceweasel xvfb
   - gem install --conservative --no-ri --no-rdoc sass -v 3.2.14
   - gem install --conservative --no-ri --no-rdoc compass -v 0.12.2
   - gem install --conservative --no-ri --no-rdoc zurb-foundation -v 4.3.2
   - pip install $MODULES
-  - pip install -r requirements.txt
+  - pip install -r requirements-testing.txt
 
 before_script:
   - psql -c 'create database "sayit-example-project";' -U postgres
-  - ./manage.py syncdb --noinput --migrate
+  - ./manage.py syncdb --noinput
   - ./manage.py collectstatic --noinput
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
