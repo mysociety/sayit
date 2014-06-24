@@ -16,13 +16,15 @@ pip install -r requirements-scraping.txt
 
 import itertools
 import os
+import socket
+import re
 
 from exceptions import NotImplementedError, StandardError
 
 from optparse import OptionParser
-import re
 
 import bs4
+import requests
 import requests_cache
 import subprocess
 
@@ -35,6 +37,10 @@ def prevnext(it):
     prev = itertools.chain([None], prev)
     next = itertools.chain(itertools.islice(next, 1, None), [None])
     return itertools.izip(prev, curr, next)
+
+
+class ScrapingError(StandardError):
+    """Exception to represent all different sorts of scraping error."""
 
 
 class BaseParser(object):
@@ -107,7 +113,10 @@ class BaseParser(object):
                 return
         else:
             with self.requests.cache_disabled():
-                pdf_transcript = self.get_url(pdf_url, 'binary')
+                try:
+                    pdf_transcript = self.get_url(pdf_url, 'binary')
+                except (requests.exceptions.HTTPError, socket.error):
+                    raise ScrapingError('Error fetching {}'.format(pdf_url))
 
             with open(file_pdf, 'w') as fp:
                 fp.write(pdf_transcript)
