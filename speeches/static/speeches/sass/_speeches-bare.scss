@@ -1062,3 +1062,40 @@ form > .row {
     background-color: #f6f6f6;
 }
 
+/* Homepage */
+
+.homepage-search {
+    @include grid-column(12);
+    .site-search__input,
+    .site-search__button {
+        font-size: 1.125em;
+    }
+    @media (min-width: $medium-screen) {
+        margin-top: 4em;
+        margin-bottom: 4em;
+    }
+
+    @media (min-width: $large-screen) {
+        @include grid-column(8, $center:true);
+    }
+
+    h2 {
+        font-weight: $weight_light;
+        font-size: 2em;
+        margin-top: 1em;
+        @media (min-width: $medium-screen) {
+            font-size: 2.5em;
+        }
+        @media (min-width: $huge-screen) {
+            font-size: 2.8em;
+        }
+        text-align: center;
+    }
+}
+
+.site-search--homepage {
+    @include grid-column(12, $center:true);
+    @media (min-width: $medium-screen) {
+        @include grid-column(8, $center:true);
+    }
+}
