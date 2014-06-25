@@ -992,6 +992,18 @@ form > .row {
     }
 }
 
+.select2-container {
+    margin-bottom: 0.9em; /* match margin below normal text inputs */
+
+    .select2-choice {
+        height: 2em; /* match height of normal text inputs */
+    }
+
+    .select2-chosen {
+        line-height: 1.8em;
+    }
+}
+
 .suggested-speakers {
     @include unstyled-list;
     margin-bottom: 0;
