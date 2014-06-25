@@ -259,8 +259,8 @@ $image-path: '../img' !default;
 
 .speech__links {
   position: absolute;
-  bottom: 1em;
-  right: 1px;
+  bottom: 0.25em;
+  right: 0;
   padding: 0 1em 0 0;
   z-index: 300;
   background-color: #fff; // in case the links overlap text below them
@@ -518,7 +518,9 @@ $image-path: '../img' !default;
   }
 
   .speech__links {
-    bottom: 0.75em;
+    bottom: 0.25em;
+    left: 1px;
+    right: 1px;
   }
 }
 
