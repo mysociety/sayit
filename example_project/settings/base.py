@@ -226,3 +226,5 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': '%s_write' % SEARCH_INDEX_NAME,
     },
 }
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
