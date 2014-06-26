@@ -287,7 +287,7 @@ class SpeechTests(InstanceTestCase):
         self.assertEqual(speech.text, with_speaker_text)
 
         resp = self.client.get('/speech/{}/edit'.format(speech.id))
-        self.assertTrue(orig_text in resp.content)
+        self.assertTrue(orig_text in resp.content.decode())
 
         self.client.post(
             '/speech/{}/edit'.format(speech.id),
@@ -298,7 +298,7 @@ class SpeechTests(InstanceTestCase):
         self.assertEqual(speech.text, no_speaker_text)
 
         resp = self.client.get('/speech/{}/edit'.format(speech.id))
-        self.assertTrue(orig_text in resp.content)
+        self.assertTrue(orig_text in resp.content.decode())
 
         self.client.post(
             '/speech/{}/edit'.format(speech.id),
@@ -336,8 +336,8 @@ class SpeechTests(InstanceTestCase):
         # Assert that it uploads and we see it straightaway
         speech = Speech.objects.order_by('-id')[0]
         resp = self.client.get('/speech/%d' % speech.id)
-        self.assertFalse('Please wait' in resp.content)
-        self.assertTrue(text in resp.content)
+        self.assertFalse('Please wait' in resp.content.decode())
+        self.assertTrue(text in resp.content.decode())
 
         # Test edit page
         resp = self.client.get('/speech/%d/edit' % speech.id)
