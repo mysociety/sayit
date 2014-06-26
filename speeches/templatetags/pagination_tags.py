@@ -60,7 +60,7 @@ def paginate(context, window=DEFAULT_WINDOW, hashtag=''):
         current_end = page_obj.number-1+window
         if current_end < 0:
             current_end = 0
-        current = set(page_range[current_start:current_end])
+        current = set(page_range[current_start:current_end+1])
         pages = []
         # If there's no overlap between the first set of pages and the current
         # set of pages, then there's a possible need for elusion.
@@ -131,7 +131,7 @@ def paginate(context, window=DEFAULT_WINDOW, hashtag=''):
             else:
                 to_return['getvars'] = ''
         return to_return
-    except KeyError, AttributeError:
+    except (KeyError, AttributeError):
         return {}
 
 register.inclusion_tag('pagination/pagination.html', takes_context=True)(
