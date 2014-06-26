@@ -1111,3 +1111,11 @@ form > .row {
         @include grid-column(8, $center:true);
     }
 }
+
+.homepage-stats {
+    text-align: center;
+    padding: 1em 0 3em;
+    font-size: emCalc(24);
+    font-weight: $weight_light;
+    line-height: 1.4em;
+}
