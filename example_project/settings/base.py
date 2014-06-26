@@ -88,7 +88,6 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'pagination.middleware.PaginationMiddleware',
     'speeches.middleware.InstanceMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -129,7 +128,6 @@ INSTALLED_APPS = [
     'popolo',
     'instances',
     'speeches',
-    'pagination',
 ]
 try:
     import tastypie
@@ -192,10 +190,7 @@ LOGGING = {
 }
 
 # pagination related settings
-PAGINATION_DEFAULT_PAGINATION = 10
 PAGINATION_DEFAULT_WINDOW = 2
-PAGINATION_DEFAULT_ORPHANS = 2
-PAGINATION_INVALID_PAGE_RAISES_404 = True
 
 APPEND_SLASH = False
 
