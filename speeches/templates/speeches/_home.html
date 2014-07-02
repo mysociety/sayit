@@ -8,9 +8,9 @@
 
 {% block content %}
 
-<div class="page-content__row">
-
   {% if paginator.count %}
+
+  <div class="page-content__row">
 
     <div class="homepage-search">
         <h2>{% block instance_search_title %}{% trans 'Search speeches and statements' %}{% endblock %}</h2>
@@ -45,8 +45,10 @@
           {% blocktrans with n=count_sections|intcomma count c=count_sections %}<a href="{{ url_section_list }}"><strong>1</strong></a> section{% plural %}<a href="{{ url_section_list }}"><strong>{{ n }}</strong></a> sections{% endblocktrans %}{% endif %}
         {% endif %}
 
-{% block instance_blocks %}
-{% endblock %}
+    {% block instance_blocks %}
+    {% endblock %}
+
+  </div>
 
   {% else %}
 
@@ -64,7 +66,5 @@
     </div>
 
   {% endif %}
-
-</div>
 
 {% endblock %}
