@@ -1,6 +1,5 @@
 {% extends 'speeches/base.html' %}
 {% load staticfiles %}
-{% load compressed %}
 
 {% block extra_css %}
 {{ block.super }}
@@ -9,5 +8,5 @@
 
 {% block extra_js_head %}
 {{ block.super }}
-{% compressed_js 'sayit-player' %}
+<script type="text/javascript" src="{% static "speeches/mediaelement/mediaelement-and-player.js" %}" charset="utf-8"></script>
 {% endblock %}

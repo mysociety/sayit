@@ -1,7 +1,6 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% load i18n %}
-{% load compressed %}
 
 {% block extrastyle %}
 {{ block.super }}
@@ -14,7 +13,8 @@ label.checkbox.inline { float: none; display: inline; }
 
 {% block extrahead %}
 {{ block.super }}
-{% compressed_js 'sayit-admin' %}
+<script type="text/javascript" src="{% static "speeches/js/jquery.js" %}" charset="utf-8"></script>
+<script type="text/javascript" src="{% static "speeches/mediaelement/mediaelement-and-player.js" %}" charset="utf-8"></script>
 <script>
 $(function(){
     $('audio').mediaelementplayer();

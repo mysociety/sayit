@@ -1,7 +1,6 @@
 {% extends 'speeches/base.html' %}
 {% load i18n %}
 {% load staticfiles %}
-{% load compressed %}
 {% load url from future %}
 {% load django_select2_tags %}
 
@@ -14,7 +13,9 @@
 {% block extra_js %}
 {{ block.super }}
 {% import_django_select2_js 0 %}
-{% compressed_js 'sayit-upload' %}
+<script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/vendor/jquery.ui.widget.js" %}" charset="utf-8"></script>
+<script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/jquery.iframe-transport.js" %}" charset="utf-8"></script>
+<script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/jquery.fileupload.js" %}" charset="utf-8"></script>
 {% endblock %}
 
 {% block title %}

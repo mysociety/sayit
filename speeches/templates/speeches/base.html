@@ -1,4 +1,4 @@
-{% load staticfiles %}{% load url from future %}{% load compressed %}<!DOCTYPE html>
+{% load staticfiles %}{% load url from future %}<!DOCTYPE html>
 <html>
     <head>
         <title>{% block fulltitle %}{% block title %}{% endblock %} :: SayIt{% endblock %}</title>
@@ -7,10 +7,10 @@
         {% block extra_headers %}{% endblock %}
 
         {% block extra_css %}
-            {% compressed_css 'sayit-default' %}
+            <link href="{% static "speeches/css/speeches.css" %}" rel="stylesheet" type="text/css">
         {% endblock extra_css %}
 
-        {% compressed_js 'sayit-default-head' %}
+        <script type="text/javascript" src="{% static "speeches/js/jquery.js" %}" charset="utf-8"></script>
         {% block extra_js_head %}{% endblock %}
     </head>
 
@@ -54,7 +54,9 @@
           </div>
         </footer>
 
-        {% compressed_js 'sayit-default' %}
+        <script type="text/javascript" src="{% static "speeches/js/foundation/foundation.js" %}" charset="utf-8"></script>
+        <script type="text/javascript" src="{% static "speeches/js/foundation/foundation.dropdown.js" %}" charset="utf-8"></script>
+        <script type="text/javascript" src="{% static "speeches/js/speeches.js" %}" charset="utf-8"></script>
         {% block extra_js %}{% endblock %}
         <script>
           if (typeof $ != 'undefined' && typeof $(document).foundation != 'undefined') {

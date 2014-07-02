@@ -133,12 +133,6 @@ INSTALLED_APPS = [
 ]
 
 try:
-    import pipeline
-    INSTALLED_APPS.append( 'pipeline' )
-except:
-    pass
-
-try:
     import tastypie
     INSTALLED_APPS.append( 'tastypie' )
 except:
@@ -211,8 +205,32 @@ SOUTH_TESTS_MIGRATE = False
 # Select2
 AUTO_RENDER_SELECT2_STATICS = False
 
-# django-pipeline and static file configuration
-from .pipeline import *
+# Absolute path to the directory static files should be collected to.
+# Don't put anything in this directory yourself; store your static files
+# in apps' "static/" subdirectories and in STATICFILES_DIRS.
+# Example: "/home/media/media.lawrence.com/static/"
+STATIC_ROOT = os.path.join(PARENT_DIR, 'collected_static')
+
+# URL prefix for static files.
+# Example: "http://media.lawrence.com/static/"
+STATIC_URL = '/static/'
+
+# Additional locations of static files
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+)
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 # django-bleach configuration
 from .bleach import *
