@@ -82,15 +82,15 @@ class BaseParser(object):
             action='store_true',
             )
         self.parser.add_option(
-            '--skip-existing',
-            dest='skip_existing',
-            help="Skip any files which we've already downloaded",
+            '--process-existing',
+            dest='process_existing',
+            help="Process files already downloaded (default is to skip)",
             action='store_true',
             )
 
     def _process_parser_options(self):
         self.commit = self.options.commit
-        self.skip_existing = self.options.skip_existing
+        self.process_existing = self.options.process_existing
 
     def get_transcripts(self):
         """Returns an iterator of dictionaries representing single transcripts.
@@ -109,7 +109,7 @@ class BaseParser(object):
         file_text = file_pdf.replace('.pdf', '.txt')
 
         if os.path.exists(file_text):
-            if self.skip_existing:
+            if not self.process_existing:
                 return
         else:
             with self.requests.cache_disabled():
