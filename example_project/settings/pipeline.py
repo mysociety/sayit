@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 import os
 from .paths import PROJECT_ROOT, PARENT_DIR
 
@@ -18,7 +20,11 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+try:
+    import pipeline
+    STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+except:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 # List of finder classes that know how to find static files in
 # various locations.

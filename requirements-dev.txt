@@ -1,5 +1,9 @@
 -r requirements-testing.txt
 
+# For compiling the stylesheets and JavaScript
+django-pipeline
+django-pipeline-compass-rubygem
+
 # Only for debugging, but very useful and easiest to just have it here
 django-debug-toolbar
 

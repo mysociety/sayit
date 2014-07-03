@@ -12,8 +12,6 @@ Django>=1.4.2
 Django-Select2==4.2.2
 django-qmethod
 django-bleach
-django-pipeline
-django-pipeline-compass-rubygem
 
 # For finding the lengths of MP3 files
 audioread

@@ -1,10 +1,5 @@
 *.pyc
-/conf/general.yml
-/conf/general.yml.deployed
-/conf/httpd.conf
-/conf/httpd.conf.deployed
 .sass-cache
-/web/sass/*.css
 /speeches/static/speeches/sass/*.css
 django.mo
 .apdisk

@@ -1,8 +1,11 @@
 # Django settings for example_project project.
 
+from __future__ import absolute_import
+
 import os
 import sys
 from django.conf import global_settings
+
 from .paths import *
 
 DEBUG = True
@@ -124,11 +127,17 @@ INSTALLED_APPS = [
     'haystack',
     'django_select2',
     'django_bleach',
-    'pipeline',
     'popolo',
     'instances',
     'speeches',
 ]
+
+try:
+    import pipeline
+    INSTALLED_APPS.append( 'pipeline' )
+except:
+    pass
+
 try:
     import tastypie
     INSTALLED_APPS.append( 'tastypie' )
