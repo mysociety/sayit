@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Make sure that the 'compass' command exists (see http://stackoverflow.com/a/677212/329911)
+command -v compass >/dev/null 2>&1 || {
+  echo >&2 "Compass does not appear to be available. Unable to re-compile stylesheets"
+  exit 1
+}
+
+# Pre-commit hook to generate .css files from the .scss
+for in in $( git diff-index --cached --name-only HEAD )
+do
+  if [[ $in == *.scss && $in != _* ]]; then
+
+    base_in=$(basename "$in" ".scss")
+    dir_sass=$(dirname "$in")
+    dir_static=$(dirname "$dir_sass")
+    dir_css="$dir_static/css"
+    mkdir -p "$dir_css"
+    out="$dir_css/$base_in.css"
+
+    status=$( git status --porcelain $in )
+
+    # If the file was deleted as part of the commit, delete the
+    # corresponding CSS file.
+    if [[ $status == D* ]]; then
+      git rm -f $out
+    else
+      echo "Generating $out from $in"
+      if ! compass compile --output-style=compressed -r zurb-foundation --sass-dir $dir_sass --css-dir $dir_css $in; then
+        exit 1
+      fi
+      git add $out
+    fi
+  fi
+done
