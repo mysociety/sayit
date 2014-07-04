@@ -9,7 +9,11 @@ Testing
 SayIt tests run on Travis with each commit and pull request, and you
 can [see the output on Travis](https://travis-ci.org/mysociety/sayit).
 
-Tests can be run as normal with:
+To install the packages required to run the tests, run:
+
+    pip install -e .[test]
+
+Tests can be run with:
 
     ./manage.py test speeches
 
