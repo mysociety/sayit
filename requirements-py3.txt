@@ -1,0 +1,1 @@
+-e git+https://bitbucket.org/jpmckinney/django-bleach.git@python3#egg=django-bleach

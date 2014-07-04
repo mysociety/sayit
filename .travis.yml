@@ -24,20 +24,13 @@ matrix:
   exclude:
     - python: "3.3"
       env: MODULES="Django>=1.4,<1.5 django-tastypie==0.9.16"
-    # Remove the following two exclusions once SayIt is compatible with Python 3.
-    - python: "3.3"
-      env: MODULES="Django>=1.5,<1.6 django-tastypie>=0.10.0"
-    - python: "3.3"
-      env: MODULES="Django>=1.6,<1.7 django-tastypie>=0.10.0"
 
 install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq ffmpeg libavcodec-extra-53 iceweasel xvfb
-  - gem install --conservative --no-ri --no-rdoc sass -v 3.2.14
-  - gem install --conservative --no-ri --no-rdoc compass -v 0.12.2
-  - gem install --conservative --no-ri --no-rdoc zurb-foundation -v 4.3.2
   - pip install $MODULES
-  - pip install -r requirements-testing.txt
+  - if [ $TRAVIS_PYTHON_VERSION = 3.3 ]; then pip install -r requirements-py3.txt; fi
+  - pip install -e .[test]
 
 before_script:
   - psql -c 'create database "sayit-example-project";' -U postgres

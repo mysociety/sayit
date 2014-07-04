@@ -1,4 +1,5 @@
-recursive-include web *
+include *.txt
+recursive-include speeches/locale *
 recursive-include speeches/static *
 recursive-include speeches/templates *
 
