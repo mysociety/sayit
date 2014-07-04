@@ -104,7 +104,7 @@ class SpeechMixin(NamespaceMixin, InstanceFormMixin):
 class SpeechDelete(SpeechMixin, DeleteView):
 
     def get_success_url(self):
-        return self.reverse_lazy('speeches:section-list')
+        return self.reverse('speeches:section-list')
 
 class SpeechCreate(SpeechMixin, CreateView):
     def get_context_data(self, **kwargs):
@@ -318,7 +318,7 @@ class SectionUpdate(SectionMixin, UpdateView):
 
 class SectionDelete(SectionMixin, DeleteView):
     def get_success_url(self):
-        return self.reverse_lazy('speeches:section-list')
+        return self.reverse('speeches:section-list')
 
 class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
     model = Section
