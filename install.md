@@ -20,11 +20,6 @@ If you already have a Django project, and wish to use SayIt in it, you'll need
 to do the following. This assumes you already know about installing packages in
 Python with pip and hopefully in a virtualenv.
 
-1. **Python 3 only** You will currently need to install a fork of django-bleach
-first or you will get an error as the PyPI version is not compatible. Run:
-
-        pip install -e git+https://bitbucket.org/jpmckinney/django-bleach.git@python3#egg=django-bleach
-
 1. Add `django-sayit` (or e.g. `-e git+https://github.com/mysociety/sayit` if you
 want the bleeding edge) to your requirements.txt file, or install directly with
 pip:
@@ -112,11 +107,6 @@ and python-virtualenv).
 
         virtualenv --no-site-packages virtualenv-sayit
         source virtualenv-sayit/bin/activate
-
-1. **Python 3 only** You will currently need to install a fork of django-bleach
-first or you will get an error as the PyPI version is not compatible. Run:
-
-        pip install -e git+https://bitbucket.org/jpmckinney/django-bleach.git@python3#egg=django-bleach
 
 1. Install the required python packages:
 
