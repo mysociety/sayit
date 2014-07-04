@@ -28,7 +28,7 @@ setup(
         'psycopg2 >= 2.5.1, < 2.6',
         'pytz >= 2013d',
         'six >= 1.4.1',
-        'Django >= 1.4, < 1.7',
+        'Django >= 1.4, < 1.8',
         select2,
         'django-qmethod == 0.0.3',
         'audioread >= 1.0.1',
