@@ -29,7 +29,6 @@ install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq ffmpeg libavcodec-extra-53 iceweasel xvfb
   - pip install $MODULES
-  - if [ $TRAVIS_PYTHON_VERSION = 3.3 ]; then pip install -r requirements-py3.txt; fi
   - pip install -e .[test]
 
 before_script:

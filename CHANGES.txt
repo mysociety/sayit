@@ -1,3 +1,7 @@
+v1.1.1, 2014-07-04
+    * Switch to PyPI-hosted fork of django-bleach to remove extra step running
+      under Python 3.
+
 v1.1, 2014-07-04
     * Display improvements, including to the default front page, the speech
       detail page, nicer empty content messages and various tweaks

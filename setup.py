@@ -16,7 +16,7 @@ else:
 
 setup(
     name="django-sayit",
-    version='1.1.0',
+    version='1.1.1',
     description='A data store for speeches and transcripts to make them searchable and pretty.',
     long_description=read_file('README.rst'),
     author='mySociety',
@@ -31,10 +31,10 @@ setup(
         'Django >= 1.4, < 1.7',
         select2,
         'django-qmethod == 0.0.3',
-        'django-bleach >= 0.1.5',
         'audioread >= 1.0.1',
         'pyelasticsearch >= 0.6, < 0.7',
         'django-haystack >= 2.1, < 2.2',
+        'mysociety-django-bleach >= 0.2.0',
         'mysociety-django-popolo >= 0.0.2',
         'mysociety-django-sluggable >= 0.2.5',
         'django-subdomain-instances >= 0.4',
