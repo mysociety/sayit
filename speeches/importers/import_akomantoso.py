@@ -64,7 +64,7 @@ class ImportAkomaNtoso (ImporterBase):
 
     def get_text(self, node):
         paras = [ node.text ]
-        paras += [ etree.tostring(child, encoding='utf-8')
+        paras += [ etree.tostring(child, encoding='utf-8').decode()
                     for child in node.iterchildren()
                     if self.get_tag(child) not in ('num', 'heading', 'subheading', 'from') ]
         return ''.join(filter(None, paras))
@@ -87,9 +87,19 @@ class ImportAkomaNtoso (ImporterBase):
         return dt.date(), dt.time()
 
     def get_speaker(self, child):
-        display_name = child['from'].text
+        if child.find('from'):
+            display_name = child['from'].text
+        else:
+            display_name = None
+
         by_ref = child.get('by')
-        speaker = self.speakers[by_ref[1:]]
+        if by_ref:
+            if not by_ref.startswith('#'):
+                logger.warn("by attribute value doesn't begin with '#': %s" % by_ref)
+            speaker = self.speakers[by_ref[1:]]
+        else:
+            speaker = None
+
         return speaker, display_name
 
     def handle_tag(self, node, section):
