@@ -1,7 +1,7 @@
 {% load staticfiles %}{% load url from future %}<!DOCTYPE html>
 <html>
     <head>
-        <title>{% block fulltitle %}{% block title %}{% endblock %} :: SayIt{% endblock %}</title>
+        <title>{% block fulltitle %}{% block title %}{% endblock %}{% endblock %}</title>
         <meta charset="utf-8">
 
         {% block extra_headers %}{% endblock %}
@@ -44,15 +44,6 @@
             </div>
           </div>
         </div>
-
-        <footer>
-          <div class="full-page__row">
-            <div class="full-page__unit">
-              <p>A <a href="http://www.mysociety.org/">mySociety</a> project.
-              A <a href="http://poplus.org/">Poplus</a> component</p>
-            </div>
-          </div>
-        </footer>
 
         <script type="text/javascript" src="{% static "speeches/js/foundation/foundation.js" %}" charset="utf-8"></script>
         <script type="text/javascript" src="{% static "speeches/js/foundation/foundation.dropdown.js" %}" charset="utf-8"></script>
