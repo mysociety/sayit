@@ -25,8 +25,8 @@ $em-base: 16 !default;
 }
 
 // Converts "px" to "em" using the ($)em-base
-@function convert-to-em($value)  {
-  $value: strip-unit($value) / strip-unit($em-base) * 1em;
+@function convert-to-em($value, $base-value: $em-base)  {
+  $value: strip-unit($value) / strip-unit($base-value) * 1em;
   @if ($value == 0em) { $value: 0; } // Turn 0em into 0
   @return $value;
 }
