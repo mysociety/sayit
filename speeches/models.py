@@ -134,6 +134,8 @@ class Section(AuditedModel, InstanceMixin):
 
     title = models.TextField(blank=True, help_text=_('The title of the section'))
     description = models.TextField(blank=True, help_text=_('Longer description, HTML'))
+    start_date = models.DateField(blank=True, null=True, help_text=_('What date did the section start?'))
+    start_time = models.TimeField(blank=True, null=True, help_text=_('What time did the section start?'))
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
     slug = SluggableField(unique_with=('parent', 'instance'), populate_from='title')
     source_url = models.TextField(blank=True)

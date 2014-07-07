@@ -53,7 +53,7 @@ class ImportAkomaNtoso (ImporterBase):
         else:
             docTitle = debate.xpath('coverPage//docTitle|preface//docTitle')
         if docTitle:
-            section = self.make(Section, parent=None, title=docTitle[0].text)
+            section = self.make(Section, parent=None, title=docTitle[0].text, start_date=self.start_date)
         else:
             section = None
 
@@ -121,7 +121,11 @@ class ImportAkomaNtoso (ImporterBase):
                     'questions', 'address', 'proceduralMotions',
                     'pointOfOrder', 'adjournment'):
                 title = self.construct_title(child)
-                childSection = self.make(Section, parent=section, title=title)
+                childSection = self.make(Section,
+                    parent=section,
+                    title=title,
+                    start_date=self.start_date,
+                )
                 self.visit(child, childSection)
             elif tagname in ('speech', 'question', 'answer'):
                 title = self.construct_title(child)
