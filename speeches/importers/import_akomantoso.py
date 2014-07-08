@@ -41,23 +41,47 @@ class ImportAkomaNtoso (ImporterBase):
 
             self.speakers[id] = speaker
 
-        if self.ns:
-            docDate = debate.xpath('an:coverPage//an:docDate|an:preface//an:docDate', namespaces={'an': self.ns})
-        else:
-            docDate = debate.xpath('coverPage//docDate|preface//docDate')
+        docDate = self.get_preface_tag(debate, 'docDate')
         if docDate:
-            self.start_date = dateutil.parse(docDate[0].get('date'))
+            self.start_date = dateutil.parse(docDate.get('date'))
 
-        if self.ns:
-            docTitle = debate.xpath('an:coverPage//an:docTitle|an:preface//an:docTitle', namespaces={'an': self.ns})
-        else:
-            docTitle = debate.xpath('coverPage//docTitle|preface//docTitle')
+        docTitle = self.get_preface_tag(debate, 'docTitle')
         if docTitle:
-            section = self.make(Section, parent=None, title=docTitle[0].text, start_date=self.start_date)
-        else:
-            section = None
+            docTitle = docTitle.text
+
+        docNumber = self.get_preface_tag(debate, 'docNumber')
+        if docNumber:
+            docNumber = docNumber.text
+
+        legislature = self.get_preface_tag(debate, 'legislature')
+        if legislature:
+            legislature = legislature.text
+
+        session = self.get_preface_tag(debate, 'session')
+        if session:
+            session = session.text
+
+        section = None
+        if docTitle:
+            section = self.make(
+                Section,
+                parent=None,
+                title=docTitle,
+                start_date=self.start_date,
+                number=docNumber or '',
+                legislature=legislature or '',
+                session=session or '',
+            )
 
         self.visit(debate.debateBody, section)
+
+    def get_preface_tag(self, debate, tag):
+        if self.ns:
+            tag = debate.xpath('an:coverPage//an:%s|an:preface//an:%s' % (tag, tag), namespaces={'an': self.ns})
+        else:
+            tag = debate.xpath('coverPage//%s|preface//%s' % (tag, tag))
+        if tag:
+            return tag[0]
 
     def get_tag(self, node):
         return etree.QName(node.tag).localname
