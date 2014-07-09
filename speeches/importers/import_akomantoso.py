@@ -42,20 +42,20 @@ class ImportAkomaNtoso (ImporterBase):
             self.speakers[id] = speaker
 
         if self.ns:
-            docDate = debate.find('an:coverPage//an:docDate|an:preface//an:docDate', namespaces={'an': self.ns})
+            docDate = debate.xpath('an:coverPage//an:docDate|an:preface//an:docDate', namespaces={'an': self.ns})
         else:
-            docDate = debate.find('coverPage//docDate|preface//docDate')
-        if docDate is not None:
-            self.start_date = dateutil.parse(docDate.get('date'))
+            docDate = debate.xpath('coverPage//docDate|preface//docDate')
+        if docDate:
+            self.start_date = dateutil.parse(docDate[0].get('date'))
 
         if self.ns:
-            docTitle = debate.find('an:coverPage//an:docTitle|an:preface//an:docTitle', namespaces={'an': self.ns})
+            docTitle = debate.xpath('an:coverPage//an:docTitle|an:preface//an:docTitle', namespaces={'an': self.ns})
         else:
-            docTitle = debate.find('coverPage//docTitle|preface//docTitle')
-        if docTitle is None:
+            docTitle = debate.xpath('coverPage//docTitle|preface//docTitle')
+        if docTitle:
+            section = self.make(Section, parent=None, title=docTitle[0].text)
+        else:
             section = None
-        else:
-            section = self.make(Section, parent=None, title=docTitle.text)
 
         self.visit(debate.debateBody, section)
 
