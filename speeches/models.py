@@ -170,16 +170,21 @@ class Section(AuditedModel, InstanceMixin):
         include_self = True
         """Return the ancestors of the current Section, in either direction,
         optionally including itself."""
-        dir = ascending and 'ASC' or 'DESC'
-        s = Section.objects.raw(
-            """WITH RECURSIVE cte AS (
-                SELECT speeches_section.*, 1 AS l FROM speeches_section WHERE id=%s
-                UNION ALL
-                SELECT s.*, l+1 FROM cte JOIN speeches_section s ON cte.parent_id = s.id
+
+        if not self.parent_id:
+            # Shortcut when we know there's no parent
+            s = [ self ]
+        else:
+            dir = ascending and 'ASC' or 'DESC'
+            s = Section.objects.raw(
+                """WITH RECURSIVE cte AS (
+                    SELECT speeches_section.*, 1 AS l FROM speeches_section WHERE id=%s
+                    UNION ALL
+                    SELECT s.*, l+1 FROM cte JOIN speeches_section s ON cte.parent_id = s.id
+                )
+                SELECT * FROM cte ORDER BY l """ + dir,
+                [ self.id ]
             )
-            SELECT * FROM cte ORDER BY l """ + dir,
-            [ self.id ]
-        )
         if not include_self:
             s = ascending and s[1:] or s[:-1]
         return list(s) # So it's evaluated and will be cached
