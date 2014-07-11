@@ -10,7 +10,9 @@
   {% if speaker_list %}
 
     <div class="page-header">
+      {% if request.is_user_instance %}
         <a href="{% url "speeches:speaker-add" %}" class="button small right">Add a new speaker</a>
+      {% endif %}
         <h1>{% trans "All Speakers" %}</h1>
     </div>
 
