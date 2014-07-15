@@ -121,7 +121,7 @@ class SectionManager(InstanceManager, Manager):
         title = titles[-1]
         rest = titles[:-1]
         parent = self.get_or_create_with_parents(instance, rest)
-        
+
         section, created = self.get_or_create(instance=instance, title=title, parent=parent)
 
         return section
