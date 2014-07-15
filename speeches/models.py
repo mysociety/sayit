@@ -445,10 +445,23 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     location = models.TextField(db_index=True, blank=True, help_text=_('Where the speech took place'))
 
     # Metadata on the speech
-    # type = models.ChoiceField() # speech, scene, narrative, summary, etc.
     speaker = models.ForeignKey(Speaker, blank=True, null=True, help_text=_('Who gave this speech?'), on_delete=models.SET_NULL)
     # may be null, in which case we simply use current strategy to get name
     speaker_display = models.CharField(max_length=256, null=True, blank=True)
+
+    type = models.CharField(
+        max_length=32,
+        # Expected values from Akoma Ntoso
+        choices=(('speech', _('Speech')),
+                 ('question', _('Question')),
+                 ('answer', _('Answer')),
+                 ('scene', _('Scene')),
+                 ('narrative', _('Narrative')),
+                 ('summary', _('Summary')),
+                 ('other', _('Other')),
+                 ),
+        help_text=_('What sort of speech is this?'),
+        )
 
     start_date = models.DateField(blank=True, null=True, help_text=_('What date did the speech start?'))
     start_time = models.TimeField(blank=True, null=True, help_text=_('What time did the speech start?'))
