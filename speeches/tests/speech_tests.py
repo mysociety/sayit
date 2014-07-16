@@ -46,6 +46,7 @@ class SpeechTests(InstanceTestCase):
         self.assertRedirects(resp, '/speech/%d?created' % speech.id)
         self.assertEqual(speech.text, 'This is a speech')
         self.assertEqual(speech.speaker, None)
+        self.assertEqual(speech.type, 'narrative')
 
     def test_add_speech_with_unknown_speaker(self):
         """Try adding a speech with a speaker not yet in the database.
@@ -65,6 +66,7 @@ class SpeechTests(InstanceTestCase):
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(speech.text, '<p>Speech from new speaker</p>')
         self.assertEqual(speech.speaker, speaker)
+        self.assertEqual(speech.type, 'speech')
 
     def test_add_speech_with_unknown_data_and_bad_form(self):
         """Try adding a speech with new speaker/section and no other data.
@@ -265,6 +267,7 @@ class SpeechTests(InstanceTestCase):
         # Check in db
         speech = Speech.objects.get(speaker=speaker.id)
         self.assertEqual(speech.text, '<p>This is a Steve speech</p>')
+        self.assertEqual(speech.type, 'speech')
 
         # Check that the edit page for this speech contains the speaker's name
         resp = self.client.get('/speech/{}/edit'.format(speech.id))
@@ -285,6 +288,7 @@ class SpeechTests(InstanceTestCase):
 
         speech = Speech.objects.get(speaker_id=speaker.id)
         self.assertEqual(speech.text, with_speaker_text)
+        self.assertEqual(speech.type, 'speech')
 
         resp = self.client.get('/speech/{}/edit'.format(speech.id))
         self.assertTrue(orig_text in resp.content.decode())
@@ -296,6 +300,7 @@ class SpeechTests(InstanceTestCase):
 
         speech = Speech.objects.get(id=speech.id)
         self.assertEqual(speech.text, no_speaker_text)
+        self.assertEqual(speech.type, 'narrative')
 
         resp = self.client.get('/speech/{}/edit'.format(speech.id))
         self.assertTrue(orig_text in resp.content.decode())
@@ -307,6 +312,7 @@ class SpeechTests(InstanceTestCase):
 
         speech = Speech.objects.get(speaker_id=speaker.id)
         self.assertEqual(speech.text, with_speaker_text)
+        self.assertEqual(speech.type, 'speech')
 
     def test_add_speech_with_audio(self):
         # Load the mp3 fixture
