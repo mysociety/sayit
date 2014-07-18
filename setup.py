@@ -11,8 +11,10 @@ def read_file(filename):
 # Fix for Select2 py3 branching
 if sys.version_info >= (3,):
     select2 = 'Django-Select2-Py3 >= 4.2.1, < 4.3'
+    dateutil = 'python-dateutil >= 2'
 else:
     select2 = 'Django-Select2 >= 4.2.2, < 4.3'
+    dateutil = 'python-dateutil < 2'
 
 setup(
     name="django-sayit",
@@ -45,11 +47,11 @@ setup(
             'mock',
             'django-nose == 1.2',
             'Mutagen',
+            'lxml',
+            dateutil,
         ],
         'develop': [
             'django-debug-toolbar',
-            'python-dateutil < 2',
-            'lxml',
             'South',
             'popit-django == 0.0.3',
         ],

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<akomaNtoso xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.akomantoso.org/2.0 ./akomantoso20.xsd" xmlns="http://www.akomantoso.org/2.0">
+	<debate>
+		<!-- Task funded by UN/DESA. Analysis and markup performed by Monica Palmirani, CIRSFID, University of Bologna -->
+		<!-- debate with scene, summary, -->
+		<!-- Inspired to the original document books.google.it/books?id=6GGp-6N9mwkC -->
+		<meta>
+			<identification source="#somebody">
+				<FRBRWork>
+					<FRBRthis value="/ak/debaterecord/1995-10-31/main"/>
+					<FRBRuri value="/ak/debaterecord/1995-10-31"/>
+					<FRBRdate date="1995-10-31" name="generation"/>
+					<FRBRauthor href="#parliament" as="#author"/>
+					<FRBRcountry value="ak"/>
+				</FRBRWork>
+				<FRBRExpression>
+					<FRBRthis value="/ak/debaterecord/1995-10-31/eng@/main"/>
+					<FRBRuri value="/ak/debaterecord/1995-10-31/eng@"/>
+					<FRBRdate date="2012-05-31" name="markup"/>
+					<FRBRauthor href="#somebody" as="#editor"/>
+					<FRBRlanguage language="eng"/>
+				</FRBRExpression>
+				<FRBRManifestation>
+					<FRBRthis value="/ak/debaterecord/1995-10-31/eng@/main.xml"/>
+					<FRBRuri value="/ak/debaterecord/1995-10-31/eng@.akn"/>
+					<FRBRdate date="2012-05-31" name="publication"/>
+					<FRBRauthor href="#somebody" as="#editor"/>
+				</FRBRManifestation>
+			</identification>
+			<publication date="1995-11-01" name="internal" showAs="Internal Use Only" number="234"/>
+			<references source="#somebody">
+				<original id="ro1" href="/ak/debaterecord/1995-10-31/eng@/main" showAs="Original"/>
+				<TLCPerson id="somebody" href="/ontology/person/akn/somebody" showAs="somebody"/>
+				<TLCOrganization id="parliament" href="/ontology/organization/akn/parliament" showAs="Parliament"/>
+				<TLCPerson id="smith" href="/ontology/person/akn/parliament/JohnSmith" showAs="Mr Smith"/>
+				<TLCPerson id="brown" href="/ontology/person/akn/parliament/brown" showAs="Mr. Brown"/>
+				<TLCPerson id="adam" href="/ontology/person/akn/parliament/adam" showAs="Mr. Adam"/>
+				<TLCPerson id="cameroon" href="/ontology/person/akn/parliament/cameroon" showAs="Mr. Cameroon"/>
+				<TLCPerson id="white" href="/ontology/person/akn/parliament/white" showAs="Mr. White"/>
+				<TLCPerson id="black" href="/ontology/person/akn/parliament/black" showAs="Mr. Black"/>
+				<TLCRole id="author" href="/ontology/role/akn/author" showAs="Author of Document"/>
+				<TLCRole id="editor" href="/ontology/role/akn/editor" showAs="Editor of Document"/>
+				<TLCRole id="speaker" href="/ontology/role/akn/speaker" showAs="Mr. Speaker"/>
+				<TLCRole id="ms" href="/ontology/role/akn/ms" showAs="Minister of State, Office of the President"/>
+			</references>
+			<notes source="#somebody">
+				<note id="note01">
+					<p>This debate record is available in <a href="/www.akomantoso.org/example/">www.akomantoso.org/example</a>
+					</p>
+				</note>
+				<note id="note02">
+					<p>This debate record is available in <a href="/www.akomantoso.org/example/">www.akomantoso.org/example</a>
+					</p>
+				</note>
+			</notes>
+		</meta>
+		<preface>
+			<p class="heading">NATIONAL ASSEMBLY</p>
+			<p class="subheading">OFFICIAL REPORT</p>
+			<p class="center">Tuesday, <docDate date="1995-10-31">31st October, 1995</docDate>
+			</p>
+			<p class="center">The House met at <recordedTime time="1995-10-31T02:30:00" type="startEvent"/>2.30 p.m.</p>
+		</preface>
+		<debateBody>
+			<debateSection id="sec1" name="preamble">
+				<scene>[Mr. Speaker in the Chair]</scene>
+			</debateSection>
+			<prayers id="pry1">
+				<heading>PRAYERS</heading>
+			</prayers>
+			<papers id="pap1">
+				<heading>PAPERS LAID</heading>
+				<other id="pap1-oth1">
+					<p> The following Papers were laid on the Table:-</p>
+					<ul id="pap1-oth1-ul1">
+						<li>Annual Report and Accounts of Jomo Kenyatta University College of
+							Agriculture and Technology for the year ended 30th June, 1990 and the
+							Certificate thereon by the Auditor-General (Corporations)</li>
+						<li>Annual Report and Accounts of Higher Education Loans Fund for the year
+							ended 30th June, 1982 and the Certificate thereon by the Auditor-General
+							(Corporations)</li>
+						<li>Annual Report and Accounts of Higher Education Loans Fund for the year
+							ended 30th June, 1983 and the Certificate thereon by the Auditor-General
+							(Corporations)</li>
+					</ul>
+				</other>
+				<narrative>
+					(By the Assistant Minister for Education (Mr. John) on behalf of the
+					Minister for Education)
+				</narrative>
+			</papers>
+			<noticesOfMotion id="nom1">
+				<heading>NOTICE OF MOTION</heading>
+				<debateSection name="notice" id="nom1-not1">
+					<heading>EXPORT OF MANGROVE POLES</heading>
+					<speech by="#brown">
+						<from>Prof. Brown</from>
+						<p>Mr. Speaker, Sir, I beg to give notice of the following Motion:-</p>
+						<p>THAT, since the ban (for the last 20 years) of export of mangrove poles
+							has resulted in deterioration of mangrove forest and since the ecology
+							of mangrove forest requires regular harvest to stimulate regeneration,
+							this House urges the Government to lift the ban on the export of
+							mangrove poles.</p>
+					</speech>
+				</debateSection>
+			</noticesOfMotion>
+			<questions id="qaa1">
+				<heading>ORAL ANSWERS TO QUESTIONS</heading>
+				<debateSection name="question" id="qaa1-que1">
+					<heading>BANDITRY MENACE IN GALOLE</heading>
+					<question by="#adam" to="#ms">
+						<from>Mr. Adam</from>
+						<p> asked the Minister of State, Office of the President</p>
+						<ul id="qaa1-que1-ul1">
+							<li>whether he is aware that Councillor Abdi Sole of Asako Location was
+								seriously injured and two homeguards were shot dead and their guns
+								stolen while pursuing bandits on 20th May, 1995;</li>
+							<li>who instructed these people to pursue the heavily armed bandits;
+								and,</li>
+							<li>if the Ministry can ensure that the families of the deceased
+								homeguards are compensated and that Councillor Sole's medical
+								expenses are paid in full.</li>
+						</ul>
+					</question>
+					<summary>(Question deferred)</summary>
+					<speech by="#smith" as=" #speaker">
+						<from>Mr. Speaker</from>
+						<p>
+							<noteRef marker="2" href="#note02"/>Anybody from the Office of the President?</p>
+					</speech>
+					<answer by="#cameroon" as="#ms">
+						<from>Mr. Cameroon</from>
+						<p> Mr. Speaker, Sir, the answer is being prepared. The Minister is coming
+							to give the answer.</p>
+					</answer>
+					<narrative>(Several hon. Members stood up in their places)</narrative>
+				</debateSection>
+			</questions>
+			<adjournment id="adj1">
+				<heading>ADJOURNMENT</heading>
+				<speech by="#white" as="#black">
+					<from>Mr. White</from>
+					<p>Order hon. Members! Tomorrow, hon. Dr. Black, you must start with
+						substantiation of that allegation. 
+				 </p>
+				</speech>
+				<p>
+					<recordedTime time="1995-10-31T06:30:00" type="endEvent"/>At 6:30 pm the House stood adjourned until <recordedTime time="1995-11-01T09:00:00" type="startEvent"/>1st November, 1995 at 9.00 a.m. <noteRef href="#note01" marker="3"/>
+				</p>
+			</adjournment>
+		</debateBody>
+	</debate>
+</akomaNtoso>
