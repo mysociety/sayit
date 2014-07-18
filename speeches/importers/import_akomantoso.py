@@ -159,6 +159,7 @@ class ImportAkomaNtoso (ImporterBase):
                     text=text,
                     speaker=speaker,
                     speaker_display=display_name,
+                    type=tagname,
                     )
             elif tagname in ('scene', 'narrative', 'summary', 'other'):
                 text = self.get_text(child)
@@ -168,6 +169,7 @@ class ImportAkomaNtoso (ImporterBase):
                     section=section,
                     start_date=self.start_date,
                     text=text,
+                    type=tagname,
                     )
             else:
                 success = self.handle_tag(child, section)
