@@ -256,13 +256,20 @@ class Section(AuditedModel, InstanceMixin):
 
         self._interleave_speeches(self)
 
+        speech_type_choices = dict(Speech._meta.get_field('type').choices)
+
         # Finally, work back into a flat format for template display
         tree_final = []
         def rec(s, l):
             for i, c in enumerate(s._childs):
                 attrs = {}
                 if i == 0: attrs['new_level'] = True
-                if isinstance(c, Speech): attrs['speech'] = True
+                if isinstance(c, Speech):
+                    attrs['speech'] = True
+
+                    # Anything with an odd type gets it replaced with 'other'
+                    if c.type not in speech_type_choices:
+                        c.type = 'other'
 
                 tree_final.append( ( c, attrs ) )
 
