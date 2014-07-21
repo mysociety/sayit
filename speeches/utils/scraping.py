@@ -205,13 +205,24 @@ class BaseParser(object):
                     Speaker, instance=self.instance, name=speaker)
             else:
                 speaker = None
+
+            if not speech.type:
+                speech.type = ('speech'
+                               if speaker or speech.speaker_display
+                               else 'narrative')
+
             text = '</p>\n<p>'.join([' '.join(s) for s in speech.text])
             text = '<p>%s</p>' % text
             speech_date = speech.date or date
             speech = Speech(
-                instance=self.instance, section=section, text=text,
-                speaker=speaker, speaker_display=speech.speaker_display,
-                start_date=speech_date, start_time=speech.time
+                instance=self.instance,
+                section=section,
+                text=text,
+                speaker=speaker,
+                speaker_display=speech.speaker_display,
+                type=speech.type,
+                start_date=speech_date,
+                start_time=speech.time,
             )
             if self.commit:
                 speech.save()
@@ -253,10 +264,11 @@ class ParserSpeech(object):
     current_section = None
     witness = None
 
-    def __init__(self, speaker, text, speaker_display=None):
+    def __init__(self, speaker, text, speaker_display=None, typ=None):
         self.speaker = speaker
         self.speaker_display = speaker_display
         self.text = [[text]]
+        self.type = typ
         self.date = self.current_date
         self.time = self.current_time
         self.section = self.current_section
