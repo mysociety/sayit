@@ -30,6 +30,8 @@
           <heading>{{ node.title }}</heading>
       {% endif %}
       {% for level in structure.closed_levels %}</debateSection>{% endfor %}
+    {% empty %}
+      </debateSection>
     {% endfor %}
 
     </debateBody>

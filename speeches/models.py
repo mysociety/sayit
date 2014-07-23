@@ -276,8 +276,9 @@ class Section(AuditedModel, InstanceMixin):
                 if isinstance(c, Section):
                     rec(c, l+1)
 
-                if i == len(s._childs) - 1:
-                    tree_final[-1][1].setdefault('closed_levels', []).append(l)
+            if tree_final:
+                tree_final[-1][1].setdefault('closed_levels', []).append(l)
+
         rec(self, 1)
 
         # Return an iterator because otherwise passing this down in context to

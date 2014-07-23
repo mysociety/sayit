@@ -123,3 +123,67 @@ class AkomaNtosoOutputTestCase(InstanceTestCase):
         lxml2 = etree.fromstring(expected)
 
         assert xml_compare(lxml1, lxml2)
+
+    def test_empty_section(self):
+        section = Section.objects.create(
+            instance=self.instance,
+            title='Test Section')
+
+        resp = self.client.get('/test-section.an')
+        output = resp.content
+        lxml1 = etree.fromstring(output)
+
+        expected = """
+            <akomaNtoso>
+              <debate>
+                <meta>
+                  <references>
+                  </references>
+                </meta>
+                <debateBody>
+                  <debateSection>
+                    <heading>Test Section</heading>
+                  </debateSection>
+                </debateBody>
+              </debate>
+            </akomaNtoso>
+            """
+        lxml2 = etree.fromstring(expected)
+
+        assert xml_compare(lxml1, lxml2)
+
+    def test_section_containing_empty_section(self):
+        section = Section.objects.create(
+            instance=self.instance,
+            title='Outer Section')
+
+        inner_section = Section.objects.create(
+            instance=self.instance,
+            title='Inner Section',
+            parent=section)
+
+        resp = self.client.get('/outer-section.an')
+        output = resp.content
+        lxml1 = etree.fromstring(output)
+
+        expected = """
+            <akomaNtoso>
+              <debate>
+                <meta>
+                  <references>
+                  </references>
+                </meta>
+                <debateBody>
+                  <debateSection>
+                    <heading>Outer Section</heading>
+                    <debateSection>
+                      <heading>Inner Section</heading>
+                    </debateSection>
+                  </debateSection>
+                </debateBody>
+              </debate>
+            </akomaNtoso>
+            """
+        lxml2 = etree.fromstring(expected)
+
+        assert xml_compare(lxml1, lxml2)
