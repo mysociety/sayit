@@ -666,6 +666,7 @@ class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
             speech = Speech(
                 instance = instance,
                 public = False,
+                type='speech',
             )
             timestamp = None
             if sorted_timestamps and len(sorted_timestamps) > 0:
