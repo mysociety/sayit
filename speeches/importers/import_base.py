@@ -12,6 +12,6 @@ class ImporterBase (object):
         s = cls(instance=self.instance, **kwargs)
         if self.commit:
             s.save()
-        elif s.title:
-            logger.info(s.title)
+        elif s.heading:
+            logger.info(s.heading)
         return s

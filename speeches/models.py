@@ -12,6 +12,7 @@ from django.utils.html import strip_tags
 from django.template.defaultfilters import timesince, slugify
 from django.conf import settings
 from django.core.files import File
+from django.core.exceptions import ValidationError
 from django.contrib.contenttypes import generic
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -110,19 +111,19 @@ class Tag(InstanceMixin, AuditedModel):
 
 class SectionManager(InstanceManager, Manager):
 
-    def get_or_create_with_parents(self, instance, titles):
+    def get_or_create_with_parents(self, instance, headings):
         """Get or create the entire hierarchy of sections given, returning the bottom one."""
 
-        # If there are no titles to create we just return None
-        if not len(titles):
+        # If there are no headings to create we just return None
+        if not len(headings):
             return None
 
-        # Get the title to create, the rest and get the parent
-        title = titles[-1]
-        rest = titles[:-1]
+        # Get the heading to create, the rest and get the parent
+        heading = headings[-1]
+        rest = headings[:-1]
         parent = self.get_or_create_with_parents(instance, rest)
         
-        section, created = self.get_or_create(instance=instance, title=title, parent=parent)
+        section, created = self.get_or_create(instance=instance, heading=heading, parent=parent)
 
         return section
 
@@ -132,7 +133,9 @@ class Section(AuditedModel, InstanceMixin):
     # Custom manager
     objects = SectionManager()
 
-    title = models.TextField(blank=True, help_text=_('The title of the section'))
+    num = models.TextField(blank=True, help_text=_('The num of the section'))
+    heading = models.TextField(blank=True, help_text=_('The heading of the section'))
+    subheading = models.TextField(blank=True, help_text=_('The subheading of the section'))
     description = models.TextField(blank=True, help_text=_('Longer description, HTML'))
     start_date = models.DateField(blank=True, null=True, help_text=_('What date did the section start?'))
     start_time = models.TimeField(blank=True, null=True, help_text=_('What time did the section start?'))
@@ -150,7 +153,17 @@ class Section(AuditedModel, InstanceMixin):
         unique_together = ('parent', 'slug', 'instance')
 
     def __str__(self):
-        return self.title or _('Section')
+        return self.heading or _('Section')
+
+    @property
+    def title(self):
+        txt = filter(None, (self.num, self.heading, self.subheading))
+        return ', '.join(txt)
+
+    def clean(self):
+        super(Section, self).clean()
+        if not self.num and not self.heading and not self.subheading:
+            raise ValidationError(_('You must specify at least one of num/heading/subheading'))
 
     def speech_datetimes(self):
         return (datetime.datetime.combine(s.start_date, s.start_time or datetime.time(0,0) )
@@ -237,7 +250,12 @@ class Section(AuditedModel, InstanceMixin):
                 parents = parents[:sw-node.level]
                 for i in range(sw, node.level):
                     section = Section.objects.get(id=node.path[i])
-                    section_copy = Section(title=section.title, parent=section.parent)
+                    section_copy = Section(
+                        num=section.num,
+                        heading=section.heading,
+                        subheading=section.subheading,
+                        parent=section.parent,
+                    )
                     section_copy._childs = []
                     parents[-1]._childs.append( section_copy )
                     parents.append( section_copy )
@@ -444,7 +462,9 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     # The section that this speech is part of
     section = models.ForeignKey(Section, blank=True, null=True, on_delete=models.SET_NULL,
             help_text=('The section that this speech is contained in'),)
-    title = models.TextField(blank=True, help_text=_('The title of the speech, if relevant'))
+    num = models.TextField(blank=True, help_text=_('The num of the speech, if relevant'))
+    heading = models.TextField(blank=True, help_text=_('The heading of the speech, if relevant'))
+    subheading = models.TextField(blank=True, help_text=_('The subheading of the speech, if relevant'))
     # The below two fields could be on the section if we made it a required field of a speech
     event = models.TextField(db_index=True, blank=True, help_text=_('Was the speech at a particular event?'))
     location = models.TextField(db_index=True, blank=True, help_text=_('Where the speech took place'))
@@ -478,12 +498,19 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
 
     def __str__(self):
         out = 'Speech'
-        if self.title: out += ', %s,' % self.title
+        for att in ('num', 'heading', 'subheading'):
+            if getattr(self, att, None):
+                out += ', %s' % getattr(self, att)
         if self.speaker: out += ' by %s' % self.speaker
         if self.start_date: out += ' at %s' % self.start_date
         if self.text: out += ' (with text)'
         if self.audio: out += ' (with audio)'
         return out
+
+    @property
+    def title(self):
+        txt = filter(None, (self.num, self.heading, self.subheading))
+        return ', '.join(txt)
 
     @querymethod
     def visible(query, request=None):

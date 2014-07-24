@@ -146,7 +146,7 @@ class SpeechCreate(SpeechMixin, CreateView):
 
                     # Basic data is just defaulted from the last speech
                     initial['location'] = speech.location
-                    initial['title'] = speech.title
+                    initial['heading'] = speech.heading
                     initial['event'] = speech.event
                     initial['public'] = speech.public
                     initial['source_url'] = speech.source_url

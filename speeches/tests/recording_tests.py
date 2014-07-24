@@ -63,7 +63,7 @@ class RecordingTests(InstanceTestCase):
             last_start = start
 
         # Test assignment of section
-        section = Section.objects.create(title='A Section', instance=self.instance)
+        section = Section.objects.create(heading='A Section', instance=self.instance)
         self.assertEqual(Speech.objects.filter(section=section).count(), 0)
         resp = self.client.get('/recording/%s' % recording.id)
         self.assertContains(resp, 'A Section')

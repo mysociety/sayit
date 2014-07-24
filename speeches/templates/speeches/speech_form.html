@@ -204,7 +204,7 @@
 
             <div class="unimportant-form-section-header">{% trans "Title &amp; Tags" %}</div>
             <div class="unimportant-form-section">
-              {% with form.title as field %}
+              {% with form.heading as field %}
                 <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
                   {{ field.label_tag }}
                   {{ field }}

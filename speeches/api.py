@@ -25,7 +25,9 @@ class SectionResource(NamespacedModelResource):
         authentication = Authentication()
         authorization = ReadOnlyAuthorization()
         filtering = {
-            'title': ALL,
+            'num': ALL,
+            'heading': ALL,
+            'subheading': ALL,
             'parent': ALL,
         }
 

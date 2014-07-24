@@ -146,14 +146,14 @@ class BaseParser(object):
     def skip_transcript(self, data):
         return False
 
-    def top_section_title(self, data):
+    def top_section_heading(self, data):
         return 'Hearing, %s' % data['date'].strftime('%d %B %Y').lstrip('0')
 
     def get_parent_section(self, data):
         """Find the section to create the top section in.
 
         All speeches for this transcript will be created in a section with
-        title provided by top_section_title.
+        heading provided by top_section_heading.
 
         Override this method to put this section inside another section.
         """
@@ -176,7 +176,7 @@ class BaseParser(object):
         date = data.get('date')
         top_section = self.get_or_create(
             Section, instance=self.instance, source_url=data['url'],
-            title=self.top_section_title(data),
+            heading=self.top_section_heading(data),
             parent=self.get_parent_section(data),
         )
 
@@ -188,10 +188,10 @@ class BaseParser(object):
                 if speech.section.object:
                     section = speech.section.object
                 else:
-                    title = self.prettify(speech.section.title)
+                    heading = self.prettify(speech.section.heading)
                     section = Section(
                         instance=self.instance,
-                        title=title,
+                        heading=heading,
                         parent=top_section,
                         )
                     if self.commit:
@@ -242,8 +242,8 @@ class BaseParser(object):
 class ParserSection(object):
     object = None
 
-    def __init__(self, title):
-        self.title = title
+    def __init__(self, heading):
+        self.heading = heading
 
 
 class ParserSpeech(object):

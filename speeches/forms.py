@@ -182,7 +182,7 @@ class SpeakerField(CreateAutoModelSelect2Field):
 
 class SectionField(CreateAutoModelSelect2Field):
     model = Section
-    column = 'title'
+    column = 'heading'
 
 class SpeechTextFieldWidget(forms.Textarea):
     def render(self, name, value, attrs=None):
@@ -267,7 +267,7 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
         widgets = {
             'audio': AudioFileInput,
             'event': forms.TextInput(),
-            'title': forms.TextInput(),
+            'heading': forms.TextInput(),
             'location': forms.TextInput(),
             'source_url': forms.TextInput(),
         }
@@ -342,7 +342,7 @@ class RecordingForm(forms.ModelForm):
         exclude = ['instance', 'audio']
 
 class SectionForm(forms.ModelForm):
-    title = forms.CharField(required=True)
+    heading = forms.CharField(required=True)
     parent = GroupedModelChoiceField(Section.objects.all(), 'parent', required=False)
 
     def __init__(self, *args, **kwargs):
@@ -354,7 +354,7 @@ class SectionForm(forms.ModelForm):
 
     class Meta:
         model = Section
-        exclude = ('instance', 'slug')
+        exclude = ('instance', 'slug', 'num', 'subheading')
 
     def clean_parent(self):
         parent = self.cleaned_data['parent']

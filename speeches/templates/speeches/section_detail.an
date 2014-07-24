@@ -11,12 +11,17 @@
     </meta>
     <debateBody>
         <debateSection>
-            <heading>{{ section.title }}</heading>
+            {% if section.num %}<num>{{ section.num }}</num>{% endif %}
+            {% if section.heading %}<heading>{{ section.heading }}</heading>{% endif %}
+            {% if section.subheading %}<subheading>{{ section.subheading }}</subheading>{% endif %}
 
     {% for node, structure in section_tree %}
       {% if structure.speech %}{% with speech=node %}
         {% if speech.speaker %}
         <speech by="#{{ speech.speaker.slug }}"{% if speech.start_datetime %} startTime="{{ speech.start_datetime|date:"c" }}"{% endif %}{% if speech.end_datetime %} endTime="{{ speech.end_datetime|date:"c" }}"{% endif %}>
+            {% if speech.num %}<num>{{ speech.num }}</num>{% endif %}
+            {% if speech.heading %}<heading>{{ speech.heading }}</heading>{% endif %}
+            {% if speech.subheading %}<subheading>{{ speech.subheading }}</subheading>{% endif %}
             <from>{% filter force_escape %}{% firstof speech.speaker_display speech.speaker %}{% endfilter %}</from>
             {{ speech.text|bleach }}
         </speech>
@@ -25,7 +30,9 @@
         {% endif %}
       {% endwith %}{% else %}
         <debateSection>
-            <heading>{{ node.title }}</heading>
+            {% if node.num %}<num>{{ node.num }}</num>{% endif %}
+            {% if node.heading %}<heading>{{ node.heading }}</heading>{% endif %}
+            {% if node.subheading %}<subheading>{{ node.subheading }}</subheading>{% endif %}
       {% endif %}
       {% for level in structure.closed_levels %}</debateSection>{% endfor %}
     {% endfor %}

@@ -76,12 +76,12 @@ class SpeechFormTests(InstanceTestCase):
         """
 
         self.assertEqual(Speaker.objects.filter(name='New Bod').count(), 0)
-        self.assertEqual(Section.objects.filter(title='New Section').count(), 0)
+        self.assertEqual(Section.objects.filter(heading='New Section').count(), 0)
 
         resp = self.client.post( '/speech/add', { 'speaker': 'New Bod', 'section': 'New Section' } )
 
         self.assertEqual(Speaker.objects.filter(name='New Bod').count(), 1)
-        self.assertEqual(Section.objects.filter(title='New Section').count(), 1)
+        self.assertEqual(Section.objects.filter(heading='New Section').count(), 1)
         self.assertContains(resp, ".txt(['New Bod'])")
         self.assertContains(resp, ".txt(['New Section'])")
         self.assertContains(resp, "You must provide either text or some audio")
@@ -92,13 +92,13 @@ class SpeechFormTests(InstanceTestCase):
         Adding a speech with a section which is unknown to us should cause
         that section to be created.
         """
-        self.assertEqual(Section.objects.filter(title='New Section').count(), 0)
+        self.assertEqual(Section.objects.filter(heading='New Section').count(), 0)
         self.client.post(
             '/speech/add',
             { 'text': 'Speech in new section', 'section': 'New Section' },
         )
 
-        section = Section.objects.get(title='New Section')
+        section = Section.objects.get(heading='New Section')
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(speech.text, 'Speech in new section')
         self.assertEqual(speech.section, section)
@@ -114,7 +114,7 @@ class SpeechFormTests(InstanceTestCase):
         self.assertEqual(speech.text, 'This is a speech')
         self.assertRedirects(resp, '/speech/add')
 
-        section = Section.objects.create(title='Test', instance=self.instance)
+        section = Section.objects.create(heading='Test', instance=self.instance)
         resp = self.client.post('/speech/add', {
             'text': 'This is a speech',
             'section': section.id,
@@ -129,7 +129,7 @@ class SpeechFormTests(InstanceTestCase):
         resp = self.client.get(get_url)
         self.assertContains( resp, 'Your speech has been <a href="/speech/%d">created</a>' % speech.id)
         self.assertContains( resp, 'in the section <a href="/%s#s%d">%s</a>!' % (
-            section.slug, speech.id, section.title))
+            section.slug, speech.id, section.heading))
 
     def _post_speech(self, section, speech_data):
         post_data = speech_data.copy()
@@ -150,18 +150,18 @@ class SpeechFormTests(InstanceTestCase):
 
         self.assertEqual(initial['section'], section)
         self.assertEqual(initial['speaker'], speaker)
-        for x in ['title', 'event', 'location', 'public', 'source_url', 'start_date', 'start_time']:
+        for x in ['heading', 'event', 'location', 'public', 'source_url', 'start_date', 'start_time']:
             self.assertEqual(initial.get(x, None), speech_data.get(x, None))
 
     def test_add_speech_metadata_in_section(self):
-        section = Section.objects.create(title='Test', instance=self.instance)
+        section = Section.objects.create(heading='Test', instance=self.instance)
 
         speakers = [Speaker.objects.create(name='Speaker %d' % i, instance=self.instance) for i in range(3)]
 
         speech_data = {
             'text':        'This is a speech',
             'section':     section.id,
-            'title':       'Title',
+            'heading':     'Title',
             'event':       'Event',
             'location':    'Location',
             'speaker':     speakers[0].id,
@@ -214,14 +214,14 @@ class SpeechFormTests(InstanceTestCase):
         # TODO: also default Tags
 
     def test_add_speech_metadata_start_date_but_no_time(self):
-        section = Section.objects.create(title='Test', instance=self.instance)
+        section = Section.objects.create(heading='Test', instance=self.instance)
 
         speakers = [Speaker.objects.create(name='Speaker %d' % i, instance=self.instance) for i in range(3)]
 
         speech_data = {
             'text':        'This is a speech',
             'section':     section.id,
-            'title':       'Title',
+            'heading':     'Title',
             'event':       'Event',
             'location':    'Location',
             'speaker':     speakers[0].id,
@@ -476,21 +476,21 @@ class SpeechFormTests(InstanceTestCase):
 
 
 class SpeechViewTests(InstanceTestCase):
-    def test_speech_title_display(self):
-        speech = Speech.objects.create( text='Speech text', title='Speech title', instance=self.instance )
+    def test_speech_heading_display(self):
+        speech = Speech.objects.create( text='Speech text', heading='Speech title', instance=self.instance )
         resp = self.client.get('/speech/%d' % speech.id)
         self.assertContains( resp, '<h1>Speech title</h1>' )
         resp = self.client.get('/speeches')
         self.assertContains( resp, 'Speech title' )
 
-        section = Section.objects.create(title='Test', instance=self.instance)
+        section = Section.objects.create(heading='Test', instance=self.instance)
         speech.section = section
         speech.save()
         resp = self.client.get('/sections/%d' % section.id)
         self.assertContains( resp, 'Speech title' )
 
     def test_visible_speeches(self):
-        section = Section.objects.create(title='Test', instance=self.instance)
+        section = Section.objects.create(heading='Test', instance=self.instance)
         speeches = []
         for i in range(3):
             s = Speech.objects.create( text='Speech %d' % i, section=section, instance=self.instance, public=(i==2) )
@@ -507,7 +507,7 @@ class SpeechViewTests(InstanceTestCase):
         self.assertContains( resp, 'Not Found', status_code=404 )
 
     def test_speech_datetime_line(self):
-        section = Section.objects.create(title='Test', instance=self.instance)
+        section = Section.objects.create(heading='Test', instance=self.instance)
         Speech.objects.create( text='Speech', section=section, instance=self.instance,
             public=True, start_date=datetime.date(2000, 1, 1), end_date=datetime.date(2000, 1, 2)
         )

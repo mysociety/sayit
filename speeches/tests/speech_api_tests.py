@@ -19,8 +19,8 @@ class SpeechAPITests(InstanceTestCase):
         super(SpeechAPITests, self).setUp()
 
         # create the public and private speeches
-        self.public_speech = Speech.objects.create(title="Public", public=True, instance=self.instance)
-        self.private_speech = Speech.objects.create(title="Private", public=False, instance=self.instance)
+        self.public_speech = Speech.objects.create(heading="Public", public=True, instance=self.instance)
+        self.private_speech = Speech.objects.create(heading="Private", public=False, instance=self.instance)
 
 
     def get_speech_from_api(self, speech):
@@ -36,7 +36,7 @@ class SpeechAPITests(InstanceTestCase):
 
         self.assertEqual(len(objects), 1)
 
-        self.assertEqual(objects[0]['title'], "Public")
+        self.assertEqual(objects[0]['heading'], "Public")
 
     def test_public_speech_visible(self):
         resp = self.get_speech_from_api(self.public_speech)

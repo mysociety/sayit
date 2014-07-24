@@ -66,7 +66,7 @@ class ImportAkomaNtoso (ImporterBase):
             section = self.make(
                 Section,
                 parent=None,
-                title=docTitle,
+                heading=docTitle,
                 start_date=self.start_date,
                 number=docNumber or '',
                 legislature=legislature or '',
@@ -93,16 +93,12 @@ class ImportAkomaNtoso (ImporterBase):
                     if self.get_tag(child) not in ('num', 'heading', 'subheading', 'from') ]
         return ''.join(filter(None, paras))
 
-    def construct_title(self, node):
-        title = []
-        if hasattr(node, 'num'):
-            title.append(node.num.text)
-        if hasattr(node, 'heading'):
-            title.append(node.heading.text)
-        if hasattr(node, 'subheading'):
-            title.append(node.subheading.text)
-        title = ' '.join(title)
-        return title
+    def construct_heading(self, node):
+        headings = {}
+        for tag in ('num', 'heading', 'subheading'):
+            if hasattr(node, tag):
+                headings[tag] = getattr(node, tag).text
+        return headings
 
     def construct_datetime(self, time):
         if not time:
@@ -144,22 +140,21 @@ class ImportAkomaNtoso (ImporterBase):
                     'communication', 'petitions', 'papers', 'noticesOfMotion',
                     'questions', 'address', 'proceduralMotions',
                     'pointOfOrder', 'adjournment'):
-                title = self.construct_title(child)
+                headings = self.construct_heading(child)
                 childSection = self.make(Section,
                     parent=section,
-                    title=title,
                     start_date=self.start_date,
+                    **headings
                 )
                 self.visit(child, childSection)
             elif tagname in ('speech', 'question', 'answer'):
-                title = self.construct_title(child)
+                headings = self.construct_heading(child)
                 text = self.get_text(child)
                 start_date, start_time = self.construct_datetime(child.get('startTime'))
                 end_date, end_time = self.construct_datetime(child.get('endTime'))
                 speaker, display_name = self.get_speaker(child)
                 speech = self.make(Speech,
                         section = section,
-                        title = title,
                         start_date = start_date or self.start_date,
                         start_time = start_time,
                         end_date = end_date,
@@ -167,6 +162,7 @@ class ImportAkomaNtoso (ImporterBase):
                         text = text,
                         speaker = speaker,
                         speaker_display = display_name,
+                        **headings
                 )
             elif tagname in ('scene', 'narrative', 'summary', 'other'):
                 text = self.get_text(child)

@@ -43,20 +43,20 @@ def create_sections( subsections, parent=None, instance=None):
 
     create_sections([
         {
-            'title': "Top level section",
+            'heading': "Top level section",
             'subsections': [
-                {   'title': "Nested section",
+                {   'heading': "Nested section",
                     'subsections': [
-                        {   'title': "Section with speeches",
+                        {   'heading': "Section with speeches",
                             'speeches': [ 4, date(2013, 3, 25), time(9, 0) ],
                         },
-                        {   'title': "Bill on Silly Walks",
+                        {   'heading': "Bill on Silly Walks",
                             'speeches': [ 2, date(2013, 3, 25), time(12, 0) ],
                         },
                     ]
                 },
                 {
-                    'title': "Another nested section (but completely empty)",
+                    'heading': "Another nested section (but completely empty)",
                     'subsections': []
                 },
             ]
@@ -80,7 +80,7 @@ def create_sections( subsections, parent=None, instance=None):
         instance, _ = Instance.objects.get_or_create(label='create-sections-instance')
 
     for subsection in subsections:
-        s = Section.objects.create( instance=instance, title=subsection['title'], parent=parent )
+        s = Section.objects.create( instance=instance, heading=subsection['heading'], parent=parent )
         if 'subsections' in subsection:
             create_sections(subsection['subsections'], parent=s)
         if 'speeches' in subsection:
@@ -110,7 +110,7 @@ class CreateSectionsTests(TestCase):
     def test_parent_instance_mismatch(self):
         foo_instance = Instance.objects.create(label="foo")
         bar_instance = Instance.objects.create(label="bar")
-        foo_parent = Section.objects.create(instance=foo_instance, title="Foo Section")
+        foo_parent = Section.objects.create(instance=foo_instance, heading="Foo Section")
 
         # Should run without exception
         create_sections([], parent=foo_parent, instance=foo_instance)

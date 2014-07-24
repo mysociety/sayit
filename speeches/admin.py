@@ -13,8 +13,8 @@ class SpeechAdmin(admin.ModelAdmin):
     }
 
 class SectionAdmin(admin.ModelAdmin):
-    search_fields = ('title',)
-    prepopulated_fields = { 'slug': ('title',) }
+    search_fields = ('num', 'heading', 'subheading')
+    prepopulated_fields = { 'slug': ('num', 'heading', 'subheading') }
 
 admin.site.register(Section, SectionAdmin)
 admin.site.register(Speaker)

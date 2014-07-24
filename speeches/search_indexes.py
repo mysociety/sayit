@@ -5,7 +5,7 @@ from speeches.models import Speech, Speaker, Section
 class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     # Use a template here to include speaker name as well... TODO
     text = indexes.CharField(document=True, model_attr='text') # , use_template=True)
-    title = indexes.CharField() # use_template=True)
+    title = indexes.CharField(model_attr='heading') # use_template=True)
     start_date = indexes.DateTimeField(model_attr='start_date', null=True)
     instance = indexes.CharField(model_attr='instance__label')
     speaker = indexes.IntegerField(model_attr='speaker__id', null=True)
@@ -31,7 +31,7 @@ class SpeakerIndex(indexes.SearchIndex, indexes.Indexable):
         return 'modified'
 
 class SectionIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, model_attr='title')
+    text = indexes.CharField(document=True, model_attr='heading')
     instance = indexes.CharField(model_attr='instance__label')
 
     def get_model(self):

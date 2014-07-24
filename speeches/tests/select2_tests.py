@@ -19,13 +19,13 @@ class AjaxTests(InstanceTestCase):
         Speaker.objects.create(name='Alastair', instance=self.instance)
         Speaker.objects.create(name='Bob', instance=self.instance)
 
-        Section.objects.create(title='Section A', instance=self.instance)
-        Section.objects.create(title='Section B', instance=self.instance)
-        Section.objects.create(title='Not This', instance=self.instance)
+        Section.objects.create(heading='Section A', instance=self.instance)
+        Section.objects.create(heading='Section B', instance=self.instance)
+        Section.objects.create(heading='Not This', instance=self.instance)
 
         other_instance = Instance.objects.create(label='other')
         Speaker.objects.create(name='Alan', instance=other_instance)
-        Section.objects.create(title='Other', instance=other_instance)
+        Section.objects.create(heading='Other', instance=other_instance)
 
     def test_lookup_speaker(self):
         # Copy what happens in AutoViewFieldMixin's __init__

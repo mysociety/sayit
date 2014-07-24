@@ -60,8 +60,8 @@ class Command(BaseCommand):
         s = cls(instance=self.instance, **kwargs)
         if self.commit:
             s.save()
-        elif s.title:
-            print(s.title)
+        elif s.heading:
+            print(s.heading)
         return s
 
     def handle(self, *args, **options):
@@ -92,17 +92,17 @@ class Command(BaseCommand):
 
         xml = urlopen('http://www.ibiblio.org/xml/examples/shakespeare/%s' % file).read()
         play_xml = etree.fromstring(xml)
-        play_section = self.make(Section, title=play)
+        play_section = self.make(Section, heading=play)
 
         speakers = {}
         for act in play_xml:
             if act.tag != 'ACT': continue
-            act_title = act[0].text
-            act_section = self.make(Section, title=act_title, parent=play_section)
+            act_heading = act[0].text
+            act_section = self.make(Section, heading=act_heading, parent=play_section)
             scenes = act[1:]
             for scene in scenes:
-                scene_title = scene[0].text
-                scene_section = self.make(Section, title=scene_title, parent=act_section)
+                scene_heading = scene[0].text
+                scene_section = self.make(Section, heading=scene_heading, parent=act_section)
                 speeches_xml = scene[1:]
                 speeches = []
                 for sp in speeches_xml:

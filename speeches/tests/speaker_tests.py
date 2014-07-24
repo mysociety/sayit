@@ -44,7 +44,7 @@ class SpeakerTests(InstanceTestCase):
         speaker1 = Speaker.objects.create(name='Marilyn', instance=self.instance, summary='movie star', image='http://example.com/image.jpg')
         speaker2 = Speaker.objects.create(name='Salinger', instance=self.instance)
 
-        section = Section.objects.create(title='Test Section', instance=self.instance)
+        section = Section.objects.create(heading='Test Section', instance=self.instance)
 
         speech1 = Speech.objects.create( text="A girl doesn't need anyone that doesn't need her.", speaker=speaker1, section=section, instance=self.instance, public=True )
 
