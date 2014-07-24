@@ -64,7 +64,7 @@ class ImportAkomaNtoso (ImporterBase):
 
     def get_text(self, node):
         paras = [ node.text ]
-        paras += [ etree.tostring(child, encoding='utf-8').decode()
+        paras += [ etree.tostring(child, encoding='utf-8').decode('utf-8')
                     for child in node.iterchildren()
                     if self.get_tag(child) not in ('num', 'heading', 'subheading', 'from') ]
         return ''.join(filter(None, paras))
