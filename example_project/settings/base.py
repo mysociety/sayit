@@ -255,3 +255,10 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+# Allow local changes of settings
+try:
+    with open(SETTINGS_DIR + '/local.py') as f:
+        exec(compile(f.read(), 'local.py', 'exec'))
+except IOError:
+    pass
