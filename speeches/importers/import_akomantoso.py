@@ -103,7 +103,7 @@ class ImportAkomaNtoso (ImporterBase):
         return dt.date(), dt.time()
 
     def get_speaker(self, child):
-        if child.find('from'):
+        if hasattr(child, 'from'):
             display_name = child['from'].text
         else:
             display_name = None

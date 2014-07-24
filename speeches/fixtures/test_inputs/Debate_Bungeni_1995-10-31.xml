@@ -144,9 +144,9 @@
 						substantiation of that allegation. 
 				 </p>
 				</speech>
-				<p>
+				<narrative>
 					<recordedTime time="1995-10-31T06:30:00" type="endEvent"/>At 6:30 pm the House stood adjourned until <recordedTime time="1995-11-01T09:00:00" type="startEvent"/>1st November, 1995 at 9.00 a.m. <noteRef href="#note01" marker="3"/>
-				</p>
+				</narrative>
 			</adjournment>
 		</debateBody>
 	</debate>
