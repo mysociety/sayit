@@ -30,19 +30,19 @@
   <div class="full-page__row">
       <div class="full-page__unit">
         {% url "speeches:speaker-list" as url_speaker_list %}
-        {% url "speeches:section-list" as url_section_list %}
+        {% url "speeches:parentless-list" as url_parentless_list %}
         {% if LANGUAGE_CODE == 'en' %}
-          <a href="{{ url_section_list }}"><strong>{{ count_speeches|intcomma }}</strong></a>
+          <a href="{{ url_parentless_list }}"><strong>{{ count_speeches|intcomma }}</strong></a>
           speech{{ count_speeches|pluralize:"es" }}{% if count_speakers %}, by
           <a href="{{ url_speaker_list }}"><strong>{{ count_speakers|intcomma }}</strong></a>
           speaker{{ count_speakers|pluralize }}{% endif %}{% if count_sections %}, in
-          <a href="{{ url_section_list }}"><strong>{{ count_sections|intcomma }}</strong></a>
+          <a href="{{ url_parentless_list }}"><strong>{{ count_sections|intcomma }}</strong></a>
           section{{ count_sections|pluralize }}{% endif %}
         {% else %}
           {# Hideously long lines, until blocktrans adds trimmed option in Django 1.7... #}
-          {% blocktrans with n=count_speeches|intcomma count c=count_speeches %}<a href="{{ url_section_list }}"><strong>1</strong></a> speech{% plural %}<a href="{{ url_section_list }}"><strong>{{ n }}</strong></a> speeches{% endblocktrans %}{% if count_speakers %};
+          {% blocktrans with n=count_speeches|intcomma count c=count_speeches %}<a href="{{ url_parentless_list }}"><strong>1</strong></a> speech{% plural %}<a href="{{ url_parentless_list }}"><strong>{{ n }}</strong></a> speeches{% endblocktrans %}{% if count_speakers %};
           {% blocktrans with n=count_speakers|intcomma count c=count_speakers %}<a href="{{ url_speaker_list }}"><strong>1</strong></a> speaker{% plural %}<a href="{{ url_speaker_list }}"><strong>{{ n }}</strong></a> speakers{% endblocktrans %}{% endif %}{% if count_sections %};
-          {% blocktrans with n=count_sections|intcomma count c=count_sections %}<a href="{{ url_section_list }}"><strong>1</strong></a> section{% plural %}<a href="{{ url_section_list }}"><strong>{{ n }}</strong></a> sections{% endblocktrans %}{% endif %}
+          {% blocktrans with n=count_sections|intcomma count c=count_sections %}<a href="{{ url_parentless_list }}"><strong>1</strong></a> section{% plural %}<a href="{{ url_parentless_list }}"><strong>{{ n }}</strong></a> sections{% endblocktrans %}{% endif %}
         {% endif %}
 
     {% block instance_blocks %}

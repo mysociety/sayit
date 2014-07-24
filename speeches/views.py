@@ -104,7 +104,7 @@ class SpeechMixin(NamespaceMixin, InstanceFormMixin):
 class SpeechDelete(SpeechMixin, DeleteView):
 
     def get_success_url(self):
-        return self.reverse('speeches:section-list')
+        return self.reverse('speeches:parentless-list')
 
 class SpeechCreate(SpeechMixin, CreateView):
     def get_context_data(self, **kwargs):
@@ -272,20 +272,23 @@ class SpeakerCreate(SpeakerMixin, CreateView):
 class SpeakerUpdate(SpeakerMixin, UpdateView):
     pass
 
-class SectionList(NamespaceMixin, InstanceViewMixin, ListView):
-    model = Section
-    context_object_name = 'section_list'
+class ParentlessList(NamespaceMixin, InstanceViewMixin, ListView):
+    model = Speech
+    template_name = 'speeches/parentless_list.html'
+    paginate_by = 50
 
     def get_queryset(self):
-        qs = super(SectionList, self).get_queryset()
-        qs = qs.filter(parent=None)
+        qs = super(ParentlessList, self).get_queryset()
+        qs = qs.visible(self.request)
+        qs = qs.filter(section=None)
+        qs = qs.select_related('speaker').prefetch_related('tags')
         return qs
 
     def get_context_data(self, **kwargs):
-        context = super(SectionList, self).get_context_data(**kwargs)
+        context = super(ParentlessList, self).get_context_data(**kwargs)
 
-        # Add in a QuerySet of all the speeches not in a section
-        context['speech_list'] = Speech.objects.for_instance(self.request.instance).visible(self.request).filter(section=None).select_related('speaker').prefetch_related('tags')
+        # Add in a QuerySet of all the sections without a parent
+        context['section_list'] = Section.objects.for_instance(self.request.instance).filter(parent=None)
         return context
 
 class SectionMixin(NamespaceMixin, InstanceFormMixin):
@@ -318,7 +321,7 @@ class SectionUpdate(SectionMixin, UpdateView):
 
 class SectionDelete(SectionMixin, DeleteView):
     def get_success_url(self):
-        return self.reverse('speeches:section-list')
+        return self.reverse('speeches:parentless-list')
 
 class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
     model = Section

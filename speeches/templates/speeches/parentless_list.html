@@ -1,5 +1,6 @@
 {% extends 'speeches/base_player.html' %}
 {% load staticfiles %}
+{% load pagination_tags %}
 {% load url from future %}
 {% load i18n %}
 
@@ -12,7 +13,7 @@
 
 {% block content %}
 
-  {% if object_list or speech_list %}
+  {% if section_list or speech_list %}
 
     <div class="page-header">
       {% if request.is_user_instance %}
@@ -22,9 +23,9 @@
         <h1>{% trans "Speeches" %}</h1>
     </div>
 
-      {% if object_list %}
+      {% if section_list %}
         <ul class="unstyled">
-            {% for top in object_list %}
+            {% for top in section_list %}
             <li>
                 <span class="section-title"><a href="{% url "speeches:section-view" top.get_path %}">{{ top.title }}</a></span>
             </li>
@@ -34,7 +35,7 @@
 
       {% if speech_list %}
         <div class="section-page__speeches-collection">
-          {% if object_list %}
+          {% if section_list %}
             <h2>{% trans 'Speeches not in a section' %}</h2>
           {% endif %}
             <ul class="unstyled js-masonry" data-masonry-options='{"columnWidth":".speech","itemSelector":".speech","gutter":".gutter-sizer"}'>
@@ -43,6 +44,9 @@
                 {% include "speeches/speech.html" with speech=speech nosection="1" standalone="1" truncate="1" %}
               {% endfor %}
             </ul>
+
+            {% paginate %}
+
         </div>
       {% endif %}
 
