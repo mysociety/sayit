@@ -91,7 +91,12 @@
     </script>
   </div>
   {% endif %}
+
 <div class="speech__content">
+  {% if speech.title %}
+    <h3>{{ speech.title }}</h3>
+  {% endif %}
+
   {% if speech.audio and not speech.text %}
     <p>{% trans "[ recorded audio ]" %}</p>
   {% elif highlight %}

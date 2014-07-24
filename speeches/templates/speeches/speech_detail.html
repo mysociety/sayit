@@ -81,6 +81,10 @@
                 </p>
               {% endif %}
 
+              {% if object.title %}
+                <h1>{{ object.title }}</h1>
+              {% endif %}
+
               {% if object.text %}
                 <div class="speech__content speech__content-single-speech">
                     {{ object.text|bleach }}
