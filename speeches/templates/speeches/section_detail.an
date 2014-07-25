@@ -10,31 +10,36 @@
       </references>
     </meta>
     <debateBody>
-        <debateSection>
-            {% if section.num %}<num>{{ section.num }}</num>{% endif %}
-            {% if section.heading %}<heading>{{ section.heading }}</heading>{% endif %}
-            {% if section.subheading %}<subheading>{{ section.subheading }}</subheading>{% endif %}
+      <debateSection>
+        {% if section.num %}<num>{{ section.num }}</num>{% endif %}
+        {% if section.heading %}<heading>{{ section.heading }}</heading>{% endif %}
+        {% if section.subheading %}<subheading>{{ section.subheading }}</subheading>{% endif %}
 
     {% for node, structure in section_tree %}
-      {% if structure.speech %}{% with speech=node %}
-        {% if speech.speaker %}
-        <speech by="#{{ speech.speaker.slug }}"{% if speech.start_datetime %} startTime="{{ speech.start_datetime|date:"c" }}"{% endif %}{% if speech.end_datetime %} endTime="{{ speech.end_datetime|date:"c" }}"{% endif %}>
-            {% if speech.num %}<num>{{ speech.num }}</num>{% endif %}
-            {% if speech.heading %}<heading>{{ speech.heading }}</heading>{% endif %}
-            {% if speech.subheading %}<subheading>{{ speech.subheading }}</subheading>{% endif %}
-            <from>{% filter force_escape %}{% firstof speech.speaker_display speech.speaker %}{% endfilter %}</from>
-            {{ speech.text|bleach }}
-        </speech>
-        {% else %}
-        <narrative>{{ speech.text|bleach }}</narrative>
-        {% endif %}
-      {% endwith %}{% else %}
+      {% if structure.speech %}
+        {% with speech=node %}
+          {% if speech.speaker or speech.speaker_display %}
+            <{{ speech.type }} by="{% if speech.speaker %}#{{ speech.speaker.slug }}{% endif %}"{% if speech.start_datetime %} startTime="{{ speech.start_datetime|date:"c" }}"{% endif %}{% if speech.end_datetime %} endTime="{{ speech.end_datetime|date:"c" }}"{% endif %}>
+              {% if speech.num %}<num>{{ speech.num }}</num>{% endif %}
+              {% if speech.heading %}<heading>{{ speech.heading }}</heading>{% endif %}
+              {% if speech.subheading %}<subheading>{{ speech.subheading }}</subheading>{% endif %}
+              {% if speech.speaker_display %}<from>{{ speech.speaker_display }}</from>{% endif %}
+              {{ speech.text|bleach }}
+            </{{ speech.type }}>
+          {% else %}
+            <{{ speech.type }}>{{ speech.text|bleach }}</{{ speech.type }}>
+          {% endif %}
+        {% endwith %}
+      {% else %}
         <debateSection>
-            {% if node.num %}<num>{{ node.num }}</num>{% endif %}
-            {% if node.heading %}<heading>{{ node.heading }}</heading>{% endif %}
-            {% if node.subheading %}<subheading>{{ node.subheading }}</subheading>{% endif %}
+          {% if node.num %}<num>{{ node.num }}</num>{% endif %}
+          {% if node.heading %}<heading>{{ node.heading }}</heading>{% endif %}
+          {% if node.subheading %}<subheading>{{ node.subheading }}</subheading>{% endif %}
+
       {% endif %}
       {% for level in structure.closed_levels %}</debateSection>{% endfor %}
+    {% empty %}
+      </debateSection>
     {% endfor %}
 
     </debateBody>

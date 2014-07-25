@@ -215,6 +215,12 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
     text = SpeechTextField(required=False)
     speaker = SpeakerField()
     section = SectionField()
+
+    type = forms.ChoiceField(
+        choices=Speech._meta.get_field('type').choices,
+        widget=forms.HiddenInput, required=False,
+        )
+
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],
             widget=BootstrapDateWidget,
             required=False)
@@ -234,6 +240,12 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
 
     def clean(self):
         cleaned_data = self.cleaned_data
+
+        # Temporary fix - see issue #340 (
+        if not cleaned_data.get('type'):
+            cleaned_data['type'] = ('speech' if cleaned_data.get('speaker')
+                                    else 'narrative')
+
         if 'audio_filename' in cleaned_data and cleaned_data['audio_filename']:
             filename = cleaned_data['audio_filename']
             self.cleaned_data['audio'] = filename

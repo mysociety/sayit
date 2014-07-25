@@ -47,7 +47,7 @@
           {% if structure.new_level %}<ul class="unstyled-list">{% else %}</li>{% endif %}
 
           {% if structure.speech %}
-            <li id="s{{ node.id }}" class="speech {% if node.speaker %}speech--with-portrait{% endif %} {% if not node.speaker  %}speech--narrative{% endif %} speech--border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
+            <li id="s{{ node.id }}" class="speech {% if node.speaker %}speech--with-portrait{% endif %} speech--{{ speech.type }} speech--border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
             {% include "speeches/speech.html" with speech=node nosection="1" section=section noli=1 %}
           {% else %}
             <li class="section-signpost" ><span class="section-title"><a href="{% url 'speeches:section-view' node.get_path %}">{{ node.title }}</a></span>

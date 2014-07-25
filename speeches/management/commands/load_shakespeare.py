@@ -107,9 +107,9 @@ class Command(BaseCommand):
                 speeches = []
                 for sp in speeches_xml:
                     if sp.tag == 'STAGEDIR' or sp.tag == 'SUBHEAD' or sp.tag == 'SUBTITLE':
-                        self.make(Speech, section=scene_section, text='<p><i>%s</i></p>' % sp.text)
+                        self.make(Speech, section=scene_section, text='<p><i>%s</i></p>' % sp.text, type='narrative')
                         continue
-        
+
                     if  not sp[0].text:
                         speaker = None
                     elif self.commit:
@@ -121,7 +121,7 @@ class Command(BaseCommand):
                             speakers[name] = speaker
                     else:
                         speaker = Speaker(name=sp[0].text, instance=self.instance)
-        
+
                     text = ""
                     lines = sp[1:]
                     for line in lines:
@@ -134,7 +134,7 @@ class Command(BaseCommand):
                             text += '%s<br>\n' % line.text
                         elif line.tag == 'STAGEDIR':
                             text += '<i>%s</i><br>\n' % line.text
-        
+
                     text = '<p>%s</p>' % text
-                    self.make(Speech, speaker=speaker, section=scene_section, text=text)
+                    self.make(Speech, speaker=speaker, section=scene_section, text=text, type='speech')
 

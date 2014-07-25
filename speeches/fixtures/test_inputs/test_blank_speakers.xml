@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<akomaNtoso xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.akomantoso.org/2.0 ./akomantoso20.xsd" xmlns="http://www.akomantoso.org/2.0">
+    <debate>
+        <meta>
+            <references>
+                <TLCPerson href="/ontology/person/testing.sayit.dev/speaker" id="speaker" showAs="Speaker"/>
+            </references>
+        </meta>
+        <debateBody>
+            <debateSection>
+                <speech by="">
+                    <p>This is a speech with no by and no from.</p>
+                </speech>
+                <speech by="#speaker">
+                    <p>This is a speech with a by and no from.</p>
+                </speech>
+                <speech>
+                    <from>Speaker</from>
+                    <p>This is a speech with no by and a from.</p>
+                </speech>
+                <speech by="#speaker">
+                    <from>Speaker</from>
+                    <p>This is a speech with a by and a from.</p>
+                </speech>
+            </debateSection>
+        </debateBody>
+    </debate>
+</akomaNtoso>

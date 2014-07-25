@@ -11,6 +11,7 @@ from speeches.models import Section, Speech, Speaker
 
 logger = logging.getLogger(__name__)
 
+
 class ImportAkomaNtoso (ImporterBase):
     start_date = None
 
@@ -24,20 +25,27 @@ class ImportAkomaNtoso (ImporterBase):
         debate = self.xml.debate
 
         if self.ns:
-            people = debate.findall('an:meta/an:references/an:TLCPerson', namespaces={'an': self.ns})
+            people = debate.findall(
+                'an:meta/an:references/an:TLCPerson',
+                namespaces={'an': self.ns},
+                )
         else:
             people = debate.findall('meta/references/TLCPerson')
-        if people is None: people = []
+        if people is None:
+            people = []
         for person in people:
             id = person.get('id')
             href = person.get('href')
             try:
-                speaker = Speaker.objects.get(instance=self.instance, identifiers__identifier=href)
+                speaker = Speaker.objects.get(
+                    instance=self.instance, identifiers__identifier=href)
             except Speaker.DoesNotExist:
-                speaker = Speaker(instance=self.instance, name=person.get('showAs'))
+                speaker = Speaker(
+                    instance=self.instance, name=person.get('showAs'))
                 if self.commit:
                     speaker.save()
-                    speaker.identifiers.create(identifier=href, scheme='Akoma Ntoso import')
+                    speaker.identifiers.create(
+                        identifier=href, scheme='Akoma Ntoso import')
 
             self.speakers[id] = speaker
 
@@ -87,10 +95,12 @@ class ImportAkomaNtoso (ImporterBase):
         return etree.QName(node.tag).localname
 
     def get_text(self, node):
-        paras = [ node.text ]
-        paras += [ etree.tostring(child, encoding='utf-8').decode('utf-8')
-                    for child in node.iterchildren()
-                    if self.get_tag(child) not in ('num', 'heading', 'subheading', 'from') ]
+        paras = [node.text]
+        paras += [
+            etree.tostring(child, encoding='utf-8').decode('utf-8')
+            for child in node.iterchildren()
+            if self.get_tag(child) not in ('num', 'heading', 'subheading', 'from')
+            ]
         return ''.join(filter(None, paras))
 
     def construct_heading(self, node):
@@ -107,7 +117,7 @@ class ImportAkomaNtoso (ImporterBase):
         return dt.date(), dt.time()
 
     def get_speaker(self, child):
-        if child.find('from'):
+        if hasattr(child, 'from'):
             display_name = child['from'].text
         else:
             display_name = None
@@ -115,7 +125,8 @@ class ImportAkomaNtoso (ImporterBase):
         by_ref = child.get('by')
         if by_ref:
             if not by_ref.startswith('#'):
-                logger.warn("by attribute value doesn't begin with '#': %s" % by_ref)
+                logger.warn(
+                    "by attribute value doesn't begin with '#': %s" % by_ref)
             speaker = self.speakers[by_ref[1:]]
         else:
             speaker = None
@@ -133,13 +144,15 @@ class ImportAkomaNtoso (ImporterBase):
             if tagname in ('num', 'heading', 'subheading'):
                 # this will already have been extracted
                 continue
-            if tagname in ('debateSection', 'administrationOfOath', 'rollCall',
+            if tagname in (
+                    'debateSection', 'administrationOfOath', 'rollCall',
                     'prayers', 'oralStatements', 'writtenStatements',
                     'personalStatements', 'ministerialStatements',
                     'resolutions', 'nationalInterest', 'declarationOfVote',
                     'communication', 'petitions', 'papers', 'noticesOfMotion',
                     'questions', 'address', 'proceduralMotions',
-                    'pointOfOrder', 'adjournment'):
+                    'pointOfOrder', 'adjournment',
+                    ):
                 headings = self.construct_heading(child)
                 childSection = self.make(Section,
                     parent=section,
@@ -153,26 +166,33 @@ class ImportAkomaNtoso (ImporterBase):
                 start_date, start_time = self.construct_datetime(child.get('startTime'))
                 end_date, end_time = self.construct_datetime(child.get('endTime'))
                 speaker, display_name = self.get_speaker(child)
-                speech = self.make(Speech,
-                        section = section,
-                        start_date = start_date or self.start_date,
-                        start_time = start_time,
-                        end_date = end_date,
-                        end_time = end_time,
-                        text = text,
-                        speaker = speaker,
-                        speaker_display = display_name,
-                        **headings
-                )
+                self.make(
+                    Speech,
+                    section=section,
+                    start_date=start_date or self.start_date,
+                    start_time=start_time,
+                    end_date=end_date,
+                    end_time=end_time,
+                    text=text,
+                    speaker=speaker,
+                    speaker_display=display_name,
+                    type=tagname,
+                    **headings
+                    )
             elif tagname in ('scene', 'narrative', 'summary', 'other'):
                 text = self.get_text(child)
 
-                speech = self.make(Speech,
-                        section = section,
-                        start_date = self.start_date,
-                        text = text,
-                )
+                self.make(
+                    Speech,
+                    section=section,
+                    start_date=self.start_date,
+                    text=text,
+                    type=tagname,
+                    )
             else:
                 success = self.handle_tag(child, section)
                 if not success:
-                    logger.error('%s unrecognised, "%s" - %s' % (child.tag, child, self.get_text(child)))
+                    logger.error(
+                        '%s unrecognised, "%s" - %s' %
+                        (child.tag, child, self.get_text(child))
+                        )

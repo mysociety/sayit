@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<akomaNtoso xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.akomantoso.org/2.0 ./akomantoso20.xsd" xmlns="http://www.akomantoso.org/2.0">
+    <debate>
+        <debateBody>
+            <debateSection>
+                <other><p>£1,000,000 is thrown into the air</p></other>
+            </debateSection>
+        </debateBody>
+    </debate>
+</akomaNtoso>
