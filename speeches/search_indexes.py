@@ -9,6 +9,8 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     start_date = indexes.DateTimeField(model_attr='start_date', null=True)
     instance = indexes.CharField(model_attr='instance__label')
     speaker = indexes.IntegerField(model_attr='speaker__id', null=True)
+    speaker_display = indexes.CharField(model_attr='speaker_display', null=True)
+    type = indexes.CharField(model_attr='type')
 
     def get_model(self):
         return Speech
