@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 15:54+0100\n"
+"POT-Creation-Date: 2014-07-31 17:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,103 +17,174 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: forms.py:57
+#: forms.py:80
 msgid "Assign to section"
 msgstr ""
 
-#: forms.py:63
-msgid "Choose a speaker"
-msgstr ""
-
-#: forms.py:80
+#: forms.py:238
 msgid "Choose tags"
 msgstr ""
 
-#: forms.py:90
+#: forms.py:254
 msgid "You must provide either text or some audio"
 msgstr ""
 
-#: forms.py:96
+#: forms.py:269
 msgid "If you provide a start time you must give a start date too"
 msgstr ""
 
-#: forms.py:101
+#: forms.py:274
 msgid "If you provide an end time you must give an end date too"
 msgstr ""
 
-#: forms.py:202
+#: forms.py:375
 msgid "Something cannot be its own parent"
 msgstr ""
 
-#: forms.py:205
+#: forms.py:378
 msgid "Something cannot have a parent that is also a descendant"
 msgstr ""
 
-#: forms.py:258
+#: forms.py:427
 msgid "Start time is before recording start time!"
 msgstr ""
 
-#: forms.py:267
+#: forms.py:436
 msgid "Difference between timestamps is too long for the uploaded audio"
 msgstr ""
 
-#: forms.py:274
+#: forms.py:443
 msgid "Timestamps must be distinct"
 msgstr ""
 
-#: models.py:149
-msgid "The title of the section"
+#: models.py:136
+msgid "The num of the section"
 msgstr ""
 
-#: models.py:150
+#: models.py:137
+msgid "The heading of the section"
+msgstr ""
+
+#: models.py:138
+msgid "The subheading of the section"
+msgstr ""
+
+#: models.py:139
 msgid "Longer description, HTML"
 msgstr ""
 
-#: models.py:162
+#: models.py:140
+msgid "What date did the section start?"
+msgstr ""
+
+#: models.py:141
+msgid "What time did the section start?"
+msgstr ""
+
+#: models.py:142
+msgid "Document number"
+msgstr ""
+
+#: models.py:143
+msgid "Legislature"
+msgstr ""
+
+#: models.py:144
+msgid "Legislative session"
+msgstr ""
+
+#: models.py:156
 msgid "Section"
 msgstr ""
 
-#: models.py:445
+#: models.py:166
+msgid "You must specify at least one of num/heading/subheading"
+msgstr ""
+
+#: models.py:468
 msgid "The text of the speech"
 msgstr ""
 
-#: models.py:450
-msgid "The title of the speech, if relevant"
+#: models.py:473
+msgid "The num of the speech, if relevant"
 msgstr ""
 
-#: models.py:452
+#: models.py:474
+msgid "The heading of the speech, if relevant"
+msgstr ""
+
+#: models.py:475
+msgid "The subheading of the speech, if relevant"
+msgstr ""
+
+#: models.py:477
 msgid "Was the speech at a particular event?"
 msgstr ""
 
-#: models.py:453
+#: models.py:478
 msgid "Where the speech took place"
 msgstr ""
 
-#: models.py:457
+#: models.py:481
 msgid "Who gave this speech?"
 msgstr ""
 
-#: models.py:461
+#: models.py:488 templates/speeches/speaker_detail.html:51
+#, fuzzy
+msgid "Speech"
+msgstr ""
+"#-#-#-#-#  django.pot (PACKAGE VERSION)  #-#-#-#-#\n"
+"#-#-#-#-#  django.pot (PACKAGE VERSION)  #-#-#-#-#\n"
+
+#: models.py:489
+msgid "Question"
+msgstr ""
+
+#: models.py:490
+msgid "Answer"
+msgstr ""
+
+#: models.py:491
+msgid "Scene"
+msgstr ""
+
+#: models.py:492
+msgid "Narrative"
+msgstr ""
+
+#: models.py:493
+msgid "Summary"
+msgstr ""
+
+#: models.py:494
+msgid "Other"
+msgstr ""
+
+#: models.py:496
+msgid "What sort of speech is this?"
+msgstr ""
+
+#: models.py:499
 msgid "What date did the speech start?"
 msgstr ""
 
-#: models.py:462
+#: models.py:500
 msgid "What time did the speech start?"
 msgstr ""
 
-#: models.py:463
+#: models.py:501
 msgid "What date did the speech end?"
 msgstr ""
 
-#: models.py:464
+#: models.py:502
 msgid "What time did the speech end?"
 msgstr ""
 
-#: models.py:467
+#: models.py:505
 msgid "Is this speech public?"
 msgstr ""
 
-#: views.py:416
+#: views.py:409
 msgid "Speeches assigned."
 msgstr ""
 
@@ -136,9 +207,9 @@ msgid "Next"
 msgstr ""
 
 #: templates/search/search.html:8 templates/search/search.html.py:11
-#: templates/search/search.html:12 templates/speeches/instance_detail.html:19
-#: templates/speeches/instance_detail.html:20
-#: templates/speeches/speaker_detail.html:96
+#: templates/search/search.html:12 templates/speeches/_home.html:19
+#: templates/speeches/_home.html.py:20
+#: templates/speeches/speaker_detail.html:104
 msgid "Search"
 msgstr ""
 
@@ -147,7 +218,7 @@ msgstr ""
 msgid "Search only speeches by %(speaker)s"
 msgstr ""
 
-#: templates/search/search.html:29 templates/speeches/speaker_detail.html:29
+#: templates/search/search.html:29 templates/speeches/base.html:26
 msgid "Speakers"
 msgstr ""
 
@@ -160,81 +231,103 @@ msgstr ""
 msgid "No results found"
 msgstr ""
 
-#: templates/speeches/_section_user_actions.html:5
-#: templates/speeches/_speaker_user_actions.html:5
-#: templates/speeches/_speech_user_actions.html:5
-#: templates/speeches/_speech_user_actions.html:10
-#: templates/speeches/recording_detail.html:42
-#: templates/speeches/recording_form.html:19
-msgid "Actions"
+#: templates/speeches/_home.html:16
+msgid "Search speeches and statements"
 msgstr ""
 
-#: templates/speeches/_section_user_actions.html:7
-#: templates/speeches/section_form.html:6
-msgid "Edit section"
-msgstr ""
-
-#: templates/speeches/_section_user_actions.html:8
-#: templates/speeches/section_confirm_delete.html:5
-msgid "Delete section"
-msgstr ""
-
-#: templates/speeches/_section_user_actions.html:9
-msgid "Add a new subsection"
-msgstr ""
-
-#: templates/speeches/_section_user_actions.html:10
-#: templates/speeches/_speaker_user_actions.html:8
-msgid "Add a new speech"
-msgstr ""
-
-#: templates/speeches/_speaker_user_actions.html:7
-#: templates/speeches/speaker_form.html:6
-msgid "Edit speaker"
-msgstr ""
-
-#: templates/speeches/_speech_user_actions.html:7
-#: templates/speeches/speech_confirm_delete.html:5
-msgid "Delete speech"
-msgstr ""
-
-#: templates/speeches/_speech_user_actions.html:8
-#: templates/speeches/speech_form.html:20
-msgid "Edit speech"
-msgstr ""
-
-#: templates/speeches/instance_detail.html:16
+#: templates/speeches/_home.html:43
 #, python-format
-msgid "Search the %(instance)s"
-msgstr ""
-
-#: templates/speeches/instance_detail.html:43
-#, python-format
-msgid "<strong>One</strong> speech"
-msgid_plural "<strong>%(n)s</strong> speeches"
+msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> speech"
+msgid_plural ""
+"<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> speeches"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/instance_detail.html:44
+#: templates/speeches/_home.html:44
 #, python-format
-msgid "<a href=\"%(url_speaker_list)s\"><strong>one</strong></a> speaker"
+msgid "<a href=\"%(url_speaker_list)s\"><strong>1</strong></a> speaker"
 msgid_plural ""
 "<a href=\"%(url_speaker_list)s\"><strong>%(n)s</strong></a> speakers"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/instance_detail.html:45
+#: templates/speeches/_home.html:45
 #, python-format
-msgid "<a href=\"%(url_section_list)s\"><strong>one</strong></a> section"
+msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> section"
 msgid_plural ""
-"<a href=\"%(url_section_list)s\"><strong>%(n)s</strong></a> sections"
+"<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> sections"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/instance_detail.html:54
+#: templates/speeches/_home.html:57
+msgid "Brilliant!"
+msgstr ""
+
+#: templates/speeches/_home.html:58
 msgid ""
-"Nothing has been uploaded yet. Why not <a href='/speech/add'>add a speech</"
-"a> or a <a href='/sections/add'>section</a>?"
+"Now you&rsquo;ve got your own public database for speeches and statements."
+msgstr ""
+
+#: templates/speeches/_home.html:59
+msgid ""
+"However, it&rsquo;s totally empty. Let&rsquo;s get started by adding "
+"something."
+msgstr ""
+
+#: templates/speeches/_home.html:60 templates/speeches/parentless_list.html:59
+#: templates/speeches/speaker_list.html:41
+msgid "Add your first statement"
+msgstr ""
+
+#: templates/speeches/_home.html:62 templates/speeches/parentless_list.html:61
+#: templates/speeches/speaker_list.html:43
+msgid "This is a brand new SayIt site."
+msgstr ""
+
+#: templates/speeches/_home.html:63 templates/speeches/parentless_list.html:62
+#: templates/speeches/speaker_list.html:44
+msgid ""
+"Its creator hasn&rsquo;t yet added any speeches or statements for you to see."
+msgstr ""
+
+#: templates/speeches/_home.html:64 templates/speeches/parentless_list.html:63
+#: templates/speeches/speaker_list.html:45
+msgid "Learn more about SayIt"
+msgstr ""
+
+#: templates/speeches/base.html:25
+msgid "Home"
+msgstr ""
+
+#: templates/speeches/base.html:27 templates/speeches/parentless_list.html:7
+#: templates/speeches/parentless_list.html:23
+#: templates/speeches/speaker_detail.html:90
+msgid "Speeches"
+msgstr ""
+
+#: templates/speeches/parentless_list.html:20
+msgid "Add a new speech"
+msgstr ""
+
+#: templates/speeches/parentless_list.html:21
+#: templates/speeches/section_form.html:8
+#: templates/speeches/section_form.html:18
+msgid "Add a section"
+msgstr ""
+
+#: templates/speeches/parentless_list.html:39
+msgid "Speeches not in a section"
+msgstr ""
+
+#: templates/speeches/parentless_list.html:57
+#: templates/speeches/speaker_list.html:39
+msgid "You haven&rsquo;t added any speeches or statements yet"
+msgstr ""
+
+#: templates/speeches/parentless_list.html:58
+msgid ""
+"Once you have, you&rsquo;ll be able to browse speeches and organise them "
+"into sections here."
 msgstr ""
 
 #: templates/speeches/recording_detail.html:6
@@ -246,8 +339,17 @@ msgid "Recording #%(id)s"
 msgstr ""
 
 #: templates/speeches/recording_detail.html:16
-#: templates/speeches/recording_form.html:15 templates/speeches/speech.html:88
+#: templates/speeches/recording_form.html:15 templates/speeches/speech.html:87
 msgid "This speech has audio"
+msgstr ""
+
+#: templates/speeches/recording_detail.html:42
+#: templates/speeches/recording_form.html:19
+msgid "Actions"
+msgstr ""
+
+#: templates/speeches/section_confirm_delete.html:5
+msgid "Delete section"
 msgstr ""
 
 #: templates/speeches/section_confirm_delete.html:11
@@ -260,48 +362,45 @@ msgstr ""
 msgid "View Section: %(title)s"
 msgstr ""
 
-#: templates/speeches/section_detail.html:28
-#: templates/speeches/speech_detail.html:95
+#: templates/speeches/section_detail.html:23
+#: templates/speeches/speaker_detail.html:95
+msgid "Add speech"
+msgstr ""
+
+#: templates/speeches/section_detail.html:24
+msgid "Add subsection"
+msgstr ""
+
+#: templates/speeches/section_detail.html:25
+#: templates/speeches/section_form.html:6
+#: templates/speeches/section_form.html:16
+msgid "Edit section"
+msgstr ""
+
+#: templates/speeches/section_detail.html:33
+#: templates/speeches/speech_detail.html:109
 msgid "Source"
 msgstr ""
 
-#: templates/speeches/section_detail.html:76
-#: templates/speeches/speech_detail.html:114
+#: templates/speeches/section_detail.html:90
+#: templates/speeches/speech_detail.html:132
 msgid "Keyboard shortcuts"
 msgstr ""
 
-#: templates/speeches/section_detail.html:77
+#: templates/speeches/section_detail.html:91
 msgid "previous section"
 msgstr ""
 
-#: templates/speeches/section_detail.html:78
+#: templates/speeches/section_detail.html:92
 msgid "next section"
 msgstr ""
 
-#: templates/speeches/section_form.html:8
-msgid "Add section"
+#: templates/speeches/section_detail.html:103
+msgid "This section is empty"
 msgstr ""
 
-#: templates/speeches/section_form.html:15
-msgid "Here is where you can edit a section."
-msgstr ""
-
-#: templates/speeches/section_form.html:17
-msgid "Here is where you can add a new section."
-msgstr ""
-
-#: templates/speeches/section_list.html:5
-#: templates/speeches/section_list.html:10
-#: templates/speeches/speaker_detail.html:88
-msgid "Speeches"
-msgstr ""
-
-#: templates/speeches/section_list.html:21
-msgid "Unattached speeches"
-msgstr ""
-
-#: templates/speeches/section_list.html:25
-msgid "There are no unattached speeches."
+#: templates/speeches/section_detail.html:104
+msgid "Add a new speech here"
 msgstr ""
 
 #: templates/speeches/speaker_detail.html:14
@@ -309,73 +408,75 @@ msgstr ""
 msgid "View Speaker: %(speaker)s"
 msgstr ""
 
+#: templates/speeches/speaker_detail.html:21
+#: templates/speeches/speaker_form.html:6
+#: templates/speeches/speaker_form.html:16
+msgid "Edit speaker"
+msgstr ""
+
 #: templates/speeches/speaker_detail.html:43
-msgid "Session appearance"
-msgid_plural "Session appearances"
+msgid "Appearance"
+msgid_plural "Appearances"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/speaker_detail.html:51
-msgid "Speech made"
-msgid_plural "Speeches made"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/speeches/speaker_detail.html:67
+#: templates/speeches/speaker_detail.html:78
 msgid "Longest speech"
 msgstr ""
 
-#: templates/speeches/speaker_detail.html:95
+#: templates/speeches/speaker_detail.html:103
 msgid "Search this person's speeches"
 msgstr ""
 
-#: templates/speeches/speaker_detail.html:105
+#: templates/speeches/speaker_detail.html:113
 #, python-format
 msgid "%(speaker)s has no recorded speeches yet."
 msgstr ""
 
 #: templates/speeches/speaker_form.html:8
-msgid "Add speaker"
-msgstr ""
-
-#: templates/speeches/speaker_form.html:15
-msgid "Here is where you can edit a speaker."
-msgstr ""
-
-#: templates/speeches/speaker_form.html:17
-msgid "Here is where you can add a new speaker."
+#: templates/speeches/speaker_form.html:18
+msgid "Add a speaker"
 msgstr ""
 
 #: templates/speeches/speaker_list.html:6
-#: templates/speeches/speaker_list.html:11
+#: templates/speeches/speaker_list.html:16
 msgid "All Speakers"
 msgstr ""
 
-#: templates/speeches/speaker_popit.html:7
-#: templates/speeches/speaker_popit.html:12
-msgid "Add new PopIt instance"
-msgstr ""
-
-#: templates/speeches/speaker_popit.html:13
+#: templates/speeches/speaker_list.html:40
 msgid ""
-"Provide a PopIt API URL below and all its speakers will be added locally."
+"Once you have, this page will contain a list of all the different people who "
+"made each statement in this SayIt site."
 msgstr ""
 
-#: templates/speeches/speech.html:12
+#: templates/speeches/speech.html:23
 msgid "Invisible"
 msgstr ""
 
-#: templates/speeches/speech.html:97
+#: templates/speeches/speech.html:101
 msgid "[ recorded audio ]"
 msgstr ""
 
-#: templates/speeches/speech.html:101 templates/speeches/speech.html.py:118
-#: templates/speeches/speech_detail.html:92
+#: templates/speeches/speech.html:105 templates/speeches/speech.html.py:126
 msgid "Link in context"
 msgstr ""
 
-#: templates/speeches/speech.html:103 templates/speeches/speech.html.py:120
+#: templates/speeches/speech.html:107 templates/speeches/speech.html.py:128
 msgid "Link"
+msgstr ""
+
+#: templates/speeches/speech.html:122
+#: templates/speeches/speech_detail.html:112
+msgid "Edit"
+msgstr ""
+
+#: templates/speeches/speech.html:123
+#: templates/speeches/speech_detail.html:113
+msgid "Delete"
+msgstr ""
+
+#: templates/speeches/speech_confirm_delete.html:5
+msgid "Delete speech"
 msgstr ""
 
 #: templates/speeches/speech_detail.html:33
@@ -384,30 +485,70 @@ msgid ""
 "refresh in 5 seconds..."
 msgstr ""
 
-#: templates/speeches/speech_detail.html:54
-msgid "Unknown speaker"
+#: templates/speeches/speech_detail.html:41
+msgid "Your speech has been saved!"
 msgstr ""
 
-#: templates/speeches/speech_detail.html:63
-msgid "Location:"
+#: templates/speeches/speech_detail.html:43
+msgid "Add another speech like this"
 msgstr ""
 
-#: templates/speeches/speech_detail.html:115
+#: templates/speeches/speech_detail.html:44
+msgid "Show speech in context"
+msgstr ""
+
+#: templates/speeches/speech_detail.html:46
+msgid "Add another speech"
+msgstr ""
+
+#: templates/speeches/speech_detail.html:71
+msgid "unknown speaker"
+msgstr ""
+
+#: templates/speeches/speech_detail.html:106
+msgid "Show context"
+msgstr ""
+
+#: templates/speeches/speech_detail.html:133
 msgid "previous speech"
 msgstr ""
 
-#: templates/speeches/speech_detail.html:116
+#: templates/speeches/speech_detail.html:134
 msgid "next speech"
 msgstr ""
 
-#: templates/speeches/speech_form.html:20
-msgid "Add speech"
+#: templates/speeches/speech_form.html:23
+#: templates/speeches/speech_form.html:45
+msgid "Edit speech"
 msgstr ""
 
-#: templates/speeches/speech_form.html:33
-msgid "Here is where you can edit a speech."
+#: templates/speeches/speech_form.html:25
+#: templates/speeches/speech_form.html:47
+msgid "Add a speech"
 msgstr ""
 
-#: templates/speeches/speech_form.html:35
-msgid "Here is where you can add a new speech."
+#: templates/speeches/speech_form.html:48
+msgid ""
+"You can cut and paste quotes from news sites, social media or blogs,<br>or "
+"transcribe any audio or video records you may have access to"
+msgstr ""
+
+#: templates/speeches/speech_form.html:124
+msgid "Date &amp; Time"
+msgstr ""
+
+#: templates/speeches/speech_form.html:180
+msgid "Event &amp; Location"
+msgstr ""
+
+#: templates/speeches/speech_form.html:205
+msgid "Title &amp; Tags"
+msgstr ""
+
+#: templates/speeches/speech_form.html:232
+msgid "Save changes"
+msgstr ""
+
+#: templates/speeches/speech_form.html:234
+msgid "Save speech"
 msgstr ""

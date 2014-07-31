@@ -3,18 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Marietta Le <marietta@boun.cr>, 2014
-# Marietta Le <marietta@boun.cr>, 2014
+# johnfelipe <ingenierofelipeurrego@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: sayit\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-31 17:20+0100\n"
-"PO-Revision-Date: 2014-04-09 14:58+0000\n"
-"Last-Translator: mySociety <transifex@mysociety.org>\n"
-"Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/"
-"sayit/language/hu_HU/)\n"
-"Language: hu_HU\n"
+"PO-Revision-Date: 2014-07-29 22:10+0000\n"
+"Last-Translator: johnfelipe <ingenierofelipeurrego@gmail.com>\n"
+"Language-Team: Spanish (http://www.transifex.com/projects/p/sayit/language/"
+"es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,74 +21,77 @@ msgstr ""
 
 #: forms.py:80
 msgid "Assign to section"
-msgstr "Hozzárendelés szakaszhoz"
+msgstr "Asigne a la sección"
 
 #: forms.py:238
 msgid "Choose tags"
-msgstr "Tagek kiválasztása"
+msgstr "Elija etiquetas"
 
 #: forms.py:254
 msgid "You must provide either text or some audio"
-msgstr "Szöveget vagy hangfelvételt kell csatolnia"
+msgstr "Usted debe proporcionar ya sea texto o algo de audio"
 
 #: forms.py:269
 msgid "If you provide a start time you must give a start date too"
-msgstr "Ha megadott kezdő időpontot, meg kell adnia kezdő dátumot is"
+msgstr ""
+"Si usted proporciona una hora de inicio debe dar una fecha de inicio también"
 
 #: forms.py:274
 msgid "If you provide an end time you must give an end date too"
-msgstr "Ha megadott záró időpontot, akkor meg kell adnia a záródátumot is"
+msgstr ""
+"Si usted proporciona una hora de finalización debe dar una fecha de "
+"finalización también"
 
 #: forms.py:375
 msgid "Something cannot be its own parent"
-msgstr ""
+msgstr "Algo que no puede ser su propio padre"
 
 #: forms.py:378
 msgid "Something cannot have a parent that is also a descendant"
-msgstr ""
+msgstr "Algo no puede tener un padre que es también un descendiente"
 
 #: forms.py:427
 msgid "Start time is before recording start time!"
-msgstr "A kezdés időpontja a felvétel indulása előtt van!"
+msgstr "Hora de inicio es antes de grabar la hora de inicio!"
 
 #: forms.py:436
 msgid "Difference between timestamps is too long for the uploaded audio"
 msgstr ""
-"Az időbélyegek közti különbség túl hosszú a feltöltött hangfelvétel "
-"hosszához képest"
+"Diferencia entre las marcas de tiempo es demasiado largo para el audio "
+"cargado"
 
 #: forms.py:443
 msgid "Timestamps must be distinct"
-msgstr "Az időbélyeg nem lehet ugyanaz"
+msgstr "Las marcas de tiempo deben ser distintas"
 
 #: models.py:136
 #, fuzzy
 msgid "The num of the section"
-msgstr "Szakasz címe"
+msgstr "El título de la sección"
 
 #: models.py:137
 #, fuzzy
 msgid "The heading of the section"
-msgstr "Szakasz címe"
+msgstr "El título de la sección"
 
 #: models.py:138
 #, fuzzy
 msgid "The subheading of the section"
-msgstr "Szakasz címe"
+msgstr "El título de la sección"
 
 #: models.py:139
 msgid "Longer description, HTML"
-msgstr ""
+msgstr "Descripción más larga, HTML"
 
 #: models.py:140
 #, fuzzy
 msgid "What date did the section start?"
-msgstr "Mi volt a beszéd elhangzásának dátuma?"
+msgstr "¿En qué fecha se inicia el discurso?"
 
 #: models.py:141
 #, fuzzy
 msgid "What time did the section start?"
-msgstr "Mikor kezdődött a beszéd?"
+msgstr "¿A qué hora empezó el discurso?"
 
 #: models.py:142
 msgid "Document number"
@@ -102,11 +104,11 @@ msgstr ""
 #: models.py:144
 #, fuzzy
 msgid "Legislative session"
-msgstr "Szakasz törlése"
+msgstr "Eliminar sección"
 
 #: models.py:156
 msgid "Section"
-msgstr ""
+msgstr "sección"
 
 #: models.py:166
 msgid "You must specify at least one of num/heading/subheading"
@@ -114,44 +116,44 @@ msgstr ""
 
 #: models.py:468
 msgid "The text of the speech"
-msgstr "Beszéd szövege"
+msgstr "El texto del discurso"
 
 #: models.py:473
 #, fuzzy
 msgid "The num of the speech, if relevant"
-msgstr "Beszéd címe, ha van"
+msgstr "El título del discurso, si es necesario"
 
 #: models.py:474
 #, fuzzy
 msgid "The heading of the speech, if relevant"
-msgstr "Beszéd címe, ha van"
+msgstr "El título del discurso, si es necesario"
 
 #: models.py:475
 #, fuzzy
 msgid "The subheading of the speech, if relevant"
-msgstr "Beszéd címe, ha van"
+msgstr "El título del discurso, si es necesario"
 
 #: models.py:477
 msgid "Was the speech at a particular event?"
-msgstr "A beszéd valamilyen eseményen hangzott el?"
+msgstr "Fue el discurso en un evento en particular?"
 
 #: models.py:478
 msgid "Where the speech took place"
-msgstr "Hol hangzott el a beszéd?"
+msgstr "Donde el discurso tuvo lugar"
 
 #: models.py:481
 msgid "Who gave this speech?"
-msgstr "Ki mondta a beszédet?"
+msgstr "¿Quién dio este discurso?"
 
 #: models.py:488 templates/speeches/speaker_detail.html:51
 #, fuzzy
 msgid "Speech"
-msgstr "Beszédek"
+msgstr "Actas"
 
 #: models.py:489
 #, fuzzy
 msgid "Question"
-msgstr "következő szakasz"
+msgstr "sección"
 
 #: models.py:490
 msgid "Answer"
@@ -176,103 +178,110 @@ msgstr ""
 #: models.py:496
 #, fuzzy
 msgid "What sort of speech is this?"
-msgstr "Mi volt a beszéd elhangzásának dátuma?"
+msgstr "¿En qué fecha se inicia el discurso?"
 
 #: models.py:499
 msgid "What date did the speech start?"
-msgstr "Mi volt a beszéd elhangzásának dátuma?"
+msgstr "¿En qué fecha se inicia el discurso?"
 
 #: models.py:500
 msgid "What time did the speech start?"
-msgstr "Mikor kezdődött a beszéd?"
+msgstr "¿A qué hora empezó el discurso?"
 
 #: models.py:501
 msgid "What date did the speech end?"
-msgstr "Milyen dátumra esett a beszéd vége?"
+msgstr "¿En qué fecha terminó el discurso?"
 
 #: models.py:502
 msgid "What time did the speech end?"
-msgstr "Mikor fejeződött be a beszéd?"
+msgstr "¿A qué hora terminó el discurso?"
 
 #: models.py:505
 msgid "Is this speech public?"
-msgstr "Nyilvános ez a beszéd?"
+msgstr "Es pública este discurso?"
 
 #: views.py:409
 msgid "Speeches assigned."
-msgstr "Hozzárendelt beszédek."
+msgstr "Discursos asignados."
 
 #: management/commands/sayit_search_make_index_live.py:12
 msgid "Update the default alias to point at search index write alias is using"
 msgstr ""
+"Actualice los alias por defecto para señalar en el índice de búsqueda de "
+"escritura que está utilizando"
 
 #: management/commands/sayit_search_new_index.py:12
 msgid "Create a new dated search index for reindexing with no downtime"
 msgstr ""
+"Crear un nuevo índice de búsqueda de fecha para reindexar sin tiempo de "
+"inactividad"
 
 #: templates/pagination/pagination.html:5
 #: templates/pagination/pagination.html:7
 msgid "Previous"
-msgstr "Előző"
+msgstr "anterior"
 
 #: templates/pagination/pagination.html:21
 #: templates/pagination/pagination.html:23
 msgid "Next"
-msgstr "Következő"
+msgstr "próximo"
 
 #: templates/search/search.html:8 templates/search/search.html.py:11
 #: templates/search/search.html:12 templates/speeches/_home.html:19
 #: templates/speeches/_home.html.py:20
 #: templates/speeches/speaker_detail.html:104
 msgid "Search"
-msgstr "Keresés"
+msgstr "búsqueda"
 
 #: templates/search/search.html:16
 #, python-format
 msgid "Search only speeches by %(speaker)s"
-msgstr "%(speaker)s beszédeinek keresése"
+msgstr "Buscar sólo los discursos de %(speaker)s"
 
 #: templates/search/search.html:29 templates/speeches/base.html:26
 msgid "Speakers"
-msgstr "Felszólalók"
+msgstr "ponente"
 
 #: templates/search/search.html:38
 #, python-format
 msgid "Mentions of <strong>&ldquo;%(query)s&rdquo;</strong> in speeches"
-msgstr "<strong>&ldquo;%(query)s&rdquo;</strong> említése a beszédekben"
+msgstr "Menciones de <strong>&ldquo;%(query)s&rdquo;</strong> en el acta"
 
 #: templates/search/search.html:47
 msgid "No results found"
-msgstr ""
+msgstr "No se han encontrado resultados"
 
 #: templates/speeches/_home.html:16
 #, fuzzy
 msgid "Search speeches and statements"
-msgstr "%(speaker)s beszédeinek keresése"
+msgstr "Buscar sólo los discursos de %(speaker)s"
 
 #: templates/speeches/_home.html:43
-#, python-format
+#, fuzzy, python-format
 msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> speech"
 msgid_plural ""
 "<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> speeches"
-msgstr[0] ""
+msgstr[0] "<a href=\"%(url_speaker_list)s\"><strong>un</strong></a> ponente"
 msgstr[1] ""
+"<a href=\"%(url_speaker_list)s\"><strong>%(n)s</strong></a> ponentes"
 
 #: templates/speeches/_home.html:44
-#, python-format
+#, fuzzy, python-format
 msgid "<a href=\"%(url_speaker_list)s\"><strong>1</strong></a> speaker"
 msgid_plural ""
 "<a href=\"%(url_speaker_list)s\"><strong>%(n)s</strong></a> speakers"
-msgstr[0] ""
+msgstr[0] "<a href=\"%(url_speaker_list)s\"><strong>un</strong></a> ponente"
 msgstr[1] ""
+"<a href=\"%(url_speaker_list)s\"><strong>%(n)s</strong></a> ponentes"
 
 #: templates/speeches/_home.html:45
-#, python-format
+#, fuzzy, python-format
 msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> section"
 msgid_plural ""
 "<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> sections"
-msgstr[0] ""
+msgstr[0] "<a href=\"%(url_section_list)s\"><strong>una</strong></a> sección"
 msgstr[1] ""
+"<a href=\"%(url_section_list)s\"><strong>%(n)s</strong></a> seccuines"
 
 #: templates/speeches/_home.html:57
 msgid "Brilliant!"
@@ -318,23 +327,23 @@ msgstr ""
 #: templates/speeches/parentless_list.html:23
 #: templates/speeches/speaker_detail.html:90
 msgid "Speeches"
-msgstr "Beszédek"
+msgstr "Actas"
 
 #: templates/speeches/parentless_list.html:20
 msgid "Add a new speech"
-msgstr "Új beszéd hozzáadása"
+msgstr "Añadir un nuevo discurso"
 
 #: templates/speeches/parentless_list.html:21
 #: templates/speeches/section_form.html:8
 #: templates/speeches/section_form.html:18
 #, fuzzy
 msgid "Add a section"
-msgstr "Szakasz hozzáadása"
+msgstr "Añadir sección"
 
 #: templates/speeches/parentless_list.html:39
 #, fuzzy
 msgid "Speeches not in a section"
-msgstr "Hozzárendelt beszédek."
+msgstr "Discursos asignados."
 
 #: templates/speeches/parentless_list.html:57
 #: templates/speeches/speaker_list.html:39
@@ -353,65 +362,65 @@ msgstr ""
 #: templates/speeches/recording_form.html:11
 #, python-format
 msgid "Recording #%(id)s"
-msgstr "#%(id)s felvétel"
+msgstr "Registro #%(id)s"
 
 #: templates/speeches/recording_detail.html:16
 #: templates/speeches/recording_form.html:15 templates/speeches/speech.html:87
 msgid "This speech has audio"
-msgstr "Ehhez a beszédhez tartozik hangfelvétel"
+msgstr "Este discurso tiene audio"
 
 #: templates/speeches/recording_detail.html:42
 #: templates/speeches/recording_form.html:19
 msgid "Actions"
-msgstr ""
+msgstr "acciones"
 
 #: templates/speeches/section_confirm_delete.html:5
 msgid "Delete section"
-msgstr "Szakasz törlése"
+msgstr "Eliminar sección"
 
 #: templates/speeches/section_confirm_delete.html:11
 #: templates/speeches/speech_confirm_delete.html:11
 msgid "Confirm delete?"
-msgstr "Biztos törli?"
+msgstr "Confirmar borrar?"
 
 #: templates/speeches/section_detail.html:16
 #, python-format
 msgid "View Section: %(title)s"
-msgstr "%(title)s szakasz megtekintése"
+msgstr "Ver Sección: %(title)s"
 
 #: templates/speeches/section_detail.html:23
 #: templates/speeches/speaker_detail.html:95
 msgid "Add speech"
-msgstr "Beszéd hozzáadása"
+msgstr "Añadir discurso"
 
 #: templates/speeches/section_detail.html:24
 #, fuzzy
 msgid "Add subsection"
-msgstr "Szakasz hozzáadása"
+msgstr "Añadir sección"
 
 #: templates/speeches/section_detail.html:25
 #: templates/speeches/section_form.html:6
 #: templates/speeches/section_form.html:16
 msgid "Edit section"
-msgstr "Szakasz szerkesztése"
+msgstr "Editar sección"
 
 #: templates/speeches/section_detail.html:33
 #: templates/speeches/speech_detail.html:109
 msgid "Source"
-msgstr ""
+msgstr "fuente"
 
 #: templates/speeches/section_detail.html:90
 #: templates/speeches/speech_detail.html:132
 msgid "Keyboard shortcuts"
-msgstr "Billentyűparancsok"
+msgstr "atajos de teclado"
 
 #: templates/speeches/section_detail.html:91
 msgid "previous section"
-msgstr "előző szakasz"
+msgstr "sección anterior"
 
 #: templates/speeches/section_detail.html:92
 msgid "next section"
-msgstr "következő szakasz"
+msgstr "siguiente sección"
 
 #: templates/speeches/section_detail.html:103
 msgid "This section is empty"
@@ -420,48 +429,49 @@ msgstr ""
 #: templates/speeches/section_detail.html:104
 #, fuzzy
 msgid "Add a new speech here"
-msgstr "Új beszéd hozzáadása"
+msgstr "Añadir un nuevo discurso"
 
 #: templates/speeches/speaker_detail.html:14
 #, python-format
 msgid "View Speaker: %(speaker)s"
-msgstr "%(speaker)s megtekintése"
+msgstr "Ver orador: %(speaker)s"
 
 #: templates/speeches/speaker_detail.html:21
 #: templates/speeches/speaker_form.html:6
 #: templates/speeches/speaker_form.html:16
 msgid "Edit speaker"
-msgstr ""
+msgstr "Editar orador"
 
 #: templates/speeches/speaker_detail.html:43
+#, fuzzy
 msgid "Appearance"
 msgid_plural "Appearances"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "apariencia Sesión"
+msgstr[1] "apariencias de sesión"
 
 #: templates/speeches/speaker_detail.html:78
 msgid "Longest speech"
-msgstr "Leghosszabb megszólalás"
+msgstr "discurso más largo"
 
 #: templates/speeches/speaker_detail.html:103
 msgid "Search this person's speeches"
-msgstr "Az ő beszédeinek keresése"
+msgstr "Buscar en los discursos de esta persona"
 
 #: templates/speeches/speaker_detail.html:113
 #, python-format
 msgid "%(speaker)s has no recorded speeches yet."
-msgstr "%(speaker)s, neki még nincs rögzített megszólalása."
+msgstr "%(speaker)s no tiene actas grabadas todavía."
 
 #: templates/speeches/speaker_form.html:8
 #: templates/speeches/speaker_form.html:18
 #, fuzzy
 msgid "Add a speaker"
-msgstr "Megszólaló hozzáadása"
+msgstr "Agregar ponente"
 
 #: templates/speeches/speaker_list.html:6
 #: templates/speeches/speaker_list.html:16
 msgid "All Speakers"
-msgstr "Minden megszólaló"
+msgstr "Todos los oradores"
 
 #: templates/speeches/speaker_list.html:40
 msgid ""
@@ -471,19 +481,19 @@ msgstr ""
 
 #: templates/speeches/speech.html:23
 msgid "Invisible"
-msgstr "Láthatatlan"
+msgstr "invisible"
 
 #: templates/speeches/speech.html:101
 msgid "[ recorded audio ]"
-msgstr "[ hangfelvétel ]"
+msgstr "[Audio grabado]"
 
 #: templates/speeches/speech.html:105 templates/speeches/speech.html.py:126
 msgid "Link in context"
-msgstr "Link a kontextusban"
+msgstr "Enlace en contexto"
 
 #: templates/speeches/speech.html:107 templates/speeches/speech.html.py:128
 msgid "Link"
-msgstr "Link"
+msgstr "enlace"
 
 #: templates/speeches/speech.html:122
 #: templates/speeches/speech_detail.html:112
@@ -494,19 +504,19 @@ msgstr ""
 #: templates/speeches/speech_detail.html:113
 #, fuzzy
 msgid "Delete"
-msgstr "Beszéd törlése"
+msgstr "Eliminar acta"
 
 #: templates/speeches/speech_confirm_delete.html:5
 msgid "Delete speech"
-msgstr "Beszéd törlése"
+msgstr "Eliminar acta"
 
 #: templates/speeches/speech_detail.html:33
 msgid ""
 "Please wait, audio is being transcribed. This page will automatically "
 "refresh in 5 seconds..."
 msgstr ""
-"Kérjük, várjon. A hangfelvétel most kerül átírásra. Az oldal automatikusan "
-"frissülni fog 5 másodperc múlva..."
+"Por favor espere, el audio se está transcribiendo. Esta página se "
+"actualizará automáticamente en 5 segundos ..."
 
 #: templates/speeches/speech_detail.html:41
 msgid "Your speech has been saved!"
@@ -515,7 +525,7 @@ msgstr ""
 #: templates/speeches/speech_detail.html:43
 #, fuzzy
 msgid "Add another speech like this"
-msgstr "Új beszéd hozzáadása"
+msgstr "Añadir un nuevo discurso"
 
 #: templates/speeches/speech_detail.html:44
 msgid "Show speech in context"
@@ -524,12 +534,12 @@ msgstr ""
 #: templates/speeches/speech_detail.html:46
 #, fuzzy
 msgid "Add another speech"
-msgstr "Új beszéd hozzáadása"
+msgstr "Añadir un nuevo discurso"
 
 #: templates/speeches/speech_detail.html:71
 #, fuzzy
 msgid "unknown speaker"
-msgstr "Ismeretlen megszólaló"
+msgstr "Orador desconocido"
 
 #: templates/speeches/speech_detail.html:106
 msgid "Show context"
@@ -537,22 +547,22 @@ msgstr ""
 
 #: templates/speeches/speech_detail.html:133
 msgid "previous speech"
-msgstr "előző beszéd"
+msgstr "discurso anterior"
 
 #: templates/speeches/speech_detail.html:134
 msgid "next speech"
-msgstr "következő beszéd"
+msgstr "próximo discurso"
 
 #: templates/speeches/speech_form.html:23
 #: templates/speeches/speech_form.html:45
 msgid "Edit speech"
-msgstr "Beszéd szerkesztése"
+msgstr "Editar acta"
 
 #: templates/speeches/speech_form.html:25
 #: templates/speeches/speech_form.html:47
 #, fuzzy
 msgid "Add a speech"
-msgstr "Beszéd hozzáadása"
+msgstr "Añadir discurso"
 
 #: templates/speeches/speech_form.html:48
 msgid ""
@@ -579,42 +589,66 @@ msgstr ""
 #: templates/speeches/speech_form.html:234
 #, fuzzy
 msgid "Save speech"
-msgstr "következő beszéd"
+msgstr "próximo discurso"
 
 #~ msgid "Choose a speaker"
-#~ msgstr "Beszélő kiválasztása"
+#~ msgstr "Seleccione un orador"
 
 #~ msgid "Add a new subsection"
-#~ msgstr "Alszakasz hozzáadása"
+#~ msgstr "Añadir un nuevo inciso"
 
 #~ msgid "Search the %(instance)s"
-#~ msgstr "Keresd ezt: %(instance)s "
+#~ msgstr "Busca en la %(instance)s"
+
+#~ msgid "<strong>One</strong> speech"
+#~ msgid_plural "<strong>%(n)s</strong> speeches"
+#~ msgstr[0] "<strong>Un</strong> Acta"
+#~ msgstr[1] "<strong>%(n)s</strong> actas"
+
+#~ msgid ""
+#~ "Nothing has been uploaded yet. Why not <a href='/speech/add'>add a "
+#~ "speech</a> or a <a href='/sections/add'>section</a>?"
+#~ msgstr ""
+#~ "Nada se ha subido aún. Por qué no <a href='/speech/add'>agregar un "
+#~ "ponente</a> o una <a href='/sections/add'>sección</a>?"
 
 #~ msgid "Here is where you can edit a section."
-#~ msgstr "Itt tudja szerkeszteni a szakaszt."
+#~ msgstr "Aquí es donde se puede editar una sección."
 
 #~ msgid "Here is where you can add a new section."
-#~ msgstr "Itt tud új szakaszt hozzáadni."
+#~ msgstr "Aquí es donde usted puede añadir una nueva sección."
+
+#~ msgid "Unattached speeches"
+#~ msgstr "Actas disponibles"
+
+#~ msgid "There are no unattached speeches."
+#~ msgstr "No hay actas disponibles."
 
 #~ msgid "Speech made"
 #~ msgid_plural "Speeches made"
-#~ msgstr[0] "Beszéd"
-#~ msgstr[1] "Beszédek"
+#~ msgstr[0] "Discurso pronunciado"
+#~ msgstr[1] "Los discursos pronunciados"
 
 #~ msgid "Here is where you can edit a speaker."
-#~ msgstr "Itt tudja szerkeszteni a megszólalót."
+#~ msgstr "Aquí es donde se puede editar un discurso."
 
 #~ msgid "Here is where you can add a new speaker."
-#~ msgstr "Itt tud új megszólalót hozzáadni."
+#~ msgstr "Aquí es donde usted puede agregar un nuevo orador."
 
 #~ msgid "Add new PopIt instance"
-#~ msgstr "Új PopIt eset hozzáadása"
+#~ msgstr "Añadir nueva instancia Popit"
+
+#~ msgid ""
+#~ "Provide a PopIt API URL below and all its speakers will be added locally."
+#~ msgstr ""
+#~ "Proporcionar una URL API Popit abajo y todos sus hablantes se añadirán a "
+#~ "nivel local."
 
 #~ msgid "Location:"
-#~ msgstr "Helyszín"
+#~ msgstr "Ubicación:"
 
 #~ msgid "Here is where you can edit a speech."
-#~ msgstr "Itt tudja szerkeszteni a beszédet."
+#~ msgstr "Aquí es donde se puede editar un discurso."
 
 #~ msgid "Here is where you can add a new speech."
-#~ msgstr "Itt tud új beszédet hozzáadni."
+#~ msgstr "Aquí es donde usted puede agregar un nuevo discurso."
