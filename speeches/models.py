@@ -78,7 +78,8 @@ class Slug(SlugModel):
 # Speaker - someone who gave a speech
 @python_2_unicode_compatible
 class Speaker(InstanceMixin, Person):
-    slug = SluggableField(unique_with='instance', populate_from='name')
+    slug = SluggableField(
+        _('slug'), unique_with='instance', populate_from='name')
     slugs = generic.GenericRelation(Slug)
 
     class Meta:
@@ -133,18 +134,31 @@ class Section(AuditedModel, InstanceMixin):
     # Custom manager
     objects = SectionManager()
 
-    num = models.TextField(blank=True, help_text=_('The num of the section'))
-    heading = models.TextField(blank=True, help_text=_('The heading of the section'))
-    subheading = models.TextField(blank=True, help_text=_('The subheading of the section'))
-    description = models.TextField(blank=True, help_text=_('Longer description, HTML'))
-    start_date = models.DateField(blank=True, null=True, help_text=_('What date did the section start?'))
-    start_time = models.TimeField(blank=True, null=True, help_text=_('What time did the section start?'))
-    number = models.TextField(blank=True, help_text=_('Document number'))
-    legislature = models.TextField(blank=True, help_text=_('Legislature'))
-    session = models.TextField(blank=True, help_text=_('Legislative session'))
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
-    slug = SluggableField(unique_with=('parent', 'instance'), populate_from='title')
-    source_url = models.TextField(blank=True)
+    num = models.TextField(
+        _('number'), blank=True, help_text=_('The number of the section'))
+    heading = models.TextField(
+        _('heading'), blank=True, help_text=_('The heading of the section'))
+    subheading = models.TextField(
+        _('subheading'), blank=True,
+        help_text=_('The subheading of the section'))
+    description = models.TextField(
+        _('description'), blank=True, help_text=_('Longer description, HTML'))
+    start_date = models.DateField(
+        _('start date'), blank=True, null=True,
+        help_text=_('What date did the section start?'))
+    start_time = models.TimeField(
+        _('start time'), blank=True, null=True,
+        help_text=_('What time did the section start?'))
+    number = models.TextField(_('document number'), blank=True)
+    legislature = models.TextField(_('legislature'), blank=True)
+    session = models.TextField(
+        _('session'), blank=True, help_text=_('Legislative session'))
+    parent = models.ForeignKey(
+        'self', verbose_name=_('parent'), null=True, blank=True,
+        related_name='children')
+    slug = SluggableField(
+        _('slug'), unique_with=('parent', 'instance'), populate_from='title')
+    source_url = models.TextField(_('source URL'), blank=True)
 
     slugs = generic.GenericRelation(Slug)
 
@@ -463,27 +477,46 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     # Custom manager
     objects = SpeechManager()
 
-    # The speech. Need to check have at least one of the following two (preferably both).
-    audio = models.FileField(upload_to='speeches/%Y-%m-%d/', max_length=255, blank=True)
-    text = models.TextField(blank=True, db_index=False, help_text=_('The text of the speech'))
+    # The speech. Need to check have at least one of the following two
+    # (preferably both).
+    audio = models.FileField(
+        _('audio'), upload_to='speeches/%Y-%m-%d/', max_length=255, blank=True)
+    text = models.TextField(
+        _('text'), blank=True, db_index=False,
+        help_text=_('The text of the speech'))
 
     # The section that this speech is part of
-    section = models.ForeignKey(Section, blank=True, null=True, on_delete=models.SET_NULL,
-            help_text=('The section that this speech is contained in'),)
-    num = models.TextField(blank=True, help_text=_('The num of the speech, if relevant'))
-    heading = models.TextField(blank=True, help_text=_('The heading of the speech, if relevant'))
-    subheading = models.TextField(blank=True, help_text=_('The subheading of the speech, if relevant'))
-    # The below two fields could be on the section if we made it a required field of a speech
-    event = models.TextField(db_index=True, blank=True, help_text=_('Was the speech at a particular event?'))
-    location = models.TextField(db_index=True, blank=True, help_text=_('Where the speech took place'))
+    section = models.ForeignKey(
+        Section, verbose_name=_('Section'), blank=True, null=True,
+        on_delete=models.SET_NULL,
+        help_text=('The section that this speech is contained in'),)
+    num = models.TextField(
+        _('number'), blank=True,
+        help_text=_('The number of the speech, if relevant'))
+    heading = models.TextField(
+        _('heading'), blank=True,
+        help_text=_('The heading of the speech, if relevant'))
+    subheading = models.TextField(
+        _('subheading'), blank=True,
+        help_text=_('The subheading of the speech, if relevant'))
+    # The below two fields could be on the section if we made it a required
+    # field of a speech
+    event = models.TextField(
+        _('event'), db_index=True, blank=True,
+        help_text=_('Was the speech at a particular event?'))
+    location = models.TextField(
+        _('location'), db_index=True, blank=True,
+        help_text=_('Where the speech took place'))
 
     # Metadata on the speech
-    speaker = models.ForeignKey(Speaker, blank=True, null=True, help_text=_('Who gave this speech?'), on_delete=models.SET_NULL)
+    speaker = models.ForeignKey(
+        Speaker, verbose_name=_('speaker'), blank=True, null=True,
+        help_text=_('Who gave this speech?'), on_delete=models.SET_NULL)
     # may be null, in which case we simply use current strategy to get name
     speaker_display = models.CharField(max_length=256, null=True, blank=True)
 
     type = models.CharField(
-        max_length=32,
+        _('type'), max_length=32,
         # Expected values from Akoma Ntoso
         choices=(('speech', _('Speech')),
                  ('question', _('Question')),
@@ -496,22 +529,34 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
         help_text=_('What sort of speech is this?'),
         )
 
-    start_date = models.DateField(blank=True, null=True, help_text=_('What date did the speech start?'))
-    start_time = models.TimeField(blank=True, null=True, help_text=_('What time did the speech start?'))
-    end_date = models.DateField(blank=True, null=True, help_text=_('What date did the speech end?'))
-    end_time = models.TimeField(blank=True, null=True, help_text=_('What time did the speech end?'))
-    tags = models.ManyToManyField(Tag, blank=True, null=True)
+    start_date = models.DateField(
+        _('start date'), blank=True, null=True,
+        help_text=_('What date did the speech start?'))
+    start_time = models.TimeField(
+        _('start time'), blank=True, null=True,
+        help_text=_('What time did the speech start?'))
+    end_date = models.DateField(
+        _('end date'), blank=True, null=True,
+        help_text=_('What date did the speech end?'))
+    end_time = models.TimeField(
+        _('end time'), blank=True, null=True,
+        help_text=_('What time did the speech end?'))
+    tags = models.ManyToManyField(
+        Tag, verbose_name=_('tags'), blank=True, null=True)
 
-    public = models.BooleanField(default=True, help_text=_('Is this speech public?'))
+    public = models.BooleanField(
+        _('public'), default=True, help_text=_('Is this speech public?'))
 
-    # What if source material has multiple speeches, same timestamp - need a way of ordering them?
+    # What if source material has multiple speeches, same timestamp - need a
+    # way of ordering them?
     # pos = models.IntegerField()
 
-    source_url = models.TextField(blank=True)
+    source_url = models.TextField(_('source URL'), blank=True)
     # source_column? Any other source based things?
 
     # Task id for celery transcription tasks
-    celery_task_id = models.CharField(max_length=256, null=True, blank=True)
+    celery_task_id = models.CharField(
+        _('celery task ID'), max_length=256, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'speeches'

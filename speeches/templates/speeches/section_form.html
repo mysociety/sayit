@@ -21,10 +21,11 @@
 
 <form id="section-form" class="form-horizontal" method="post">
     {% if object %}
-        {% include 'speeches/form.html' with type="section" submit="Update section" %}
+        {% trans "Update section" as submit %}
     {% else %}
-        {% include 'speeches/form.html' with type="section" submit="Add section" %}
+        {% trans "Add section" as submit %}
     {% endif %}
+    {% include 'speeches/form.html' with type="section" submit=submit %}
 </form>
 
 {% endblock %}

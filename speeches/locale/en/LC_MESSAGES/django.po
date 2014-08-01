@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-31 17:20+0100\n"
+"POT-Creation-Date: 2014-08-01 13:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,135 +57,527 @@ msgstr ""
 msgid "Timestamps must be distinct"
 msgstr ""
 
-#: models.py:136
-msgid "The num of the section"
+#: models.py:82 models.py:160
+msgid "slug"
 msgstr ""
 
-#: models.py:137
-msgid "The heading of the section"
+#: models.py:138 models.py:494
+msgid "number"
 msgstr ""
 
 #: models.py:138
-msgid "The subheading of the section"
+msgid "The number of the section"
 msgstr ""
 
-#: models.py:139
-msgid "Longer description, HTML"
+#: models.py:140 models.py:497
+msgid "heading"
 msgstr ""
 
 #: models.py:140
-msgid "What date did the section start?"
+msgid "The heading of the section"
 msgstr ""
 
-#: models.py:141
-msgid "What time did the section start?"
-msgstr ""
-
-#: models.py:142
-msgid "Document number"
+#: models.py:142 models.py:500
+msgid "subheading"
 msgstr ""
 
 #: models.py:143
-msgid "Legislature"
+msgid "The subheading of the section"
 msgstr ""
 
-#: models.py:144
+#: models.py:145
+msgid "description"
+msgstr ""
+
+#: models.py:145
+msgid "Longer description, HTML"
+msgstr ""
+
+#: models.py:147 models.py:533 extra-locales/popolo/behaviors/models.py:51
+msgid "start date"
+msgstr ""
+
+#: models.py:148
+msgid "What date did the section start?"
+msgstr ""
+
+#: models.py:150 models.py:536
+msgid "start time"
+msgstr ""
+
+#: models.py:151
+msgid "What time did the section start?"
+msgstr ""
+
+#: models.py:152
+msgid "document number"
+msgstr ""
+
+#: models.py:153
+msgid "legislature"
+msgstr ""
+
+#: models.py:155
+msgid "session"
+msgstr ""
+
+#: models.py:155
 msgid "Legislative session"
 msgstr ""
 
-#: models.py:156
+#: models.py:157
+msgid "parent"
+msgstr ""
+
+#: models.py:161 models.py:554
+msgid "source URL"
+msgstr ""
+
+#: models.py:170 models.py:490
 msgid "Section"
 msgstr ""
 
-#: models.py:166
+#: models.py:180
 msgid "You must specify at least one of num/heading/subheading"
 msgstr ""
 
-#: models.py:468
+#: models.py:483
+msgid "audio"
+msgstr ""
+
+#: models.py:485
+msgid "text"
+msgstr ""
+
+#: models.py:486
 msgid "The text of the speech"
 msgstr ""
 
-#: models.py:473
-msgid "The num of the speech, if relevant"
+#: models.py:495
+msgid "The number of the speech, if relevant"
 msgstr ""
 
-#: models.py:474
+#: models.py:498
 msgid "The heading of the speech, if relevant"
 msgstr ""
 
-#: models.py:475
+#: models.py:501
 msgid "The subheading of the speech, if relevant"
 msgstr ""
 
-#: models.py:477
+#: models.py:505
+msgid "event"
+msgstr ""
+
+#: models.py:506
 msgid "Was the speech at a particular event?"
 msgstr ""
 
-#: models.py:478
+#: models.py:508
+msgid "location"
+msgstr ""
+
+#: models.py:509
 msgid "Where the speech took place"
 msgstr ""
 
-#: models.py:481
+#: models.py:513
+msgid "speaker"
+msgstr ""
+
+#: models.py:514
 msgid "Who gave this speech?"
 msgstr ""
 
-#: models.py:488 templates/speeches/speaker_detail.html:51
+#: models.py:519 extra-locales/popolo/models.py:233
+msgid "type"
+msgstr ""
+
+#: models.py:521 templates/speeches/speaker_detail.html:51
 #, fuzzy
 msgid "Speech"
 msgstr ""
 "#-#-#-#-#  django.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "#-#-#-#-#  django.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 
-#: models.py:489
+#: models.py:522
 msgid "Question"
 msgstr ""
 
-#: models.py:490
+#: models.py:523
 msgid "Answer"
 msgstr ""
 
-#: models.py:491
+#: models.py:524
 msgid "Scene"
 msgstr ""
 
-#: models.py:492
+#: models.py:525
 msgid "Narrative"
 msgstr ""
 
-#: models.py:493
+#: models.py:526
 msgid "Summary"
 msgstr ""
 
-#: models.py:494
+#: models.py:527
 msgid "Other"
 msgstr ""
 
-#: models.py:496
+#: models.py:529
 msgid "What sort of speech is this?"
 msgstr ""
 
-#: models.py:499
+#: models.py:534
 msgid "What date did the speech start?"
 msgstr ""
 
-#: models.py:500
+#: models.py:537
 msgid "What time did the speech start?"
 msgstr ""
 
-#: models.py:501
+#: models.py:539 extra-locales/popolo/behaviors/models.py:56
+msgid "end date"
+msgstr ""
+
+#: models.py:540
 msgid "What date did the speech end?"
 msgstr ""
 
-#: models.py:502
+#: models.py:542
+msgid "end time"
+msgstr ""
+
+#: models.py:543
 msgid "What time did the speech end?"
 msgstr ""
 
-#: models.py:505
+#: models.py:545
+msgid "tags"
+msgstr ""
+
+#: models.py:548
+msgid "public"
+msgstr ""
+
+#: models.py:548
 msgid "Is this speech public?"
+msgstr ""
+
+#: models.py:559
+msgid "celery task ID"
 msgstr ""
 
 #: views.py:409
 msgid "Speeches assigned."
+msgstr ""
+
+#: extra-locales/popolo/models.py:22 extra-locales/popolo/models.py:92
+#: extra-locales/popolo/models.py:252
+msgid "name"
+msgstr ""
+
+#: extra-locales/popolo/models.py:22
+msgid "A person's preferred full name"
+msgstr ""
+
+#: extra-locales/popolo/models.py:27
+msgid "family name"
+msgstr ""
+
+#: extra-locales/popolo/models.py:27
+msgid "One or more family names"
+msgstr ""
+
+#: extra-locales/popolo/models.py:28
+msgid "given name"
+msgstr ""
+
+#: extra-locales/popolo/models.py:28
+msgid "One or more primary given names"
+msgstr ""
+
+#: extra-locales/popolo/models.py:29
+msgid "additional name"
+msgstr ""
+
+#: extra-locales/popolo/models.py:29
+msgid "One or more secondary given names"
+msgstr ""
+
+#: extra-locales/popolo/models.py:30
+msgid "honorific prefix"
+msgstr ""
+
+#: extra-locales/popolo/models.py:30
+msgid "One or more honorifics preceding a person's name"
+msgstr ""
+
+#: extra-locales/popolo/models.py:31
+msgid "honorific suffix"
+msgstr ""
+
+#: extra-locales/popolo/models.py:31
+msgid "One or more honorifics following a person's name"
+msgstr ""
+
+#: extra-locales/popolo/models.py:32
+msgid "patronymic name"
+msgstr ""
+
+#: extra-locales/popolo/models.py:32
+msgid "One or more patronymic names"
+msgstr ""
+
+#: extra-locales/popolo/models.py:33
+msgid "sort name"
+msgstr ""
+
+#: extra-locales/popolo/models.py:33
+msgid "A name to use in an lexicographically ordered list"
+msgstr ""
+
+#: extra-locales/popolo/models.py:34
+msgid "email"
+msgstr ""
+
+#: extra-locales/popolo/models.py:34
+msgid "A preferred email address"
+msgstr ""
+
+#: extra-locales/popolo/models.py:35
+msgid "gender"
+msgstr ""
+
+#: extra-locales/popolo/models.py:35
+msgid "A gender"
+msgstr ""
+
+#: extra-locales/popolo/models.py:36
+msgid "birth date"
+msgstr ""
+
+#: extra-locales/popolo/models.py:36
+msgid "A date of birth"
+msgstr ""
+
+#: extra-locales/popolo/models.py:37
+msgid "death date"
+msgstr ""
+
+#: extra-locales/popolo/models.py:37
+msgid "A date of death"
+msgstr ""
+
+#: extra-locales/popolo/models.py:38
+msgid "summary"
+msgstr ""
+
+#: extra-locales/popolo/models.py:38
+msgid "A one-line account of a person's life"
+msgstr ""
+
+#: extra-locales/popolo/models.py:39
+msgid "biography"
+msgstr ""
+
+#: extra-locales/popolo/models.py:39
+msgid "An extended account of a person's life"
+msgstr ""
+
+#: extra-locales/popolo/models.py:40
+msgid "image"
+msgstr ""
+
+#: extra-locales/popolo/models.py:40
+msgid "A URL of a head shot"
+msgstr ""
+
+#: extra-locales/popolo/models.py:92
+msgid "A primary name, e.g. a legally recognized name"
+msgstr ""
+
+#: extra-locales/popolo/models.py:97
+msgid "classification"
+msgstr ""
+
+#: extra-locales/popolo/models.py:97
+msgid "An organization category, e.g. committee"
+msgstr ""
+
+#: extra-locales/popolo/models.py:100
+msgid "The organization that contains this organization"
+msgstr ""
+
+#: extra-locales/popolo/models.py:102
+msgid "dissolution date"
+msgstr ""
+
+#: extra-locales/popolo/models.py:108
+msgid "A date of dissolution"
+msgstr ""
+
+#: extra-locales/popolo/models.py:109
+msgid "founding date"
+msgstr ""
+
+#: extra-locales/popolo/models.py:115
+msgid "A date of founding"
+msgstr ""
+
+#: extra-locales/popolo/models.py:153 extra-locales/popolo/models.py:184
+#: extra-locales/popolo/models.py:232
+msgid "label"
+msgstr ""
+
+#: extra-locales/popolo/models.py:153
+msgid "A label describing the post"
+msgstr ""
+
+#: extra-locales/popolo/models.py:154 extra-locales/popolo/models.py:185
+msgid "role"
+msgstr ""
+
+#: extra-locales/popolo/models.py:154
+msgid "The function that the holder of the post fulfills"
+msgstr ""
+
+#: extra-locales/popolo/models.py:158
+msgid "The organization in which the post is held"
+msgstr ""
+
+#: extra-locales/popolo/models.py:184
+msgid "A label describing the membership"
+msgstr ""
+
+#: extra-locales/popolo/models.py:185
+msgid "The role that the person fulfills in the organization"
+msgstr ""
+
+#: extra-locales/popolo/models.py:189
+msgid "The person who is a party to the relationship"
+msgstr ""
+
+#: extra-locales/popolo/models.py:193
+msgid "The organization that is a party to the relationship"
+msgstr ""
+
+#: extra-locales/popolo/models.py:196
+msgid ""
+"The organization on whose behalf the person is a party to the relationship"
+msgstr ""
+
+#: extra-locales/popolo/models.py:200
+msgid "The post held by the person in the organization through this membership"
+msgstr ""
+
+#: extra-locales/popolo/models.py:223
+msgid "Fax"
+msgstr ""
+
+#: extra-locales/popolo/models.py:224
+msgid "Telephone"
+msgstr ""
+
+#: extra-locales/popolo/models.py:225
+msgid "Mobile"
+msgstr ""
+
+#: extra-locales/popolo/models.py:226
+msgid "Email"
+msgstr ""
+
+#: extra-locales/popolo/models.py:227
+msgid "Snail mail"
+msgstr ""
+
+#: extra-locales/popolo/models.py:228
+msgid "Twitter"
+msgstr ""
+
+#: extra-locales/popolo/models.py:229
+msgid "Facebook"
+msgstr ""
+
+#: extra-locales/popolo/models.py:232
+msgid "A human-readable label for the contact detail"
+msgstr ""
+
+#: extra-locales/popolo/models.py:233
+msgid "A type of medium, e.g. 'fax' or 'email'"
+msgstr ""
+
+#: extra-locales/popolo/models.py:234
+msgid "value"
+msgstr ""
+
+#: extra-locales/popolo/models.py:234
+msgid "A value, e.g. a phone number or email address"
+msgstr ""
+
+#: extra-locales/popolo/models.py:235 extra-locales/popolo/models.py:253
+#: extra-locales/popolo/models.py:280 extra-locales/popolo/models.py:292
+msgid "note"
+msgstr ""
+
+#: extra-locales/popolo/models.py:235
+msgid "A note, e.g. for grouping contact details by physical location"
+msgstr ""
+
+#: extra-locales/popolo/models.py:252
+msgid "An alternate or former name"
+msgstr ""
+
+#: extra-locales/popolo/models.py:253
+msgid "A note, e.g. 'Birth name'"
+msgstr ""
+
+#: extra-locales/popolo/models.py:267
+msgid "identifier"
+msgstr ""
+
+#: extra-locales/popolo/models.py:267
+msgid "An issued identifier, e.g. a DUNS number"
+msgstr ""
+
+#: extra-locales/popolo/models.py:268
+msgid "scheme"
+msgstr ""
+
+#: extra-locales/popolo/models.py:268
+msgid "An identifier scheme, e.g. DUNS"
+msgstr ""
+
+#: extra-locales/popolo/models.py:279 extra-locales/popolo/models.py:291
+msgid "url"
+msgstr ""
+
+#: extra-locales/popolo/models.py:279 extra-locales/popolo/models.py:291
+msgid "A URL"
+msgstr ""
+
+#: extra-locales/popolo/models.py:280
+msgid "A note, e.g. 'Wikipedia page'"
+msgstr ""
+
+#: extra-locales/popolo/models.py:292
+msgid "A note, e.g. 'Parliament website'"
+msgstr ""
+
+#: extra-locales/popolo/behaviors/models.py:53
+msgid "The date when the validity of the item starts"
+msgstr ""
+
+#: extra-locales/popolo/behaviors/models.py:58
+msgid "The date when the validity of the item ends"
+msgstr ""
+
+#: extra-locales/popolo/behaviors/models.py:70
+msgid "creation time"
+msgstr ""
+
+#: extra-locales/popolo/behaviors/models.py:71
+msgid "last modification time"
 msgstr ""
 
 #: management/commands/sayit_search_make_index_live.py:12
@@ -348,6 +740,11 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
+#: templates/speeches/recording_detail.html:48
+#: templates/speeches/recording_form.html:40
+msgid "Update"
+msgstr ""
+
 #: templates/speeches/section_confirm_delete.html:5
 msgid "Delete section"
 msgstr ""
@@ -403,6 +800,14 @@ msgstr ""
 msgid "Add a new speech here"
 msgstr ""
 
+#: templates/speeches/section_form.html:24
+msgid "Update section"
+msgstr ""
+
+#: templates/speeches/section_form.html:26
+msgid "Add section"
+msgstr ""
+
 #: templates/speeches/speaker_detail.html:14
 #, python-format
 msgid "View Speaker: %(speaker)s"
@@ -436,6 +841,14 @@ msgstr ""
 #: templates/speeches/speaker_form.html:8
 #: templates/speeches/speaker_form.html:18
 msgid "Add a speaker"
+msgstr ""
+
+#: templates/speeches/speaker_form.html:24
+msgid "Update speaker"
+msgstr ""
+
+#: templates/speeches/speaker_form.html:26
+msgid "Add speaker"
 msgstr ""
 
 #: templates/speeches/speaker_list.html:6
@@ -517,38 +930,38 @@ msgstr ""
 msgid "next speech"
 msgstr ""
 
-#: templates/speeches/speech_form.html:23
-#: templates/speeches/speech_form.html:45
+#: templates/speeches/speech_form.html:26
+#: templates/speeches/speech_form.html:48
 msgid "Edit speech"
 msgstr ""
 
-#: templates/speeches/speech_form.html:25
-#: templates/speeches/speech_form.html:47
+#: templates/speeches/speech_form.html:28
+#: templates/speeches/speech_form.html:50
 msgid "Add a speech"
 msgstr ""
 
-#: templates/speeches/speech_form.html:48
+#: templates/speeches/speech_form.html:51
 msgid ""
 "You can cut and paste quotes from news sites, social media or blogs,<br>or "
 "transcribe any audio or video records you may have access to"
 msgstr ""
 
-#: templates/speeches/speech_form.html:124
+#: templates/speeches/speech_form.html:127
 msgid "Date &amp; Time"
 msgstr ""
 
-#: templates/speeches/speech_form.html:180
+#: templates/speeches/speech_form.html:183
 msgid "Event &amp; Location"
 msgstr ""
 
-#: templates/speeches/speech_form.html:205
+#: templates/speeches/speech_form.html:208
 msgid "Title &amp; Tags"
 msgstr ""
 
-#: templates/speeches/speech_form.html:232
+#: templates/speeches/speech_form.html:235
 msgid "Save changes"
 msgstr ""
 
-#: templates/speeches/speech_form.html:234
+#: templates/speeches/speech_form.html:237
 msgid "Save speech"
 msgstr ""

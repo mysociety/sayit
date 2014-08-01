@@ -21,9 +21,10 @@
 
 <form id="speaker-form" class="form-horizontal" method="post">
     {% if object %}
-        {% include 'speeches/form.html' with type="speaker" submit="Update speaker" %}
+        {% trans "Update speaker" as submit %}
     {% else %}
-        {% include 'speeches/form.html' with type="speaker" submit="Add speaker" %}
+        {% trans "Add speaker" as submit %}
     {% endif %}
+    {% include 'speeches/form.html' with type="speaker" submit=submit %}
 </form>
 {% endblock %}

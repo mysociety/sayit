@@ -45,7 +45,8 @@
         onClick="window.location='{% url "speeches:recording-edit" recording.id%}'">
 
 <form class="form-horizontal" method="post">
-    {% include 'speeches/form.html' with submit="Update" type="recording" %}
+    {% trans "Update" as submit %}
+    {% include 'speeches/form.html' with submit=submit type="recording" %}
 </form>
 
 {% endblock %}
