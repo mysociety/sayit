@@ -8,14 +8,13 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     title = indexes.CharField(model_attr='heading') # use_template=True)
     start_date = indexes.DateTimeField(model_attr='start_date', null=True)
     instance = indexes.CharField(model_attr='instance__label')
-    speaker = indexes.IntegerField(model_attr='speaker__id', null=True)
+    speaker = indexes.IntegerField(model_attr='speaker_id', null=True)
 
     def get_model(self):
         return Speech
 
     def index_queryset(self, using=None):
-        """Used when the entire index for model is updated."""
-        return self.get_model().objects # .filter(pub_date__lte=datetime.datetime.now())
+        return self.get_model()._default_manager.select_related('instance')
 
     def get_updated_field(self):
         return 'modified'
@@ -27,6 +26,9 @@ class SpeakerIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Speaker
 
+    def index_queryset(self, using=None):
+        return self.get_model()._default_manager.select_related('instance')
+
     def get_updated_field(self):
         return 'modified'
 
@@ -36,6 +38,9 @@ class SectionIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Section
+
+    def index_queryset(self, using=None):
+        return self.get_model()._default_manager.select_related('instance')
 
     def get_updated_field(self):
         return 'modified'
