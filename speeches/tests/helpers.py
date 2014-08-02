@@ -4,6 +4,8 @@ from django.test import TestCase, LiveServerTestCase
 from django.test.utils import override_settings
 from django.contrib.auth.models import User
 
+from selenium.webdriver.support.ui import WebDriverWait
+
 from speeches.models import Section, Speech
 from instances.models import Instance
 
@@ -29,6 +31,10 @@ class InstanceLiveServerTestCase(LiveServerTestCase):
         password_input = self.selenium.find_element_by_name("password")
         password_input.send_keys('admin')
         self.selenium.find_element_by_xpath('//input[@value="Log in"]').click()
+
+        WebDriverWait(self.selenium, 10).until(
+            lambda x: x.find_element_by_link_text('Add your first statement')
+        )
 
 
 class ParentInstanceMismatchError(Exception):

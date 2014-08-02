@@ -3,7 +3,9 @@ import tempfile
 import shutil
 
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from django.test.utils import override_settings
 from django.utils import unittest
@@ -23,6 +25,7 @@ class SeleniumTests(InstanceLiveServerTestCase):
         if getattr(cls, "__unittest_skip__", False):
             return
         cls.selenium = webdriver.Firefox()
+        cls.selenium.implicitly_wait(5)
         cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
         super(SeleniumTests, cls).setUpClass()
 
@@ -47,15 +50,22 @@ class SeleniumTests(InstanceLiveServerTestCase):
     def test_select_text(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
 
-        # Assert form is shown with audio input and text input
-        self.assertTrue(self.selenium.find_element_by_id("speech-form").is_displayed())
+        speech_form = WebDriverWait(self.selenium, 10).until(
+            EC.visibility_of_element_located((By.ID, 'speech-form'))
+        )
+        self.assertIsNotNone(speech_form)
         self.assertTrue(self.selenium.find_element_by_id("id_text_controls").is_displayed())
 
     def test_add_speech(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-        text_input = self.selenium.find_element_by_name('text')
+        text_input = WebDriverWait(self.selenium, 10).until(
+            EC.presence_of_element_located((By.NAME, 'text'))
+        )
         text_input.send_keys('This is a speech')
         self.selenium.find_element_by_xpath('//input[@value="Save speech"]').click()
+        WebDriverWait(self.selenium, 10).until(
+            EC.title_contains('This is a speech')
+        )
         speech = Speech.objects.order_by('-created')[0]
         self.assertIn('/speech/%d' % speech.id, self.selenium.current_url)
 
@@ -65,7 +75,10 @@ class SeleniumTests(InstanceLiveServerTestCase):
 
         # Type a name in
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
-        speaker_input = self.selenium.find_element_by_xpath("//div[@id='s2id_id_speaker']/child::a").click()
+        speaker_input = WebDriverWait(self.selenium, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[@id='s2id_id_speaker']/child::a"))
+        )
+        speaker_input.click()
         text_input = self.selenium.find_element_by_xpath('//div[@id="select2-drop"]//input')
         text_input.send_keys('Na')
         # Wait for autocomplete
