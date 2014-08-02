@@ -57,6 +57,9 @@ BoundField.label_tag = add_class(BoundField.label_tag, 'control-label', 1)
 # And make all textareas be block level 100% width
 Textarea.render = add_class(Textarea.render, 'input-block-level', 2)
 
+def verbose_name(model, field):
+    return model._meta.get_field(field).verbose_name
+
 class CleanAudioMixin(object):
     def clean_audio(self):
         audio = self.cleaned_data['audio']
@@ -212,30 +215,36 @@ class SpeechTextField(StripWhitespaceField):
 
 class SpeechForm(forms.ModelForm, CleanAudioMixin):
     audio_filename = forms.CharField(widget=forms.HiddenInput, required=False)
-    text = SpeechTextField(required=False)
-    speaker = SpeakerField()
-    section = SectionField()
+    text = SpeechTextField(required=False, label=verbose_name(Speech, 'text'))
+    speaker = SpeakerField(label=verbose_name(Speech, 'speaker'))
+    section = SectionField(label=verbose_name(Speech, 'section'))
 
     type = forms.ChoiceField(
+        label=verbose_name(Speech, 'type'),
         choices=Speech._meta.get_field('type').choices,
         widget=forms.HiddenInput, required=False,
         )
 
     start_date = forms.DateField(input_formats=['%d/%m/%Y'],
+            label=verbose_name(Speech, 'start_date'),
             widget=BootstrapDateWidget,
             required=False)
     start_time = forms.TimeField(input_formats=['%H:%M', '%H:%M:%S'],
+            label=verbose_name(Speech, 'start_time'),
             widget=BootstrapTimeWidget,
             required=False)
     end_date = forms.DateField(input_formats=['%d/%m/%Y'],
+            label=verbose_name(Speech, 'end_date'),
             widget=BootstrapDateWidget,
             required=False)
     end_time = forms.TimeField(input_formats=['%H:%M', '%H:%M:%S'],
+            label=verbose_name(Speech, 'end_time'),
             widget=BootstrapTimeWidget,
             required=False)
     #tags = TagField()
     tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
-            widget = Select2MultipleWidget(select2_options={ 'placeholder':_('Choose tags'), 'width': 'resolve' }),
+            label=verbose_name(Speech, 'tags'),
+            widget=Select2MultipleWidget(select2_options={ 'placeholder':_('Choose tags'), 'width': 'resolve' }),
             required=False)
 
     def clean(self):
@@ -354,8 +363,9 @@ class RecordingForm(forms.ModelForm):
         exclude = ['instance', 'audio']
 
 class SectionForm(forms.ModelForm):
-    heading = forms.CharField(required=True)
-    parent = GroupedModelChoiceField(Section.objects.all(), 'parent', required=False)
+    heading = forms.CharField(required=True, label=verbose_name(Section, 'heading'))
+    parent = GroupedModelChoiceField(Section.objects.all(), 'parent',
+        label=verbose_name(Section, 'parent'), required=False)
 
     def __init__(self, *args, **kwargs):
         super(SectionForm, self).__init__(*args, **kwargs)
@@ -379,7 +389,7 @@ class SectionForm(forms.ModelForm):
         return parent
 
 class SpeakerForm(forms.ModelForm):
-    name = StripWhitespaceField()
+    name = StripWhitespaceField(label=verbose_name(Speaker, 'name'))
 
     class Meta:
         model = Speaker
