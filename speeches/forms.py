@@ -38,7 +38,7 @@ from django.core.files.uploadedfile import UploadedFile
 
 from speeches.fields import FromStartIntegerField
 from speeches.models import Speech, Speaker, Section, Recording, RecordingTimestamp, Tag
-from speeches.widgets import AudioFileInput, BootstrapDateWidget, BootstrapTimeWidget
+from speeches.widgets import AudioFileInput, DatePickerWidget, TimePickerWidget
 from speeches.utils import GroupedModelChoiceField
 
 logger = logging.getLogger(__name__)
@@ -225,22 +225,30 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
         widget=forms.HiddenInput, required=False,
         )
 
-    start_date = forms.DateField(input_formats=['%d/%m/%Y'],
-            label=verbose_name(Speech, 'start_date'),
-            widget=BootstrapDateWidget,
-            required=False)
-    start_time = forms.TimeField(input_formats=['%H:%M', '%H:%M:%S'],
-            label=verbose_name(Speech, 'start_time'),
-            widget=BootstrapTimeWidget,
-            required=False)
-    end_date = forms.DateField(input_formats=['%d/%m/%Y'],
-            label=verbose_name(Speech, 'end_date'),
-            widget=BootstrapDateWidget,
-            required=False)
-    end_time = forms.TimeField(input_formats=['%H:%M', '%H:%M:%S'],
-            label=verbose_name(Speech, 'end_time'),
-            widget=BootstrapTimeWidget,
-            required=False)
+    start_date = forms.DateField(
+        input_formats=['%d/%m/%Y'],
+        label=verbose_name(Speech, 'start_date'),
+        widget=DatePickerWidget,
+        required=False,
+        )
+    start_time = forms.TimeField(
+        input_formats=['%H:%M', '%H:%M:%S'],
+        label=verbose_name(Speech, 'start_time'),
+        widget=TimePickerWidget,
+        required=False,
+        )
+    end_date = forms.DateField(
+        input_formats=['%d/%m/%Y'],
+        label=verbose_name(Speech, 'end_date'),
+        widget=DatePickerWidget,
+        required=False,
+        )
+    end_time = forms.TimeField(
+        input_formats=['%H:%M', '%H:%M:%S'],
+        label=verbose_name(Speech, 'end_time'),
+        widget=TimePickerWidget,
+        required=False,
+        )
     #tags = TagField()
     tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(),
             label=verbose_name(Speech, 'tags'),
@@ -366,6 +374,19 @@ class SectionForm(forms.ModelForm):
     heading = forms.CharField(required=True, label=verbose_name(Section, 'heading'))
     parent = GroupedModelChoiceField(Section.objects.all(), 'parent',
         label=verbose_name(Section, 'parent'), required=False)
+
+    start_date = forms.DateField(
+        input_formats=['%d/%m/%Y'],
+        label=verbose_name(Section, 'start_date'),
+        widget=DatePickerWidget,
+        required=False,
+        )
+    start_time = forms.TimeField(
+        input_formats=['%H:%M', '%H:%M:%S'],
+        label=verbose_name(Section, 'start_time'),
+        widget=TimePickerWidget,
+        required=False,
+        )
 
     def __init__(self, *args, **kwargs):
         super(SectionForm, self).__init__(*args, **kwargs)

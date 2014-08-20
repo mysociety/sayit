@@ -36,44 +36,47 @@ class AudioFileInput(ClearableFileInput):
 
         return mark_safe(template % substitutions)
 
-class BootstrapDateWidget(DateInput):
-    """
-    A Widget that overrides the default date widget and styles it with Bootstrap
-    """
+class DatePickerWidget(DateInput):
+    """A widget for replacing text input for dates with a date picker.
 
-    def __init__(self, attrs=None, format=None):
-        super(BootstrapDateWidget, self).__init__(attrs, format)
+    An input with type=text is the default for a date in Django, and looks
+    set to continue being for a while:
+    https://code.djangoproject.com/ticket/16630#comment:11
+
+    This widget replaces this with a foundation datepicker - details at
+    http://foundation-datepicker.peterbeno.com/example.html
+    """
 
     def render(self, name, value, attrs=None):
-        """Override the output rendering to return a widget with some Bootstrap niceness"""
+        """Extend the output to return a foundation-datepicker."""
 
         # Set a placeholder attribute
         attrs['placeholder'] = 'dd/mm/yyyy'
 
         # Add a class attribute so that we can generically javascript things
-        if 'class' in attrs:
-            attrs['class'] = attrs['class'] + " datepicker"
-        else:
-            attrs['class'] = 'datepicker'
+        attrs['class'] = (attrs.get('class', '') + " fdatepicker").strip()
 
-        widget = DateInput.render(self, name, value, attrs)
+        return mark_safe(
+            u'<div class="input-append">' +
+            super(DatePickerWidget, self).render(name, value, attrs) +
+            u'</div>'
+            )
 
-        return mark_safe(u'<div class="input-append datepicker">' + widget + '<span class="add-on"><i class="icon-calendar"></i></span></div>')
+class TimePickerWidget(TimeInput):
+    """A Widget for replacing text input for times.
 
-class BootstrapTimeWidget(TimeInput):
+    An input with type=text is the default for a time in Django, and looks
+    set to continue being for a while:
+    https://code.djangoproject.com/ticket/16630#comment:11
+
+    This widget currently just sets a placeholder, but should probably
+    replace this with a time picker of some sort.
     """
-    A Widget that overrides the default time widget and styles it with Bootstrap
-    """
-
-    def __init__(self, attrs=None, format=None):
-        super(BootstrapTimeWidget, self).__init__(attrs, format)
 
     def render(self, name, value, attrs=None):
-        """Override the output rendering to return a widget with some Bootstrap niceness"""
+        """Extend the output to include a placeholder."""
 
         # Set a placeholder attribute
         attrs['placeholder'] = 'hh:mm'
 
-        widget = TimeInput.render(self, name, value, attrs)
-
-        return mark_safe(u'<div class="input-append">' + widget + '<span class="add-on"><i class="icon-time"></i></span></div>')
+        return super(TimePickerWidget, self).render(name, value, attrs)

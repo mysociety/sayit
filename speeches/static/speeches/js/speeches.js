@@ -1,5 +1,5 @@
 $(function() {
-    sayit_add_speech_links();
+    sayit_enable_date_pickers();
     sayit_ajax_file_uploads();
     sayit_link_prev_next_keyboard();
     setup_unimportant_sections();
@@ -10,32 +10,26 @@ $(function() {
     }
 });
 
-// Make them answer an Audio/Text question first if it's a brand new speech
-function sayit_add_speech_links() {
-    enableDatePickers();
+function sayit_enable_date_pickers() {
+    var datepickers = $(".fdatepicker"),
+        l = datepickers.length;
 
-    function enableDatePickers() {
-        var datepickers = $("input.datepicker"),
-            l = datepickers.length;
-
-        if (!l || !datepickers.datepicker) {
-            return;
-        }
-
-        datepickers.datepicker({
-            format:'dd/mm/yyyy',
-            weekStart: 1,
-            autoclose: true,
-        })
-
-        // Make the speech end date the same as the start the first time people
-        // enter something in the start
-        $("#id_start_date").one("changeDate", function(e) {
-            dateString = $("#id_start_date").val();
-            $("#id_end_date").val(dateString);
-            $("#id_end_date").datepicker("setStartDate", dateString);
-        });
+    if (!l || !datepickers.fdatepicker) {
+        return;
     }
+
+    datepickers.fdatepicker({
+        format:'dd/mm/yyyy',
+        weekStart: 1
+    })
+
+    // Make the speech end date the same as the start the first time people
+    // enter something in the start
+    $("#id_start_date").one("changeDate", function(e) {
+        dateString = $("#id_start_date").val();
+        $("#id_end_date").val(dateString);
+        $("#id_end_date").fdatepicker("setStartDate", dateString);
+    });
 }
 
 function sayit_ajax_file_uploads() {

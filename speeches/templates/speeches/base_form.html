@@ -1,0 +1,13 @@
+{% extends 'speeches/base.html' %}
+{% load staticfiles %}
+
+{% block extra_css %}
+  {{ block.super }}
+  <link href="{% static "speeches/foundation-datepicker/foundation-datepicker.css" %}" rel="stylesheet" type="text/css">
+  <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static "speeches/foundation-datepicker/foundation-datepicker.js" %}" charset="utf-8"></script>
+{% endblock %}

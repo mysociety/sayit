@@ -1,24 +1,23 @@
-{% extends 'speeches/base.html' %}
+{% extends 'speeches/base_form.html' %}
 {% load i18n %}
 {% load staticfiles %}
 {% load url from future %}
 {% load django_select2_tags %}
 
 {% block extra_css %}
-{% import_django_select2_css 0 %}
-{{ block.super }}
-{# <link rel="stylesheet" href="{% static "css/bootstrap-datepicker.css" %}" /> #}
+  {% import_django_select2_css 0 %}
+  {{ block.super }}
 {% endblock %}
 
 {% block extra_js %}
-{{ block.super }}
-{% import_django_select2_js 0 %}
-{% if LANGUAGE_CODE == 'es' %}
-<script src="{% static "speeches/js/select2_locale_es.js" %}"></script>
-{% endif %}
-<script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/vendor/jquery.ui.widget.js" %}" charset="utf-8"></script>
-<script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/jquery.iframe-transport.js" %}" charset="utf-8"></script>
-<script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/jquery.fileupload.js" %}" charset="utf-8"></script>
+  {{ block.super }}
+  {% import_django_select2_js 0 %}
+  {% if LANGUAGE_CODE == 'es' %}
+    <script src="{% static "speeches/js/select2_locale_es.js" %}"></script>
+  {% endif %}
+  <script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/vendor/jquery.ui.widget.js" %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/jquery.iframe-transport.js" %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/jquery.fileupload.js" %}" charset="utf-8"></script>
 {% endblock %}
 
 {% block title %}
