@@ -11,32 +11,7 @@ $(function() {
 
 // Make them answer an Audio/Text question first if it's a brand new speech
 function sayit_add_speech_links() {
-    if ($("p.lead").hasClass("add-speech") && $("ul.errorlist").length == 0) {
-        // Click handlers for the options
-        $("a#audio-link").click(function() {
-            selectFormOption("#id_text_controls");
-            return false;
-        });
-        $("a#text-link").click(function() {
-            selectFormOption("#id_audio_controls");
-            return false;
-        }); 
-        $("a#both-link").click(function() {
-            selectFormOption();
-            return false;
-        });
-    } else {
-        enableDatePickers();
-    } 
-
-    function selectFormOption(selectorsToHide) {
-        $("p#question").removeClass('visible-js');
-        $("form#speech-form").removeClass('hidden-js');
-        if(typeof selectorsToHide !== "undefined") {
-            $(selectorsToHide).hide()
-        }
-        enableDatePickers();
-    }
+    enableDatePickers();
 
     function enableDatePickers() {
         var datepickers = $("input.datepicker"),
