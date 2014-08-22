@@ -238,6 +238,15 @@ $image-path: '../img' !default;
   font-weight: $weight_bold;
 }
 
+.speech__content-link {
+  color: $colour_black;
+  &:hover,
+  &:active,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
 .speech__content {
   font-family: Georgia, Times, 'Times New Roman', Serif;
   font-size: 1.0625em; /* 17px */

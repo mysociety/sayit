@@ -92,6 +92,14 @@
   </div>
   {% endif %}
 
+{% if truncate %}
+  {% if speech.section_id %}
+    <a title="{% trans "Link in context" %}" href="{% url 'speeches:section-view' speech.section.get_path %}#s{{ speech.id }}" class="speech__content-link">
+  {% else %}
+    <a title="{% trans "Link" %}" href="{% url 'speeches:speech-view' speech.id %}" class="speech__content-link">
+  {% endif %}
+{% endif %}
+
 <div class="speech__content">
   {% if speech.title %}
     <h3>{{ speech.title }}</h3>
@@ -115,6 +123,10 @@
     {{ speech.text|bleach }}
   {% endif %}
 </div>
+
+{% if truncate %}
+  </a>
+{% endif %}
 
 {% if not result.object %}
   <div class="speech__links">
