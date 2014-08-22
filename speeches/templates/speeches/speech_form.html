@@ -238,17 +238,6 @@
       {% endif %}
     </p>
 
-    <script type="text/javascript">
-    // TODO Temporary javascript
-    // an idea of how the sections could be hidden/shown
-    jQuery(function(){
-      var $ = jQuery;
-      $('.unimportant-form-section-header').addClass('collapsed').on('click', function(){
-        $(this).toggleClass('collapsed').next().toggle();
-      }).next().hide();
-    })
-    </script>
-
 </form>
 
 {% endblock %}

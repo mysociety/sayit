@@ -2,6 +2,7 @@ $(function() {
     sayit_add_speech_links();
     sayit_ajax_file_uploads();
     sayit_link_prev_next_keyboard();
+    setup_unimportant_sections();
 
     var audios = $('audio').not('.audio-small');
     if (audios.mediaelementplayer) {
@@ -112,4 +113,10 @@ function sayit_link_prev_next_keyboard() {
             }
         });
     }
+}
+
+function setup_unimportant_sections() {
+    $('.unimportant-form-section-header').addClass('collapsed').on('click', function(){
+        $(this).toggleClass('collapsed').next().toggle();
+    }).next().hide();
 }
