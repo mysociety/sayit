@@ -28,7 +28,6 @@ function sayit_enable_date_pickers() {
     $("#id_start_date").one("changeDate", function(e) {
         dateString = $("#id_start_date").val();
         $("#id_end_date").val(dateString);
-        $("#id_end_date").fdatepicker("setStartDate", dateString);
     });
 }
 
