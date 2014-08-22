@@ -24,7 +24,7 @@ function sayit_add_speech_links() {
         datepickers.datepicker({
             format:'dd/mm/yyyy',
             weekStart: 1,
-            autoclose: true,        
+            autoclose: true,
         })
 
         // Make the speech end date the same as the start the first time people
