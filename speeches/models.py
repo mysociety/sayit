@@ -313,8 +313,8 @@ class Section(AuditedModel, InstanceMixin):
                 if isinstance(c, Section):
                     rec(c, l+1)
 
-            if tree_final:
-                tree_final[-1][1].setdefault('closed_levels', []).append(l)
+                if i == len(s._childs) - 1:
+                    tree_final[-1][1].setdefault('closed_levels', []).append(l)
 
         rec(self, 1)
 
@@ -370,9 +370,11 @@ class Section(AuditedModel, InstanceMixin):
     def _get_descendants_by_speech(self, **kwargs):
         dqs = self._get_descendants(include_min=True, **kwargs)
 
+        max_datetime = datetime.datetime(datetime.MAXYEAR, 12, 31)
+
         lookup = dict((x.id, x) for x in dqs)
         lookup[self.id] = self
-        self.speech_min = None
+        self.speech_min = max_datetime
 
         for d in dqs:
             if not d.speech_min:
@@ -391,7 +393,7 @@ class Section(AuditedModel, InstanceMixin):
                     d.speech_min = parent.speech_min
                     break
 
-        return sorted( dqs, key=lambda s: getattr(s, 'speech_min', datetime.datetime(datetime.MAXYEAR, 12, 31)) )
+        return sorted( dqs, key=lambda s: getattr(s, 'speech_min', max_datetime) )
 
     @models.permalink
     def get_absolute_url(self):

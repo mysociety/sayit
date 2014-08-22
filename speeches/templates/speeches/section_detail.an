@@ -38,6 +38,10 @@
 
       {% endif %}
       {% for level in structure.closed_levels %}</debateSection>{% endfor %}
+      {% if forloop.last and not structure.speech %}
+        {# If the last thing is an empty section, we'll be one level out #}
+        </debateSection>
+      {% endif %}
     {% empty %}
       </debateSection>
     {% endfor %}

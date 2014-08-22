@@ -187,3 +187,32 @@ class AkomaNtosoOutputTestCase(InstanceTestCase):
         lxml2 = etree.fromstring(expected)
 
         assert xml_compare(lxml1, lxml2)
+
+    def test_nested_sections_tree(self):
+        section = Section.objects.create(
+            instance=self.instance, heading='Outer Section')
+        inner1 = Section.objects.create(
+            instance=self.instance, heading='Inner 1', parent=section)
+        inner2 = Section.objects.create(
+            instance=self.instance, heading='Inner 2', parent=section)
+
+        resp = self.client.get('/outer-section.an')
+        self.assertSequenceEqual([
+            (inner1, {'new_level': True}),
+            (inner2, {'closed_levels': [1]}),
+            ], list(resp.context['section_tree']))
+
+        speech1 = Speech.objects.create(
+            text="A test speech", section=inner1, instance=self.instance)
+        speech2 = Speech.objects.create(
+            text="A test speech", section=inner2, instance=self.instance)
+
+        resp = self.client.get('/outer-section.an')
+        self.assertSequenceEqual([
+            (inner1, {'new_level': True}),
+            (speech1,
+                {'closed_levels': [2], 'new_level': True, 'speech': True}),
+            (inner2, {}),
+            (speech2,
+                {'closed_levels': [2, 1], 'new_level': True, 'speech': True}),
+            ], list(resp.context['section_tree']))
