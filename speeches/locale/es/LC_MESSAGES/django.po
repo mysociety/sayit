@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sayit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-01 13:40+0100\n"
+"POT-Creation-Date: 2014-08-26 16:51+0100\n"
 "PO-Revision-Date: 2014-07-31 16:50+0000\n"
 "Last-Translator: johnfelipe <ingenierofelipeurrego@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/sayit/language/"
@@ -20,48 +20,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: forms.py:80
+#: forms.py:74
 msgid "Assign to section"
 msgstr "Asigne a la sección"
 
-#: forms.py:238
+#: forms.py:268
 msgid "Choose tags"
 msgstr "Elija etiquetas"
 
-#: forms.py:254
+#: forms.py:287
 msgid "You must provide either text or some audio"
 msgstr "Usted debe proporcionar ya sea texto o algo de audio"
 
-#: forms.py:269
+#: forms.py:305
 msgid "If you provide a start time you must give a start date too"
 msgstr ""
 "Si usted proporciona una hora de inicio debe dar una fecha de inicio también"
 
-#: forms.py:274
+#: forms.py:312
 msgid "If you provide an end time you must give an end date too"
 msgstr ""
 "Si usted proporciona una hora de finalización debe dar una fecha de "
 "finalización también"
 
-#: forms.py:375
+#: forms.py:455
 msgid "Something cannot be its own parent"
 msgstr "Algo que no puede ser su propio padre"
 
-#: forms.py:378
+#: forms.py:459
 msgid "Something cannot have a parent that is also a descendant"
 msgstr "Algo no puede tener un padre que es también un descendiente"
 
-#: forms.py:427
+#: forms.py:512
 msgid "Start time is before recording start time!"
 msgstr "Hora de inicio es antes de grabar la hora de inicio!"
 
-#: forms.py:436
+#: forms.py:522
 msgid "Difference between timestamps is too long for the uploaded audio"
 msgstr ""
 "Diferencia entre las marcas de tiempo es demasiado largo para el audio "
 "cargado"
 
-#: forms.py:443
+#: forms.py:530
 msgid "Timestamps must be distinct"
 msgstr "Las marcas de tiempo deben ser distintas"
 
@@ -69,7 +69,7 @@ msgstr "Las marcas de tiempo deben ser distintas"
 msgid "slug"
 msgstr ""
 
-#: models.py:138 models.py:494
+#: models.py:138 models.py:496
 msgid "number"
 msgstr ""
 
@@ -78,7 +78,7 @@ msgstr ""
 msgid "The number of the section"
 msgstr "El número de la sección"
 
-#: models.py:140 models.py:497
+#: models.py:140 models.py:499
 msgid "heading"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "The heading of the section"
 msgstr "El título de la sección"
 
-#: models.py:142 models.py:500
+#: models.py:142 models.py:502
 msgid "subheading"
 msgstr ""
 
@@ -103,7 +103,7 @@ msgstr "sección"
 msgid "Longer description, HTML"
 msgstr "Descripción más larga, HTML"
 
-#: models.py:147 models.py:533 extra-locales/popolo/behaviors/models.py:51
+#: models.py:147 models.py:535 extra-locales/popolo/behaviors/models.py:51
 msgid "start date"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "What date did the section start?"
 msgstr "¿En qué fecha se inicia la sección?"
 
-#: models.py:150 models.py:536
+#: models.py:150 models.py:538
 msgid "start time"
 msgstr ""
 
@@ -141,12 +141,12 @@ msgstr "sesión Legislativa"
 msgid "parent"
 msgstr ""
 
-#: models.py:161 models.py:554
+#: models.py:161 models.py:556
 #, fuzzy
 msgid "source URL"
 msgstr "fuente"
 
-#: models.py:170 models.py:490
+#: models.py:170 models.py:492
 msgid "Section"
 msgstr "sección"
 
@@ -154,136 +154,160 @@ msgstr "sección"
 msgid "You must specify at least one of num/heading/subheading"
 msgstr "Debe especificar al menos una de num / título / subtítulo"
 
-#: models.py:483
+#: models.py:485
 msgid "audio"
 msgstr ""
 
-#: models.py:485
+#: models.py:487
 msgid "text"
 msgstr ""
 
-#: models.py:486
+#: models.py:488
 msgid "The text of the speech"
 msgstr "El texto del discurso"
 
-#: models.py:495
+#: models.py:497
 #, fuzzy
 msgid "The number of the speech, if relevant"
 msgstr "El número de la intervención, si procede"
 
-#: models.py:498
+#: models.py:500
 msgid "The heading of the speech, if relevant"
 msgstr "El rubro de la intervención, si procede"
 
-#: models.py:501
+#: models.py:503
 msgid "The subheading of the speech, if relevant"
 msgstr "El subtítulo de la intervención, si procede"
 
-#: models.py:505
+#: models.py:507
 msgid "event"
 msgstr ""
 
-#: models.py:506
+#: models.py:508
 msgid "Was the speech at a particular event?"
 msgstr "Fue el discurso en un evento en particular?"
 
-#: models.py:508
+#: models.py:510
 #, fuzzy
 msgid "location"
 msgstr "sección"
 
-#: models.py:509
+#: models.py:511
 msgid "Where the speech took place"
 msgstr "Donde el discurso tuvo lugar"
 
-#: models.py:513
+#: models.py:515
 #, fuzzy
 msgid "speaker"
 msgstr "ponente"
 
-#: models.py:514
+#: models.py:516
 msgid "Who gave this speech?"
 msgstr "¿Quién dio este discurso?"
 
-#: models.py:519 extra-locales/popolo/models.py:233
+#: models.py:521 extra-locales/popolo/models.py:233
 msgid "type"
 msgstr ""
 
-#: models.py:521 templates/speeches/speaker_detail.html:51
+#: models.py:523 templates/speeches/speaker_detail.html:51
 msgid "Speech"
 msgstr "Discurso / Acta"
 
-#: models.py:522
+#: models.py:524
 msgid "Question"
 msgstr "pregunta"
 
-#: models.py:523
+#: models.py:525
 msgid "Answer"
 msgstr "Respuesta"
 
-#: models.py:524
+#: models.py:526
 msgid "Scene"
 msgstr "Escena"
 
-#: models.py:525
+#: models.py:527
 msgid "Narrative"
 msgstr "narrativa"
 
-#: models.py:526
+#: models.py:528
 msgid "Summary"
 msgstr "resumen"
 
-#: models.py:527
+#: models.py:529
 msgid "Other"
 msgstr "otro"
 
-#: models.py:529
+#: models.py:531
 msgid "What sort of speech is this?"
 msgstr "¿Qué clase de palabra es ésta?"
 
-#: models.py:534
+#: models.py:536
 msgid "What date did the speech start?"
 msgstr "¿En qué fecha se inicia el discurso?"
 
-#: models.py:537
+#: models.py:539
 msgid "What time did the speech start?"
 msgstr "¿A qué hora empezó el discurso?"
 
-#: models.py:539 extra-locales/popolo/behaviors/models.py:56
+#: models.py:541 extra-locales/popolo/behaviors/models.py:56
 msgid "end date"
 msgstr ""
 
-#: models.py:540
+#: models.py:542
 msgid "What date did the speech end?"
 msgstr "¿En qué fecha terminó el discurso?"
 
-#: models.py:542
+#: models.py:544
 msgid "end time"
 msgstr ""
 
-#: models.py:543
+#: models.py:545
 msgid "What time did the speech end?"
 msgstr "¿A qué hora terminó el discurso?"
 
-#: models.py:545
+#: models.py:547
 msgid "tags"
 msgstr ""
 
-#: models.py:548
+#: models.py:550
 msgid "public"
 msgstr ""
 
-#: models.py:548
+#: models.py:550
 msgid "Is this speech public?"
 msgstr "Es pública este discurso?"
 
-#: models.py:559
+#: models.py:561
 msgid "celery task ID"
 msgstr ""
 
 #: views.py:409
 msgid "Speeches assigned."
 msgstr "Discursos asignados."
+
+#: widgets.py:44
+msgid "yyyy-mm-dd"
+msgstr ""
+
+#: widgets.py:45
+msgid "dd/mm/yyyy"
+msgstr ""
+
+#: widgets.py:46
+msgid "dd/mm/yy"
+msgstr ""
+
+#: widgets.py:47
+msgid "mm/dd/yyyy"
+msgstr ""
+
+#: widgets.py:48
+msgid "mm/dd/yy"
+msgstr ""
+
+#: widgets.py:106
+msgid "hh:mm"
+msgstr ""
 
 #: extra-locales/popolo/models.py:22 extra-locales/popolo/models.py:92
 #: extra-locales/popolo/models.py:252
@@ -592,8 +616,9 @@ msgid "creation time"
 msgstr ""
 
 #: extra-locales/popolo/behaviors/models.py:71
+#, fuzzy
 msgid "last modification time"
-msgstr ""
+msgstr "sección"
 
 #: management/commands/sayit_search_make_index_live.py:12
 msgid "Update the default alias to point at search index write alias is using"
@@ -728,8 +753,8 @@ msgid "Add a new speech"
 msgstr "Añadir un nuevo discurso"
 
 #: templates/speeches/parentless_list.html:21
-#: templates/speeches/section_form.html:8
-#: templates/speeches/section_form.html:18
+#: templates/speeches/section_form.html:9
+#: templates/speeches/section_form.html:19
 msgid "Add a section"
 msgstr "Añadir una sección"
 
@@ -797,8 +822,8 @@ msgid "Add subsection"
 msgstr "Añadir subsección"
 
 #: templates/speeches/section_detail.html:25
-#: templates/speeches/section_form.html:6
-#: templates/speeches/section_form.html:16
+#: templates/speeches/section_form.html:7
+#: templates/speeches/section_form.html:17
 msgid "Edit section"
 msgstr "Editar sección"
 
@@ -828,12 +853,12 @@ msgstr "Esta sección está vacía"
 msgid "Add a new speech here"
 msgstr "Añadir un nuevo discurso aquí"
 
-#: templates/speeches/section_form.html:24
+#: templates/speeches/section_form.html:25
 #, fuzzy
 msgid "Update section"
 msgstr "Editar sección"
 
-#: templates/speeches/section_form.html:26
+#: templates/speeches/section_form.html:27
 #, fuzzy
 msgid "Add section"
 msgstr "Añadir una sección"
@@ -966,17 +991,17 @@ msgstr "discurso anterior"
 msgid "next speech"
 msgstr "próximo discurso"
 
-#: templates/speeches/speech_form.html:26
-#: templates/speeches/speech_form.html:48
+#: templates/speeches/speech_form.html:25
+#: templates/speeches/speech_form.html:47
 msgid "Edit speech"
 msgstr "Editar acta"
 
-#: templates/speeches/speech_form.html:28
-#: templates/speeches/speech_form.html:50
+#: templates/speeches/speech_form.html:27
+#: templates/speeches/speech_form.html:49
 msgid "Add a speech"
 msgstr "Añadir Ponente"
 
-#: templates/speeches/speech_form.html:51
+#: templates/speeches/speech_form.html:50
 msgid ""
 "You can cut and paste quotes from news sites, social media or blogs,<br>or "
 "transcribe any audio or video records you may have access to"
@@ -985,22 +1010,22 @@ msgstr ""
 "blogs, <br> o transcribir cualquier registro de audio o video que pueda "
 "tener acceso a la"
 
-#: templates/speeches/speech_form.html:127
+#: templates/speeches/speech_form.html:126
 msgid "Date &amp; Time"
 msgstr "Fecha y tiempo"
 
-#: templates/speeches/speech_form.html:183
+#: templates/speeches/speech_form.html:182
 msgid "Event &amp; Location"
 msgstr "Evento & ubicación"
 
-#: templates/speeches/speech_form.html:208
+#: templates/speeches/speech_form.html:207
 msgid "Title &amp; Tags"
 msgstr "Titulo & Etiquetas"
 
-#: templates/speeches/speech_form.html:235
+#: templates/speeches/speech_form.html:234
 msgid "Save changes"
 msgstr "Guardar cambios"
 
-#: templates/speeches/speech_form.html:237
+#: templates/speeches/speech_form.html:236
 msgid "Save speech"
 msgstr "Guardar Acta"
