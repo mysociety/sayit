@@ -19,7 +19,7 @@ function sayit_enable_date_pickers() {
     }
 
     datepickers.fdatepicker({
-        format:'dd/mm/yyyy',
+        format:datepickers.attr('datepicker-format'),
         weekStart: 1
     })
 

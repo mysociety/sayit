@@ -438,6 +438,56 @@ class SpeechFormTests(InstanceTestCase):
         self.assertEqual(speech.end_date, datetime.date(year=2000, month=1, day=1))
         self.assertIsNone(speech.end_time)
 
+    def test_add_speech_form_internationalization(self):
+        en_gb_language_headers = {'HTTP_ACCEPT_LANGUAGE': 'en-GB'}
+        en_language_headers = {'HTTP_ACCEPT_LANGUAGE': 'en'}
+
+        en_gb_resp = self.client.get('/speech/add', **en_gb_language_headers)
+        self.assertContains(en_gb_resp, 'placeholder="dd/mm/yyyy"')
+
+        resp = self.client.post(
+            '/speech/add',
+            {'text': 'This is a speech',
+             'start_date': '20/01/2000',
+             'end_date': '21/01/2000'},
+            **en_gb_language_headers)
+
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertRedirects(resp, '/speech/%d?created' % speech.id)
+        self.assertEqual(speech.start_date, datetime.date(year=2000, month=1, day=20))
+        self.assertEqual(speech.end_date, datetime.date(year=2000, month=1, day=21))
+
+        en_resp = self.client.get('/speech/add', **en_language_headers)
+        self.assertContains(en_resp, 'placeholder="yyyy-mm-dd"')
+
+        # With language 'en', the default format is ISO8601
+        resp = self.client.post(
+            '/speech/add',
+            {'text': 'This is a speech',
+             'start_date': '2000-01-20',
+             'end_date': '2000-01-21'},
+            **en_language_headers)
+
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertRedirects(resp, '/speech/%d?created' % speech.id)
+        self.assertEqual(speech.start_date, datetime.date(year=2000, month=1, day=20))
+        self.assertEqual(speech.end_date, datetime.date(year=2000, month=1, day=21))
+
+        # With language 'en', django will also handle dates in the US back to
+        # front fashion.
+        resp = self.client.post(
+            '/speech/add',
+            {'text': 'This is a speech',
+             'start_date': '01/20/2000',
+             'end_date': '01/21/2000'},
+            **en_language_headers)
+
+        speech = Speech.objects.order_by('-id')[0]
+        self.assertRedirects(resp, '/speech/%d?created' % speech.id)
+        self.assertEqual(speech.start_date, datetime.date(year=2000, month=1, day=20))
+        self.assertEqual(speech.end_date, datetime.date(year=2000, month=1, day=21))
+
+
     def test_add_speech_with_dates_and_times(self):
         # Test form with dates (but not times)
         resp = self.client.post('/speech/add', {

@@ -226,10 +226,10 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
         )
 
     start_date = forms.DateField(
-        input_formats=['%d/%m/%Y'],
         label=verbose_name(Speech, 'start_date'),
         widget=DatePickerWidget,
         required=False,
+        localize=True,
         )
     start_time = forms.TimeField(
         input_formats=['%H:%M', '%H:%M:%S'],
@@ -238,10 +238,10 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
         required=False,
         )
     end_date = forms.DateField(
-        input_formats=['%d/%m/%Y'],
         label=verbose_name(Speech, 'end_date'),
         widget=DatePickerWidget,
         required=False,
+        localize=True,
         )
     end_time = forms.TimeField(
         input_formats=['%H:%M', '%H:%M:%S'],
@@ -376,10 +376,10 @@ class SectionForm(forms.ModelForm):
         label=verbose_name(Section, 'parent'), required=False)
 
     start_date = forms.DateField(
-        input_formats=['%d/%m/%Y'],
         label=verbose_name(Section, 'start_date'),
         widget=DatePickerWidget,
         required=False,
+        localize=True,
         )
     start_time = forms.TimeField(
         input_formats=['%H:%M', '%H:%M:%S'],

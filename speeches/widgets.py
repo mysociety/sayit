@@ -1,7 +1,10 @@
 from django.utils.html import escape, conditional_escape
 from django.utils.safestring import mark_safe
+from django.utils import formats
+from django.utils.translation import ugettext_lazy as _
 
 from django.forms.widgets import ClearableFileInput, CheckboxInput, DateInput, TimeInput
+
 
 class AudioFileInput(ClearableFileInput):
     pretty_input_start = u'<span class="button tiny secondary fileinput-button">Choose audio file'
@@ -36,6 +39,15 @@ class AudioFileInput(ClearableFileInput):
 
         return mark_safe(template % substitutions)
 
+
+# Make sure likely date placeholder texts are in the translation strings file.
+_('yyyy-mm-dd')
+_('dd/mm/yyyy')
+_('dd/mm/yy')
+_('mm/dd/yyyy')
+_('mm/dd/yy')
+
+
 class DatePickerWidget(DateInput):
     """A widget for replacing text input for dates with a date picker.
 
@@ -50,8 +62,21 @@ class DatePickerWidget(DateInput):
     def render(self, name, value, attrs=None):
         """Extend the output to return a foundation-datepicker."""
 
-        # Set a placeholder attribute
-        attrs['placeholder'] = 'dd/mm/yyyy'
+        # Set a placeholder attribute - this should be the right thing
+        # based on the locale which goes with your browser language
+        # setting - so 'dd/mm/yyyy' for the UK
+        date_format = (
+            formats.get_format('DATE_INPUT_FORMATS')[0]
+            .replace('%d', 'dd')
+            .replace('%m', 'mm')
+            .replace('%y', 'yy')
+            .replace('%Y', 'yyyy')
+            )
+
+        attrs['placeholder'] = _(date_format)
+        # We'll base the format for the date picker on a separate attribute
+        # so that the placeholder can be translated.
+        attrs['datepicker-format'] = date_format
 
         # Add a class attribute so that we can generically javascript things
         attrs['class'] = (attrs.get('class', '') + " fdatepicker").strip()
@@ -61,6 +86,7 @@ class DatePickerWidget(DateInput):
             super(DatePickerWidget, self).render(name, value, attrs) +
             u'</div>'
             )
+
 
 class TimePickerWidget(TimeInput):
     """A Widget for replacing text input for times.
@@ -77,6 +103,6 @@ class TimePickerWidget(TimeInput):
         """Extend the output to include a placeholder."""
 
         # Set a placeholder attribute
-        attrs['placeholder'] = 'hh:mm'
+        attrs['placeholder'] = _('hh:mm')
 
         return super(TimePickerWidget, self).render(name, value, attrs)
