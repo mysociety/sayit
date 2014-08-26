@@ -5,19 +5,27 @@
 
 import imp
 import os
+import sys
 from shutil import rmtree
 
 from django.conf import settings
 from django.core.management import call_command
 
-
 os.chdir(os.path.join(settings.PROJECT_ROOT, 'speeches'))
 
-tempdir = 'extra-locales'
-apps = [ 'popolo' ]
+apps = ['popolo']
 
-rmtree(tempdir)
+tempdir = 'extra-locales'
+
+if os.path.exists(tempdir):
+    if os.path.isdir(tempdir):
+        rmtree(tempdir)
+    else:
+        sys.exit(
+            "'extra-locales' exists and is not a directory. Please remove.")
+
 os.mkdir(tempdir)
+
 for app in apps:
     args = imp.find_module(app)
     mod = imp.load_module(app, *args)
