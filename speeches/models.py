@@ -4,7 +4,7 @@ import hashlib
 import logging
 import os
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -167,7 +167,7 @@ class Section(AuditedModel, InstanceMixin):
         unique_together = ('parent', 'slug', 'instance')
 
     def __str__(self):
-        return self.heading or _('Section')
+        return self.heading or ugettext('Section')
 
     @property
     def title(self):
