@@ -109,7 +109,8 @@ function sayit_link_prev_next_keyboard() {
 }
 
 function setup_unimportant_sections() {
-    $('.unimportant-form-section-header').addClass('collapsed').on('click', function(){
+    $('.unimportant-form-section-header').on('click', function(){
         $(this).toggleClass('collapsed').next().toggle();
-    }).next().hide();
+    }).addClass('collapsed');
+    $('.unimportant-form-section').hide().has('.error').show().prev().removeClass('collapsed');
 }
