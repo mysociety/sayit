@@ -144,6 +144,17 @@ $image-path: '../img' !default;
   }
 }
 
+.section-signpost .section-signpost {
+  margin-left: 1.5em;
+  border-bottom: none;
+  margin-bottom: 0.5em;
+  padding-top: 0;
+  padding-bottom: 0;
+  a {
+    font-weight: normal;
+  }
+}
+
 .speech {
   padding-top: 1em;
   position: relative;
