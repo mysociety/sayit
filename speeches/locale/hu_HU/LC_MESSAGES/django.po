@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sayit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-26 16:51+0100\n"
+"POT-Creation-Date: 2014-08-29 21:24+0100\n"
 "PO-Revision-Date: 2014-04-09 14:58+0000\n"
 "Last-Translator: mySociety <transifex@mysociety.org>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/"
@@ -62,228 +62,264 @@ msgstr ""
 msgid "Timestamps must be distinct"
 msgstr "Az időbélyeg nem lehet ugyanaz"
 
-#: models.py:82 models.py:160
+#: models.py:82 models.py:168
 msgid "slug"
 msgstr ""
 
-#: models.py:138 models.py:496
-msgid "number"
-msgstr ""
+#: models.py:86 models.py:116 models.py:174 models.py:575
+#: templates/speeches/base.html:27 templates/speeches/parentless_list.html:7
+#: templates/speeches/parentless_list.html:23
+#: templates/speeches/speaker_detail.html:90
+msgid "Speeches"
+msgstr "Beszédek"
 
-#: models.py:138
-#, fuzzy
-msgid "The number of the section"
-msgstr "Szakasz címe"
-
-#: models.py:140 models.py:499
-msgid "heading"
-msgstr ""
-
-#: models.py:140
-#, fuzzy
-msgid "The heading of the section"
-msgstr "Szakasz címe"
-
-#: models.py:142 models.py:502
-msgid "subheading"
-msgstr ""
-
-#: models.py:143
-#, fuzzy
-msgid "The subheading of the section"
-msgstr "Szakasz címe"
-
-#: models.py:145
-#, fuzzy
-msgid "description"
-msgstr "következő szakasz"
-
-#: models.py:145
-msgid "Longer description, HTML"
-msgstr ""
-
-#: models.py:147 models.py:535 extra-locales/popolo/behaviors/models.py:51
-msgid "start date"
-msgstr ""
-
-#: models.py:148
-#, fuzzy
-msgid "What date did the section start?"
-msgstr "Mi volt a beszéd elhangzásának dátuma?"
-
-#: models.py:150 models.py:538
-msgid "start time"
-msgstr ""
-
-#: models.py:151
-#, fuzzy
-msgid "What time did the section start?"
-msgstr "Mikor kezdődött a beszéd?"
-
-#: models.py:152
-msgid "document number"
-msgstr ""
-
-#: models.py:153
-msgid "legislature"
-msgstr ""
-
-#: models.py:155
-msgid "session"
-msgstr ""
-
-#: models.py:155
-#, fuzzy
-msgid "Legislative session"
-msgstr "Szakasz törlése"
-
-#: models.py:157
-msgid "parent"
-msgstr ""
-
-#: models.py:161 models.py:556
-msgid "source URL"
-msgstr ""
-
-#: models.py:170 models.py:492
-msgid "Section"
-msgstr ""
-
-#: models.py:180
-msgid "You must specify at least one of num/heading/subheading"
-msgstr ""
-
-#: models.py:485
-msgid "audio"
-msgstr ""
-
-#: models.py:487
-msgid "text"
-msgstr ""
-
-#: models.py:488
-msgid "The text of the speech"
-msgstr "Beszéd szövege"
-
-#: models.py:497
-#, fuzzy
-msgid "The number of the speech, if relevant"
-msgstr "Beszéd címe, ha van"
-
-#: models.py:500
-#, fuzzy
-msgid "The heading of the speech, if relevant"
-msgstr "Beszéd címe, ha van"
-
-#: models.py:503
-#, fuzzy
-msgid "The subheading of the speech, if relevant"
-msgstr "Beszéd címe, ha van"
-
-#: models.py:507
-msgid "event"
-msgstr ""
-
-#: models.py:508
-msgid "Was the speech at a particular event?"
-msgstr "A beszéd valamilyen eseményen hangzott el?"
-
-#: models.py:510
-#, fuzzy
-msgid "location"
-msgstr "Helyszín"
-
-#: models.py:511
-msgid "Where the speech took place"
-msgstr "Hol hangzott el a beszéd?"
-
-#: models.py:515
+#: models.py:87 models.py:526
 #, fuzzy
 msgid "speaker"
 msgstr "Felszólalók"
 
-#: models.py:516
+#: models.py:88
+#, fuzzy
+msgid "speakers"
+msgstr "Felszólalók"
+
+#: models.py:117
+msgid "tag"
+msgstr ""
+
+#: models.py:118 models.py:558
+msgid "tags"
+msgstr ""
+
+#: models.py:146 models.py:507
+msgid "number"
+msgstr ""
+
+#: models.py:146
+#, fuzzy
+msgid "The number of the section"
+msgstr "Szakasz címe"
+
+#: models.py:148 models.py:510
+msgid "heading"
+msgstr ""
+
+#: models.py:148
+#, fuzzy
+msgid "The heading of the section"
+msgstr "Szakasz címe"
+
+#: models.py:150 models.py:513
+msgid "subheading"
+msgstr ""
+
+#: models.py:151
+#, fuzzy
+msgid "The subheading of the section"
+msgstr "Szakasz címe"
+
+#: models.py:153
+#, fuzzy
+msgid "description"
+msgstr "következő szakasz"
+
+#: models.py:153
+msgid "Longer description, HTML"
+msgstr ""
+
+#: models.py:155 models.py:546 extra-locales/popolo/behaviors/models.py:51
+msgid "start date"
+msgstr ""
+
+#: models.py:156
+#, fuzzy
+msgid "What date did the section start?"
+msgstr "Mi volt a beszéd elhangzásának dátuma?"
+
+#: models.py:158 models.py:549
+msgid "start time"
+msgstr ""
+
+#: models.py:159
+#, fuzzy
+msgid "What time did the section start?"
+msgstr "Mikor kezdődött a beszéd?"
+
+#: models.py:160
+msgid "document number"
+msgstr ""
+
+#: models.py:161
+msgid "legislature"
+msgstr ""
+
+#: models.py:163
+msgid "session"
+msgstr ""
+
+#: models.py:163
+#, fuzzy
+msgid "Legislative session"
+msgstr "Szakasz törlése"
+
+#: models.py:165
+msgid "parent"
+msgstr ""
+
+#: models.py:169 models.py:567
+msgid "source URL"
+msgstr ""
+
+#: models.py:175
+#, fuzzy
+msgid "section"
+msgstr "Szakasz hozzáadása"
+
+#: models.py:176
+#, fuzzy
+msgid "sections"
+msgstr "Szakasz hozzáadása"
+
+#: models.py:181 models.py:503
+msgid "Section"
+msgstr ""
+
+#: models.py:191
+msgid "You must specify at least one of num/heading/subheading"
+msgstr ""
+
+#: models.py:496
+msgid "audio"
+msgstr ""
+
+#: models.py:498
+msgid "text"
+msgstr ""
+
+#: models.py:499
+msgid "The text of the speech"
+msgstr "Beszéd szövege"
+
+#: models.py:508
+#, fuzzy
+msgid "The number of the speech, if relevant"
+msgstr "Beszéd címe, ha van"
+
+#: models.py:511
+#, fuzzy
+msgid "The heading of the speech, if relevant"
+msgstr "Beszéd címe, ha van"
+
+#: models.py:514
+#, fuzzy
+msgid "The subheading of the speech, if relevant"
+msgstr "Beszéd címe, ha van"
+
+#: models.py:518
+msgid "event"
+msgstr ""
+
+#: models.py:519
+msgid "Was the speech at a particular event?"
+msgstr "A beszéd valamilyen eseményen hangzott el?"
+
+#: models.py:521
+#, fuzzy
+msgid "location"
+msgstr "Helyszín"
+
+#: models.py:522
+msgid "Where the speech took place"
+msgstr "Hol hangzott el a beszéd?"
+
+#: models.py:527
 msgid "Who gave this speech?"
 msgstr "Ki mondta a beszédet?"
 
-#: models.py:521 extra-locales/popolo/models.py:233
+#: models.py:532 extra-locales/popolo/models.py:233
 msgid "type"
 msgstr ""
 
-#: models.py:523 templates/speeches/speaker_detail.html:51
+#: models.py:534 templates/speeches/speaker_detail.html:51
 #, fuzzy
 msgid "Speech"
 msgstr "Beszédek"
 
-#: models.py:524
+#: models.py:535
 #, fuzzy
 msgid "Question"
 msgstr "következő szakasz"
 
-#: models.py:525
+#: models.py:536
 msgid "Answer"
 msgstr ""
 
-#: models.py:526
+#: models.py:537
 msgid "Scene"
 msgstr ""
 
-#: models.py:527
+#: models.py:538
 msgid "Narrative"
 msgstr ""
 
-#: models.py:528
+#: models.py:539
 msgid "Summary"
 msgstr ""
 
-#: models.py:529
+#: models.py:540
 msgid "Other"
 msgstr ""
 
-#: models.py:531
+#: models.py:542
 #, fuzzy
 msgid "What sort of speech is this?"
 msgstr "Mi volt a beszéd elhangzásának dátuma?"
 
-#: models.py:536
+#: models.py:547
 msgid "What date did the speech start?"
 msgstr "Mi volt a beszéd elhangzásának dátuma?"
 
-#: models.py:539
+#: models.py:550
 msgid "What time did the speech start?"
 msgstr "Mikor kezdődött a beszéd?"
 
-#: models.py:541 extra-locales/popolo/behaviors/models.py:56
+#: models.py:552 extra-locales/popolo/behaviors/models.py:56
 msgid "end date"
 msgstr ""
 
-#: models.py:542
+#: models.py:553
 msgid "What date did the speech end?"
 msgstr "Milyen dátumra esett a beszéd vége?"
 
-#: models.py:544
+#: models.py:555
 msgid "end time"
 msgstr ""
 
-#: models.py:545
+#: models.py:556
 msgid "What time did the speech end?"
 msgstr "Mikor fejeződött be a beszéd?"
 
-#: models.py:547
-msgid "tags"
-msgstr ""
-
-#: models.py:550
+#: models.py:561
 msgid "public"
 msgstr ""
 
-#: models.py:550
+#: models.py:561
 msgid "Is this speech public?"
 msgstr "Nyilvános ez a beszéd?"
 
-#: models.py:561
+#: models.py:572
 msgid "celery task ID"
 msgstr ""
+
+#: models.py:576
+#, fuzzy
+msgid "speech"
+msgstr "Beszédek"
+
+#: models.py:577
+#, fuzzy
+msgid "speeches"
+msgstr "Beszédek"
 
 #: views.py:409
 msgid "Speeches assigned."
@@ -615,8 +651,9 @@ msgid "The date when the validity of the item ends"
 msgstr ""
 
 #: extra-locales/popolo/behaviors/models.py:70
+#, fuzzy
 msgid "creation time"
-msgstr ""
+msgstr "Helyszín"
 
 #: extra-locales/popolo/behaviors/models.py:71
 #, fuzzy
@@ -734,12 +771,6 @@ msgstr ""
 #: templates/speeches/base.html:25
 msgid "Home"
 msgstr ""
-
-#: templates/speeches/base.html:27 templates/speeches/parentless_list.html:7
-#: templates/speeches/parentless_list.html:23
-#: templates/speeches/speaker_detail.html:90
-msgid "Speeches"
-msgstr "Beszédek"
 
 #: templates/speeches/parentless_list.html:20
 msgid "Add a new speech"
@@ -919,24 +950,26 @@ msgstr ""
 msgid "Invisible"
 msgstr "Láthatatlan"
 
-#: templates/speeches/speech.html:101
-msgid "[ recorded audio ]"
-msgstr "[ hangfelvétel ]"
-
-#: templates/speeches/speech.html:105 templates/speeches/speech.html.py:126
+#: templates/speeches/speech.html:97 templates/speeches/speech.html.py:113
+#: templates/speeches/speech.html:138
 msgid "Link in context"
 msgstr "Link a kontextusban"
 
-#: templates/speeches/speech.html:107 templates/speeches/speech.html.py:128
+#: templates/speeches/speech.html:99 templates/speeches/speech.html.py:115
+#: templates/speeches/speech.html:140
 msgid "Link"
 msgstr "Link"
 
-#: templates/speeches/speech.html:122
+#: templates/speeches/speech.html:109
+msgid "[ recorded audio ]"
+msgstr "[ hangfelvétel ]"
+
+#: templates/speeches/speech.html:134
 #: templates/speeches/speech_detail.html:112
 msgid "Edit"
 msgstr ""
 
-#: templates/speeches/speech.html:123
+#: templates/speeches/speech.html:135
 #: templates/speeches/speech_detail.html:113
 #, fuzzy
 msgid "Delete"
