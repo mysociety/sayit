@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-29 21:24+0100\n"
+"POT-Creation-Date: 2014-08-29 21:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -909,6 +909,10 @@ msgstr ""
 #: templates/speeches/speaker_list.html:6
 #: templates/speeches/speaker_list.html:16
 msgid "All Speakers"
+msgstr ""
+
+#: templates/speeches/speaker_list.html:14
+msgid "Add a new speaker"
 msgstr ""
 
 #: templates/speeches/speaker_list.html:40

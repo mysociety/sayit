@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sayit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-29 21:24+0100\n"
+"POT-Creation-Date: 2014-08-29 21:30+0100\n"
 "PO-Revision-Date: 2014-07-31 16:50+0000\n"
 "Last-Translator: johnfelipe <ingenierofelipeurrego@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/sayit/language/"
@@ -943,6 +943,11 @@ msgstr "Añadir Orador / Ponente"
 #: templates/speeches/speaker_list.html:16
 msgid "All Speakers"
 msgstr "Todos los oradores"
+
+#: templates/speeches/speaker_list.html:14
+#, fuzzy
+msgid "Add a new speaker"
+msgstr "Añadir Orador / Ponente"
 
 #: templates/speeches/speaker_list.html:40
 msgid ""

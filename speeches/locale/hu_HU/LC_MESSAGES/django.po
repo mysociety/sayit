@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sayit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-29 21:24+0100\n"
+"POT-Creation-Date: 2014-08-29 21:30+0100\n"
 "PO-Revision-Date: 2014-04-09 14:58+0000\n"
 "Last-Translator: mySociety <transifex@mysociety.org>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/"
@@ -939,6 +939,11 @@ msgstr "Megszólaló hozzáadása"
 #: templates/speeches/speaker_list.html:16
 msgid "All Speakers"
 msgstr "Minden megszólaló"
+
+#: templates/speeches/speaker_list.html:14
+#, fuzzy
+msgid "Add a new speaker"
+msgstr "Megszólaló hozzáadása"
 
 #: templates/speeches/speaker_list.html:40
 msgid ""
