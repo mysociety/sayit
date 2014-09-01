@@ -83,7 +83,6 @@ class Speaker(InstanceMixin, Person):
     slugs = generic.GenericRelation(Slug)
 
     class Meta:
-        app_label = _('Speeches')
         verbose_name = _('speaker')
         verbose_name_plural = _('speakers')
         ordering = ('name',)
@@ -113,7 +112,6 @@ class Tag(InstanceMixin, AuditedModel):
         return self.name
 
     class Meta:
-        app_label = _('Speeches')
         verbose_name = _('tag')
         verbose_name_plural = _('tags')
 
@@ -171,7 +169,6 @@ class Section(AuditedModel, InstanceMixin):
     slugs = generic.GenericRelation(Slug)
 
     class Meta:
-        app_label = _('Speeches')
         verbose_name = _('section')
         verbose_name_plural = _('sections')
         ordering = ('id',)
@@ -572,7 +569,6 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
         _('celery task ID'), max_length=256, null=True, blank=True)
 
     class Meta:
-        app_label = _('Speeches')
         verbose_name = _('speech')
         verbose_name_plural = _('speeches')
         ordering = ( 'start_date', 'start_time', 'id' )
