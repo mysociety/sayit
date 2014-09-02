@@ -36,7 +36,7 @@ setup(
         'audioread >= 1.0.1',
         'pyelasticsearch >= 0.6, < 0.7',
         'django-haystack >= 2.1, < 2.2',
-        'mysociety-django-bleach >= 0.2.0',
+        'django-bleach >= 0.2.1',
         'mysociety-django-popolo >= 0.0.2',
         'mysociety-django-sluggable >= 0.2.5',
         'django-subdomain-instances >= 0.4',
