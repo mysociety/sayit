@@ -18,9 +18,10 @@ env:
   - MODULES="Django>=1.4,<1.5 django-tastypie==0.9.16"
   - MODULES="Django>=1.5,<1.6 django-tastypie>=0.10.0"
   - MODULES="Django>=1.6,<1.7 django-tastypie>=0.10.0"
-  - MODULES="https://www.djangoproject.com/download/1.7c1/tarball/"
+  - MODULES="Django>=1.7,<1.8" # TastyPie doesn't yet support 1.7
 # - MODULES="git+https://github.com/django/django.git@master#egg=django"
 
+# Django 1.4 did not support Python 3.
 matrix:
   exclude:
     - python: "3.3"
