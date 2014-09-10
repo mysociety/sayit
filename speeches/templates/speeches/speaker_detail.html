@@ -5,6 +5,7 @@
 {% load url from future %}
 {% load i18n %}
 {% load humanize %}
+{% load thumbnail %}
 
 {% block extra_js %}
 {{ block.super }}
@@ -23,7 +24,7 @@
 
   <div class="page-header__row">
     <div class="speaker-page__details">
-      <img src="{% if speaker.image %}{{ speaker.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
+      <img src="{% if speaker.image_cache %}{{ speaker.image_cache|thumbnail_url:'speaker-rectangle' }}{% elif speaker.image %}{{ speaker.image }}{% else %}{% static "speeches/i/a.png" %}{% endif %}"
           style="border-color #{{ speaker.colour }}; background-color: #{{ speaker.colour }};"
           class="speaker-portrait speaker-portrait--left speaker-portrait--large round-image"
           alt="Headshot of {{ speaker.name|escape}}" />

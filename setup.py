@@ -40,6 +40,7 @@ setup(
         'mysociety-django-popolo >= 0.0.2',
         'mysociety-django-sluggable >= 0.2.5',
         'django-subdomain-instances >= 0.4',
+        'easy-thumbnails >= 2.1',
     ],
     extras_require={
         'test': [

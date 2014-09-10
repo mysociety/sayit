@@ -2,6 +2,7 @@
 {% load url from future %}
 {% load i18n %}
 {% load staticfiles %}
+{% load thumbnail %}
 
 {% block title %}{% trans "All Speakers" %}{% endblock %}
 
@@ -22,8 +23,8 @@
             <a href="{{ speaker.get_absolute_url }}">
                 <div class="speaker-card">
 
-                    <img src="{% if speaker.image %}
-                        {{ speaker.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}" style="border-color: #{{ speaker.colour }}; background-color: #{{ speaker.colour }};" alt="" class="speaker-card__portrait speaker-portrait round-image speaker-portrait--small">
+                    <img src="{% if speaker.image_cache %}{{ speaker.image_cache|thumbnail_url:'speaker-thumb' }}{% elif speaker.image %}{{ speaker.image }}{% else %}{% static "speeches/i/a.png" %}{% endif %}"
+                         style="border-color: #{{ speaker.colour }}; background-color: #{{ speaker.colour }};" alt="" class="speaker-card__portrait speaker-portrait round-image speaker-portrait--small">
                     <span class="speaker-card__name">{{ speaker }}</span>
 
                 </div>

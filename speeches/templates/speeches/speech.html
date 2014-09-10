@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load staticfiles %}
 {% load speech_utils %}
+{% load thumbnail %}
 
 {% if not noli %}
 <li id="s{{ speech.id }}" class="speech {% if result.object %}speech--search-result{% endif %} {% if speech.speaker and not nospeaker and not standalone %}speech--with-portrait{% endif %} speech--{{ speech.type }} speech--border"
@@ -11,8 +12,7 @@
   {% if not nospeaker and not standalone %}
     {% if speech.speaker %}
     <div class="speaker-portrait-wrapper">
-    <img src="{% if speech.speaker.image %}
-        {{ speech.speaker.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
+    <img src="{% if speech.speaker.image_cache %}{{ speech.speaker.image_cache|thumbnail_url:'speaker-thumb' }}{% elif speech.speaker.image %}{{ speech.speaker.image }}{% else %}{% static "speeches/i/a.png" %}{% endif %}"
         style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-portrait speaker-portrait--left round-image speaker-portrait--medium">
     </div>
     {% endif %}

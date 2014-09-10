@@ -16,6 +16,15 @@ from django.core.exceptions import ValidationError
 from django.contrib.contenttypes import generic
 from django.utils.encoding import python_2_unicode_compatible
 
+from easy_thumbnails.fields import ThumbnailerImageField
+from easy_thumbnails.alias import aliases
+
+if not aliases.get('speaker-thumb'):
+    aliases.set('speaker-thumb', {'size': (96, 96), 'crop': 'smart'})
+
+if not aliases.get('speaker-rectangle'):
+    aliases.set('speaker-rectangle', {'size': (96, 0)})
+
 from instances.models import InstanceMixin, InstanceManager
 import speeches
 from speeches.utils import AudioHelper
@@ -81,6 +90,9 @@ class Speaker(InstanceMixin, Person):
     slug = SluggableField(
         _('slug'), unique_with='instance', populate_from='name')
     slugs = generic.GenericRelation(Slug)
+
+    image_cache = ThumbnailerImageField(
+        upload_to='thumbs', null=True, blank=True)
 
     class Meta:
         verbose_name = _('speaker')
