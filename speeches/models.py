@@ -3,6 +3,8 @@ import datetime
 import hashlib
 import logging
 import os
+from six.moves.urllib.parse import urlsplit
+from six.moves.urllib.request import urlretrieve
 
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
@@ -91,8 +93,16 @@ class Speaker(InstanceMixin, Person):
         _('slug'), unique_with='instance', populate_from='name')
     slugs = generic.GenericRelation(Slug)
 
+    # There's an unfortunate collision of things called 'instance' here.
+    # inst is the model instance, in this case a Speaker. inst.instance
+    # is the django subdomain instance.
     image_cache = ThumbnailerImageField(
-        upload_to='thumbs', null=True, blank=True)
+        _('image_cache'),
+        upload_to=lambda inst, fn: inst.get_image_cache_file_path(fn),
+        null=True,
+        blank=True,
+        help_text=_('If image is set, a local copy will be stored here.'),
+        )
 
     class Meta:
         verbose_name = _('speaker')
@@ -102,6 +112,34 @@ class Speaker(InstanceMixin, Person):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.image:
+            tmp_filename, headers = urlretrieve(self.image)
+            self.image_cache.save(
+                os.path.basename(urlsplit(self.image).path),
+                File(open(tmp_filename)),
+
+                # Calling save on a FieldFile causes a save on the model instance
+                # we don't need that as we're about to do it below (without this
+                # we get an infinite recursion).
+                save=False,
+                )
+
+        return super(Speaker, self).save(*args, **kwargs)
+
+    image_cache_file_path_template = 'speakers/%s/'
+
+    def get_image_cache_file_path(self, filename):
+        path = self.image_cache_file_path_template % (self.instance.label)
+
+        try:
+            os.makedirs(path)
+        except OSError:
+            if not os.path.isdir(path):
+                raise
+
+        return os.path.join(path, filename)
 
     @property
     def colour(self):
@@ -114,6 +152,7 @@ class Speaker(InstanceMixin, Person):
     @models.permalink
     def get_edit_url(self):
         return ( 'speeches:speaker-edit', (), { 'pk': self.person_ptr_id } )
+
 
 
 @python_2_unicode_compatible
