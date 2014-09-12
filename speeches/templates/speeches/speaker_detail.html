@@ -35,14 +35,16 @@
         {% endif %}
       </div>
       <div class="speaker-page__stats">
-        <div class="stat">
-          <div class="stat__figure">
-            {{ section_count|intcomma }}
+        {% if section_count %}
+          <div class="stat">
+            <div class="stat__figure">
+              {{ section_count|intcomma }}
+            </div>
+            <div class="stat__descriptor">
+                {% blocktrans count c=section_count %}Appearance{% plural %}Appearances{% endblocktrans %}
+            </div>
           </div>
-          <div class="stat__descriptor">
-              {% blocktrans count c=section_count %}Appearance{% plural %}Appearances{% endblocktrans %}
-          </div>
-        </div>
+        {% endif %}
         <div class="stat">
           <div class="stat__figure">
             {{ paginator.count|intcomma }}
