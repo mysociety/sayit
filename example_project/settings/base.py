@@ -130,6 +130,7 @@ INSTALLED_APPS = [
     'popolo',
     'instances',
     'speeches',
+    'easy_thumbnails',
 ]
 
 try:
@@ -201,6 +202,10 @@ APPEND_SLASH = False
 # Don't use migrations in testing - makes things faster and avoids
 # errors with difference between sqlite and postgres
 SOUTH_TESTS_MIGRATE = False
+
+SOUTH_MIGRATION_MODULES = {
+    'easy_thumbnails': 'easy_thumbnails.south_migrations',
+}
 
 # Select2
 AUTO_RENDER_SELECT2_STATICS = False

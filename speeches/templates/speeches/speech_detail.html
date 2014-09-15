@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load staticfiles %}
 {% load speech_utils %}
+{% load thumbnail %}
 
 {% block extra_headers %}
 {% if object.celery_task_id %}
@@ -52,8 +53,7 @@
             <div class="speech speech-single-speech">
               {% if speech.speaker %}
                 <a class="speech-single-speech__speaker-portrait" href="{% url "speeches:speaker-view" object.speaker.slug %}">
-                <img src="{% if speech.speaker.image %}
-                  {{ speech.speaker.image }} {% else %} {% static "speeches/i/a.png" %} {% endif %}"
+                <img src="{% if speech.speaker.image_cache %}{{ speech.speaker.image_cache|thumbnail_url:'speaker-thumb' }}{% elif speech.speaker.image %}{{ speech.speaker.image }}{% else %}{% static "speeches/i/a.png" %}{% endif %}"
                   style="border-color: #{{ speech.speaker.colour }}; background-color: #{{ speech.speaker.colour }};" alt=""  class="speaker-portrait speaker-portrait--left round-image speaker-portrait--large">
                 </a>
               {% endif %}
