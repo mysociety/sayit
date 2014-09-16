@@ -117,9 +117,23 @@ class Speaker(InstanceMixin, Person):
     def save(self, *args, **kwargs):
         if self.image:
             tmp_filename, headers = urlretrieve(self.image)
+
+            max_filename_length = self.image_cache.field.max_length # Usually 100
+            template_needs = len(self.image_cache_file_path_template % '')
+
+            # We'll use the actual instance label size rather than the maximum that it could be
+            # instance_label_length = self.instance._meta.get_field_by_name('label')[0].max_length
+            instance_label_length = len(self.instance.label)
+            truncate_to = max_filename_length - template_needs - instance_label_length - 8
+
             image_filename = os.path.basename(urlsplit(self.image).path)
+            image_filename = url_to_unicode(image_filename)
+            filename_root, extension = os.path.splitext(image_filename)
+
+            truncated_filename = filename_root[:(truncate_to - len(extension))] + extension
+
             self.image_cache.save(
-                url_to_unicode(image_filename),
+                truncated_filename,
                 File(open(tmp_filename, 'rb')),
 
                 # Calling save on a FieldFile causes a save on the model instance

@@ -20,17 +20,19 @@ m.return_value = ('speeches/fixtures/test_inputs/Ferdinand_Magellan.jpg', None)
 @patch.object(models, 'urlretrieve', m)
 class SpeakerTests(InstanceTestCase):
     """Tests for the speaker functionality"""
+    speakers = []
 
     def tearDown(self):
-        if hasattr(self, 'speaker'):
-            self.speaker.image_cache.delete(save=False)
+        for speaker in self.speakers:
+            speaker.image_cache.delete(save=False)
 
     def test_speaker_page_lists_speeches(self):
         # Add a speaker
-        self.speaker = speaker = Speaker.objects.create(
+        speaker = Speaker.objects.create(
             name='Steve', instance=self.instance,
             summary='A froody dude',
             image='http://example.com/image.jpg')
+        self.speakers.append(speaker)
 
         # Call the speaker's page
         resp = self.client.get('/speaker/%s' % speaker.slug)
@@ -82,11 +84,12 @@ class SpeakerTests(InstanceTestCase):
 
     def test_speaker_headshots_in_speeches_section(self):
         # Test that headshots vs default image work OK
-        self.speaker = speaker1 = Speaker.objects.create(
+        speaker1 = Speaker.objects.create(
             name='Marilyn',
             instance=self.instance,
             summary='movie star',
             image=u'http://example.com/imag%C3%A9.jpg')
+        self.speakers.append(speaker1)
         speaker2 = Speaker.objects.create(name='Salinger',
             instance=self.instance)
 
@@ -107,6 +110,35 @@ class SpeakerTests(InstanceTestCase):
 
         assertRegex(self, resp.content.decode(), r'(?s)<img src="/uploads/speakers/default/imag%%C3%%A9.jpg.96x96_q85_crop-smart_face_upscale.jpg".*?<a href="/speaker/%s">\s*' % (speaker1.slug))
         assertRegex(self, resp.content.decode(), r'(?s)<img src="\s*/static/speeches/i/a.\w+.png\s*".*?<a href="/speaker/%s">\s*' % (speaker2.slug))
+
+    def test_create_speaker_with_long_image_url(self):
+        long_image_url = 'http://example.com/image%E2%97%8F123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789.jpg'
+
+        s1 = Speaker.objects.create(
+            name='Long Image URL',
+            instance=self.instance,
+            image=long_image_url,
+            )
+        s2 = Speaker.objects.create(
+            name='Duplicate long image url',
+            instance=self.instance,
+            image=long_image_url,
+            )
+        self.speakers.extend((s1, s2))
+
+        # Note the filename in image_cache has been truncated.
+        self.assertEqual(Speaker.objects.filter(
+            name='Long Image URL',
+            image_cache=u'speakers/default/image\u25CF12345678901234567890123456789012345678901234567890123456789012345.jpg',
+            ).count(), 1)
+
+        # The truncated filename for the second speaker has some random stuff at the end.
+        # If this get fails it might well mean you need a Django security update
+        # https://www.djangoproject.com/weblog/2014/aug/20/security/
+        self.assertEqual(Speaker.objects.filter(
+            name='Duplicate long image url',
+            image_cache__regex=u'speakers/default/image\u25CF12345678901234567890123456789012345678901234567890123456789012345_.{7}.jpg',
+            ).count(), 1)
 
     def test_add_speaker_with_whitespace(self):
         name = ' Bob\n'
