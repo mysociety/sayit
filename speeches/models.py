@@ -22,10 +22,10 @@ from easy_thumbnails.fields import ThumbnailerImageField
 from easy_thumbnails.alias import aliases
 
 if not aliases.get('speaker-thumb'):
-    aliases.set('speaker-thumb', {'size': (96, 96), 'crop': 'smart'})
+    aliases.set('speaker-thumb', {'size': (96, 96), 'crop': 'smart', 'upscale': True})
 
 if not aliases.get('speaker-rectangle'):
-    aliases.set('speaker-rectangle', {'size': (96, 0)})
+    aliases.set('speaker-rectangle', {'size': (96, 0), 'upscale': True})
 
 from instances.models import InstanceMixin, InstanceManager
 import speeches
