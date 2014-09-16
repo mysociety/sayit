@@ -223,15 +223,9 @@ $image-path: '../img' !default;
 
 .speech__meta-data {
   margin-bottom: .75em;
-  span {
-    display: block;
-  }
 
   @media (min-width: $medium-screen) {
     margin-bottom: 0;
-    span {
-      display: inline;
-    }
   }
 }
 .speech--with-portrait {
@@ -710,7 +704,11 @@ $image-path: '../img' !default;
         left: -20%;
         top: 110px; // 16.6667% of 10-column grid (~800px)
         text-align: center;
+        line-height: 1.2em;
     }
+  }
+  .speech__meta-data__speaker-name {
+    margin-right: 0;
   }
   .speech__links {
     bottom: 1em;
@@ -745,7 +743,7 @@ $image-path: '../img' !default;
 
   @media (min-width: $large-screen) {
     .speech__meta-data__speaker-name {
-      margin-right: 0;
+      display: block;
     }
 
     &:before {

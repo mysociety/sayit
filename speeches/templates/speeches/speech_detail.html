@@ -59,10 +59,10 @@
               {% endif %}
                 <div class="speech__meta-data">
                     <span class="speech__meta-data__speech-type">
-                      {% trans object.type %}
+                      {% trans object.get_type_display %}
                     </span>
                     {% if object.type == 'speech' or object.type == 'question' or object.type == 'answer' %}
-                      &middot;
+                        by
                         {% if object.speaker %}
                             <span class="speech__meta-data__speaker-name">
                                 <a href="{% url "speeches:speaker-view" object.speaker.slug %}">{{ object.speaker }}</a>
@@ -72,6 +72,7 @@
                         {% endif %}
                     {% endif %}
                     {% if object.start_date %}
+                        on
                         <span class="speech__meta-data__date">
                             {{ object.start_date }}
                         </span>
