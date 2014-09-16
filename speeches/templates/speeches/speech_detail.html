@@ -71,6 +71,12 @@
                             {% trans 'unknown speaker' %}
                         {% endif %}
                     {% endif %}
+                    {% if object.start_date %}
+                        <span class="speech__meta-data__date">
+                            {{ object.start_date }}
+                        </span>
+                    {% endif %}
+
                 </div>
               {% if object.audio %}
                 <p>
