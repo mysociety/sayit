@@ -30,9 +30,6 @@ class Migration(SchemaMigration):
         # Deleting field 'Speech.speaker'
         db.delete_column('speeches_speech', 'speaker_id')
 
-        if not db.dry_run:
-            orm['contenttypes.ContentType'].objects.filter(app_label='speeches', model='speaker').delete()
-
     def backwards(self, orm):
         # Adding model 'Speaker'
         db.create_table('speeches_speaker', (
@@ -46,7 +43,7 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('speeches', ['Speaker'])
         # The above signal is not ever sent in a backwards migration, so let's
-        # create the contenttype manually
+        # create the contenttype manually if necessary
         if not db.dry_run:
             get_content_type(orm, 'speeches', 'speaker')
 
