@@ -30,7 +30,7 @@ class SpeakerIndex(indexes.SearchIndex, indexes.Indexable):
         return self.get_model()._default_manager.select_related('instance')
 
     def get_updated_field(self):
-        return 'modified'
+        return 'updated_at'
 
 class SectionIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, model_attr='heading')
