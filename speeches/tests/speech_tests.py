@@ -1,6 +1,7 @@
 import os
 import tempfile
 import shutil
+import re
 import datetime
 
 from django.test.utils import override_settings
@@ -533,11 +534,26 @@ class SpeechFormTests(InstanceTestCase):
 
 class SpeechViewTests(InstanceTestCase):
     def test_speech_heading_display(self):
-        speech = Speech.objects.create( text='Speech text', heading='Speech title', instance=self.instance )
+        speech = Speech.objects.create(
+            text='Speech text',
+            heading='Speech title',
+            instance=self.instance,
+            start_date=datetime.date(2014, 9, 17),
+            )
         resp = self.client.get('/speech/%d' % speech.id)
         self.assertContains( resp, '<h1>Speech title</h1>' )
         resp = self.client.get('/speeches')
         self.assertContains( resp, 'Speech title' )
+
+        # Check that two speeches on the same date both have their date displayed
+        Speech.objects.create(
+            text='Another speech',
+            instance=self.instance,
+            start_date=datetime.date(2014, 9, 17),
+            )
+
+        resp = self.client.get('/speeches')
+        assert len(re.findall(r'<span class="speech__meta-data__date">\s*17 Sep 2014\s*</span>', resp.content.decode())) == 2
 
         section = Section.objects.create(heading='Test', instance=self.instance)
         speech.section = section

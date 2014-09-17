@@ -1,4 +1,6 @@
 import sys
+import re
+from datetime import date
 from mock import patch, Mock, mock_open
 
 import django
@@ -35,13 +37,31 @@ class SpeakerTests(InstanceTestCase):
         self.assertSequenceEqual([], resp.context['page_obj'])
 
         # Add a speech
-        speech = Speech.objects.create(text="A test speech", speaker=speaker, instance=self.instance)
+        speech = Speech.objects.create(
+            text="A test speech",
+            speaker=speaker,
+            instance=self.instance,
+            start_date=date(2014, 9, 17),
+            )
 
         # Call the speaker's page again
         resp = self.client.get('/speaker/%s' % speaker.slug)
 
         self.assertSequenceEqual([speech], resp.context['speech_list'])
         self.assertSequenceEqual([speech], resp.context['page_obj'])
+
+        # Add another speech on the same date and check that both dates are displayed
+        speech = Speech.objects.create(
+            text="Another speech",
+            speaker=speaker,
+            instance=self.instance,
+            start_date=date(2014, 9, 17),
+            )
+
+        # Check that a search which returns more than one speech on the same
+        # date displays a date for each.
+        resp = self.client.get('/speaker/%s' % speaker.slug)
+        assert len(re.findall(r'<span class="breadcrumbs__date">\s*17 Sep 2014\s*</span>', resp.content.decode())) == 2
 
     def test_speaker_page_has_button_to_add_speech(self):
         # Add a speaker

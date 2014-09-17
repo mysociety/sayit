@@ -1,5 +1,7 @@
+import re
 from datetime import datetime, date, time, timedelta
 
+import django
 from django.test import TestCase
 
 from speeches.models import Section, Speech
@@ -196,9 +198,39 @@ class SectionSiteTests(InstanceTestCase):
         resp = self.client.get('/sections/%d' % subsection.id)
         self.assertSequenceEqual([], list(resp.context['section_tree']))
 
-        speech = Speech.objects.create(text="A test speech", section=subsection, instance=self.instance)
+        speech = Speech.objects.create(
+            text="A test speech",
+            section=subsection,
+            instance=self.instance,
+            start_date=date(2014, 9, 17),
+            )
         resp = self.client.get('/sections/%d' % subsection.id)
         self.assertSequenceEqual([(speech, {'speech':True, 'new_level': True, 'closed_levels': [1]})], list(resp.context['section_tree']))
+
+        # Check that a second speech on the same date doesn't display a date
+        Speech.objects.create(
+            text="Second speech",
+            section=subsection,
+            instance=self.instance,
+            start_date=date(2014, 9, 17),
+            )
+        Speech.objects.create(
+            text="Next day speech",
+            section=subsection,
+            instance=self.instance,
+            start_date=date(2014, 9, 18),
+            )
+
+        # Check that a section page which returns more than one speech on the
+        # same date displays the date once. This breaks in Django 1.7 which
+        # always shows the date, see https://code.djangoproject.com/ticket/23516
+        resp = self.client.get('/sections/%d' % subsection.id)
+        if django.VERSION < (1, 7):
+            self.assertEqual(
+                len(re.findall(
+                    r'<span class="speech__meta-data__date">\s*1[7,8] Sep 2014\s*</span>',
+                    resp.content.decode())),
+            2)
 
     def test_section_page_lists_subsections(self):
         section = Section.objects.create(heading='A test section', instance=self.instance)

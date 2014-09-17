@@ -1,0 +1,9 @@
+{{ speech.start_time|default:"" }}{% if speech.start_time and speech.start_date and speech.start_date != speech.end_date %},{% endif %}
+{% if speech.start_date and speech.start_date != speech.end_date %}
+  {{ speech.start_date }}
+{% endif %}
+{% if speech.end_time or speech.end_date %}
+{% if speech.start_time or speech.start_date and speech.start_date != speech.end_date %} &ndash; {% endif %}
+  {{ speech.end_time|default:"" }}{% if speech.end_time and speech.end_date %},{% endif %}
+  {{ speech.end_date }}
+{% endif %}
