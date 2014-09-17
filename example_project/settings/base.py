@@ -240,6 +240,9 @@ STATICFILES_FINDERS = (
 # django-bleach configuration
 from .bleach import *
 
+# easy-thumbnails configuration
+from .thumbnails import *
+
 # Haystack search settings
 
 SEARCH_INDEX_NAME = DATABASES['default']['NAME']
