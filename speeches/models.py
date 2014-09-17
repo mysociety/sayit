@@ -6,7 +6,7 @@ import os
 from six.moves.urllib.parse import urlsplit
 from six.moves.urllib.request import urlretrieve
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -226,7 +226,7 @@ class Section(AuditedModel, InstanceMixin):
         unique_together = ('parent', 'slug', 'instance')
 
     def __str__(self):
-        return self.heading or _('Section')
+        return self.heading or ugettext('Section')
 
     @property
     def title(self):

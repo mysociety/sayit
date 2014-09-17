@@ -38,9 +38,10 @@ setup(
         'django-haystack >= 2.1, < 2.2',
         'django-bleach >= 0.2.1',
         'mysociety-django-popolo >= 0.0.2',
-        'mysociety-django-sluggable >= 0.2.5',
+        'mysociety-django-sluggable >= 0.2.6',
         'django-subdomain-instances >= 0.4',
         'easy-thumbnails >= 2.1',
+        'unicode-slugify == 0.1.1',
     ],
     extras_require={
         'test': [
