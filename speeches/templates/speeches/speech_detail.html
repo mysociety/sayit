@@ -60,7 +60,7 @@
                 <div class="speech__meta-data">
                   {% if object.type == 'speech' or object.type == 'question' or object.type == 'answer' %}
                       {% if object.speaker %}
-                          {% url "speeches:speaker-view" speaker.slug as speaker_url %}
+                          {% url "speeches:speaker-view" object.speaker.slug as speaker_url %}
                           {% if object.start_date %}
                               {% blocktrans with type=object.get_type_display speaker=object.speaker speaker_url=speaker_url date=object.start_date %}
                                   <span class="speech__meta-data__speech-type">{{ type }}</span>
