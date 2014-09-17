@@ -58,19 +58,58 @@
                 </a>
               {% endif %}
                 <div class="speech__meta-data">
-                    <span class="speech__meta-data__speech-type">
-                      {% trans object.type %}
-                    </span>
-                    {% if object.type == 'speech' or object.type == 'question' or object.type == 'answer' %}
-                      &middot;
-                        {% if object.speaker %}
-                            <span class="speech__meta-data__speaker-name">
-                                <a href="{% url "speeches:speaker-view" object.speaker.slug %}">{{ object.speaker }}</a>
-                            </span>
-                        {% else %}
-                            {% trans 'unknown speaker' %}
-                        {% endif %}
-                    {% endif %}
+                  {% if object.type == 'speech' or object.type == 'question' or object.type == 'answer' %}
+                      {% if object.speaker %}
+                          {% url "speeches:speaker-view" speaker.slug as speaker_url %}
+                          {% if object.start_date %}
+                              {% blocktrans with type=object.get_type_display speaker=object.speaker speaker_url=speaker_url date=object.start_date %}
+                                  <span class="speech__meta-data__speech-type">{{ type }}</span>
+                                  by
+                                  <span class="speech__meta-data__speaker-name">
+                                    <a href="{{ speaker_url }}">{{ speaker }}</a>
+                                  </span>
+                                  on
+                                  <span class="speech__meta-data__date">{{ date }}</span>
+                              {% endblocktrans %}
+                          {% else %}
+                              {% blocktrans with type=object.get_type_display speaker=object.speaker speaker_url=speaker_url %}
+                                  <span class="speech__meta-data__speech-type">{{ type }}</span>
+                                  by
+                                  <span class="speech__meta-data__speaker-name">
+                                    <a href="{{ speaker_url }}">{{ speaker }}</a>
+                                  </span>
+                              {% endblocktrans %}
+                          {% endif %}
+                      {% else %}
+                          {% if object.start_date %}
+                              {% blocktrans with type=object.get_type_display date=object.start_date %}
+                                  <span class="speech__meta-data__speech-type">{{ type }}</span>
+                                  by
+                                  <span class="speech__meta-data__speaker-name">an unknown speaker</span>
+                                  on
+                                  <span class="speech__meta-data__date">{{ date }}</span>
+                              {% endblocktrans %}
+                          {% else %}
+                              {% blocktrans with type=object.get_type_display %}
+                                  <span class="speech__meta-data__speech-type">{{ type }}</span>
+                                  by
+                                  <span class="speech__meta-data__speaker-name">an unknown speaker</span>
+                              {% endblocktrans %}
+                          {% endif %}
+                      {% endif %}
+                  {% else %}
+                      {% if object.start_date %}
+                          {% blocktrans with type=object.get_type_display date=object.start_date %}
+                              <span class="speech__meta-data__speech-type">{{ type }}</span>
+                              on
+                              <span class="speech__meta-data__date">{{ date }}</span>
+                          {% endblocktrans %}
+                      {% else %}
+                          {% blocktrans with type=object.get_type_display %}
+                              <span class="speech__meta-data__speech-type">{{ type }}</span>
+                          {% endblocktrans %}
+                      {% endif %}
+                  {% endif %}
                 </div>
               {% if object.audio %}
                 <p>
