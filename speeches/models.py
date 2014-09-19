@@ -31,6 +31,7 @@ from instances.models import InstanceMixin, InstanceManager
 import speeches
 from speeches.utils import AudioHelper
 from speeches.utils.base32 import int_to_base32
+from speeches.utils.text import url_to_unicode
 
 from djqmethod import Manager, querymethod
 from popolo.models import Person
@@ -116,9 +117,10 @@ class Speaker(InstanceMixin, Person):
     def save(self, *args, **kwargs):
         if self.image:
             tmp_filename, headers = urlretrieve(self.image)
+            image_filename = os.path.basename(urlsplit(self.image).path)
             self.image_cache.save(
-                os.path.basename(urlsplit(self.image).path),
-                File(open(tmp_filename)),
+                url_to_unicode(image_filename),
+                File(open(tmp_filename, 'rb')),
 
                 # Calling save on a FieldFile causes a save on the model instance
                 # we don't need that as we're about to do it below (without this
@@ -132,13 +134,6 @@ class Speaker(InstanceMixin, Person):
 
     def get_image_cache_file_path(self, filename):
         path = self.image_cache_file_path_template % (self.instance.label)
-
-        try:
-            os.makedirs(path)
-        except OSError:
-            if not os.path.isdir(path):
-                raise
-
         return os.path.join(path, filename)
 
     @property
