@@ -32,12 +32,21 @@ pip:
         'haystack',
         'django_select2',
         'django_bleach',
+        'easy_thumbnails',
         'popolo',
         'instances',
         'speeches',
 
-    If you're using South, you will also need to install `popit-django` and add
-`popit` to `INSTALLED_APPS` as that is used by some of our older migrations.
+1.  **Only if you're using South**  
+    You will need to make sure `easy_thumbnails` is in your
+    `SOUTH_MIGRATION_MODULES`, e.g.:
+
+        SOUTH_MIGRATION_MODULES = {
+            'easy_thumbnails': 'easy_thumbnails.south_migrations',
+        }
+
+    You will also need to install `popit-django` and add `popit` to
+    `INSTALLED_APPS` as that is used by some of our older migrations.
 
 1. Add the following line to your `MIDDLEWARE_CLASSES`:
 
@@ -113,10 +122,17 @@ and python-virtualenv).
         cd sayit
         pip install -e .
 
-1. Alter the settings to match your setup (the default example project looks
-for a PostgreSQL database with name sayit-example-project and user postgres):
+1.  Alter the settings to match your setup - the default example project looks
+    for a PostgreSQL database with name sayit-example-project and a blank user.
+    You can override settings by editing the existing files:
 
         vim example_project/settings/base.py
+
+    or by creating a file at `example_project/settings/local.py` and putting
+    your local configuration in there. `local.py` has access to the settings
+    already set up and can change them, for example:
+
+        echo "DATABASES['default']['USER'] = 'postgres'" >> local.py
 
 1. Set up the database:
 
