@@ -51,6 +51,7 @@ setup(
             'Mutagen',
             'lxml',
             dateutil,
+            'opengraph',
         ],
         'develop': [
             'django-debug-toolbar',
