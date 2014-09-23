@@ -20,7 +20,14 @@
           {% endblock og_image_details %}
         {% endblock opengraph %}
 
-        <title>{% block fulltitle %}{% block title %}{% endblock %}{% endblock %}</title>
+        <title>
+          {% block fulltitle %}{% block title %}{{ title }}{% endblock %}
+            {% if request.instance %}
+              :: {% filter force_escape %}{% firstof request.instance.title request.instance.label %}{% endfilter %}
+            {% endif %}
+            :: SayIt
+          {% endblock %}
+        </title>
 
         {% block extra_headers %}{% endblock %}
 
