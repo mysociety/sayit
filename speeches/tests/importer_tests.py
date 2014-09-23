@@ -23,6 +23,18 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
              u'narrative']
             )
 
+    def test_import_remote_file(self):
+        self.importer.import_document(
+            'http://examples.akomantoso.org/php/download.php?file=Debate_Bungeni_1995-10-31.xml')
+
+        # To get us started, let's just check that we get the right kind of
+        # speech in the right order.
+        self.assertEqual(
+            [x.type for x in Speech.objects.all()],
+            [u'scene', u'other', u'narrative', u'speech', u'question',
+             u'summary', u'speech', u'answer', u'narrative', u'speech']
+            )
+
     def test_xpath_preface_elements(self):
         self.importer.import_document(
             'speeches/fixtures/test_inputs/test_xpath.xml')
