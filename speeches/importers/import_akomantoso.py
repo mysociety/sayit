@@ -74,15 +74,32 @@ class ImportAkomaNtoso (ImporterBase):
 
         section = None
         if docTitle:
-            section = self.make(
-                Section,
-                parent=None,
-                heading=docTitle,
-                start_date=self.start_date,
-                number=docNumber or '',
-                legislature=legislature or '',
-                session=session or '',
-            )
+            kwargs = {
+                'parent': None,
+                'heading': docTitle,
+                'start_date': self.start_date,
+                'number': docNumber or '',
+                'legislature': legislature or '',
+                'session': session or '',
+            }
+
+            # If the importer has no opinion on clobbering, just import the section,
+            # potentially creating a duplicate section.
+            if self.clobber is not None:
+                try:
+                    section = Section.objects.for_instance(self.instance).get(**kwargs)
+                    if self.clobber:
+                        logger.info('Clobbering %s' % docTitle)
+                        for speech in section.descendant_speeches():
+                            speech.delete()
+                        section.delete()
+                    else:
+                        logger.info('Skipping %s' % docTitle)
+                        return
+                except Section.DoesNotExist:
+                    logger.info('Importing %s' % docTitle)
+
+            section = self.make(Section, **kwargs)
 
         self.visit(debate.debateBody, section)
 

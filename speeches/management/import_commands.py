@@ -21,6 +21,8 @@ class ImportCommand(BaseCommand):
         make_option('--dir',  action='store', help='directory of documents to import'),
         make_option('--start-date',  action='store', default='', help='earliest date to process, in yyyy-mm-dd format'),
         make_option('--dump-users',  action='store', default='', help='dump a json list to <file> (only valid with --dir for now)'),
+        make_option('--clobber-existing', action='store_true', dest='clobber', help='Whether to replace top-level sections with the same heading'),
+        make_option('--skip-existing', action='store_false', dest='clobber', help='Whether to skip top-level sections with the same heading'),
     )
 
     def handle(self, *args, **options):

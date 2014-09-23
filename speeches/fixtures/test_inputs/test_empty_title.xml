@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<akomaNtoso>
+    <debate>
+        <preface>
+            <p><docTitle></docTitle></p>
+            <p><docDate date="2014-07-24">24th July 2014</docDate></p>
+        </preface>
+        <debateBody>
+            <debateSection>
+                <speech>
+                    <p>Hello</p>
+                </speech>
+            </debateSection>
+        </debateBody>
+    </debate>
+</akomaNtoso>
