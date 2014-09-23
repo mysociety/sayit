@@ -7,6 +7,7 @@ import django
 from django.test.utils import override_settings
 from django.utils.six import assertRegex
 from django.utils.six.moves import builtins
+from django.utils.encoding import smart_text
 from easy_thumbnails.templatetags import thumbnail
 
 from speeches.tests import InstanceTestCase
@@ -120,25 +121,26 @@ class SpeakerTests(InstanceTestCase):
             image=long_image_url,
             )
         s2 = Speaker.objects.create(
-            name='Duplicate long image url',
+            name='Duplicate long image URL',
             instance=self.instance,
             image=long_image_url,
             )
         self.speakers.extend((s1, s2))
 
         # Note the filename in image_cache has been truncated.
-        self.assertEqual(Speaker.objects.filter(
-            name='Long Image URL',
-            image_cache=u'speakers/default/image\u25CF12345678901234567890123456789012345678901234567890123456789012345.jpg',
-            ).count(), 1)
+        self.assertEqual(
+            s1.image_cache,
+            u'speakers/default/image\u25cf12345678901234567890123456789012345678901234567890123456789012345.jpg',
+            )
 
         # The truncated filename for the second speaker has some random stuff at the end.
         # If this get fails it might well mean you need a Django security update
         # https://www.djangoproject.com/weblog/2014/aug/20/security/
-        self.assertEqual(Speaker.objects.filter(
-            name='Duplicate long image url',
-            image_cache__regex=u'speakers/default/image\u25CF12345678901234567890123456789012345678901234567890123456789012345_.{7}.jpg',
-            ).count(), 1)
+        assertRegex(
+            self,
+            smart_text(s2.image_cache),
+            u'^speakers/default/image\u25cf12345678901234567890123456789012345678901234567890123456789012345_.{7}\.jpg$',
+            )
 
     def test_add_speaker_with_whitespace(self):
         name = ' Bob\n'
