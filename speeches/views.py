@@ -256,6 +256,7 @@ class SpeakerView(NamespaceMixin, InstanceViewMixin, Base32SingleObjectMixin, Li
         context = super(SpeakerView, self).get_context_data(**kwargs)
         context['section_count'] = self.object.speech_set.all().visible(self.request).aggregate(Count('section', distinct=True))['section__count']
         context['longest_speech'] = self.object.speech_set.annotate(length=Length('text')).order_by('-length')[:1]
+        context['title'] = _('View Speaker: %(speaker_name)s') % {'speaker_name': self.object.name}
         return context
 
 class SpeakerMixin(NamespaceMixin, InstanceFormMixin):
