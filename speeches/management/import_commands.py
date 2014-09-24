@@ -37,17 +37,7 @@ class ImportCommand(BaseCommand):
                 if section and section.id:
                     self.stdout.write("Imported section %d\n\n" % section.id)
         elif options['dir']:
-            dir = os.path.expanduser(options['dir'])
-
-            start_date = options['start_date']
-            valid = lambda f: f > start_date if start_date else lambda _: True
-
-            files = [ os.path.join(root, filename)
-                    for (root, _, files)
-                    in os.walk(dir)
-                    for filename in files
-                    if filename[-4:] == '.%s' % self.document_extension
-                    and valid(filename)]
+            files = self.document_list(options)
 
             if not len(files):
                 raise CommandError("No .%s files found in directory" % self.document_extension)
@@ -76,10 +66,26 @@ class ImportCommand(BaseCommand):
         else:
             self.stdout.write( self.help )
 
+    def document_list(self, options):
+        dir = os.path.expanduser(options['dir'])
+
+        start_date = options['start_date']
+        valid = lambda f: f >= start_date if start_date else lambda _: True
+
+        return [ os.path.join(root, filename)
+                for (root, _, files)
+                in os.walk(dir)
+                for filename in files
+                if filename[-4:] == '.%s' % self.document_extension
+                and valid(filename)]
+
+    def document_valid(self, path):
+        return os.path.isfile(path)
+
     def import_document(self, path, **options):
         verbosity = int(options['verbosity'])
 
-        if not os.path.isfile(path):
+        if not self.document_valid(path):
             raise CommandError("No document found")
 
         if verbosity > 1:
