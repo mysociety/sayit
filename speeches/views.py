@@ -13,6 +13,9 @@ from django.db.models import Count, Avg
 from django.core.files import File
 from django.shortcuts import get_object_or_404
 
+import bleach
+from django_bleach.templatetags.bleach_tags import bleach_args
+
 from instances.views import InstanceFormMixin, InstanceViewMixin
 
 from speeches.aggregates import Length
@@ -216,6 +219,14 @@ class SpeechView(NamespaceMixin, InstanceViewMixin, DetailView):
 
     def get_queryset(self):
         return super(SpeechView, self).get_queryset().visible(self.request)
+
+    def get_context_data(self, **kwargs):
+        context = super(SpeechView, self).get_context_data(**kwargs)
+        context['title'] = (
+            self.object.title or
+            u'&#8220;%s&#8221;' % bleach.clean(self.object.summary, **bleach_args)
+            )
+        return context
 
 class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
     """Done as a ListView on Speech to get recent speeches, we get instance for
