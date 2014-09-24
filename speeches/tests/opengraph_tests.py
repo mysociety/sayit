@@ -12,10 +12,15 @@ class OpenGraphTests(InstanceTestCase):
             instance=self.instance,
             image='http://example.com/image.jpg',
             )
+        self.section = Section.objects.create(
+            heading='Test section',
+            instance=self.instance,
+            )
         self.steve_speech = Speech.objects.create(
             text="A Steve speech",
             instance=self.instance,
             speaker=self.steve,
+            section=self.section,
             )
 
     def test_default_instance_homepage(self):
@@ -34,6 +39,13 @@ class OpenGraphTests(InstanceTestCase):
 
     def test_speech_detail_page(self):
         resp = self.client.get('/speech/%s' % self.steve_speech.id)
+
+        graph = opengraph.OpenGraph()
+        graph.parser(resp.content)
+        self.assertTrue(graph.is_valid())
+
+    def test_section_detail_page(self):
+        resp = self.client.get('/sections/%s' % self.section.id)
 
         graph = opengraph.OpenGraph()
         graph.parser(resp.content)

@@ -369,6 +369,8 @@ class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
         context['section_tree'] = kwargs['object'].get_descendants_tree_with_speeches(
             self.request, all_speeches = all_speeches
         )
+        context['title'] = _('View Section: %(section_title)s') % {'section_title': self.object.title}
+
         return context
 
 class SectionViewAN(SectionView):
