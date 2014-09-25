@@ -2,6 +2,7 @@ import sys
 import re
 from datetime import date
 from mock import patch, Mock
+from six.moves.urllib.error import HTTPError
 
 import django
 from django.test.utils import override_settings
@@ -14,11 +15,13 @@ from speeches.tests import InstanceTestCase
 from speeches.models import Speaker, Speech, Section
 from speeches import models
 
-m = Mock()
-m.return_value = ('speeches/fixtures/test_inputs/Ferdinand_Magellan.jpg', None)
+def side_effect(url):
+    if '404' in url:
+        raise HTTPError(url, 404, 'HTTP Error 404: Not Found', None, None)
+    return ('speeches/fixtures/test_inputs/Ferdinand_Magellan.jpg', None)
 
 @override_settings(MEDIA_URL='/uploads/')
-@patch.object(models, 'urlretrieve', m)
+@patch.object(models, 'urlretrieve', Mock(side_effect=side_effect))
 class SpeakerTests(InstanceTestCase):
     """Tests for the speaker functionality"""
     speakers = []
@@ -148,3 +151,12 @@ class SpeakerTests(InstanceTestCase):
 
         speaker = Speaker.objects.order_by('-id')[0]
         self.assertEqual(speaker.name, 'Bob')
+
+    def test_add_speaker_with_image_not_found(self):
+        try:
+            speaker = Speaker.objects.create(
+                name='Not Found',
+                instance=self.instance,
+                image='http://httpbin.org/status/404')
+        except HTTPError:
+            self.fail("Speaker unexpectedly raised HTTPError")
