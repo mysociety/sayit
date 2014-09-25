@@ -9,6 +9,7 @@ from django.test.utils import override_settings
 from django.utils.six import assertRegex
 from django.utils.six.moves import builtins
 from django.utils.encoding import smart_text
+
 from easy_thumbnails.templatetags import thumbnail
 
 from speeches.tests import InstanceTestCase, OverrideMediaRootMixin
@@ -23,7 +24,7 @@ def side_effect(url):
 
 @override_settings(MEDIA_URL='/uploads/')
 @patch.object(models, 'urlretrieve', Mock(side_effect=side_effect))
-class SpeakerTests(InstanceTestCase, OverrideMediaRootMixin):
+class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
     """Tests for the speaker functionality"""
     speakers = []
 
@@ -86,7 +87,6 @@ class SpeakerTests(InstanceTestCase, OverrideMediaRootMixin):
 
         self.assertContains(resp, '<a href="/speech/add?speaker=%d" class="button small right">Add speech</a>' % speaker.id, html=True)
 
-
     def test_speaker_headshots_in_speeches_section(self):
         # Test that headshots vs default image work OK
         speaker1 = Speaker.objects.create(
@@ -113,8 +113,20 @@ class SpeakerTests(InstanceTestCase, OverrideMediaRootMixin):
 
         resp = self.client.get('/sections/' + str(section.id))
 
-        assertRegex(self, resp.content.decode(), r'(?s)<img src="/uploads/speakers/default/imag%%C3%%A9.jpg.96x96_q85_crop-smart_face_upscale.jpg".*?<a href="/speaker/%s">\s*' % (speaker1.slug))
-        assertRegex(self, resp.content.decode(), r'(?s)<img src="\s*/static/speeches/i/a.png\s*".*?<a href="/speaker/%s">\s*' % (speaker2.slug))
+        # Prior to Django 1.5, override_settings didn't sort out MEDIA_ROOT
+        # properly, see https://code.djangoproject.com/ticket/17744".
+        # So best to skip the following assertion.
+        if django.VERSION[:2] >= (1, 5):
+            assertRegex(
+                self,
+                resp.content.decode(),
+                r'(?s)<img src="/uploads/speakers/default/imag%%C3%%A9.jpg.96x96_q85_crop-smart_face_upscale.jpg".*?<a href="/speaker/%s">\s*' % (speaker1.slug)
+                )
+        assertRegex(
+            self,
+            resp.content.decode(),
+            r'(?s)<img src="\s*/static/speeches/i/a.png\s*".*?<a href="/speaker/%s">\s*' % (speaker2.slug)
+            )
 
     def test_create_speaker_with_long_image_url(self):
         long_image_url = 'http://example.com/image%E2%97%8F123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789.jpg'
