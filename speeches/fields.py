@@ -3,10 +3,7 @@ from itertools import chain
 
 from django import forms
 from django.core import validators
-try:
-    from django.utils.encoding import force_text as force_unicode
-except ImportError:
-    from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
 
@@ -50,12 +47,12 @@ class TagWidget(forms.SelectMultiple):
         if value is None: value = []
         final_attrs = self.build_attrs(attrs, type='text', name=name)
 
-        value = set(force_unicode(v) for v in value)
+        value = set(force_text(v) for v in value)
         selected = []
         all_tags = []
         for option_value, option_label in chain(self.choices, choices):
-            option_value = force_unicode(option_value)
-            option_label = force_unicode(option_label)
+            option_value = force_text(option_value)
+            option_label = force_text(option_label)
             if option_value in value:
                 selected.append( option_label )
             all_tags.append( option_label )
