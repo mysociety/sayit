@@ -17,7 +17,7 @@ from speeches import models
 
 def side_effect(url):
     if '404' in url:
-        raise HTTPError(url, 404, 'HTTP Error 404: Not Found', None, None)
+        raise HTTPError(url, 404, 'NOT FOUND', None, None)
     return ('speeches/fixtures/test_inputs/Ferdinand_Magellan.jpg', None)
 
 @override_settings(MEDIA_URL='/uploads/')
