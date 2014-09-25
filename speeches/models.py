@@ -88,6 +88,9 @@ class AuditedModel(models.Model):
 class Slug(SlugModel):
     pass
 
+def upload_to(inst, fn):
+    return inst.get_image_cache_file_path(fn)
+
 # Speaker - someone who gave a speech
 @python_2_unicode_compatible
 class Speaker(InstanceMixin, Person):
@@ -100,7 +103,7 @@ class Speaker(InstanceMixin, Person):
     # is the django subdomain instance.
     image_cache = ThumbnailerImageField(
         _('image_cache'),
-        upload_to=lambda inst, fn: inst.get_image_cache_file_path(fn),
+        upload_to=upload_to,
         null=True,
         blank=True,
         help_text=_('If image is set, a local copy will be stored here.'),

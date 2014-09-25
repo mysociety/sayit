@@ -39,7 +39,7 @@ setup(
         'django-bleach >= 0.2.1',
         'mysociety-django-popolo >= 0.0.2',
         'mysociety-django-sluggable >= 0.2.6',
-        'django-subdomain-instances >= 0.4',
+        'django-subdomain-instances >= 0.6',
         'easy-thumbnails >= 2.1',
         'unicode-slugify == 0.1.1',
     ],
@@ -54,7 +54,7 @@ setup(
         ],
         'develop': [
             'django-debug-toolbar',
-            'South',
+            'South == 1.0',
             'popit-django == 0.0.3',
         ],
         'scraping': [

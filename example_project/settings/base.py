@@ -143,6 +143,7 @@ try:
     import nose
     INSTALLED_APPS.append( 'django_nose' )
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+    NOSE_PLUGINS = [ 'speeches.tests.nose_plugins.SkipMigrations' ]
 except:
     pass
 
@@ -205,6 +206,8 @@ SOUTH_TESTS_MIGRATE = False
 
 SOUTH_MIGRATION_MODULES = {
     'easy_thumbnails': 'easy_thumbnails.south_migrations',
+    'instances': 'instances.south_migrations',
+    'speeches': 'speeches.south_migrations',
 }
 
 # Select2

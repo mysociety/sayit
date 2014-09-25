@@ -1,0 +1,13 @@
+SOUTH_ERROR_MESSAGE = """\n
+For South support, customize the SOUTH_MIGRATION_MODULES setting like so:
+
+    SOUTH_MIGRATION_MODULES = {
+        'speeches': 'speeches.south_migrations',
+    }
+"""
+
+try:  # Django < 1.7
+    from django.db import migrations
+except ImportError:
+    from django.core.exceptions import ImproperlyConfigured
+    raise ImproperlyConfigured(SOUTH_ERROR_MESSAGE)
