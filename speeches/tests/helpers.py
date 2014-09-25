@@ -1,6 +1,10 @@
+import tempfile
+import shutil
+
 from datetime import datetime, date, timedelta
 
 from django.test import TestCase, LiveServerTestCase
+from django.test.utils import override_settings
 from django.contrib.auth.models import User
 
 from selenium.webdriver.support.ui import WebDriverWait
@@ -13,6 +17,16 @@ from instances.tests import InstanceTestCase, InstanceLiveServerTestCase
 
 class InstanceTestCase(InstanceTestCase):
     default_instance_options = dict(label='default')
+
+
+temp_media_root = tempfile.mkdtemp(prefix='sayit_test')
+
+@override_settings(MEDIA_ROOT=temp_media_root)
+class OverrideMediaRootMixin(TestCase):
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(temp_media_root)
+        return super(OverrideMediaRootMixin, cls).tearDownClass()
 
 
 class InstanceLiveServerTestCase(InstanceLiveServerTestCase):
