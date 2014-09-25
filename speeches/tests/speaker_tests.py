@@ -113,7 +113,7 @@ class SpeakerTests(InstanceTestCase):
         resp = self.client.get('/sections/' + str(section.id))
 
         assertRegex(self, resp.content.decode(), r'(?s)<img src="/uploads/speakers/default/imag%%C3%%A9.jpg.96x96_q85_crop-smart_face_upscale.jpg".*?<a href="/speaker/%s">\s*' % (speaker1.slug))
-        assertRegex(self, resp.content.decode(), r'(?s)<img src="\s*/static/speeches/i/a.\w+.png\s*".*?<a href="/speaker/%s">\s*' % (speaker2.slug))
+        assertRegex(self, resp.content.decode(), r'(?s)<img src="\s*/static/speeches/i/a.png\s*".*?<a href="/speaker/%s">\s*' % (speaker2.slug))
 
     def test_create_speaker_with_long_image_url(self):
         long_image_url = 'http://example.com/image%E2%97%8F123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789.jpg'

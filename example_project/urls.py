@@ -18,11 +18,11 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if 'test' in sys.argv:
     static_url = re.escape(settings.STATIC_URL.lstrip('/'))
     urlpatterns += patterns('',
-        url(r'^%s(?P<path>.*)$' % static_url, 'django.views.static.serve', {
-            'document_root': settings.STATIC_ROOT,
+        url(r'^%s(?P<path>.*)$' % static_url, 'django.contrib.staticfiles.views.serve', {
+            'insecure': True,
         }),
-        url('^(?P<path>favicon\.ico)$', 'django.views.static.serve', {
-            'document_root': settings.STATIC_ROOT,
+        url('^(?P<path>favicon\.ico)$', 'django.contrib.staticfiles.views.serve', {
+            'insecure': True,
         }),
     )
 
