@@ -5,16 +5,17 @@ from django.test.utils import override_settings
 
 import opengraph
 
-from speeches.tests import InstanceTestCase
+from speeches.tests import InstanceTestCase, OverrideMediaRootMixin
 from speeches.models import Speaker, Speech, Section
 from speeches import models
 
 m = Mock()
 m.return_value = ('speeches/fixtures/test_inputs/Ferdinand_Magellan.jpg', None)
 
+
 @override_settings(MEDIA_URL='/uploads/')
 @patch.object(models, 'urlretrieve', m)
-class OpenGraphTests(InstanceTestCase):
+class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
     def setUp(self):
         super(OpenGraphTests, self).setUp()
 

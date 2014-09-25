@@ -1,3 +1,6 @@
+import tempfile
+import shutil
+
 from datetime import datetime, date, time, timedelta
 
 from django.test import TestCase, LiveServerTestCase
@@ -18,6 +21,17 @@ class InstanceTestCase(TestCase):
         user = User.objects.create_user(username='admin', email='admin@example.org', password='admin')
         user.instances.add(self.instance)
         self.client.login(username='admin', password='admin')
+
+
+temp_media_root = tempfile.mkdtemp(prefix='sayit_test')
+
+@override_settings(MEDIA_ROOT=temp_media_root)
+class OverrideMediaRootMixin(TestCase):
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(temp_media_root)
+        return super(OverrideMediaRootMixin, cls).tearDownClass()
+
 
 class InstanceLiveServerTestCase(LiveServerTestCase):
     def setUp(self):

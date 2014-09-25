@@ -11,7 +11,7 @@ from django.utils.six.moves import builtins
 from django.utils.encoding import smart_text
 from easy_thumbnails.templatetags import thumbnail
 
-from speeches.tests import InstanceTestCase
+from speeches.tests import InstanceTestCase, OverrideMediaRootMixin
 from speeches.models import Speaker, Speech, Section
 from speeches import models
 
@@ -20,9 +20,10 @@ def side_effect(url):
         raise HTTPError(url, 404, 'NOT FOUND', None, None)
     return ('speeches/fixtures/test_inputs/Ferdinand_Magellan.jpg', None)
 
+
 @override_settings(MEDIA_URL='/uploads/')
 @patch.object(models, 'urlretrieve', Mock(side_effect=side_effect))
-class SpeakerTests(InstanceTestCase):
+class SpeakerTests(InstanceTestCase, OverrideMediaRootMixin):
     """Tests for the speaker functionality"""
     speakers = []
 
