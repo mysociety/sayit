@@ -12,6 +12,7 @@ class Migration(SchemaMigration):
         db.alter_column('speeches_recordingtimestamp', 'speaker_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['speeches.Speaker'], null=True, on_delete=models.SET_NULL))
         db.alter_column('speeches_speech', 'speaker_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['speeches.Speaker'], null=True, on_delete=models.SET_NULL))
         if not db.dry_run:
+            orm['contenttypes.contenttype'].objects.filter(app_label='speeches', model='speaker').update(model='oldspeaker')
             orm['contenttypes.contenttype'].objects.filter(app_label='speeches', model='popolospeaker').update(model='speaker')
 
     def backwards(self, orm):
@@ -20,6 +21,7 @@ class Migration(SchemaMigration):
         db.alter_column('speeches_speech', 'speaker_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['speeches.PopoloSpeaker'], null=True, on_delete=models.SET_NULL))
         if not db.dry_run:
             orm['contenttypes.contenttype'].objects.filter(app_label='speeches', model='speaker').update(model='popolospeaker')
+            orm['contenttypes.contenttype'].objects.filter(app_label='speeches', model='oldspeaker').update(model='speaker')
 
     models = {
         'auth.group': {
