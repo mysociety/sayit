@@ -15,7 +15,7 @@ of transcripts, including:
 Another is `OpenHouse Nova Scotia <http://www.openhousens.ca>`_, providing an
 unofficial record of the proceedings of the Nova Scotia House of Assembly.
 
-SayIt is a `Poplus component <http://poplus.org)>`_
+SayIt is a `Poplus component <http://poplus.org>`_
 by `mySociety <http://www.mysociety.org/>`_.
 
 Get involved
