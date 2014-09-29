@@ -38,15 +38,17 @@ pip:
         'speeches',
 
 1.  **Only if you're using South**  
-    You will need to make sure `easy_thumbnails` is in your
-    `SOUTH_MIGRATION_MODULES`, e.g.:
+    You will need to make sure `speeches`, `easy_thumbnails` and `instances`
+    are in your `SOUTH_MIGRATION_MODULES`, e.g.:
 
         SOUTH_MIGRATION_MODULES = {
+            'speeches': 'speeches.south_migrations',
+            'instances': 'instances.south_migrations',
             'easy_thumbnails': 'easy_thumbnails.south_migrations',
         }
 
-    You will also need to install `popit-django` and add `popit` to
-    `INSTALLED_APPS` as that is used by some of our older migrations.
+    You will also need to install `popit-django` and add `popit` to the start
+    of `INSTALLED_APPS` as that is used by some of our older South migrations.
 
 1. Add the following line to your `MIDDLEWARE_CLASSES`:
 
