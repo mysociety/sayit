@@ -13,6 +13,9 @@ To install the packages required to run the tests, run:
 
     pip install -e .[test]
 
+(You will also need to make sure your system has [FFMPEG](https://www.ffmpeg.org/)
+installed in order to avoid errors from tests which involve audio.)
+
 Tests can be run with:
 
     ./manage.py test speeches
