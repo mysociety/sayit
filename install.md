@@ -38,8 +38,9 @@ pip:
         'speeches',
 
 1.  **Only if you're using South**  
-    You will need to make sure `speeches`, `easy_thumbnails` and `instances`
-    are in your `SOUTH_MIGRATION_MODULES`, e.g.:
+    You will need to make sure you are either using South 1.0, or that
+    `speeches`, `easy_thumbnails` and `instances` are in your
+    `SOUTH_MIGRATION_MODULES`, e.g.:
 
         SOUTH_MIGRATION_MODULES = {
             'speeches': 'speeches.south_migrations',
