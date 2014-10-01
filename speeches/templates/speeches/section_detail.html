@@ -84,13 +84,14 @@
                     <a href="{% url "speeches:section-view" next.get_path %}" class="button speech-navigation__button">{{ next.title }} &raquo;</a>
                   {% endif %}
                 </div>
+                <div class="ui-instructions cleared">
+                  <h2>{% trans 'Keyboard shortcuts' %}</h2>
+                  <p><span class="key-descriptor">j</span> {% trans 'previous section' %}
+                  <span class="key-descriptor">k</span> {% trans 'next section' %}</p>
+                </div>
               {% endif %}
             {% endwith %}
-            <div class="ui-instructions cleared">
-                <h2>{% trans 'Keyboard shortcuts' %}</h2>
-                <p><span class="key-descriptor">j</span> {% trans 'previous section' %}
-                <span class="key-descriptor">k</span> {% trans 'next section' %}</p>
-            </div>
+
         </div><!-- close sidebar__unit -->
 
     </div><!-- close page-content_row -->
@@ -107,4 +108,3 @@
 {% endfor %}
 
 {% endblock %}
-
