@@ -9,29 +9,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 from speeches.models import Section, Speech
 from instances.models import Instance
 
-@override_settings(
-    PASSWORD_HASHERS = ( 'django.contrib.auth.hashers.MD5PasswordHasher', ),
-)
-class InstanceTestCase(TestCase):
+from instances.tests import InstanceTestCase, InstanceLiveServerTestCase
+
+class InstanceTestCase(InstanceTestCase):
+    default_instance_options = dict(label='default')
+
+
+class InstanceLiveServerTestCase(InstanceLiveServerTestCase):
+    default_instance_options = dict(label='default')
+
     def setUp(self):
-        self.instance = Instance.objects.create(label='default')
-        user = User.objects.create_user(username='admin', email='admin@example.org', password='admin')
-        user.instances.add(self.instance)
-        self.client.login(username='admin', password='admin')
-
-class InstanceLiveServerTestCase(LiveServerTestCase):
-    def setUp(self):
-        self.instance = Instance.objects.create(label='default')
-        user = User.objects.create_user(username='admin', email='admin@example.org', password='admin')
-        user.instances.add(self.instance)
-
-        self.selenium.get('%s%s' % (self.live_server_url, '/accounts/login/?next=/'))
-        username_input = self.selenium.find_element_by_name("username")
-        username_input.send_keys('admin')
-        password_input = self.selenium.find_element_by_name("password")
-        password_input.send_keys('admin')
-        self.selenium.find_element_by_xpath('//input[@value="Log in"]').click()
-
+        super(InstanceLiveServerTestCase, self).setUp()
         WebDriverWait(self.selenium, 10).until(
             lambda x: x.find_element_by_link_text('Add your first statement')
         )
