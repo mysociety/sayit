@@ -1,3 +1,13 @@
+v1.2.2, 2014-10-01
+    * Fix a bug in South migrations introduced in v1.2 (80e3f0b4) where
+      migrating could give an error when it tried to rename the content type.
+    * Upgrade django-subdomain-instances to get its migrations.
+    * Don't show keyboard instructions when no next/previous section.
+    * Fix typo in link in README.
+
+Thanks to Andrew Langhorn, Duncan Parkes, Matthew Somerville, and Martin Wright
+for their work on this release.
+
 v1.2.1, 2014-09-26
     * Don't error if speaker image caching fails
     * Add new-style migrations for Django 1.7
