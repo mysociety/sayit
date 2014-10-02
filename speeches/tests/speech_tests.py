@@ -339,8 +339,8 @@ class SpeechFormTests(InstanceTestCase):
         # Assert that it uploads and we see it straightaway
         speech = Speech.objects.order_by('-id')[0]
         resp = self.client.get('/speech/%d' % speech.id)
-        self.assertFalse('Please wait' in resp.content.decode())
-        self.assertTrue(text in resp.content.decode())
+        self.assertFalse('Please wait' in resp.content.decode('utf-8'))
+        self.assertTrue(text in resp.content.decode('utf-8'))
 
         # Test edit page
         resp = self.client.get('/speech/%d/edit' % speech.id)

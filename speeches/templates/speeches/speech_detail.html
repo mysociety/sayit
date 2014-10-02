@@ -19,13 +19,10 @@
 {% endwith %}
 {% endblock %}
 
-{% block title %}
-    {% if object.title %}
-        {{ object.title }}
-    {% else %}
-        &#8220;{{ object.summary|striptags }}&#8221;
-    {% endif %}
-{% endblock %}
+{% block og_description %}{{ speech.text|truncatewords_html:30 }}{% endblock %}
+{% block og_image %}{% with speech.speaker as speaker %}{% if speaker.image_cache %}http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ speaker.image_cache.url }}{% elif speaker.image %}{{ speaker.image }}{% else %}{{ block.super }}{% endif %}{% endwith %}{% endblock %}
+{# we don't know the details of this image #}
+{% block og_image_details %}{% endblock %}
 
 {% block content %}
 

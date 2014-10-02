@@ -2,7 +2,29 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>{% block fulltitle %}{% block title %}{% endblock %}{% endblock %}</title>
+
+        {% block opengraph %}
+          <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
+          <meta property="og:title" content="{% block og_title %}{% if title %}{{ title }} :: {% endif %}SayIt{% endblock %}">
+          <meta property="og:site_name" content="{% block og_site_name %}SayIt{% endblock %}">
+          <meta property="og:description" content="{% block og_description %}Transcripts for the modern internet{% endblock %}">
+          <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+          <meta property="og:image" content="{% block og_image %}http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{% static "speeches/img/apple-touch-icon-152x152.png" %}{% endblock %}">
+
+          {% block og_image_details %}
+            <meta property="og:image:type" content="{% block og_image_type %}image/png{% endblock %}">
+            {% block og_image_dimensions %}
+              <meta property="og:image:width" content="{% block og_image_width %}152{% endblock %}">
+              <meta property="og:image:height" content="{% block og_image_height %}152{% endblock %}">
+            {% endblock og_image_dimensions %}
+          {% endblock og_image_details %}
+        {% endblock opengraph %}
+
+        <title>
+          {% block fulltitle %}{% block title %}{{ title }}{% endblock %}
+            :: SayIt
+          {% endblock %}
+        </title>
 
         {% block extra_headers %}{% endblock %}
 
