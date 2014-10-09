@@ -11,7 +11,7 @@ from django_select2.widgets import (
     )
 from django_select2.fields import AutoModelSelect2Field
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ungettext
 from django.utils.html import linebreaks
 
 try:
@@ -88,11 +88,6 @@ class Select2Widget(AutoHeavySelect2Widget):
 
         HeavySelect2Widget.__init__(self, *args, **kwargs)
 
-    def init_options(self):
-        super(Select2Widget, self).init_options()
-        self.options['createSearchChoice'] = JSFunctionInContext(
-            'django_select2.createSearchChoice')
-
     def value_from_datadict(self, data, files, name):
         # Inspiration from MultipleSelect2HiddenInput
         """We need to actually alter the form's self.data so that the form rendering
@@ -115,6 +110,13 @@ class Select2Widget(AutoHeavySelect2Widget):
         return super(Select2Widget, self).render(name, value, attrs, choices)
 
 
+class Select2CreateWidget(Select2Widget):
+    def init_options(self):
+        super(Select2Widget, self).init_options()
+        self.options['createSearchChoice'] = JSFunctionInContext(
+            'django_select2.createSearchChoice')
+
+
 class StripWhitespaceField(forms.CharField):
     def clean(self, value):
         value = super(StripWhitespaceField, self).clean(value)
@@ -134,12 +136,14 @@ class CreateAutoModelSelect2Field(AutoModelSelect2Field):
     # sense by the form
     instance = None
 
+    widget = Select2CreateWidget
+
     def __init__(self, *args, **kwargs):
         self.search_fields = ['%s__icontains' % self.column]
         if 'widget' in kwargs or 'empty_label' in kwargs:
             logger.warn(
                 'widget/empty_label will be overwritten by using this field')
-        kwargs['widget'] = Select2Widget(
+        kwargs['widget'] = self.widget(
             select2_options={'placeholder': ' ', 'width': '100%'})
         kwargs['empty_label'] = ''
         kwargs['required'] = kwargs.get('required', False)
@@ -156,13 +160,17 @@ class CreateAutoModelSelect2Field(AutoModelSelect2Field):
             key = self.to_field_name or 'pk'
             value = self.queryset.get(**{key: value})
         except (ValueError, self.model.DoesNotExist):
-            # Note that value could currently arrive as two different things:
-            # 1) a stringified integer representing the id of an existing
-            #    object, or
-            # 2) any other string representing the representative string of
-            #    the object.
-            value = self.queryset.create(
-                **{self.column: value, 'instance': self.instance})
+            value = self.create_model(value)
+        return value
+
+    def create_model(self, value):
+        # Note that value could currently arrive as two different things:
+        # 1) a stringified integer representing the id of an existing
+        #    object, or
+        # 2) any other string representing the representative string of
+        #    the object.
+        value = self.queryset.create(
+            **{self.column: value, 'instance': self.instance})
         return value
 
     def clean(self, value):
@@ -188,6 +196,16 @@ class CreateAutoModelSelect2Field(AutoModelSelect2Field):
 class SpeakerField(CreateAutoModelSelect2Field):
     model = Speaker
     column = 'name'
+
+
+class NonCreateSpeakerField(CreateAutoModelSelect2Field):
+    model = Speaker
+    column = 'name'
+    widget = Select2Widget
+
+    def create_model(self, value):
+        raise forms.ValidationError(
+            _('You must select an existing speaker'))
 
 
 class SectionField(CreateAutoModelSelect2Field):
@@ -467,6 +485,61 @@ class SpeakerForm(forms.ModelForm):
     class Meta:
         model = Speaker
         exclude = ('instance', 'slug')
+
+
+class SpeakerDeleteForm(forms.ModelForm):
+    new_speaker = NonCreateSpeakerField(
+        label=_('New speaker'), required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(SpeakerDeleteForm, self).__init__(*args, **kwargs)
+
+        count = self.instance.speech_set.count()
+
+        label = ungettext(
+            "This speaker has %(count)d speech. What would you like to do with it?",
+            "This speaker has %(count)d speeches. What would you like to do with them?",
+            count
+            ) % {'count': count}
+
+        choices = (
+            ('Reassign', ungettext('Assign it to another speaker', 'Assign them to another speaker', count)),
+            ('Narrative', ungettext('Make it into narrative (i.e. remove the speaker)', 'Make them into narrative (i.e. remove the speaker)', count)),
+            ('Delete', ungettext('Delete it', 'Delete them', count)),
+            )
+
+        self.fields['action'] = forms.ChoiceField(
+            label=label,
+            choices=choices,
+            widget=forms.RadioSelect(),
+            )
+
+    def clean(self):
+        super(SpeakerDeleteForm, self).clean()
+        new_speaker = self.cleaned_data.get('new_speaker')
+
+        if self.cleaned_data.get('action') == 'Reassign':
+            if new_speaker and new_speaker.id == self.instance.id:
+                self._errors['new_speaker'] = self.error_class(
+                    [_("You can't assign speeches to the speaker you're deleting")]
+                    )
+            if not new_speaker and not 'new_speaker' in self._errors:
+                # When Django 1.7 is our oldest supported version, we can use add_error
+                # https://docs.djangoproject.com/en/1.7/ref/forms/api/#django.forms.Form.add_error
+                self._errors['new_speaker'] = self.error_class(
+                    [_('You must choose a new speaker if reassigning speeches')]
+                    )
+        else:
+            if new_speaker:
+                # As above when our oldest supported version of Django is 1.7
+                self._errors['new_speaker'] = self.error_class(
+                    [_('You must not choose a new speaker unless reassigning speeches')]
+                    )
+        return self.cleaned_data
+
+    class Meta:
+        model = Speaker
+        fields = ('id',)
 
 
 class RecordingTimestampForm(forms.ModelForm):

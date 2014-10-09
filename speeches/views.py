@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse, reverse_lazy, resolve
 from django.core import serializers
 from django.conf import settings
 from django.contrib import messages
+from django.forms import Form
 from django.utils.translation import ugettext as _
 
 from django.db.models import Count, Avg
@@ -16,15 +17,15 @@ from django.shortcuts import get_object_or_404
 from instances.views import InstanceFormMixin, InstanceViewMixin
 
 from speeches.aggregates import Length
-from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, RecordingForm, RecordingTimestampFormSet
+from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, RecordingForm, RecordingTimestampFormSet, SpeakerDeleteForm
 from speeches.models import Speech, Speaker, Section, Recording, Tag, RecordingTimestamp
 import speeches.utils
 from speeches.utils import AudioHelper, AudioException
 from speeches.mixins import Base32SingleObjectMixin, UnmatchingSlugException
 
 from django.views.generic import View, CreateView, UpdateView, DeleteView, DetailView, ListView, RedirectView, FormView
-from django.views.generic.detail import SingleObjectMixin
-from django.views.generic.edit import BaseFormView
+from django.views.generic.detail import SingleObjectMixin, SingleObjectTemplateResponseMixin
+from django.views.generic.edit import BaseFormView, FormMixin, BaseUpdateView
 
 from django_select2.views import AutoResponseView
 
@@ -271,6 +272,53 @@ class SpeakerCreate(SpeakerMixin, CreateView):
 
 class SpeakerUpdate(SpeakerMixin, UpdateView):
     pass
+
+
+class SpeakerDeleteNoSpeechesMixin(object):
+    def delete(self):
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def post(self, request, *args, **kwargs):
+        if self.object.speech_set.exists():
+            return super(SpeakerDeleteNoSpeechesMixin, self).post(self, request, *args, **kwargs)
+        else:
+            return self.delete()
+
+class SpeakerDelete(SpeakerMixin, BaseUpdateView, SpeakerDeleteNoSpeechesMixin, FormView):
+    form_class = SpeakerDeleteForm
+    template_name = 'speeches/speaker_delete.html'
+
+    def get_success_url(self):
+        return self.reverse('speeches:speaker-list')
+
+    def get_form(self, form_class):
+        if self.object.speech_set.exists():
+            form = super(SpeakerDelete, self).get_form(form_class)
+            form.fields['new_speaker'].queryset = Speaker.objects.for_instance(self.request.instance)
+            form.fields['new_speaker'].instance = self.request.instance
+        else:
+            form = Form
+
+        return form
+
+    def form_valid(self, form):
+        action = form.cleaned_data['action']
+
+        if action == 'Delete':
+            Speech.objects.filter(speaker=self.object).delete()
+        elif action == 'Narrative':
+            # This, and reassignment below, will need to use a queue at scale
+            for s in Speech.objects.filter(speaker=self.object):
+                s.type = 'narrative'
+                s.save()
+        elif action == 'Reassign':
+            for s in Speech.objects.filter(speaker=self.object):
+                s.speaker = form.cleaned_data['new_speaker']
+                s.save()
+
+        return self.delete()
+
 
 class ParentlessList(NamespaceMixin, InstanceViewMixin, ListView):
     model = Speech

@@ -3,6 +3,7 @@ $(function() {
     sayit_ajax_file_uploads();
     sayit_link_prev_next_keyboard();
     setup_unimportant_sections();
+    hide_new_speaker_controls();
 
     var audios = $('audio').not('.audio-small');
     if (audios.mediaelementplayer) {
@@ -113,4 +114,19 @@ function setup_unimportant_sections() {
         $(this).toggleClass('collapsed').next().toggle();
     }).addClass('collapsed');
     $('.unimportant-form-section').hide().has('.error').show().prev().removeClass('collapsed');
+}
+
+function hide_new_speaker_controls() {
+    var new_speaker_controls = $('#id_new_speaker_controls');
+    $('input[name="action"][value="Reassign"]').parent().after(new_speaker_controls);
+    $('input[name="action"]').change(
+        function() {
+            var i = $('input[name="action"]:checked').val();
+            if (i == 'Reassign') {
+                new_speaker_controls.show();
+            } else {
+                new_speaker_controls.hide();
+            }
+        }
+    ).change();
 }

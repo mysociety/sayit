@@ -11,6 +11,8 @@ from django.utils.six.moves import builtins
 from django.utils.encoding import smart_text
 from easy_thumbnails.templatetags import thumbnail
 
+import lxml.html
+
 from speeches.tests import InstanceTestCase
 from speeches.models import Speaker, Speech, Section
 from speeches import models
@@ -160,3 +162,131 @@ class SpeakerTests(InstanceTestCase):
                 image='http://httpbin.org/status/404')
         except HTTPError:
             self.fail("Speaker unexpectedly raised HTTPError")
+
+
+class MergeDeleteSpeakerTests(InstanceTestCase):
+    def test_no_speeches(self):
+        alice = Speaker.objects.create(name='alice', instance=self.instance)
+        alice_id = alice.id
+
+        resp = self.client.get('/speaker/%d/delete' % alice_id)
+        self.assertContains(resp, 'Delete speaker: alice')
+
+        parser = lxml.html.HTMLParser(encoding='utf-8')
+        root = lxml.html.fromstring(resp.content, parser=parser)
+
+        # Check that we have been shown the short form without action
+        # and new speaker
+        self.assertEquals(len(root.xpath(".//select[@name='action']")), 0)
+        self.assertEquals(len(root.xpath(".//input[@name='new_speaker']")), 0)
+
+        resp = self.client.post('/speaker/%d/delete' % alice_id)
+        self.assertRedirects(resp, '/speakers')
+
+        self.assertEqual(Speaker.objects.filter(id=alice_id).count(), 0)
+
+    def test_with_speeches(self):
+        alice = Speaker.objects.create(name='alice', instance=self.instance)
+        alice_id = alice.id
+        alice.speech_set.create(text='Test', instance=self.instance)
+
+        resp = self.client.get('/speaker/%d/delete' % alice.id)
+        self.assertContains(resp, 'Delete speaker: alice')
+        parser = lxml.html.HTMLParser(encoding='utf-8')
+        root = lxml.html.fromstring(resp.content, parser=parser)
+
+        # Check that we have been shown the form with an action and
+        # a new speaker to choose.
+        self.assertEquals(len(root.xpath(".//input[@name='action'][@type='radio']")), 3)
+        self.assertEquals(len(root.xpath(".//input[@name='new_speaker']")), 1)
+
+    def test_remove_speeches(self):
+        alice = Speaker.objects.create(name='alice', instance=self.instance)
+        alice_id = alice.id
+        alice.speech_set.create(text='Test', instance=self.instance)
+
+        resp = self.client.post(
+            '/speaker/%d/delete' % alice_id,
+            {'action': 'Delete'},
+            )
+        self.assertEqual(Speaker.objects.filter(id=alice_id).count(), 0)
+        self.assertEqual(Speech.objects.count(), 0)
+        self.assertRedirects(resp, '/speakers')
+
+    def test_orphan_speeches(self):
+        alice = Speaker.objects.create(name='alice', instance=self.instance)
+        alice_id = alice.id
+        alice.speech_set.create(text='Test', instance=self.instance)
+
+        resp = self.client.post(
+            '/speaker/%d/delete' % alice_id,
+            {'action': 'Narrative'},
+            )
+        self.assertEqual(Speaker.objects.filter(id=alice_id).count(), 0)
+        self.assertEqual(Speech.objects.filter(type='narrative').count(), 1)
+        self.assertEqual(Speech.objects.filter(speaker=alice).count(), 0)
+        self.assertRedirects(resp, '/speakers')
+
+    def test_reassign_speeches(self):
+        alice = Speaker.objects.create(name='alice', instance=self.instance)
+        bob = Speaker.objects.create(name='bob', instance=self.instance)
+        alice_id = alice.id
+        alice.speech_set.create(text='Test', instance=self.instance)
+
+        resp = self.client.post(
+            '/speaker/%d/delete' % alice_id,
+            {'action': 'Reassign', 'new_speaker': bob.id},
+            )
+        self.assertEqual(Speaker.objects.filter(id=alice_id).count(), 0)
+        self.assertEqual(Speech.objects.filter(speaker=bob).count(), 1)
+        self.assertEqual(Speech.objects.filter(speaker=alice).count(), 0)
+        self.assertRedirects(resp, '/speakers')
+
+    def test_reassign_with_no_new_speaker(self):
+        alice = Speaker.objects.create(name='alice', instance=self.instance)
+        bob = Speaker.objects.create(name='bob', instance=self.instance)
+        alice_id = alice.id
+        alice.speech_set.create(text='Test', instance=self.instance)
+
+        resp = self.client.post(
+            '/speaker/%d/delete' % alice_id,
+            {'action': 'Reassign'},
+            )
+        self.assertFormError(
+            resp, 'form', 'new_speaker',
+            'You must choose a new speaker if reassigning speeches')
+
+    def test_delete_or_merge_speeches_with_new_speaker(self):
+        alice = Speaker.objects.create(name='alice', instance=self.instance)
+        bob = Speaker.objects.create(name='bob', instance=self.instance)
+        alice_id = alice.id
+        alice.speech_set.create(text='Test', instance=self.instance)
+
+        resp = self.client.post(
+            '/speaker/%d/delete' % alice_id,
+            {'action': 'Delete', 'new_speaker': bob.id},
+            )
+        self.assertFormError(
+            resp, 'form', 'new_speaker',
+            'You must not choose a new speaker unless reassigning speeches')
+
+        resp = self.client.post(
+            '/speaker/%d/delete' % alice_id,
+            {'action': 'Narrative', 'new_speaker': bob.id},
+            )
+        self.assertFormError(
+            resp, 'form', 'new_speaker',
+            'You must not choose a new speaker unless reassigning speeches')
+
+    def test_assign_to_same_speaker(self):
+        alice = Speaker.objects.create(name='alice', instance=self.instance)
+        alice_id = alice.id
+        alice.speech_set.create(text='Test', instance=self.instance)
+
+        resp = self.client.post(
+            '/speaker/%d/delete' % alice_id,
+            {'action': 'Reassign', 'new_speaker': alice_id},
+            )
+        self.assertFormError(
+            resp, 'form', 'new_speaker',
+            "You can't assign speeches to the speaker you're deleting")
