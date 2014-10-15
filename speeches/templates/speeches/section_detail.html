@@ -50,8 +50,14 @@
             <li id="s{{ node.id }}" class="speech {% if node.speaker %}speech--with-portrait{% endif %} speech--{{ speech.type }} speech--border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
             {% include "speeches/speech.html" with speech=node nosection="1" section=section noli=1 %}
           {% else %}
-            <li class="section-signpost" ><span class="section-title"><a href="{% url 'speeches:section-view' node.get_path %}">{{ node.title }}</a></span>
-            {% if node.is_leaf_node %}({{ node.speech_count }}){% endif %}
+            <li class="speech section-signpost speech--with-portrait">
+              <div class="speaker-portrait-wrapper">
+                <span class="section-dot"></span>
+              </div>
+              <div class="speech-wrapper">
+                <span class="section-title"><a href="{% url 'speeches:section-view' node.get_path %}">{{ node.title }}</a></span>
+                {% if node.is_leaf_node %}({{ node.speech_count }}){% endif %}
+              </div>
           {% endif %}
 
           {% for level in structure.closed_levels %}</li></ul>{% endfor %}

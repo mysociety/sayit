@@ -124,14 +124,8 @@ $image-path: '../img' !default;
   margin-top: emCalc(14);
 }
 
-.speech + .section-signpost {
-  padding-top: 1.5em;
-}
-
 .section-signpost {
-  width: 100%;
   border-bottom: 1px solid $colour_light_grey;
-  margin-bottom: 1em;
   padding-top: 1em;
   padding-bottom: 1em;
   a {
@@ -144,7 +138,25 @@ $image-path: '../img' !default;
   }
 }
 
+@media (min-width: $medium-screen) {
+    .section-signpost .section-dot {
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin: 0 auto;
+        @include border-radius(100%);
+        background-color: #eaeaea;
+        border-color: #eaeaea;
+    }
+    .section-signpost .section-signpost .section-dot {
+        background-color: #fff;
+    }
+}
+
 .section-signpost .section-signpost {
+  @media (min-width: $medium-screen) {
+    background: none;
+  }
   margin-left: 1.5em;
   border-bottom: none;
   margin-bottom: 0.5em;
@@ -163,7 +175,7 @@ $image-path: '../img' !default;
 
 .speech--with-portrait {
   @media (min-width: $medium-screen) {
-    background: transparent url('#{$image-path}/speech-timeline-bg.png') 4% top repeat-y;
+    background: transparent url('#{$image-path}/speech-timeline-bg.png') 3.9% top repeat-y;
   }
 }
 
