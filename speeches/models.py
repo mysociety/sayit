@@ -303,12 +303,12 @@ class Section(AuditedModel, InstanceMixin):
         if include_count:
             select.append("(SELECT COUNT(*) FROM speeches_speech WHERE section_id = cte.id) AS speech_count")
         if include_min:
-            select.append("(SELECT MIN( start_date + COALESCE(start_time, '00:00:00') ) FROM speeches_speech WHERE section_id = cte.id) AS speech_min")
+            select.append("(SELECT MIN(start_date || ' ' || COALESCE(start_time, '00:00:00')) FROM speeches_speech WHERE section_id = cte.id) AS speech_min")
         s = Section.objects.raw(
             """WITH RECURSIVE cte AS (
-                SELECT speeches_section.*, 0 AS level, CAST(id AS text) AS path FROM speeches_section WHERE id=%s
+                SELECT speeches_section.*, 0 AS level, CAST(id AS text) AS path FROM speeches_section WHERE id = %s
                 UNION ALL
-                SELECT s.*, level+1, cte.path||','||s.id FROM cte JOIN speeches_section s ON cte.id = s.parent_id
+                SELECT s.*, level + 1, cte.path || ',' || s.id FROM cte JOIN speeches_section s ON cte.id = s.parent_id
             )
             SELECT """ + ','.join(select) + """ FROM cte ORDER BY path""",
             [ self.id ]
@@ -317,6 +317,8 @@ class Section(AuditedModel, InstanceMixin):
             s = s[1:]
         for node in s:
             node.path = [int(x) for x in node.path.split(',')]
+            if node.speech_min:
+                node.speech_min = datetime.datetime.strptime(node.speech_min, '%Y-%m-%d %H:%M:%S')
         return s
 
     @cache
