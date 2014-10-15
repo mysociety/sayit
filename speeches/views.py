@@ -5,33 +5,37 @@ from six import string_types
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse, reverse_lazy, resolve
 from django.core import serializers
-from django.conf import settings
 from django.contrib import messages
 from django.forms import Form
 from django.utils.translation import ugettext as _
 
 from django.db.models import Count, Avg
-from django.core.files import File
 from django.shortcuts import get_object_or_404
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
 
 from speeches.aggregates import Length
-from speeches.forms import SpeechForm, SpeechAudioForm, SectionForm, RecordingAPIForm, SpeakerForm, SectionPickForm, RecordingForm, RecordingTimestampFormSet, SpeakerDeleteForm
-from speeches.models import Speech, Speaker, Section, Recording, Tag, RecordingTimestamp
-import speeches.utils
-from speeches.utils import AudioHelper, AudioException
+from speeches.forms import (
+    SpeechForm, SpeechAudioForm, SectionForm,
+    RecordingAPIForm, SpeakerForm, SectionPickForm,
+    RecordingTimestampFormSet, SpeakerDeleteForm,
+    )
+from speeches.models import Speech, Speaker, Section, Recording, Tag
 from speeches.mixins import Base32SingleObjectMixin, UnmatchingSlugException
 
-from django.views.generic import View, CreateView, UpdateView, DeleteView, DetailView, ListView, RedirectView, FormView
-from django.views.generic.detail import SingleObjectMixin, SingleObjectTemplateResponseMixin
-from django.views.generic.edit import BaseFormView, FormMixin, BaseUpdateView
+from django.views.generic import (
+    View, CreateView, UpdateView, DeleteView, DetailView, ListView,
+    RedirectView, FormView,
+    )
+from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.edit import BaseFormView, BaseUpdateView
 
 from django_select2.views import AutoResponseView
 
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 class AddAnSRedirectView(RedirectView):
     url = '/%(path)s%(suffix)s'
@@ -42,6 +46,7 @@ class AddAnSRedirectView(RedirectView):
     def get_redirect_url(self, **kwargs):
         kwargs['suffix'] = self.suffix
         return super(AddAnSRedirectView, self).get_redirect_url(**kwargs)
+
 
 class JSONResponseMixin(object):
     """Mixin for returning HTTPResponse of JSON data"""
@@ -55,6 +60,7 @@ class JSONResponseMixin(object):
         if location:
             response['Location'] = location
         return response
+
 
 class NamespaceMixin(object):
     """Mixin for adding current_app based on namespace"""
@@ -71,19 +77,23 @@ class NamespaceMixin(object):
         kwargs['current_app'] = resolve(self.request.path).namespace
         return super(NamespaceMixin, self).render_to_response(context, **kwargs)
 
+
 class SpeechAudioCreate(JSONResponseMixin, BaseFormView):
     form_class = SpeechAudioForm
     http_method_names = ['post']
 
     def form_valid(self, form):
-        # The cleaned_data contains the TemporaryUploadedFile (File/UploadedFile subclass).
-        # The form.instance contains the FieldFile with the magic save() we want.
+        # The cleaned_data contains the TemporaryUploadedFile
+        # (File/UploadedFile subclass). The form.instance contains the
+        # FieldFile with the magic save() we want.
         audio = form.cleaned_data['audio']
         form.instance.audio.save(audio.name, audio, save=False)
-        return self.render_to_response({ 'status': 'done', 'filename': form.instance.audio.name })
+        return self.render_to_response(
+            {'status': 'done', 'filename': form.instance.audio.name})
 
     def form_invalid(self, form):
-        return self.render_to_response({ 'error': form.errors['audio'] })
+        return self.render_to_response({'error': form.errors['audio']})
+
 
 class SpeechMixin(NamespaceMixin, InstanceFormMixin):
     model = Speech
@@ -102,10 +112,11 @@ class SpeechMixin(NamespaceMixin, InstanceFormMixin):
 
         return form
 
-class SpeechDelete(SpeechMixin, DeleteView):
 
+class SpeechDelete(SpeechMixin, DeleteView):
     def get_success_url(self):
         return self.reverse('speeches:parentless-list')
+
 
 class SpeechCreate(SpeechMixin, CreateView):
     def get_context_data(self, **kwargs):
@@ -152,8 +163,9 @@ class SpeechCreate(SpeechMixin, CreateView):
                     initial['public'] = speech.public
                     initial['source_url'] = speech.source_url
 
-                    # For speaker, to make it simpler to transcribe a dialogue between A -> B -> A -> B
-                    # we default to the speaker of the *penultimate* speech, if that exists, or latest one
+                    # For speaker, to make it simpler to transcribe a dialogue
+                    # between A -> B -> A -> B we default to the speaker of the
+                    # *penultimate* speech, if that exists, or latest one
                     # otherwise.
                     if not speaker:
                         try:
@@ -162,13 +174,15 @@ class SpeechCreate(SpeechMixin, CreateView):
                         except IndexError:
                             initial['speaker'] = speech.speaker
 
-                    # We attempt to do vaguely clever things with the end or start time of previous speech.
+                    # We attempt to do vaguely clever things with the end or
+                    # start time of previous speech.
                     if speech.end_date:
                         speech_end_datetime = datetime.datetime.combine(
-                                speech.end_date, speech.end_time or datetime.time(0,0))
+                            speech.end_date, speech.end_time or datetime.time(0, 0))
                         if speech.end_time:
                             if speech.start_date and speech.start_time:
-                                speech_start_datetime = datetime.datetime.combine(speech.start_date, speech.start_time)
+                                speech_start_datetime = datetime.datetime.combine(
+                                    speech.start_date, speech.start_time)
                                 if speech_start_datetime == speech_end_datetime:
                                     speech_end_datetime = speech_end_datetime + datetime.timedelta(seconds=1)
                             initial['start_time'] = speech_end_datetime.time()
@@ -205,18 +219,21 @@ class SpeechCreate(SpeechMixin, CreateView):
             speech = self.object
             if speech.section_id:
                 url = url + '?section=%d&added=%d' % (speech.section_id, speech.id)
-            return HttpResponseRedirect( url )
+            return HttpResponseRedirect(url)
         else:
             return resp
 
+
 class SpeechUpdate(SpeechMixin, UpdateView):
     pass
+
 
 class SpeechView(NamespaceMixin, InstanceViewMixin, DetailView):
     model = Speech
 
     def get_queryset(self):
         return super(SpeechView, self).get_queryset().visible(self.request)
+
 
 class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
     """Done as a ListView on Speech to get recent speeches, we get instance for
@@ -239,6 +256,7 @@ class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
         context['average_length'] = Speech.objects.for_instance(self.request.instance).annotate(length=Length('text')).aggregate(avg=Avg('length'))['avg']
         return context
 
+
 # It doesn't actually use base32 IDs in the URL, but this works around Django
 # 1.4 generic view bug, and allows non-canonical slug redirects to Just Work.
 class SpeakerView(NamespaceMixin, InstanceViewMixin, Base32SingleObjectMixin, ListView):
@@ -259,16 +277,20 @@ class SpeakerView(NamespaceMixin, InstanceViewMixin, Base32SingleObjectMixin, Li
         context['longest_speech'] = self.object.speech_set.annotate(length=Length('text')).order_by('-length')[:1]
         return context
 
+
 class SpeakerMixin(NamespaceMixin, InstanceFormMixin):
     model = Speaker
     form_class = SpeakerForm
+
 
 class SpeakerList(NamespaceMixin, InstanceViewMixin, ListView):
     model = Speaker
     context_object_name = 'speaker_list'
 
+
 class SpeakerCreate(SpeakerMixin, CreateView):
     pass
+
 
 class SpeakerUpdate(SpeakerMixin, UpdateView):
     pass
@@ -284,6 +306,7 @@ class SpeakerDeleteNoSpeechesMixin(object):
             return super(SpeakerDeleteNoSpeechesMixin, self).post(self, request, *args, **kwargs)
         else:
             return self.delete()
+
 
 class SpeakerDelete(SpeakerMixin, BaseUpdateView, SpeakerDeleteNoSpeechesMixin, FormView):
     form_class = SpeakerDeleteForm
@@ -339,6 +362,7 @@ class ParentlessList(NamespaceMixin, InstanceViewMixin, ListView):
         context['section_list'] = Section.objects.for_instance(self.request.instance).filter(parent=None)
         return context
 
+
 class SectionMixin(NamespaceMixin, InstanceFormMixin):
     model = Section
     form_class = SectionForm
@@ -347,6 +371,7 @@ class SectionMixin(NamespaceMixin, InstanceFormMixin):
         form = super(SectionMixin, self).get_form(form_class)
         form.fields['parent'].queryset = form.fields['parent'].queryset.filter(instance=self.request.instance)
         return form
+
 
 class SectionCreate(SectionMixin, CreateView):
     def get_initial(self):
@@ -364,12 +389,15 @@ class SectionCreate(SectionMixin, CreateView):
                 pass
         return initial
 
+
 class SectionUpdate(SectionMixin, UpdateView):
     pass
+
 
 class SectionDelete(SectionMixin, DeleteView):
     def get_success_url(self):
         return self.reverse('speeches:parentless-list')
+
 
 class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
     model = Section
@@ -403,9 +431,11 @@ class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
         context = super(SectionView, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the speeches in this section
         context['section_tree'] = kwargs['object'].get_descendants_tree_with_speeches(
-            self.request, all_speeches = all_speeches
+            self.request,
+            all_speeches=all_speeches,
         )
         return context
+
 
 class SectionViewAN(SectionView):
     template_name = 'speeches/section_detail.an'
@@ -426,6 +456,7 @@ class SectionViewAN(SectionView):
         context['server_name'] = self.request.META.get('SERVER_NAME')
         return context
 
+
 class BothObjectAndFormMixin(object):
     def get_context_data(self, **kwargs):
         context = super(BothObjectAndFormMixin, self).get_context_data(**kwargs)
@@ -437,11 +468,14 @@ class BothObjectAndFormMixin(object):
         context['form'].fields['section'].queryset = Section.objects.for_instance(self.request.instance)
         return context
 
+
 class RecordingList(NamespaceMixin, InstanceViewMixin, ListView):
     model = Recording
 
+
 class RecordingDisplay(NamespaceMixin, BothObjectAndFormMixin, InstanceViewMixin, DetailView):
     model = Recording
+
 
 class RecordingSetSection(NamespaceMixin, BothObjectAndFormMixin, InstanceFormMixin, FormView, SingleObjectMixin):
     template_name = 'speeches/recording_detail.html'
@@ -453,9 +487,10 @@ class RecordingSetSection(NamespaceMixin, BothObjectAndFormMixin, InstanceFormMi
 
     def form_valid(self, form):
         self.object = self.get_object()
-        num = self.object.add_speeches_to_section(form.cleaned_data['section'])
+        self.object.add_speeches_to_section(form.cleaned_data['section'])
         messages.add_message(self.request, messages.SUCCESS, _("Speeches assigned."))
         return super(RecordingSetSection, self).form_valid(form)
+
 
 class RecordingView(NamespaceMixin, View):
     def get(self, request, *args, **kwargs):
@@ -465,6 +500,7 @@ class RecordingView(NamespaceMixin, View):
     def post(self, request, *args, **kwargs):
         view = RecordingSetSection.as_view()
         return view(request, *args, **kwargs)
+
 
 # NB: this is not an UpdateView, at least for now, as it only updates
 # RecordingTimestamp not the actual Recording class.
@@ -479,7 +515,7 @@ class RecordingUpdate(NamespaceMixin, InstanceFormMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        context = self.get_context_data(object=self.object) # Sigh
+        context = self.get_context_data(object=self.object)  # Sigh
         recordingtimestamp_formset = context['recordingtimestamp_formset']
 
         recording = self.object
@@ -502,8 +538,9 @@ class RecordingUpdate(NamespaceMixin, InstanceFormMixin, DetailView):
                 except:
                     logger.info("Timestamp isn't linked to speech")
 
-            return HttpResponseRedirect( recording.get_absolute_url() )
+            return HttpResponseRedirect(recording.get_absolute_url())
         return self.render_to_response(context)
+
 
 class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
     # View for RecordingAPIForm, to create a recording
@@ -546,12 +583,21 @@ class RecordingAPICreate(InstanceFormMixin, JSONResponseMixin, CreateView):
 
         # Return a 201 response
         serialisable_fields = ('audio', 'timestamps')
-        serialised = serializers.serialize("json", [recording], fields=serialisable_fields)
+        serialised = serializers.serialize(
+            "json", [recording], fields=serialisable_fields)
         serialised = serialised[1:-1]
-        return self.render_to_response(serialised, status=201, location=reverse("speeches:recording-view", args=[recording.id]))
+
+        return self.render_to_response(
+            serialised,
+            status=201,
+            location=reverse("speeches:recording-view", args=[recording.id]),
+            )
 
     def form_invalid(self, form):
-        return self.render_to_response({ 'errors': json.dumps(form.errors) }, status=400)
+        return self.render_to_response(
+            {'errors': json.dumps(form.errors)},
+            status=400,
+            )
 
 
 class Select2AutoResponseView(AutoResponseView):
