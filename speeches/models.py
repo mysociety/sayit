@@ -296,29 +296,27 @@ class Section(AuditedModel, InstanceMixin):
             s = ascending and s[1:] or s[:-1]
         return list(s) # So it's evaluated and will be cached
 
-    def _get_descendants(self, include_self=False, include_count='', include_min='', max_depth=''):
+    def _get_descendants(self, include_self=False, include_count='', include_min=''):
         """Return the descendants of the current Section, in depth-first order.
-        Optionally, include speech counts, minimum speech times, and only
-        descend a certain depth."""
+        Optionally, include speech counts and minimum speech times."""
         select = [ '*' ]
         if include_count:
             select.append("(SELECT COUNT(*) FROM speeches_speech WHERE section_id = cte.id) AS speech_count")
         if include_min:
-            select.append("(SELECT MIN( start_date + COALESCE(start_time, time '00:00') ) FROM speeches_speech WHERE section_id = cte.id) AS speech_min")
-        if max_depth:
-            max_depth = "WHERE array_upper(path, 1) < %d" % (max_depth+1)
+            select.append("(SELECT MIN( start_date + COALESCE(start_time, '00:00:00') ) FROM speeches_speech WHERE section_id = cte.id) AS speech_min")
         s = Section.objects.raw(
             """WITH RECURSIVE cte AS (
-                SELECT speeches_section.*, 0 AS level, ARRAY[id] AS path FROM speeches_section WHERE id=%s
+                SELECT speeches_section.*, 0 AS level, CAST(id AS text) AS path FROM speeches_section WHERE id=%s
                 UNION ALL
-                SELECT s.*, level+1, cte.path||s.id FROM cte JOIN speeches_section s ON cte.id = s.parent_id
-            """ + max_depth + """
+                SELECT s.*, level+1, cte.path||','||s.id FROM cte JOIN speeches_section s ON cte.id = s.parent_id
             )
             SELECT """ + ','.join(select) + """ FROM cte ORDER BY path""",
             [ self.id ]
         )
         if not include_self:
             s = s[1:]
+        for node in s:
+            node.path = [int(x) for x in node.path.split(',')]
         return s
 
     @cache

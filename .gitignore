@@ -5,6 +5,7 @@
 django.mo
 .apdisk
 .DS_Store
+db.sqlite3
 chromedriver.log
 *~
 .noseids

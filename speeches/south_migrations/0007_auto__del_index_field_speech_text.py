@@ -9,9 +9,9 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Removing index on 'Speech', fields ['text']
-        db.delete_index('speeches_speech', ['text'])
+        db.execute('DROP INDEX IF EXISTS %s' % db.create_index_name('speeches_speech', ['text']))
         # Also remove the _like index
-        db.delete_index('speeches_speech', ['text_like'])
+        db.execute('DROP INDEX IF EXISTS %s' % db.create_index_name('speeches_speech', ['text_like']))
 
 
     def backwards(self, orm):

@@ -24,12 +24,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sayit-example-project',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJECT_ROOT, 'db.sqlite3'),
     }
 }
 
@@ -251,7 +247,7 @@ from .thumbnails import *
 
 # Haystack search settings
 
-SEARCH_INDEX_NAME = DATABASES['default']['NAME']
+SEARCH_INDEX_NAME = 'sayit-example-project'
 if 'test' in sys.argv:
     SEARCH_INDEX_NAME += '_test'
 

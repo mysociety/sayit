@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 from south.v2 import DataMigration
+from django.db import connection
 from django.utils.encoding import smart_text
+
+# set_autocommit was introduced in Django 1.6.
+try:
+    from django.db.transaction import set_autocommit
+    found_set_autocommit = True
+except ImportError:
+    found_set_autocommit = False
 
 # Note: Don't use "from appname.models import ModelName".
 # Use orm.ModelName to refer to models in this application,
@@ -32,6 +40,9 @@ class Migration(DataMigration):
     no_dry_run = True
 
     def forwards(self, orm):
+        if found_set_autocommit and connection.vendor == 'sqlite':
+            set_autocommit(True)
+
         old_ct = get_content_type(orm, 'speeches', 'speaker')
         new_ct = get_content_type(orm, 'speeches', 'popolospeaker')
         popolo_ct = get_content_type(orm, 'popolo', 'person')

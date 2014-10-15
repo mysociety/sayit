@@ -6,6 +6,7 @@ from django.db import models
 
 
 class Migration(SchemaMigration):
+    no_dry_run = True
 
     depends_on = (
         ("instances", "0004_auto__add_field_instance_created_by"),
