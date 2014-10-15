@@ -317,7 +317,7 @@ class Section(AuditedModel, InstanceMixin):
             s = s[1:]
         for node in s:
             node.path = [int(x) for x in node.path.split(',')]
-            if node.speech_min:
+            if hasattr(node, 'speech_min') and node.speech_min:
                 node.speech_min = datetime.datetime.strptime(node.speech_min, '%Y-%m-%d %H:%M:%S')
         return s
 
