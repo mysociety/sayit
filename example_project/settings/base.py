@@ -145,7 +145,9 @@ try:
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
     NOSE_PLUGINS = [ 'speeches.tests.nose_plugins.SkipMigrations' ]
 except:
-    pass
+    # This is only present in 1.6+, but you shouldn't be running the tests
+    # without installing the test requirements anyway
+    TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 if DEBUG_TOOLBAR:
     INSTALLED_APPS.append( 'debug_toolbar' )
