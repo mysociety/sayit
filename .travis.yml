@@ -28,6 +28,9 @@ matrix:
       env: MODULES="Django>=1.4.2,<1.5 django-tastypie==0.9.16"
 
 install:
+  - wget -O sqlite.tar.gz --quiet http://www.sqlite.org/2014/sqlite-autoconf-3080600.tar.gz
+  - tar xzf sqlite.tar.gz
+  - (cd sqlite* && ./configure --prefix=/usr/local && make && sudo make install)
   - sudo apt-get update -qq
   - sudo apt-get install -qq ffmpeg libavcodec-extra-53 iceweasel xvfb
   - pip install $MODULES
