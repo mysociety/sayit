@@ -303,7 +303,7 @@ class SpeakerDeleteNoSpeechesMixin(object):
 
     def post(self, request, *args, **kwargs):
         if self.object.speech_set.exists():
-            return super(SpeakerDeleteNoSpeechesMixin, self).post(self, request, *args, **kwargs)
+            return super(SpeakerDeleteNoSpeechesMixin, self).post(request, *args, **kwargs)
         else:
             return self.delete()
 
@@ -604,5 +604,13 @@ class Select2AutoResponseView(AutoResponseView):
     def check_all_permissions(self, request, *args, **kwargs):
         super(Select2AutoResponseView, self).check_all_permissions(request, *args, **kwargs)
 
+        try:
+            id = int(request.GET['object_id'])
+        except:
+            id = None
+
         model = request._AutoResponseView__django_select2_local.model
-        request._AutoResponseView__django_select2_local.queryset = model.objects.for_instance(request.instance)
+        qs = model.objects.for_instance(request.instance)
+        if id:
+            qs = qs.exclude(id=id)
+        request._AutoResponseView__django_select2_local.queryset = qs
