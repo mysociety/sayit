@@ -39,32 +39,31 @@ class ImportCommand(BaseCommand):
         elif options['dir']:
             files = self.document_list(options)
 
-            if not len(files):
-                raise CommandError("No .%s files found in directory" % self.document_extension)
+            if len(files):
+                imports = [self.import_document(f, **options) for f in files]
 
-            imports = [self.import_document(f, **options) for f in files]
+                if options['commit']:
+                    sections = [a for a,_ in imports]
+                    if verbosity > 1:
+                        self.stdout.write("Imported sections %s\n\n"
+                            % str( [s.id for s in sections]))
 
-            if options['commit']:
-                sections = [a for a,_ in imports]
-                if verbosity > 1:
-                    self.stdout.write("Imported sections %s\n\n"
-                        % str( [s.id for s in sections]))
+                dump_users = os.path.expanduser(options['dump_users'])
+                if dump_users:
+                    speakers = {}
+                    for (_,d) in imports:
+                        speakers.update(d)
 
-            dump_users = os.path.expanduser(options['dump_users'])
-            if dump_users:
-                speakers = {}
-                for (_,d) in imports:
-                    speakers.update(d)
+                    out = open(dump_users, 'w')
+                    speakers_list = [ (k, speakers[k]) for k in speakers]
+                    out.write( json.dumps( speakers_list, indent=4 ) )
 
-                out = open(dump_users, 'w')
-                speakers_list = [ (k, speakers[k]) for k in speakers]
-                out.write( json.dumps( speakers_list, indent=4 ) )
-
-                if verbosity > 1:
-                    self.stdout.write("Saved speakers list to %s\n" % dump_users)
-
+                    if verbosity > 1:
+                        self.stdout.write("Saved speakers list to %s\n" % dump_users)
+            else:
+                self.stdout.write("No .%s files found in directory" % self.document_extension)
         else:
-            self.stdout.write( self.help )
+            self.stdout.write(self.help)
 
     def document_list(self, options):
         dir = os.path.expanduser(options['dir'])
