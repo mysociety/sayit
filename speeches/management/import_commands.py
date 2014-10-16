@@ -1,9 +1,13 @@
+import logging
 import os
 from optparse import make_option
 
 from django.core.management.base import BaseCommand, CommandError
 
 from instances.models import Instance
+
+logger = logging.getLogger(__name__)
+
 
 class ImportCommand(BaseCommand):
 
@@ -35,7 +39,7 @@ class ImportCommand(BaseCommand):
             (section, speakers) = self.import_document(filename, **options)
             if verbosity > 1:
                 if section and section.id:
-                    self.stdout.write("Imported section %d\n\n" % section.id)
+                    logger.info("Imported section %d\n\n" % section.id)
         elif options['dir']:
             files = self.document_list(options)
 
@@ -45,7 +49,7 @@ class ImportCommand(BaseCommand):
                 if options['commit']:
                     sections = [a for a,_ in imports]
                     if verbosity > 1:
-                        self.stdout.write("Imported sections %s\n\n"
+                        logger.info("Imported sections %s\n\n"
                             % str( [s.id for s in sections]))
 
                 dump_users = os.path.expanduser(options['dump_users'])
@@ -59,11 +63,11 @@ class ImportCommand(BaseCommand):
                     out.write( json.dumps( speakers_list, indent=4 ) )
 
                     if verbosity > 1:
-                        self.stdout.write("Saved speakers list to %s\n" % dump_users)
+                        logger.info("Saved speakers list to %s\n" % dump_users)
             else:
-                self.stdout.write("No .%s files found in directory" % self.document_extension)
+                logger.info("No .%s files found in directory" % self.document_extension)
         else:
-            self.stdout.write(self.help)
+            logger.info(self.help)
 
     def document_list(self, options):
         dir = os.path.expanduser(options['dir'])
@@ -88,7 +92,7 @@ class ImportCommand(BaseCommand):
             raise CommandError("No document found")
 
         if verbosity > 1:
-            self.stdout.write("Starting import: %s\n" % path)
+            logger.info("Starting import: %s\n" % path)
 
         if self.importer_class == None:
             raise CommandError("No importer_class specified!")
@@ -98,7 +102,7 @@ class ImportCommand(BaseCommand):
         try:
             section = importer.import_document(path)
         except Exception as e:
-            self.stderr.write(str(e))
+            logger.error(str(e))
             return (None, {})
 
         return (section, importer.speakers)
