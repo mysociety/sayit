@@ -20,6 +20,7 @@
 
   {% if request.is_user_instance %}
     <a href="{{ speaker.get_edit_url }}" class="button secondary small right">{% trans "Edit speaker" %}</a>
+    <a href="{% url 'speeches:speaker-delete' pk=speaker.id %}" class="button secondary small right">{% trans "Delete speaker" %}</a>
   {% endif %}
 
   <div class="page-header__row">

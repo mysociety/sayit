@@ -1,0 +1,44 @@
+{% extends 'speeches/base.html' %}
+{% load url from future %}
+{% load i18n %}
+{% load staticfiles %}
+{% load django_select2_tags %}
+
+{% block extra_css %}
+  {% import_django_select2_css 0 %}
+  {{ block.super }}
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  {% import_django_select2_js 0 %}
+  {% if LANGUAGE_CODE == 'es' %}
+    <script src="{% static "speeches/js/select2_locale_es.js" %}"></script>
+  {% endif %}
+  <script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/vendor/jquery.ui.widget.js" %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/jquery.iframe-transport.js" %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/jquery.fileupload.js" %}" charset="utf-8"></script>
+{% endblock %}
+
+{% block title %}
+  {% blocktrans with name=object.name %}
+    Delete speaker: {{ name }}
+  {% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+
+  <div class="page-header">
+    <h1>
+      {% blocktrans with name=object.name %}
+        Delete speaker: {{ name }}
+      {% endblocktrans %}
+    </h1>
+  </div>
+
+  <form action="" method="post">
+    {% trans "Delete speaker" as submit %}
+    {% include 'speeches/form.html' with type="speaker_delete" submit=submit %}
+  </form>
+
+{% endblock %}

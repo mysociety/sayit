@@ -1155,3 +1155,9 @@ form > .row {
     font-weight: $weight_light;
     line-height: 1.4em;
 }
+
+/* Delete speaker page */
+
+#id_action {
+    @include unstyled-list;
+}
