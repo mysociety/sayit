@@ -1,4 +1,8 @@
 $(function() {
+    if (typeof django_select2 === 'undefined') {
+        return;
+    }
+
     // Override this small function to include the object ID if we have it.
     var orig_get_url_params = django_select2.get_url_params;
     django_select2.get_url_params = function (term, page, context) {
