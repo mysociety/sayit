@@ -236,7 +236,13 @@ class PopoloImporter(object):
             'Skipped %d records for not having an organization' % skipped_count)
 
     def import_all(self):
-        self.import_organizations()
+        # Organizations, posts, and memberships in django-popolo are
+        # not instance aware, and this really needs sorting out before
+        # we start storing them. Fortunately, we only actually use
+        # persons at the moment.
+
+        # self.import_organizations()
         self.import_persons()
-        self.import_posts()
-        self.import_memberships()
+        # self.import_posts()
+        # self.import_memberships()
+
