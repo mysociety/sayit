@@ -38,6 +38,8 @@ from speeches.models import (Speech, Speaker, Section,
                              Recording, RecordingTimestamp, Tag)
 from speeches.widgets import AudioFileInput, DatePickerWidget, TimePickerWidget
 from speeches.utils import GroupedModelChoiceField
+from speeches.importers.import_popolo import PopoloImporter
+
 
 logger = logging.getLogger(__name__)
 
@@ -611,3 +613,22 @@ RecordingTimestampFormSet = inlineformset_factory(
     extra=1,
     can_delete=1,
 )
+
+
+class PopoloImportForm(forms.Form):
+    location = forms.URLField(
+        label=_('Location of Popolo JSON data'))
+
+    def __init__(self, instance=None, *args, **kwargs):
+        super(PopoloImportForm, self).__init__(*args, **kwargs)
+        self.instance = instance
+
+    def clean(self):
+        cleaned_data = super(PopoloImportForm, self).clean()
+
+        cleaned_data['importer'] = PopoloImporter(
+            cleaned_data['location'],
+            instance=self.instance,
+            )
+
+        return cleaned_data

@@ -7,8 +7,8 @@ from django.core.urlresolvers import reverse, reverse_lazy, resolve
 from django.core import serializers
 from django.contrib import messages
 from django.forms import Form
-from django.utils.translation import ugettext as _
 from django.utils.html import strip_tags
+from django.utils.translation import ugettext as _, ungettext
 
 from django.db.models import Count, Avg
 from django.shortcuts import get_object_or_404
@@ -20,6 +20,7 @@ from speeches.forms import (
     SpeechForm, SpeechAudioForm, SectionForm,
     RecordingAPIForm, SpeakerForm, SectionPickForm,
     RecordingTimestampFormSet, SpeakerDeleteForm,
+    PopoloImportForm
     )
 from speeches.models import Speech, Speaker, Section, Recording, Tag
 from speeches.mixins import Base32SingleObjectMixin, UnmatchingSlugException
@@ -626,3 +627,49 @@ class Select2AutoResponseView(AutoResponseView):
         if id:
             qs = qs.exclude(id=id)
         request._AutoResponseView__django_select2_local.queryset = qs
+
+
+class PopoloImportView(NamespaceMixin, InstanceFormMixin, FormView):
+    template_name = 'speeches/popolo_import_form.html'
+    form_class = PopoloImportForm
+
+    def get_success_url(self):
+        return self.reverse('speeches:speaker-list')
+
+    def get_form_kwargs(self):
+        kwargs = super(PopoloImportView, self).get_form_kwargs()
+        kwargs['instance'] = self.request.instance
+        return kwargs
+
+    def form_valid(self, form):
+        results = form.cleaned_data['importer'].import_persons()
+
+        created = results['created']
+        refreshed = results['refreshed']
+
+        if created or refreshed:
+            messages.add_message(
+                self.request,
+                messages.SUCCESS if created else messages.INFO,
+                ' '.join((
+                    ungettext(
+                        "%(created)d speaker created.",
+                        "%(created)d speakers created.",
+                        created,
+                        ) % {'created': created},
+                    ungettext(
+                        "%(refreshed)d speaker refreshed.",
+                        "%(refreshed)d speakers refreshed.",
+                        refreshed,
+                        ) % {'refreshed': refreshed},
+                    ))
+                )
+
+        else:
+            messages.add_message(
+                self.request,
+                messages.WARNING,
+                _('No speakers found.'),
+                )
+
+        return super(PopoloImportView, self).form_valid(form)

@@ -53,6 +53,8 @@ urlpatterns = patterns('',
     url(r'^recording/(?P<pk>\d+)$', RecordingView.as_view(), name='recording-view'),
     url(r'^recording/(?P<pk>\d+)/edit$', RecordingUpdate.as_view(), name='recording-edit'),
     url(r'^api/v0.1/recording/$', csrf_exempt(RecordingAPICreate.as_view()), name='recording-api-add'),
+
+    url(r'^import/popolo', PopoloImportView.as_view(), name='import-popolo'),
 )
 
 if v01_api is not None:

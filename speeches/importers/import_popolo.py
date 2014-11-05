@@ -3,6 +3,8 @@ import json
 import requests
 
 from django.utils import six
+from django.forms import ValidationError
+from django.utils.translation import ugettext as _
 
 from instances.models import Instance
 from popolo.models import Membership, Organization, Post
@@ -68,7 +70,11 @@ def update_object(qs, data, extra=False, defaults=None, **kwargs):
                 defaults={'note': name.get('note', '')},
             )
 
-    return record
+    return record, created
+
+
+class PopoloImporterCreationError(ValidationError):
+    pass
 
 
 class PopoloImporter(object):
@@ -79,38 +85,46 @@ class PopoloImporter(object):
         if instance:
             self.instance = instance
         else:
-            self.instance, _ = Instance.objects.get_or_create(label='default')
+            self.instance, created = Instance.objects.get_or_create(label='default')
 
         self.source = source
 
-        if os.path.exists(self.source):
-            self.source_data = json.load(open(self.source))
-        elif self.source.startswith('http'):
-            json_src = requests.get(source).json()
+        try:
+            if os.path.exists(self.source):
+                json_src = json.load(open(self.source))
+            elif self.source.startswith('http'):
+                json_src = requests.get(source).json()
+            else:
+                raise PopoloImporterCreationError(
+                    _('Either a file path or a URL is needed.'))
+        except:
+            raise PopoloImporterCreationError(
+                _('Failed to decode JSON at %(source)s' % {'source': source}))
 
-            # Look for meta and persons_api to identify popit.
-            if type(json_src) == dict:
+        # Look for meta and persons_api to identify popit.
+        if type(json_src) == dict:
+            # Look for persons key to identify source like
+            # https://raw.githubusercontent.com/mysociety/pombola/0fd988606c31a31516ac782ebce00b9abfbb0c4d/pombola/south_africa/data/south-africa-popolo.json
+            if 'persons' in json_src:
+                self.source_data = json_src
+                return
 
-                # Look for persons key to identify source like
-                # https://raw.githubusercontent.com/mysociety/pombola/0fd988606c31a31516ac782ebce00b9abfbb0c4d/pombola/south_africa/data/south-africa-popolo.json
-                if 'persons' in json_src:
-                    self.source_data = json_src
-                    return
+            try:
+                json_src['meta']['persons_api_url']
 
-                try:
-                    json_src['meta']['persons_api_url']
+                # This looks like sayit.
+                self.popit_meta = json_src['meta']
+                return
+            except KeyError:
+                pass
 
-                    # This looks like sayit.
-                    self.popit_meta = json_src['meta']
-                    return
-                except KeyError:
-                    pass
+        elif type(json_src) is list:
+            # Look for a single list, if we find one, assume it's a list of persons
+            self.source_data = {'persons': json_src}
 
-            if type(json_src) is list:
-                # Look for a single list, if we find one, assume it's a list of persons
-                self.source_data = {'persons': json_src}
         else:
-            raise Exception('Either a file path or a URL is needed.')
+            raise PopoloImporterCreationError(
+                _('The json must contain either an object or an array'))
 
     def get_popit(self, path):
         data_url = self.popit_meta.get('%s_api_url' % path)
@@ -155,6 +169,9 @@ class PopoloImporter(object):
             )
 
     def import_persons(self):
+        created_count = 0
+        refreshed_count = 0
+
         for data in self.get('persons'):
             # Other fields that could be in defaults:
             # additional_name honorific_prefix/suffix patronymic_name
@@ -167,11 +184,18 @@ class PopoloImporter(object):
                 'email': data.get('email'),
                 'image': data.get('image'),
             }
-            update_object(
+            record, created = update_object(
                 Speaker.objects, data, extra=True,
                 instance=self.instance, identifiers__identifier=data['id'],
                 defaults=defaults
             )
+
+            if created:
+                created_count += 1
+            else:
+                refreshed_count += 1
+
+        return {'created': created_count, 'refreshed': refreshed_count}
 
     def import_posts(self):
         self.posts = {}
@@ -183,7 +207,7 @@ class PopoloImporter(object):
                 'start_date': data.get('start_date', None),
                 'end_date': data.get('end_date', None),
             }
-            record = update_object(
+            record, created = update_object(
                 Post.objects, data,
                 label=data['label'],
                 defaults=defaults

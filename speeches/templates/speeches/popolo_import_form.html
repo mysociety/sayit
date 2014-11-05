@@ -1,0 +1,48 @@
+{% extends 'speeches/base_form.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}
+  {% trans 'Import Speakers' %}
+{% endblock %}
+
+{% block content %}
+
+  <div class="page-header">
+    <h1>{% trans "Import Speakers" %}</h1>
+  </div>
+
+  {% blocktrans %}
+    <p>Speakers can be imported into SayIt if they are available in <a href='http://www.popoloproject.com/'>Popolo JSON</a> format.<p>
+    <p>Enter the location of the speaker data as either
+      <ul>
+        <li>
+          A URL, or path to a local file, containing Popolo JSON in the format
+          <pre>
+{
+    'persons': [&lt;a list of persons&gt;],
+    'organizations': [],
+    'posts': [],
+    ...
+}
+          </pre>
+        <li>
+          A URL, or path to a local file, containing Popolo JSON in the format
+          <pre>
+[&lt;a list of persons&gt;]
+          </pre>
+        </li>
+        <li>
+          A PopIt API base url, such as
+          <a href="https://kenyan-politicians.popit.mysociety.org/api/v0.1/">https://kenyan-politicians.popit.mysociety.org/api/v0.1/</a>
+        </li>
+      </ul>
+    </p>
+  {% endblocktrans %}
+
+  <form class="form-horizontal" method="post">
+    {% trans "Import People (may take some time)" as submit %}
+    {% include 'speeches/form.html' with type="import_popolo" submit=submit %}
+  </form>
+
+{% endblock %}
