@@ -1,10 +1,15 @@
 import datetime
+import json
+import re
+import requests
 from mock import patch, Mock
+
+from popolo.models import Organization
 
 from speeches.tests import InstanceTestCase
 from speeches.importers.import_akomantoso import ImportAkomaNtoso
 from speeches.models import Speech, Speaker, Section
-from speeches.importers import import_akomantoso
+from speeches.importers import import_akomantoso, import_popolo
 
 m = Mock()
 m.return_value = open('speeches/fixtures/test_inputs/Debate_Bungeni_1995-10-31.xml', 'rb')
@@ -151,3 +156,102 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
             sd = 'Speaker' if i>1 else None
             self.assertEqual(speeches[i].speaker, s)
             self.assertEqual(speeches[i].speaker_display, sd)
+
+
+class FakeRequestsOutput(object):
+    def __init__(self, source):
+        assert source.startswith('http://example.com/')
+
+        # We'll put things that would have been served from a url ending
+        # in a / at the same place ending in and _, so as to avoid a
+        # name clash with directories.
+        source = re.sub(r'/$', '_', source)
+        source = re.sub(r'^http://example.com/', 'speeches/tests/data/fake_http/', source)
+
+        self.file_path = source
+
+    def json(self):
+        return json.load(open(self.file_path))
+
+
+@patch.object(requests, 'get', FakeRequestsOutput)
+class PopitImportTestCase(InstanceTestCase):
+    popit_url = 'http://example.com/welsh_assembly_popit/'
+
+    def test_popit_import_persons(self):
+        popit_importer = import_popolo.PopoloImporter(self.popit_url)
+        popit_importer.import_all()
+
+        self.assertEqual(
+            Speaker.objects.filter(instance=popit_importer.instance).count(),
+            3,
+            )
+
+
+@patch.object(requests, 'get', FakeRequestsOutput)
+class PopoloImportTestCase(InstanceTestCase):
+    popit_url = 'http://example.com/welsh_assembly/persons'
+
+    def test_popit_import_persons(self):
+        popolo_importer = import_popolo.PopoloImporter(self.popit_url)
+        popolo_importer.import_all()
+
+        self.assertEqual(Speaker.objects.filter(instance=popolo_importer.instance).count(), 3)
+
+    def test_popolo_import_remote_single_json_file(self):
+        popolo_importer = import_popolo.PopoloImporter(
+            'http://example.com/welsh_assembly.json'
+            )
+        popolo_importer.import_all()
+
+        self.assertEqual(
+            Speaker.objects.filter(instance=popolo_importer.instance).count(),
+            3,
+            )
+
+    def test_popolo_import_remote_single_json_file(self):
+        popolo_importer = import_popolo.PopoloImporter(
+            'http://example.com/welsh_assembly.json'
+            )
+        popolo_importer.import_all()
+
+        self.assertEqual(
+            Speaker.objects.filter(instance=popolo_importer.instance).count(),
+            3,
+            )
+
+
+class PopoloImportFromLocalSourceTestCase(InstanceTestCase):
+    def test_import_persons(self):
+        popolo_importer = import_popolo.PopoloImporter(
+            'speeches/tests/data/fake_http/welsh_assembly.json'
+            )
+        popolo_importer.import_all()
+
+        self.assertEqual(
+            Speaker.objects.filter(instance=popolo_importer.instance).count(),
+            3,
+            )
+
+
+@patch.object(requests, 'get', FakeRequestsOutput)
+class PopoloImportViewsTestCase(InstanceTestCase):
+    def test_import_page_smoke_test(self):
+        resp = self.client.get('/import/popolo')
+
+        self.assertContains(resp, 'Import Speakers')
+
+    def test_import_with_data(self):
+        resp = self.client.post(
+            '/import/popolo',
+            {'location': 'http://example.com/welsh_assembly/persons'},
+            follow=True,
+            )
+
+        self.assertEqual(
+            Speaker.objects.filter(instance=self.instance).count(),
+            3,
+            )
+        popolo_importer.import_all()
+
+        self.assertEqual(Speaker.objects.filter(instance=popolo_importer.instance).count(), 3)

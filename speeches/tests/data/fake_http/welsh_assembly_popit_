@@ -1,0 +1,9 @@
+{
+    "note": "This is the API entry point - use a '*_api_url' link in 'meta' to search a collection.",
+    "meta": {
+        "persons_api_url": "http://example.com/welsh_assembly/persons",
+        "organizations_api_url": "http://example.com/welsh_assembly/organizations",
+        "memberships_api_url": "http://example.com/welsh_assembly/memberships",
+        "posts_api_url": "http://example.com/welsh_assembly/posts"
+    }
+}

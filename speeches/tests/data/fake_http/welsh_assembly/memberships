@@ -1,0 +1,92 @@
+[
+  {
+    "id": "54521ec80a8bbfad7d80b80e",
+    "person_id": "54521dc50a8bbfad7d80b80c",
+    "role": "Regional Member",
+    "organization_id": "54521f5c0a8bbfad7d80b816",
+    "start_date": "2011-05-06",
+    "end_date": "",
+    "area": {
+      "name": "Mid and West Wales"
+    },
+    "links": [],
+    "contact_details": [],
+    "url": "http://sayitimporttesttemp.popit.staging.mysociety.org/api/v0.1/memberships/54521ec80a8bbfad7d80b80e",
+    "html_url": "http://sayitimporttesttemp.popit.staging.mysociety.org/memberships/54521ec80a8bbfad7d80b80e"
+  },
+  {
+    "id": "54521f3d0a8bbfad7d80b813",
+    "person_id": "54521eee0a8bbfad7d80b811",
+    "role": "Regional Member",
+    "organization_id": "54521f5c0a8bbfad7d80b816",
+    "start_date": "2011-05-06",
+    "end_date": "",
+    "area": {
+      "name": "Mid and West Wales"
+    },
+    "links": [],
+    "contact_details": [],
+    "url": "http://sayitimporttesttemp.popit.staging.mysociety.org/api/v0.1/memberships/54521f3d0a8bbfad7d80b813",
+    "html_url": "http://sayitimporttesttemp.popit.staging.mysociety.org/memberships/54521f3d0a8bbfad7d80b813"
+  },
+  {
+    "id": "54521f3d0a8bbfad7d80b815",
+    "person_id": "54521eee0a8bbfad7d80b811",
+    "role": "member",
+    "organization_id": "54521f3d0a8bbfad7d80b812",
+    "start_date": "",
+    "end_date": "",
+    "area": {
+      "name": ""
+    },
+    "links": [],
+    "contact_details": [],
+    "url": "http://sayitimporttesttemp.popit.staging.mysociety.org/api/v0.1/memberships/54521f3d0a8bbfad7d80b815",
+    "html_url": "http://sayitimporttesttemp.popit.staging.mysociety.org/memberships/54521f3d0a8bbfad7d80b815"
+  },
+  {
+    "id": "54521ec80a8bbfad7d80b810",
+    "person_id": "54521dc50a8bbfad7d80b80c",
+    "role": "member",
+    "organization_id": "54521ec80a8bbfad7d80b80d",
+    "start_date": "",
+    "end_date": "",
+    "area": {
+      "name": ""
+    },
+    "links": [],
+    "contact_details": [],
+    "url": "http://sayitimporttesttemp.popit.staging.mysociety.org/api/v0.1/memberships/54521ec80a8bbfad7d80b810",
+    "html_url": "http://sayitimporttesttemp.popit.staging.mysociety.org/memberships/54521ec80a8bbfad7d80b810"
+  },
+  {
+    "id": "54521fc70a8bbfad7d80b818",
+    "person_id": "54521f800a8bbfad7d80b817",
+    "role": "Regional Member",
+    "organization_id": "54521f5c0a8bbfad7d80b816",
+    "start_date": "2007-05-04",
+    "end_date": "",
+    "area": {
+      "name": "Mid and West Wales"
+    },
+    "links": [],
+    "contact_details": [],
+    "url": "http://sayitimporttesttemp.popit.staging.mysociety.org/api/v0.1/memberships/54521fc70a8bbfad7d80b818",
+    "html_url": "http://sayitimporttesttemp.popit.staging.mysociety.org/memberships/54521fc70a8bbfad7d80b818"
+  },
+  {
+    "id": "54521fc70a8bbfad7d80b819",
+    "person_id": "54521f800a8bbfad7d80b817",
+    "role": "member",
+    "organization_id": "54521ec80a8bbfad7d80b80d",
+    "start_date": "",
+    "end_date": "",
+    "area": {
+      "name": ""
+    },
+    "links": [],
+    "contact_details": [],
+    "url": "http://sayitimporttesttemp.popit.staging.mysociety.org/api/v0.1/memberships/54521fc70a8bbfad7d80b819",
+    "html_url": "http://sayitimporttesttemp.popit.staging.mysociety.org/memberships/54521fc70a8bbfad7d80b819"
+  }
+]

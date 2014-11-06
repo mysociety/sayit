@@ -42,6 +42,17 @@ setup(
         'django-subdomain-instances >= 0.8',
         'easy-thumbnails >= 2.1',
         'unicode-slugify == 0.1.1',
+
+        # Extra requirements for https with SNI -
+        # python-requests needs some extra packages in order to be able to
+        # fetch stuff from an https site with SNI. This is particularly
+        # noticeable now that PopIt uses https.
+
+        # https://stackoverflow.com/questions/18578439/using-requests-with-tls-doesnt-give-sni-support
+
+        'pyOpenSSL == 0.14',
+        'ndg-httpsclient == 0.3.2',
+        'pyasn1 == 0.1.7',
     ],
     extras_require={
         'test': [
