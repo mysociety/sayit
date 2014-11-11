@@ -4,7 +4,7 @@ import re
 from django.core.management import call_command
 from haystack.query import SearchQuerySet
 
-from speeches.models import Speech, Speaker, Section
+from speeches.models import Speech
 from speeches.tests import InstanceTestCase
 
 class SearchTests(InstanceTestCase):

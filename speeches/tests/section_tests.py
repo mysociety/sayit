@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, date, time, timedelta
+from datetime import datetime, date, time
 
 import django
 from django.test import TestCase

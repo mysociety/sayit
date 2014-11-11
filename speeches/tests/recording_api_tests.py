@@ -9,7 +9,7 @@ from django.test.utils import override_settings
 from django.conf import settings
 
 import speeches
-from speeches.models import Speech, Speaker, Recording, RecordingTimestamp
+from speeches.models import Speech, Speaker, Recording
 from speeches.tests import InstanceTestCase
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
@@ -58,7 +58,7 @@ class RecordingAPITests(InstanceTestCase):
 
     def test_add_recording_with_timestamp(self):
         # Add two speakers
-        speaker = Speaker.objects.create(name='Steve', instance=self.instance)
+        Speaker.objects.create(name='Steve', instance=self.instance)
 
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
 

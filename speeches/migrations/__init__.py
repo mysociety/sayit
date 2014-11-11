@@ -8,7 +8,7 @@ customize the SOUTH_MIGRATION_MODULES setting like so:
 """
 
 try:  # Django < 1.7
-    from django.db import migrations
+    from django.db import migrations # noqa
 except ImportError:
     from django.core.exceptions import ImproperlyConfigured
     raise ImproperlyConfigured(SOUTH_ERROR_MESSAGE)

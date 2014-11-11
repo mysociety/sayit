@@ -2,8 +2,6 @@ import audioread.ffdec
 import mutagen
 import os
 import re
-import tempfile
-import filecmp
 import wave
 from datetime import timedelta
 

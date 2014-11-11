@@ -3,9 +3,8 @@ import shutil
 
 from datetime import datetime, date, timedelta
 
-from django.test import TestCase, LiveServerTestCase
+from django.test import TestCase
 from django.test.utils import override_settings
-from django.contrib.auth.models import User
 
 from selenium.webdriver.support.ui import WebDriverWait
 

@@ -1,4 +1,3 @@
-import sys
 import re
 from datetime import date
 from mock import patch, Mock
@@ -7,10 +6,7 @@ from six.moves.urllib.error import HTTPError
 import django
 from django.test.utils import override_settings
 from django.utils.six import assertRegex
-from django.utils.six.moves import builtins
 from django.utils.encoding import smart_text
-
-from easy_thumbnails.templatetags import thumbnail
 
 import lxml.html
 
@@ -104,12 +100,12 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
         section = Section.objects.create(heading='Test Section',
             instance=self.instance)
 
-        speech1 = Speech.objects.create(
+        Speech.objects.create(
             text="A girl doesn't need anyone that doesn't need her.",
             speaker=speaker1, section=section,
             instance=self.instance, public=True)
 
-        speech2 = Speech.objects.create(
+        Speech.objects.create(
             text="I'm sick of not having the courage to be an absolute nobody.",
             speaker=speaker2, section=section,
             instance=self.instance, public=True)
@@ -170,7 +166,7 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
 
     def test_add_speaker_with_image_not_found(self):
         try:
-            speaker = Speaker.objects.create(
+            Speaker.objects.create(
                 name='Not Found',
                 instance=self.instance,
                 image='http://httpbin.org/status/404')
@@ -201,7 +197,6 @@ class MergeDeleteSpeakerTests(InstanceTestCase):
 
     def test_with_speeches(self):
         alice = Speaker.objects.create(name='alice', instance=self.instance)
-        alice_id = alice.id
         alice.speech_set.create(text='Test', instance=self.instance)
 
         resp = self.client.get('/speaker/%d/delete' % alice.id)
@@ -258,7 +253,7 @@ class MergeDeleteSpeakerTests(InstanceTestCase):
 
     def test_reassign_with_no_new_speaker(self):
         alice = Speaker.objects.create(name='alice', instance=self.instance)
-        bob = Speaker.objects.create(name='bob', instance=self.instance)
+        Speaker.objects.create(name='bob', instance=self.instance)
         alice_id = alice.id
         alice.speech_set.create(text='Test', instance=self.instance)
 

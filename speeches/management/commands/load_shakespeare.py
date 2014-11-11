@@ -104,7 +104,6 @@ class Command(BaseCommand):
                 scene_heading = scene[0].text
                 scene_section = self.make(Section, heading=scene_heading, parent=act_section)
                 speeches_xml = scene[1:]
-                speeches = []
                 for sp in speeches_xml:
                     if sp.tag == 'STAGEDIR' or sp.tag == 'SUBHEAD' or sp.tag == 'SUBTITLE':
                         self.make(Speech, section=scene_section, text='<p><i>%s</i></p>' % sp.text, type='narrative')

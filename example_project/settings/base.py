@@ -11,7 +11,7 @@ from .paths import *
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 try:
-    import debug_toolbar
+    import debug_toolbar # noqa
     DEBUG_TOOLBAR = True
 except:
     DEBUG_TOOLBAR = False
@@ -134,17 +134,17 @@ INSTALLED_APPS = [
 ]
 
 try:
-    import tastypie
+    import tastypie # noqa
     INSTALLED_APPS.append( 'tastypie' )
-except:
+except ImportError:
     pass
 
 try:
-    import nose
+    import nose # noqa
     INSTALLED_APPS.append( 'django_nose' )
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
     NOSE_PLUGINS = [ 'speeches.tests.nose_plugins.SkipMigrations' ]
-except:
+except ImportError:
     # This is only present in 1.6+, but you shouldn't be running the tests
     # without installing the test requirements anyway
     TEST_RUNNER = 'django.test.runner.DiscoverRunner'

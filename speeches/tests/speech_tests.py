@@ -347,14 +347,14 @@ class SpeechFormTests(InstanceTestCase):
 
     def test_add_speech_with_whitespace_around_text(self):
         text = ' This is a speech with whitespace at the ends. '
-        resp = self.client.post('/speech/add', {'text': text})
+        self.client.post('/speech/add', {'text': text})
 
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(speech.text, 'This is a speech with whitespace at the ends.')
 
     def test_add_speech_with_newlines(self):
         text = "First line.\nAfter break.\n\nAfter another break."
-        resp = self.client.post('/speech/add', {'text': text})
+        self.client.post('/speech/add', {'text': text})
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(
             speech.text,
@@ -367,7 +367,7 @@ class SpeechFormTests(InstanceTestCase):
     def test_add_speech_with_newlines_and_speaker(self):
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
         text = "First line.\nAfter break.\n\nNew paragraph."
-        resp = self.client.post(
+        self.client.post(
             '/speech/add',
             {'text': text, 'speaker': speaker.id},
             )
@@ -390,7 +390,7 @@ class SpeechFormTests(InstanceTestCase):
         """
 
         text = "<p>Test<br />string</p><p>Second paragraph</p>\n<p>Third paragraph</p>\n\n<p>Fourth paragraph</p>"
-        resp = self.client.post('/speech/add', {'text': text})
+        self.client.post('/speech/add', {'text': text})
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(
             speech.text,
@@ -407,7 +407,7 @@ class SpeechFormTests(InstanceTestCase):
         """
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
         text = "<p>Test<br />string</p><p>Second paragraph</p>\n<p>Third paragraph</p>\n\n<p>Fourth paragraph</p>"
-        resp = self.client.post('/speech/add', {'text': text, 'speaker': speaker.id})
+        self.client.post('/speech/add', {'text': text, 'speaker': speaker.id})
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(
             speech.text,

@@ -125,7 +125,7 @@ class AkomaNtosoOutputTestCase(InstanceTestCase):
         assert xml_compare(lxml1, lxml2)
 
     def test_empty_section(self):
-        section = Section.objects.create(
+        Section.objects.create(
             instance=self.instance,
             heading='Test Section')
 
@@ -157,7 +157,7 @@ class AkomaNtosoOutputTestCase(InstanceTestCase):
             instance=self.instance,
             heading='Outer Section')
 
-        inner_section = Section.objects.create(
+        Section.objects.create(
             instance=self.instance,
             heading='Inner Section',
             parent=section)

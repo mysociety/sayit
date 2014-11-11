@@ -1,14 +1,12 @@
 import os
 import tempfile
 import shutil
-from datetime import datetime
-import pytz
 
 from django.test.utils import override_settings
 from django.conf import settings
 
 import speeches
-from speeches.models import Speech, Speaker, Recording, RecordingTimestamp
+from speeches.models import Speech, Speaker, Recording
 from speeches.utils import AudioHelper
 from speeches.tests import InstanceTestCase
 

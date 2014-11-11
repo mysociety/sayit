@@ -3,7 +3,6 @@ from django import forms
 from haystack.forms import SearchForm
 from haystack.views import SearchView
 from haystack.query import SearchQuerySet
-from haystack.inputs import AutoQuery
 
 from speeches.models import Speaker, Speech, Section
 

@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from optparse import make_option
@@ -31,7 +32,7 @@ class ImportCommand(BaseCommand):
         if options['commit']:
             if not options['instance']:
                 raise CommandError("You must specify an instance")
-            instance, _ = Instance.objects.get_or_create(label=options['instance'])
+            instance, __ = Instance.objects.get_or_create(label=options['instance'])
         else:
             instance = Instance(label=options['instance'])
         options['instance'] = instance
@@ -96,7 +97,7 @@ class ImportCommand(BaseCommand):
         if verbosity > 1:
             logger.info("Starting import: %s\n" % path)
 
-        if self.importer_class == None:
+        if self.importer_class is None:
             raise CommandError("No importer_class specified!")
 
         importer = self.importer_class(**options)

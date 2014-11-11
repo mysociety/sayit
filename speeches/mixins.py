@@ -1,5 +1,5 @@
 from django.views.generic.detail import SingleObjectMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 
 from speeches.utils.base32 import MistypedIDException, base32_to_int
 

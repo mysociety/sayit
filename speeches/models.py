@@ -12,7 +12,7 @@ from django.db import models
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.html import strip_tags
-from django.template.defaultfilters import timesince, slugify
+from django.template.defaultfilters import timesince
 from django.conf import settings
 from django.core.files import File
 from django.core.exceptions import ValidationError
@@ -31,7 +31,6 @@ if not aliases.get('speaker-rectangle'):
 from instances.models import InstanceMixin, InstanceManager
 import speeches
 from speeches.utils import AudioHelper
-from speeches.utils.base32 import int_to_base32
 from speeches.utils.text import url_to_unicode
 
 from djqmethod import Manager, querymethod

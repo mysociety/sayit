@@ -523,7 +523,7 @@ class SpeakerDeleteForm(forms.ModelForm):
                 self._errors['new_speaker'] = self.error_class(
                     [_("You can't assign speeches to the speaker you're deleting")]
                     )
-            if not new_speaker and not 'new_speaker' in self._errors:
+            if not new_speaker and 'new_speaker' not in self._errors:
                 # When Django 1.7 is our oldest supported version, we can use add_error
                 # https://docs.djangoproject.com/en/1.7/ref/forms/api/#django.forms.Form.add_error
                 self._errors['new_speaker'] = self.error_class(
