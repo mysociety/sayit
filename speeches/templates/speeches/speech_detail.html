@@ -1,6 +1,6 @@
 {% extends 'speeches/base.html' %}
 {% load url from future %}
-{% load i18n %}
+{% load speech_i18n %}
 {% load staticfiles %}
 {% load speech_utils %}
 {% load thumbnail %}
@@ -59,7 +59,7 @@
                       {% if object.speaker %}
                           {% url "speeches:speaker-view" object.speaker.slug as speaker_url %}
                           {% if object.start_date %}
-                              {% blocktrans with type=object.get_type_display speaker=object.speaker speaker_url=speaker_url date=object.start_date %}
+                              {% blocktrans with type=object.get_type_display speaker=object.speaker speaker_url=speaker_url date=object.start_date trimmed %}
                                   <span class="speech__meta-data__speech-type">{{ type }}</span>
                                   by
                                   <span class="speech__meta-data__speaker-name">
@@ -69,7 +69,7 @@
                                   <span class="speech__meta-data__date">{{ date }}</span>
                               {% endblocktrans %}
                           {% else %}
-                              {% blocktrans with type=object.get_type_display speaker=object.speaker speaker_url=speaker_url %}
+                              {% blocktrans with type=object.get_type_display speaker=object.speaker speaker_url=speaker_url trimmed %}
                                   <span class="speech__meta-data__speech-type">{{ type }}</span>
                                   by
                                   <span class="speech__meta-data__speaker-name">
@@ -79,7 +79,7 @@
                           {% endif %}
                       {% else %}
                           {% if object.start_date %}
-                              {% blocktrans with type=object.get_type_display date=object.start_date %}
+                              {% blocktrans with type=object.get_type_display date=object.start_date trimmed %}
                                   <span class="speech__meta-data__speech-type">{{ type }}</span>
                                   by
                                   <span class="speech__meta-data__speaker-name">an unknown speaker</span>
@@ -87,7 +87,7 @@
                                   <span class="speech__meta-data__date">{{ date }}</span>
                               {% endblocktrans %}
                           {% else %}
-                              {% blocktrans with type=object.get_type_display %}
+                              {% blocktrans with type=object.get_type_display trimmed %}
                                   <span class="speech__meta-data__speech-type">{{ type }}</span>
                                   by
                                   <span class="speech__meta-data__speaker-name">an unknown speaker</span>
@@ -96,13 +96,13 @@
                       {% endif %}
                   {% else %}
                       {% if object.start_date %}
-                          {% blocktrans with type=object.get_type_display date=object.start_date %}
+                          {% blocktrans with type=object.get_type_display date=object.start_date trimmed %}
                               <span class="speech__meta-data__speech-type">{{ type }}</span>
                               on
                               <span class="speech__meta-data__date">{{ date }}</span>
                           {% endblocktrans %}
                       {% else %}
-                          {% blocktrans with type=object.get_type_display %}
+                          {% blocktrans with type=object.get_type_display trimmed %}
                               <span class="speech__meta-data__speech-type">{{ type }}</span>
                           {% endblocktrans %}
                       {% endif %}

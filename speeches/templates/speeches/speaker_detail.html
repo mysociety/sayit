@@ -55,7 +55,7 @@
             {{ paginator.count|intcomma }}
           </div>
           <div class="stat__descriptor">
-            {% blocktrans count c=paginator.count %}Speech{% plural %}Speeches{% endblocktrans %}
+            {% blocktrans count c=paginator.count context "speaker count" %}Speech{% plural %}Speeches{% endblocktrans %}
           </div>
         </div>
         <!--

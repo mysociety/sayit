@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sayit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-20 18:40+0000\n"
+"POT-Creation-Date: 2014-11-20 18:54+0000\n"
 "PO-Revision-Date: 2014-08-29 21:11+0000\n"
 "Last-Translator: mySociety <transifex@mysociety.org>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/"
@@ -613,7 +613,7 @@ msgstr "Hol hangzott el a beszéd?"
 msgid "Who gave this speech?"
 msgstr "Ki mondta a beszédet?"
 
-#: models.py:607 templates/speeches/speaker_detail.html:58
+#: models.py:607
 msgid "Speech"
 msgstr ""
 
@@ -724,7 +724,7 @@ msgstr ""
 msgid "Search speeches and statements"
 msgstr ""
 
-#: templates/speeches/_home.html:46
+#: templates/speeches/_home.html:45
 #, python-format
 msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> speech"
 msgid_plural ""
@@ -732,7 +732,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/_home.html:47
+#: templates/speeches/_home.html:50
 #, python-format
 msgid "<a href=\"%(url_speaker_list)s\"><strong>1</strong></a> speaker"
 msgid_plural ""
@@ -740,7 +740,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/_home.html:48
+#: templates/speeches/_home.html:55
 #, python-format
 msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> section"
 msgid_plural ""
@@ -748,38 +748,38 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/_home.html:60
+#: templates/speeches/_home.html:71
 msgid "Brilliant!"
 msgstr ""
 
-#: templates/speeches/_home.html:61
+#: templates/speeches/_home.html:72
 msgid ""
 "Now you&rsquo;ve got your own public database for speeches and statements."
 msgstr ""
 
-#: templates/speeches/_home.html:62
+#: templates/speeches/_home.html:73
 msgid ""
 "However, it&rsquo;s totally empty. Let&rsquo;s get started by adding "
 "something."
 msgstr ""
 
-#: templates/speeches/_home.html:63 templates/speeches/parentless_list.html:59
+#: templates/speeches/_home.html:74 templates/speeches/parentless_list.html:59
 #: templates/speeches/speaker_list.html:43
 msgid "Add your first statement"
 msgstr ""
 
-#: templates/speeches/_home.html:65 templates/speeches/parentless_list.html:61
+#: templates/speeches/_home.html:76 templates/speeches/parentless_list.html:61
 #: templates/speeches/speaker_list.html:45
 msgid "This is a brand new SayIt site."
 msgstr ""
 
-#: templates/speeches/_home.html:66 templates/speeches/parentless_list.html:62
+#: templates/speeches/_home.html:77 templates/speeches/parentless_list.html:62
 #: templates/speeches/speaker_list.html:46
 msgid ""
 "Its creator hasn&rsquo;t yet added any speeches or statements for you to see."
 msgstr ""
 
-#: templates/speeches/_home.html:67 templates/speeches/parentless_list.html:63
+#: templates/speeches/_home.html:78 templates/speeches/parentless_list.html:63
 #: templates/speeches/speaker_list.html:47
 msgid "Learn more about SayIt"
 msgstr ""
@@ -948,20 +948,11 @@ msgid "Add section"
 msgstr ""
 
 #: templates/speeches/speaker_delete.html:21
-#, python-format
-msgid ""
-"\n"
-"    Delete speaker: %(name)s\n"
-"  "
-msgstr ""
-
 #: templates/speeches/speaker_delete.html:30
-#, python-format
-msgid ""
-"\n"
-"        Delete speaker: %(name)s\n"
-"      "
-msgstr ""
+#, fuzzy, python-format
+#| msgid "Delete speech"
+msgid "Delete speaker: %(name)s"
+msgstr "Beszéd törlése"
 
 #: templates/speeches/speaker_delete.html:37
 #: templates/speeches/speaker_detail.html:26
@@ -987,6 +978,15 @@ msgid "Appearance"
 msgid_plural "Appearances"
 msgstr[0] ""
 msgstr[1] ""
+
+#: templates/speeches/speaker_detail.html:58
+#, fuzzy
+#| msgid "Speeches"
+msgctxt "speaker count"
+msgid "Speech"
+msgid_plural "Speeches"
+msgstr[0] "Beszédek"
+msgstr[1] "Beszédek"
 
 #: templates/speeches/speaker_detail.html:85
 msgid "Longest speech"
@@ -1088,82 +1088,45 @@ msgstr ""
 #: templates/speeches/speech_detail.html:62
 #, python-format
 msgid ""
-"\n"
-"                                  <span class=\"speech__meta-data__speech-"
-"type\">%(type)s</span>\n"
-"                                  by\n"
-"                                  <span class=\"speech__meta-data__speaker-"
-"name\">\n"
-"                                    <a href=\"%(speaker_url)s\">%(speaker)s</"
-"a>\n"
-"                                  </span>\n"
-"                                  on\n"
-"                                  <span class=\"speech__meta-data__date\">"
-"%(date)s</span>\n"
-"                              "
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> by <span "
+"class=\"speech__meta-data__speaker-name\"> <a href=\"%(speaker_url)s\">"
+"%(speaker)s</a> </span> on <span class=\"speech__meta-data__date\">%(date)s</"
+"span>"
 msgstr ""
 
 #: templates/speeches/speech_detail.html:72
 #, python-format
 msgid ""
-"\n"
-"                                  <span class=\"speech__meta-data__speech-"
-"type\">%(type)s</span>\n"
-"                                  by\n"
-"                                  <span class=\"speech__meta-data__speaker-"
-"name\">\n"
-"                                    <a href=\"%(speaker_url)s\">%(speaker)s</"
-"a>\n"
-"                                  </span>\n"
-"                              "
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> by <span "
+"class=\"speech__meta-data__speaker-name\"> <a href=\"%(speaker_url)s\">"
+"%(speaker)s</a> </span>"
 msgstr ""
 
 #: templates/speeches/speech_detail.html:82
 #, python-format
 msgid ""
-"\n"
-"                                  <span class=\"speech__meta-data__speech-"
-"type\">%(type)s</span>\n"
-"                                  by\n"
-"                                  <span class=\"speech__meta-data__speaker-"
-"name\">an unknown speaker</span>\n"
-"                                  on\n"
-"                                  <span class=\"speech__meta-data__date\">"
-"%(date)s</span>\n"
-"                              "
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> by <span "
+"class=\"speech__meta-data__speaker-name\">an unknown speaker</span> on <span "
+"class=\"speech__meta-data__date\">%(date)s</span>"
 msgstr ""
 
 #: templates/speeches/speech_detail.html:90
 #, python-format
 msgid ""
-"\n"
-"                                  <span class=\"speech__meta-data__speech-"
-"type\">%(type)s</span>\n"
-"                                  by\n"
-"                                  <span class=\"speech__meta-data__speaker-"
-"name\">an unknown speaker</span>\n"
-"                              "
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> by <span "
+"class=\"speech__meta-data__speaker-name\">an unknown speaker</span>"
 msgstr ""
 
 #: templates/speeches/speech_detail.html:99
 #, python-format
 msgid ""
-"\n"
-"                              <span class=\"speech__meta-data__speech-type\">"
-"%(type)s</span>\n"
-"                              on\n"
-"                              <span class=\"speech__meta-data__date\">"
-"%(date)s</span>\n"
-"                          "
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> on <span "
+"class=\"speech__meta-data__date\">%(date)s</span>"
 msgstr ""
 
 #: templates/speeches/speech_detail.html:105
 #, python-format
-msgid ""
-"\n"
-"                              <span class=\"speech__meta-data__speech-type\">"
-"%(type)s</span>\n"
-"                          "
+msgid "<span class=\"speech__meta-data__speech-type\">%(type)s</span>"
 msgstr ""
 
 #: templates/speeches/speech_detail.html:142

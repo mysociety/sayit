@@ -1,6 +1,6 @@
 {% extends 'speeches/base.html' %}
 {% load url from future %}
-{% load i18n %}
+{% load speech_i18n %}
 {% load staticfiles %}
 {% load django_select2_tags %}
 
@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block title %}
-  {% blocktrans with name=object.name %}
+  {% blocktrans with name=object.name trimmed %}
     Delete speaker: {{ name }}
   {% endblocktrans %}
 {% endblock %}
@@ -27,7 +27,7 @@
 
   <div class="page-header">
     <h1>
-      {% blocktrans with name=object.name %}
+      {% blocktrans with name=object.name trimmed %}
         Delete speaker: {{ name }}
       {% endblocktrans %}
     </h1>
