@@ -12,7 +12,10 @@
 <script src="{% static "speeches/js/masonry.pkgd.min.js" %}"></script>
 {% endblock %}
 
-{% block title %}{% blocktrans with speaker=speaker.name %}View Speaker: {{ speaker }}{% endblocktrans %}{% endblock %}
+{% block og_description %}{% blocktrans with speaker=speaker.name %}Speeches by {{ speaker }}{% endblocktrans %}{% endblock %}
+{% block og_image %}{% if speaker.image_cache %}http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ speaker.image_cache.url }}{% elif speaker.image %}{{ speaker.image }}{% else %}{{block.super }}{% endif %}{% endblock %}
+{# we don't know the details of this image #}
+{% block og_image_details %}{% endblock %}
 
 {% block content %}
 

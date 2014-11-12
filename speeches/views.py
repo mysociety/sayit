@@ -8,6 +8,7 @@ from django.core import serializers
 from django.contrib import messages
 from django.forms import Form
 from django.utils.translation import ugettext as _
+from django.utils.html import strip_tags
 
 from django.db.models import Count, Avg
 from django.shortcuts import get_object_or_404
@@ -234,6 +235,14 @@ class SpeechView(NamespaceMixin, InstanceViewMixin, DetailView):
     def get_queryset(self):
         return super(SpeechView, self).get_queryset().visible(self.request)
 
+    def get_context_data(self, **kwargs):
+        context = super(SpeechView, self).get_context_data(**kwargs)
+        context['title'] = strip_tags(
+            self.object.title or
+            u'\u201C%s\u201D' % self.object.summary
+            )
+        return context
+
 
 class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
     """Done as a ListView on Speech to get recent speeches, we get instance for
@@ -275,6 +284,7 @@ class SpeakerView(NamespaceMixin, InstanceViewMixin, Base32SingleObjectMixin, Li
         context = super(SpeakerView, self).get_context_data(**kwargs)
         context['section_count'] = self.object.speech_set.all().visible(self.request).aggregate(Count('section', distinct=True))['section__count']
         context['longest_speech'] = self.object.speech_set.annotate(length=Length('text')).order_by('-length')[:1]
+        context['title'] = _('View Speaker: %(speaker_name)s') % {'speaker_name': self.object.name}
         return context
 
 
@@ -434,6 +444,8 @@ class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
             self.request,
             all_speeches=all_speeches,
         )
+        context['title'] = _('View Section: %(section_title)s') % {'section_title': self.object.title}
+
         return context
 
 
