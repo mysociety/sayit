@@ -14,6 +14,7 @@
         <a href="{% url "speeches:speech-add" %}" class="button small right">{% trans "Add a new speech" %}</a>
         <a href="{% url "speeches:section-add" %}" class="button secondary small right">{% trans "Add a section" %}</a>
         <a href="{% url 'speeches:import-popolo' %}" class="button secondary small right">{% trans "Import speakers" %}</a>
+        <a href="{% url 'speeches:import-akoma-ntoso' %}" class="button secondary small right">{% trans "Import speeches" %}</a>
       {% endblock %}
     </div>
   {% endif %}

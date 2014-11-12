@@ -7,7 +7,7 @@ from speeches.views import (
     SpeakerView, SpeakerList, SectionCreate, SectionUpdate, SectionDelete,
     SectionView, SectionViewAN, ParentlessList, RecordingList, RecordingView,
     RecordingUpdate, RecordingAPICreate, InstanceView, Select2AutoResponseView,
-    PopoloImportView,
+    PopoloImportView, AkomaNtosoImportView,
     )
 
 from speeches.search import InstanceSearchView
@@ -63,6 +63,7 @@ urlpatterns = patterns(
     url(r'^api/v0.1/recording/$', csrf_exempt(RecordingAPICreate.as_view()), name='recording-api-add'),
 
     url(r'^import/popolo', PopoloImportView.as_view(), name='import-popolo'),
+    url(r'^import/akomantoso', AkomaNtosoImportView.as_view(), name='import-akoma-ntoso'),
 )
 
 if v01_api is not None:

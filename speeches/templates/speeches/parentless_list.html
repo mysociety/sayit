@@ -18,6 +18,7 @@
       {% if request.is_user_instance %}
         <a href="{% url "speeches:speech-add" %}" class="button small right">{% trans "Add a new speech" %}</a>
         <a href="{% url "speeches:section-add" %}" class="button secondary small right">{% trans "Add a section" %}</a>
+        <a href="{% url 'speeches:import-akoma-ntoso' %}" class="button secondary small right">{% trans "Import speeches" %}</a>
       {% endif %}
         <h1>{% trans "Speeches" %}</h1>
     </div>

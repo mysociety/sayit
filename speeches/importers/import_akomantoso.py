@@ -25,6 +25,7 @@ class ImportAkomaNtoso (ImporterBase):
         return self.parse_document()
 
     def parse_document(self):
+        self.stats = {Speaker: 0}
         debate = self.xml.debate
 
         if self.ns:
@@ -45,6 +46,7 @@ class ImportAkomaNtoso (ImporterBase):
             except Speaker.DoesNotExist:
                 speaker = Speaker(
                     instance=self.instance, name=person.get('showAs'))
+                self.stats[Speaker] += 1
                 if self.commit:
                     speaker.save()
                     speaker.identifiers.create(
@@ -106,6 +108,7 @@ class ImportAkomaNtoso (ImporterBase):
             section = self.make(Section, source_url=source_url, **kwargs)
 
         self.visit(debate.debateBody, section)
+        return self.stats
 
     def get_preface_tag(self, debate, tag):
         if self.ns:

@@ -1191,3 +1191,9 @@ form > .row {
 #id_action {
     @include unstyled-list;
 }
+
+/* Import popolo page */
+
+#id_existing_sections {
+    @include unstyled-list;
+}

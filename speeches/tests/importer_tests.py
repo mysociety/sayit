@@ -182,12 +182,13 @@ class AkomaNtosoImportViewTestCase(InstanceTestCase):
     def test_import_page_smoke_test(self):
         resp = self.client.get('/import/akomantoso')
 
-        self.assertContains(resp, 'Import Speeches')
+        self.assertContains(resp, 'Import speeches')
 
     def test_import_data(self):
-        self.client.post(
+        resp = self.client.post(
             '/import/akomantoso',
-            {'location': 'http://example.com/Debate_Bungeni_1995-10-31.xml'}
+            {'location': 'http://example.com/Debate_Bungeni_1995-10-31.xml'},
+            follow=True,
             )
 
         # To get us started, let's just check that we get the right kind of
@@ -198,6 +199,18 @@ class AkomaNtosoImportViewTestCase(InstanceTestCase):
              u'summary', u'speech', u'answer', u'narrative', u'speech',
              u'narrative']
             )
+
+        self.assertContains(resp, 'Created: 7 speakers, 8 sections, 11 speeches')
+
+    def test_import_bad_data(self):
+        resp = self.client.post(
+            '/import/akomantoso',
+            {'location': 'http://example.com/welsh_assembly/persons',
+             'existing_sections': 'Skip',
+             },
+            )
+
+        self.assertContains(resp, 'Sorry - something went wrong with the import')
 
 
 @patch.object(requests, 'get', FakeRequestsOutput)

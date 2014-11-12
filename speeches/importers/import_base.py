@@ -10,7 +10,12 @@ class ImporterBase (object):
         self.clobber = clobber
         self.speakers = {}
 
+        self.stats = {}
+
     def make(self, cls, **kwargs):
+        self.stats.setdefault(cls, 0)
+        self.stats[cls] += 1
+
         s = cls(instance=self.instance, **kwargs)
         if self.commit:
             s.save()

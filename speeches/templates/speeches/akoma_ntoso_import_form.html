@@ -1,0 +1,20 @@
+{% extends 'speeches/base_form.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}
+  {% trans 'Import speeches' %}
+{% endblock %}
+
+{% block content %}
+
+  <div class="page-header">
+    <h1>{% trans "Import speeches from Akoma Ntoso" %}</h1>
+  </div>
+
+  <form id="section-form" class="form-horizontal" method="post">
+    {% trans "Import Akoma Ntoso (may take some time)" as submit %}
+    {% include 'speeches/form.html' with type="import_akoma_ntoso" submit=submit %}
+  </form>
+
+{% endblock %}
