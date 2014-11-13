@@ -4,15 +4,15 @@ import re
 import requests
 from mock import patch, Mock
 
-from popolo.models import Organization
-
 from speeches.tests import InstanceTestCase
 from speeches.importers.import_akomantoso import ImportAkomaNtoso
 from speeches.models import Speech, Speaker, Section
 from speeches.importers import import_akomantoso, import_popolo
 
 m = Mock()
-m.return_value = open('speeches/fixtures/test_inputs/Debate_Bungeni_1995-10-31.xml', 'rb')
+m.return_value = open(
+    'speeches/fixtures/test_inputs/Debate_Bungeni_1995-10-31.xml', 'rb')
+
 
 @patch.object(import_akomantoso, 'urlopen', m)
 class AkomaNtosoImportTestCase(InstanceTestCase):
@@ -35,7 +35,7 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
 
     def test_import_remote_file(self):
         self.importer.import_document(
-            'http://examples.akomantoso.org/php/download.php?file=Debate_Bungeni_1995-10-31.xml')
+            'http://examples.akomantoso.org/php/download.php?file=Debate_Bungeni_1995-10-31.xml')  # noqa
 
         # To get us started, let's just check that we get the right kind of
         # speech in the right order.
@@ -125,12 +125,12 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         self.importer.import_document(
             'speeches/fixtures/test_inputs/test_xpath.xml')
         self.assertEqual(
-            [ x.title for x in Section.objects.all() ],
-            [ 'This is the title' ]
+            [x.title for x in Section.objects.all()],
+            ['This is the title']
         )
         self.assertEqual(
-            [ x.start_date for x in Speech.objects.all() ],
-            [ datetime.date(2014, 7, 24) ]
+            [x.start_date for x in Speech.objects.all()],
+            [datetime.date(2014, 7, 24)]
         )
 
     def test_unicode_character(self):
@@ -138,8 +138,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
             'speeches/fixtures/test_inputs/test_unicode_character.xml')
 
         self.assertEqual(
-            [ x.type for x in Speech.objects.all() ],
-            [ 'other' ]
+            [x.type for x in Speech.objects.all()],
+            ['other']
             )
 
     def test_blank_speakers(self):
@@ -152,8 +152,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         self.assertEqual(speeches.count(), speeches_s.count())
 
         for i in range(4):
-            s = speaker if i%2 else None
-            sd = 'Speaker' if i>1 else None
+            s = speaker if i % 2 else None
+            sd = 'Speaker' if i > 1 else None
             self.assertEqual(speeches[i].speaker, s)
             self.assertEqual(speeches[i].speaker_display, sd)
 
@@ -166,7 +166,10 @@ class FakeRequestsOutput(object):
         # in a / at the same place ending in and _, so as to avoid a
         # name clash with directories.
         source = re.sub(r'/$', '_', source)
-        source = re.sub(r'^http://example.com/', 'speeches/tests/data/fake_http/', source)
+        source = re.sub(
+            r'^http://example.com/',
+            'speeches/tests/data/fake_http/',
+            source)
 
         self.file_path = source
 

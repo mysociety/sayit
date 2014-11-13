@@ -119,7 +119,8 @@ class PopoloImporter(object):
                 pass
 
         elif type(json_src) is list:
-            # Look for a single list, if we find one, assume it's a list of persons
+            # Look for a single list, if we find one, assume it's
+            # a list of persons
             self.source_data = {'persons': json_src}
 
         else:
@@ -269,4 +270,3 @@ class PopoloImporter(object):
         self.import_persons()
         # self.import_posts()
         # self.import_memberships()
-
