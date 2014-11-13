@@ -1,0 +1,7 @@
+.alert {
+    @include alert;
+
+    &.alert-success { @include alert-style($success-color); }
+    &.alert-error, &.alert-warning { @include alert-style($alert-color); }
+    &.alert-info { @include alert-style(#a0d3e8); }
+}

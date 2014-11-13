@@ -6,6 +6,8 @@ $image-path: '../img' !default;
 @import "speeches-js";
 @import "compass/css3";
 
+@import "alerts";
+
 .speech:target {
     background-color: #ffc;
 }

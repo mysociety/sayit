@@ -13,4 +13,7 @@
 @import "foundation/components/dropdown";
 @import "foundation/components/grid-5";
 
+$include-html-alert-classes: false;
+@import "foundation/components/alert-boxes";
+
 @import "speeches-bare";
