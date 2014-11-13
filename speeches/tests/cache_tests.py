@@ -4,11 +4,13 @@ from django.test import TestCase
 
 from speeches.models import cache
 
+
 class CacheTest(object):
     @cache
     def random(self):
         # return a different value each time, if not cached
         return random.random()
+
 
 class CacheTests(TestCase):
 

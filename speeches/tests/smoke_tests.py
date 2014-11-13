@@ -1,6 +1,7 @@
 from speeches.tests import InstanceTestCase
 from speeches.models import Speech, Speaker, Section
 
+
 class SmokeTests(InstanceTestCase):
     """Simple smoke tests (is it up?) of all the urls on the site"""
 

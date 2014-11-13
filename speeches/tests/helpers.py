@@ -20,6 +20,7 @@ class InstanceTestCase(InstanceTestCase):
 
 temp_media_root = tempfile.mkdtemp(prefix='sayit_test')
 
+
 @override_settings(MEDIA_ROOT=temp_media_root)
 class OverrideMediaRootMixin(TestCase):
     @classmethod
@@ -90,10 +91,10 @@ def create_sections(subsections, parent=None, instance=None):
 
     for subsection in subsections:
         s = Section.objects.create(
-                instance=instance,
-                heading=subsection['heading'],
-                parent=parent,
-                )
+            instance=instance,
+            heading=subsection['heading'],
+            parent=parent,
+            )
         if 'subsections' in subsection:
             create_sections(subsection['subsections'], parent=s)
         if 'speeches' in subsection:

@@ -17,6 +17,7 @@ from speeches.tests import InstanceLiveServerTestCase
 
 skip_selenium = not os.environ.get('SELENIUM_TESTS', False)
 
+
 @unittest.skipIf(skip_selenium, 'Selenium tests not requested')
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp(), ATT_API_URL='http://att.api.url.example.org/')
 class SeleniumTests(InstanceLiveServerTestCase):
@@ -93,6 +94,7 @@ class SeleniumTests(InstanceLiveServerTestCase):
         speaker_input = self.selenium.find_element_by_id("id_speaker")
         self.assertTrue(speaker_input.get_attribute('value') == str(speaker.id))
         # Check we can unselect it
-        self.selenium.find_element_by_xpath('//div[@id="s2id_id_speaker"]/descendant::abbr[@class="select2-search-choice-close"]').click()
+        self.selenium.find_element_by_xpath(
+            '//div[@id="s2id_id_speaker"]/descendant::abbr[@class="select2-search-choice-close"]').click()
         speaker_input = self.selenium.find_element_by_id("id_speaker")
         self.assertTrue(speaker_input.get_attribute('value') == "")

@@ -10,11 +10,13 @@ from django.utils import timezone
 
 import speeches
 from speeches.tests import InstanceTestCase
-from speeches.utils import AudioHelper
+from speeches.utils.audio import AudioHelper
 from speeches.models import Recording, RecordingTimestamp, Speaker
+
 
 def strip_kbps_from_file_info(s):
     return re.sub(r'\s+\d+\s+kbps,', '', s)
+
 
 def file_info(filename):
     if filename.endswith('.mp3'):
@@ -23,6 +25,7 @@ def file_info(filename):
     elif filename.endswith('.wav'):
         wav = wave.open(filename)
         return (wav.getsampwidth(), wav.getnchannels(), wav.getframerate())
+
 
 class AudioHelperTests(InstanceTestCase):
 
@@ -102,9 +105,11 @@ class AudioHelperTests(InstanceTestCase):
 
     def test_recording_splitting_one_timestamp(self):
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
-        timestamp = RecordingTimestamp.objects.create(speaker=speaker, timestamp=timezone.now(), instance=self.instance)
+        timestamp = RecordingTimestamp.objects.create(
+            speaker=speaker, timestamp=timezone.now(), instance=self.instance)
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
-        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'), instance=self.instance, start_datetime=timestamp.timestamp)
+        recording = Recording.objects.create(
+            audio=File(audio, 'lamb.mp3'), instance=self.instance, start_datetime=timestamp.timestamp)
         recording.timestamps.add(timestamp)
         recording.save()
 
@@ -116,16 +121,18 @@ class AudioHelperTests(InstanceTestCase):
     def test_recording_splitting_several_timestamps(self):
         speakers = []
         for i in range(3):
-            speakers.append( Speaker.objects.create(name='Steve %d' % i, instance=self.instance) )
+            speakers.append(Speaker.objects.create(name='Steve %d' % i, instance=self.instance))
 
         start = timezone.now()
-        timestamps = [ 0, 3, 4 ]
+        timestamps = [0, 3, 4]
         for i in range(3):
             start_i = start + timedelta(seconds=timestamps[i])
-            timestamps[i] = RecordingTimestamp.objects.create(speaker=speakers[i], timestamp=start_i, instance=self.instance)
+            timestamps[i] = RecordingTimestamp.objects.create(
+                speaker=speakers[i], timestamp=start_i, instance=self.instance)
 
         audio = open(os.path.join(self._in_fixtures, 'lamb.mp3'), 'rb')
-        recording = Recording.objects.create(audio=File(audio, 'lamb.mp3'), instance=self.instance, start_datetime=timestamps[0].timestamp)
+        recording = Recording.objects.create(
+            audio=File(audio, 'lamb.mp3'), instance=self.instance, start_datetime=timestamps[0].timestamp)
         for i in range(3):
             recording.timestamps.add(timestamps[i])
         recording.save()
@@ -133,12 +140,15 @@ class AudioHelperTests(InstanceTestCase):
         files_created = self.helper.split_recording(recording)
 
         self.assertEqual(len(files_created), 3)
-        files = [ 'lamb_first_three_seconds.mp3', 'lamb_from_three_to_four_seconds.mp3', 'lamb_from_four_seconds_onwards.mp3' ]
+        files = [
+            'lamb_first_three_seconds.mp3',
+            'lamb_from_three_to_four_seconds.mp3',
+            'lamb_from_four_seconds_onwards.mp3',
+        ]
         for i in range(3):
             self.assertSameAudioLength(files_created[i], self.expected_output_file(files[i]))
 
     def test_audio_length(self):
         audio_path = os.path.join(self._in_fixtures, 'lamb.mp3')
         duration = self.helper.get_audio_duration(audio_path)
-        self.assertEqual( duration, 5 )
-        
+        self.assertEqual(duration, 5)

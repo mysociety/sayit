@@ -1,5 +1,6 @@
 from nose.plugins import Plugin
 
+
 class SkipMigrations(Plugin):
     name = 'skip-migrations'
     enabled = True

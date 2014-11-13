@@ -12,6 +12,7 @@ import speeches
 from speeches.models import Speech, Speaker, Recording
 from speeches.tests import InstanceTestCase
 
+
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class RecordingAPITests(InstanceTestCase):
 
@@ -96,11 +97,11 @@ class RecordingAPITests(InstanceTestCase):
         timestamps = '['
         for i in range(SPEECHES):
             s = Speaker.objects.create(name='Speaker ' + str(i), instance=self.instance)
-            t = 946684800 + i*3
+            t = 946684800 + i * 3
             speakers.append(s)
-            expected_timestamps.append( datetime.utcfromtimestamp(t).replace(tzinfo=pytz.utc) )
+            expected_timestamps.append(datetime.utcfromtimestamp(t).replace(tzinfo=pytz.utc))
             timestamps += '{"speaker":"' + str(s.id) + '","timestamp":' + str(t) + '000}'
-            if i<SPEECHES-1:
+            if i < SPEECHES - 1:
                 timestamps += ','
         timestamps += ']'
 
@@ -138,12 +139,12 @@ class RecordingAPITests(InstanceTestCase):
             self.assertEqual(speech.speaker, speakers[i])
             self.assertEqual(speech.start_date, expected_timestamps[i].date())
             self.assertEqual(speech.start_time, expected_timestamps[i].time())
-            if i==SPEECHES-1:
+            if i == SPEECHES - 1:
                 self.assertEqual(speech.end_date, None)
                 self.assertEqual(speech.end_time, None)
             else:
-                self.assertEqual(speech.end_date, expected_timestamps[i+1].date())
-                self.assertEqual(speech.end_time, expected_timestamps[i+1].time())
+                self.assertEqual(speech.end_date, expected_timestamps[i + 1].date())
+                self.assertEqual(speech.end_time, expected_timestamps[i + 1].time())
             self.assertIsNotNone(speech.audio.path)
             self.assertRegexpMatches(speech.audio.path, r'\.mp3$')
             self.assertEqual(speech, ordered_timestamps[i].speech)

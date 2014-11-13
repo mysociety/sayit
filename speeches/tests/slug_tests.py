@@ -3,6 +3,7 @@
 from speeches.tests import InstanceTestCase
 from speeches.models import Speaker, Section
 
+
 class SlugTests(InstanceTestCase):
 
     def test_all_latin_speaker_slug(self):

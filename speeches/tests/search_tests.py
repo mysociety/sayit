@@ -7,6 +7,7 @@ from haystack.query import SearchQuerySet
 from speeches.models import Speech
 from speeches.tests import InstanceTestCase
 
+
 class SearchTests(InstanceTestCase):
     def test_search(self):
         s1 = self.instance.speaker_set.create(name='Speaker 1')
@@ -17,10 +18,10 @@ class SearchTests(InstanceTestCase):
         call_command('rebuild_index', verbosity=0, interactive=False)
 
         results = SearchQuerySet().models(Speech)
-        self.assertEqual( results.count(), 3 )
-        self.assertEqual( results.filter(speaker=s1.id).count(), 2 )
-        self.assertEqual( results.filter(speaker=s2.id).count(), 1 )
-        self.assertEqual( results.filter(instance=None).count(), 0 )
+        self.assertEqual(results.count(), 3)
+        self.assertEqual(results.filter(speaker=s1.id).count(), 2)
+        self.assertEqual(results.filter(speaker=s2.id).count(), 1)
+        self.assertEqual(results.filter(instance=None).count(), 0)
 
     def test_search_results(self):
         s1 = self.instance.speaker_set.create(name='Speaker 1')
@@ -44,4 +45,6 @@ class SearchTests(InstanceTestCase):
         # Check that a search which returns more than one speech on the same
         # date displays a date for each.
         resp = self.client.get('/search/?q="speaker 1"')
-        assert len(re.findall(r'<span class="speech__meta-data__date">\s*17 Sep 2014\s*</span>', resp.content.decode())) == 2
+        assert len(re.findall(
+            r'<span class="speech__meta-data__date">\s*17 Sep 2014\s*</span>',
+            resp.content.decode())) == 2

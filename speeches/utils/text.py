@@ -7,6 +7,7 @@ if six.PY2:
 else:
     from urllib.parse import unquote_to_bytes
 
+
 def url_to_unicode(s):
     # Python 2
     # >>> print(unquote('caf%c3%a9').decode('utf-8'))

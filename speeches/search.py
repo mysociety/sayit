@@ -6,6 +6,7 @@ from haystack.query import SearchQuerySet
 
 from speeches.models import Speaker, Speech, Section
 
+
 class HMSearchForm(SearchForm):
     def search(self):
         sqs = super(HMSearchForm, self).search()
@@ -13,13 +14,14 @@ class HMSearchForm(SearchForm):
         sqs = sqs.highlight()
         return sqs
 
+
 class SpeechForm(HMSearchForm):
     """
     A form with a hidden integer field that searches the speaker ID field
     """
     p = forms.IntegerField(required=False, widget=forms.HiddenInput())
 
-    model = [ Speech, Section ]
+    model = [Speech, Section]
 
     def search(self):
         sqs = super(SpeechForm, self).search()
@@ -31,8 +33,10 @@ class SpeechForm(HMSearchForm):
                 pass
         return sqs
 
+
 class SpeakerForm(HMSearchForm):
-    model = [ Speaker ]
+    model = [Speaker]
+
 
 class InstanceSearchView(SearchView):
     """

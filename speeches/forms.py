@@ -37,7 +37,7 @@ from speeches.fields import FromStartIntegerField
 from speeches.models import (Speech, Speaker, Section,
                              Recording, RecordingTimestamp, Tag)
 from speeches.widgets import AudioFileInput, DatePickerWidget, TimePickerWidget
-from speeches.utils import GroupedModelChoiceField
+from speeches.utils.forms import GroupedModelChoiceField
 from speeches.importers.import_popolo import PopoloImporter
 
 
@@ -280,7 +280,7 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
         widget=TimePickerWidget,
         required=False,
         )
-    #tags = TagField()
+    # tags = TagField()
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
         label=verbose_name(Speech, 'tags'),
@@ -385,7 +385,7 @@ class RecordingAPIForm(forms.ModelForm, CleanAudioMixin):
                     # Note - we divide by 1000 because the time comes
                     # from javascript and is in milliseconds, but this
                     # expects the time in seconds
-                    supplied_time = int(recording_timestamp['timestamp']/1000)
+                    supplied_time = int(recording_timestamp['timestamp'] / 1000)
                     # We also make it a UTC time!
                     timestamp = (datetime.utcfromtimestamp(supplied_time)
                                  .replace(tzinfo=pytz.utc))
@@ -506,7 +506,9 @@ class SpeakerDeleteForm(forms.ModelForm):
 
         choices = (
             ('Reassign', ungettext('Assign it to another speaker', 'Assign them to another speaker', count)),
-            ('Narrative', ungettext('Make it into narrative (i.e. remove the speaker)', 'Make them into narrative (i.e. remove the speaker)', count)),
+            ('Narrative', ungettext(
+                'Make it into narrative (i.e. remove the speaker)',
+                'Make them into narrative (i.e. remove the speaker)', count)),
             ('Delete', ungettext('Delete it', 'Delete them', count)),
             )
 

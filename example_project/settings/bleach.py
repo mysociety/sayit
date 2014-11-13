@@ -6,7 +6,7 @@ BLEACH_ALLOWED_TAGS = [
 ]
 
 BLEACH_ALLOWED_ATTRIBUTES = {
-    '*': [ 'id', 'title' ], # class, style
-    'a': [ 'href' ],
-    'li': [ 'value' ],
+    '*': ['id', 'title'],  # class, style
+    'a': ['href'],
+    'li': ['value'],
 }

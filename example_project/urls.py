@@ -17,7 +17,8 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # is false to prevent lots of 404s. So do what staticfiles_urlpatterns would do.
 if 'test' in sys.argv:
     static_url = re.escape(settings.STATIC_URL.lstrip('/'))
-    urlpatterns += patterns('',
+    urlpatterns += patterns(
+        '',
         url(r'^%s(?P<path>.*)$' % static_url, 'django.contrib.staticfiles.views.serve', {
             'insecure': True,
         }),
@@ -26,7 +27,8 @@ if 'test' in sys.argv:
         }),
     )
 
-urlpatterns += patterns('',
+urlpatterns += patterns(
+    '',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),
 

@@ -9,8 +9,10 @@ from django.forms.widgets import ClearableFileInput, CheckboxInput, DateInput, T
 class AudioFileInput(ClearableFileInput):
     pretty_input_start = u'<span class="button tiny secondary fileinput-button">Choose audio file'
     pretty_input_end = u'</span>'
-    template_with_initial = u'%(initial_text)s: %(initial)s %(clear_template)s<br />%(input_text)s: %(pretty_input_start)s%(input)s%(pretty_input_end)s'
-    template_with_clear = u'%(clear)s <label class="inline checkbox" for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
+    template_with_initial = u'%(initial_text)s: %(initial)s %(clear_template)s<br />' \
+        u'%(input_text)s: %(pretty_input_start)s%(input)s%(pretty_input_end)s'
+    template_with_clear = u'%(clear)s <label class="inline checkbox" for="%(clear_checkbox_id)s">' \
+        u'%(clear_checkbox_label)s</label>'
 
     # Overridden whole function to provide nicer input button
     def render(self, name, value, attrs=None):

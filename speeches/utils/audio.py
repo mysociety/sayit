@@ -7,9 +7,11 @@ import audioread.ffdec
 
 logger = logging.getLogger(__name__)
 
+
 class AudioException(Exception):
     """Custom exception for audio transcoding ThingsThatGoWrong"""
     pass
+
 
 class AudioHelper(object):
 
@@ -158,6 +160,3 @@ class AudioHelper(object):
             # Output file
             out_filename
         ]
-
-
-

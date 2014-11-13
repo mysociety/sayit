@@ -15,6 +15,7 @@ from speeches.tests import InstanceTestCase, OverrideMediaRootMixin
 from speeches.models import Speaker, Speech, Section
 from speeches import models
 
+
 def side_effect(url):
     if '404' in url:
         raise HTTPError(url, 404, 'NOT FOUND', None, None)
@@ -75,7 +76,8 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
         # Check that a search which returns more than one speech on the same
         # date displays a date for each.
         resp = self.client.get('/speaker/%s' % speaker.slug)
-        self.assertEqual(len(re.findall(r'<span class="breadcrumbs__date">\s*17 Sep 2014\s*</span>', resp.content.decode())), 2)
+        self.assertEqual(
+            len(re.findall(r'<span class="breadcrumbs__date">\s*17 Sep 2014\s*</span>', resp.content.decode())), 2)
 
     def test_speaker_page_has_button_to_add_speech(self):
         # Add a speaker
@@ -84,7 +86,8 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
         # Call the speaker's page
         resp = self.client.get('/speaker/%s' % speaker.slug)
 
-        self.assertContains(resp, '<a href="/speech/add?speaker=%d" class="button small right">Add speech</a>' % speaker.id, html=True)
+        self.assertContains(
+            resp, '<a href="/speech/add?speaker=%d" class="button small right">Add speech</a>' % speaker.id, html=True)
 
     def test_speaker_headshots_in_speeches_section(self):
         # Test that headshots vs default image work OK
@@ -94,11 +97,11 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
             summary='movie star',
             image=u'http://example.com/imag%C3%A9.jpg')
         self.speakers.append(speaker1)
-        speaker2 = Speaker.objects.create(name='Salinger',
-            instance=self.instance)
+        speaker2 = Speaker.objects.create(
+            name='Salinger', instance=self.instance)
 
-        section = Section.objects.create(heading='Test Section',
-            instance=self.instance)
+        section = Section.objects.create(
+            heading='Test Section', instance=self.instance)
 
         Speech.objects.create(
             text="A girl doesn't need anyone that doesn't need her.",
@@ -119,7 +122,8 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
             assertRegex(
                 self,
                 resp.content.decode(),
-                r'(?s)<img src="/uploads/speakers/default/imag%%C3%%A9.jpg.96x96_q85_crop-smart_face_upscale.jpg".*?<a href="/speaker/%s">\s*' % (speaker1.slug)
+                r'(?s)<img src="/uploads/speakers/default/imag%%C3%%A9.jpg.96x96_q85_crop-smart_face_upscale.jpg"'
+                r'.*?<a href="/speaker/%s">\s*' % (speaker1.slug)
                 )
         assertRegex(
             self,
@@ -128,7 +132,9 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
             )
 
     def test_create_speaker_with_long_image_url(self):
-        long_image_url = 'http://example.com/image%E2%97%8F123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789.jpg'
+        sixtyfive = '1234567890' * 6 + '12345'
+        ninetynine = '1234567890' * 9 + '123456789'
+        long_image_url = 'http://example.com/image%%E2%%97%%8F%s.jpg' % ninetynine
 
         s1 = Speaker.objects.create(
             name='Long Image URL',
@@ -145,7 +151,7 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
         # Note the filename in image_cache has been truncated.
         self.assertEqual(
             s1.image_cache,
-            u'speakers/default/image\u25cf12345678901234567890123456789012345678901234567890123456789012345.jpg',
+            u'speakers/default/image\u25cf%s.jpg' % sixtyfive,
             )
 
         # The truncated filename for the second speaker has some random stuff at the end.
@@ -154,7 +160,7 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
         assertRegex(
             self,
             smart_text(s2.image_cache),
-            u'^speakers/default/image\u25cf12345678901234567890123456789012345678901234567890123456789012345_.{7}\.jpg$',
+            u'^speakers/default/image\u25cf%s_.{7}\.jpg$' % sixtyfive,
             )
 
     def test_add_speaker_with_whitespace(self):

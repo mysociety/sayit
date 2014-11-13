@@ -11,6 +11,7 @@ from django_select2.widgets import Select2MultipleWidget
 
 from speeches.models import Tag
 
+
 # prepare_value() is called by a form before sending to the widget for display.
 # clean() is called on form submission to validate it.
 class FromStartIntegerField(forms.IntegerField):
@@ -44,7 +45,8 @@ class FromStartIntegerField(forms.IntegerField):
 
 class TagWidget(forms.SelectMultiple):
     def render(self, name, value, attrs=None, choices=()):
-        if value is None: value = []
+        if value is None:
+            value = []
         final_attrs = self.build_attrs(attrs, type='text', name=name)
 
         value = set(force_text(v) for v in value)
@@ -54,8 +56,8 @@ class TagWidget(forms.SelectMultiple):
             option_value = force_text(option_value)
             option_label = force_text(option_label)
             if option_value in value:
-                selected.append( option_label )
-            all_tags.append( option_label )
+                selected.append(option_label)
+            all_tags.append(option_label)
 
         self.options['tags'] = all_tags
         self.options['width'] = 'resolve'
@@ -64,8 +66,10 @@ class TagWidget(forms.SelectMultiple):
             final_attrs['value'] = ','.join(selected)
         return mark_safe(u'<input%s />' % flatatt(final_attrs))
 
+
 class TagWidgetMixin(Select2MultipleWidget, TagWidget):
     pass
+
 
 class TagField(forms.ModelMultipleChoiceField):
     widget = TagWidgetMixin
@@ -75,7 +79,6 @@ class TagField(forms.ModelMultipleChoiceField):
         super(TagField, self).__init__(Tag, *args, **kwargs)
 
     def clean(self, value):
-        #if value:
-        #    value = [ item.strip() for item in value.split(",") ]
+        # if value:
+        #     value = [ item.strip() for item in value.split(",") ]
         return super(TagField, self).clean(value)
-

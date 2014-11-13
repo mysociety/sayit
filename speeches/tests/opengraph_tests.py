@@ -18,7 +18,8 @@ m.return_value = ('speeches/fixtures/test_inputs/Ferdinand_Magellan.jpg', None)
 
 skip_old_django = unittest.skipIf(
     django.VERSION[:2] == (1, 4),
-    "Prior to Django 1.5, override_settings didn't sort out MEDIA_URL properly - see https://code.djangoproject.com/ticket/17744",
+    "Prior to Django 1.5, override_settings didn't sort out MEDIA_URL properly - "
+    "see https://code.djangoproject.com/ticket/17744",
     )
 
 
@@ -68,7 +69,9 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
         checking that everything in graph appears correctly.
         """
         # Keys that should be URLs if they exist
-        url_keys = set(('url', 'image', 'audio', 'video', 'image:url', 'image:secure_url', 'video:secure_url', 'audio:secure_url'))
+        url_keys = set((
+            'url', 'image', 'audio', 'video', 'image:url',
+            'image:secure_url', 'video:secure_url', 'audio:secure_url'))
 
         parser = lxml.html.HTMLParser(encoding='utf-8')
         root = lxml.html.fromstring(response.content, parser=parser)

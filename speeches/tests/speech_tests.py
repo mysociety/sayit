@@ -14,6 +14,7 @@ from speeches.models import Speech, Speaker, Section
 
 TEMP_MEDIA_ROOT = tempfile.mkdtemp()
 
+
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class SpeechFormTests(InstanceTestCase):
 
@@ -81,7 +82,7 @@ class SpeechFormTests(InstanceTestCase):
         self.assertEqual(Speaker.objects.filter(name='New Bod').count(), 0)
         self.assertEqual(Section.objects.filter(heading='New Section').count(), 0)
 
-        resp = self.client.post( '/speech/add', { 'speaker': 'New Bod', 'section': 'New Section' } )
+        resp = self.client.post('/speech/add', {'speaker': 'New Bod', 'section': 'New Section'})
 
         self.assertEqual(Speaker.objects.filter(name='New Bod').count(), 1)
         self.assertEqual(Section.objects.filter(heading='New Section').count(), 1)
@@ -98,7 +99,7 @@ class SpeechFormTests(InstanceTestCase):
         self.assertEqual(Section.objects.filter(heading='New Section').count(), 0)
         self.client.post(
             '/speech/add',
-            { 'text': 'Speech in new section', 'section': 'New Section' },
+            {'text': 'Speech in new section', 'section': 'New Section'},
         )
 
         section = Section.objects.get(heading='New Section')
@@ -130,8 +131,8 @@ class SpeechFormTests(InstanceTestCase):
         self.assertRedirects(resp, get_url)
 
         resp = self.client.get(get_url)
-        self.assertContains( resp, 'Your speech has been <a href="/speech/%d">created</a>' % speech.id)
-        self.assertContains( resp, 'in the section <a href="/%s#s%d">%s</a>!' % (
+        self.assertContains(resp, 'Your speech has been <a href="/speech/%d">created</a>' % speech.id)
+        self.assertContains(resp, 'in the section <a href="/%s#s%d">%s</a>!' % (
             section.slug, speech.id, section.heading))
 
     def _post_speech(self, section, speech_data):
@@ -162,15 +163,15 @@ class SpeechFormTests(InstanceTestCase):
         speakers = [Speaker.objects.create(name='Speaker %d' % i, instance=self.instance) for i in range(3)]
 
         speech_data = {
-            'text':        'This is a speech',
-            'section':     section.id,
-            'heading':     'Title',
-            'event':       'Event',
-            'location':    'Location',
-            'speaker':     speakers[0].id,
-            'public':      True,
+            'text': 'This is a speech',
+            'section': section.id,
+            'heading': 'Title',
+            'event': 'Event',
+            'location': 'Location',
+            'speaker': speakers[0].id,
+            'public': True,
             'source_url': 'http://example.com/speeches/1',
-            'start_date': datetime.date(year=2000,month=1,day=15),
+            'start_date': datetime.date(year=2000, month=1, day=15),
             'start_time': datetime.time(hour=12, minute=0, second=0),
             'add_another': 1,
         }
@@ -222,15 +223,15 @@ class SpeechFormTests(InstanceTestCase):
         speakers = [Speaker.objects.create(name='Speaker %d' % i, instance=self.instance) for i in range(3)]
 
         speech_data = {
-            'text':        'This is a speech',
-            'section':     section.id,
-            'heading':     'Title',
-            'event':       'Event',
-            'location':    'Location',
-            'speaker':     speakers[0].id,
-            'public':      True,
+            'text': 'This is a speech',
+            'section': section.id,
+            'heading': 'Title',
+            'event': 'Event',
+            'location': 'Location',
+            'speaker': speakers[0].id,
+            'public': True,
             'source_url': 'http://example.com/speeches/1',
-            'start_date': datetime.date(year=2000,month=1,day=15),
+            'start_date': datetime.date(year=2000, month=1, day=15),
             'add_another': 1,
         }
 
@@ -321,7 +322,7 @@ class SpeechFormTests(InstanceTestCase):
         # Assert that it uploads and we're told to wait
         speech = Speech.objects.order_by('-id')[0]
         resp = self.client.get('/speech/%d' % speech.id)
-        self.assertContains( resp, 'recorded audio' )
+        self.assertContains(resp, 'recorded audio')
 
         # Assert that it's in the model
         self.assertIsNotNone(speech.audio)
@@ -361,7 +362,7 @@ class SpeechFormTests(InstanceTestCase):
             'First line.<br />After break.<br />\nAfter another break.'
             )
 
-        resp = self.client.get("/speech/%d/edit" %speech.id)
+        resp = self.client.get("/speech/%d/edit" % speech.id)
         self.assertContains(resp, text)
 
     def test_add_speech_with_newlines_and_speaker(self):
@@ -377,7 +378,7 @@ class SpeechFormTests(InstanceTestCase):
             '<p>First line.<br />After break.</p>\n\n<p>New paragraph.</p>'
             )
 
-        resp = self.client.get("/speech/%d/edit" %speech.id)
+        resp = self.client.get("/speech/%d/edit" % speech.id)
         self.assertContains(resp, text)
 
     def test_add_speech_with_html(self):
@@ -488,7 +489,6 @@ class SpeechFormTests(InstanceTestCase):
         self.assertEqual(speech.start_date, datetime.date(year=2000, month=1, day=20))
         self.assertEqual(speech.end_date, datetime.date(year=2000, month=1, day=21))
 
-
     def test_add_speech_with_dates_and_times(self):
         # Test form with dates (but not times)
         resp = self.client.post('/speech/add', {
@@ -541,9 +541,9 @@ class SpeechViewTests(InstanceTestCase):
             start_date=datetime.date(2014, 9, 17),
             )
         resp = self.client.get('/speech/%d' % speech.id)
-        self.assertContains( resp, '<h1>Speech title</h1>' )
+        self.assertContains(resp, '<h1>Speech title</h1>')
         resp = self.client.get('/speeches')
-        self.assertContains( resp, 'Speech title' )
+        self.assertContains(resp, 'Speech title')
 
         # Check that two speeches on the same date both have their date displayed
         Speech.objects.create(
@@ -553,39 +553,42 @@ class SpeechViewTests(InstanceTestCase):
             )
 
         resp = self.client.get('/speeches')
-        assert len(re.findall(r'<span class="speech__meta-data__date">\s*17 Sep 2014\s*</span>', resp.content.decode())) == 2
+        assert len(re.findall(
+            r'<span class="speech__meta-data__date">\s*17 Sep 2014\s*</span>',
+            resp.content.decode())) == 2
 
         section = Section.objects.create(heading='Test', instance=self.instance)
         speech.section = section
         speech.save()
         resp = self.client.get('/sections/%d' % section.id)
-        self.assertContains( resp, 'Speech title' )
+        self.assertContains(resp, 'Speech title')
 
     def test_visible_speeches(self):
         section = Section.objects.create(heading='Test', instance=self.instance)
         speeches = []
         for i in range(3):
-            s = Speech.objects.create( text='Speech %d' % i, section=section, instance=self.instance, public=(i==2) )
+            s = Speech.objects.create(text='Speech %d' % i, section=section, instance=self.instance, public=(i == 2))
             speeches.append(s)
 
         resp = self.client.get('/sections/%d' % section.id)
-        self.assertEqual( [ x[0].public for x in resp.context['section_tree'] ], [ False, False, True ] )
-        self.assertContains( resp, 'Invisible', count=2 )
+        self.assertEqual([x[0].public for x in resp.context['section_tree']], [False, False, True])
+        self.assertContains(resp, 'Invisible', count=2)
 
         self.client.logout()
         resp = self.client.get('/speech/%d' % speeches[2].id)
-        self.assertContains( resp, 'Speech 2' )
+        self.assertContains(resp, 'Speech 2')
         resp = self.client.get('/speech/%d' % speeches[0].id)
-        self.assertContains( resp, 'Not Found', status_code=404 )
+        self.assertContains(resp, 'Not Found', status_code=404)
 
     def test_speech_datetime_line(self):
         section = Section.objects.create(heading='Test', instance=self.instance)
-        Speech.objects.create( text='Speech', section=section, instance=self.instance,
+        Speech.objects.create(
+            text='Speech', section=section, instance=self.instance,
             public=True, start_date=datetime.date(2000, 1, 1), end_date=datetime.date(2000, 1, 2)
         )
 
         resp = self.client.get('/sections/%d' % section.id)
-        self.assertRegexpMatches( resp.content.decode(), '>\s+1 Jan 2000\s+&ndash;\s+2 Jan 2000\s+<' )
+        self.assertRegexpMatches(resp.content.decode(), '>\s+1 Jan 2000\s+&ndash;\s+2 Jan 2000\s+<')
 
     def test_speech_page_has_buttons_to_edit(self):
         # Add a section
@@ -594,8 +597,11 @@ class SpeechViewTests(InstanceTestCase):
         # Call the speech's page
         resp = self.client.get('/speech/%d' % speech.id)
 
-        self.assertContains(resp, '<a href="/speech/%d/edit"><i class="speech-icon icon-edit"></i>Edit</a>' % speech.id, html=True)
-        self.assertContains(resp, '<a href="/speech/%d/delete"><i class="speech-icon icon-delete"></i>Delete</a>' % speech.id, html=True)
+        self.assertContains(
+            resp, '<a href="/speech/%d/edit"><i class="speech-icon icon-edit"></i>Edit</a>' % speech.id, html=True)
+        self.assertContains(
+            resp, '<a href="/speech/%d/delete"><i class="speech-icon icon-delete"></i>Delete</a>' % speech.id,
+            html=True)
 
     def test_speech_deletion(self):
         # Set up the section

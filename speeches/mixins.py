@@ -3,8 +3,10 @@ from django.http import HttpResponseRedirect, Http404
 
 from speeches.utils.base32 import MistypedIDException, base32_to_int
 
+
 class UnmatchingSlugException(Exception):
     pass
+
 
 class Base32SingleObjectMixin(SingleObjectMixin):
     """Assumes pk is in base32, and decodes that before passing on to the

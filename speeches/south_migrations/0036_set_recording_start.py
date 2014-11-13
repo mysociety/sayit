@@ -3,7 +3,7 @@ import datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
-from speeches.utils import AudioHelper
+from speeches.utils.audio import AudioHelper
 
 class Migration(DataMigration):
 

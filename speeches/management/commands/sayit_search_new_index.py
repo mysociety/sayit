@@ -6,6 +6,7 @@ from django.conf import settings
 
 from haystack.utils import loading
 
+
 class Command(BaseCommand):
     help = _('Create a new dated search index for reindexing with no downtime')
 
@@ -26,7 +27,7 @@ class Command(BaseCommand):
         actions = []
         for n, al in aliases.items():
             if index_write in al['aliases']:
-                actions.append( { 'remove': { 'index': n, 'alias': index_write } } )
+                actions.append({'remove': {'index': n, 'alias': index_write}})
 
-        actions.append( { 'add': { 'index': new_alias, 'alias': index_write } } )
-        backend.conn.update_aliases({ 'actions': actions })
+        actions.append({'add': {'index': new_alias, 'alias': index_write}})
+        backend.conn.update_aliases({'actions': actions})

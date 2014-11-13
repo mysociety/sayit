@@ -6,12 +6,12 @@ import os
 import sys
 from django.conf import global_settings
 
-from .paths import *
+from .paths import *  # noqa
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 try:
-    import debug_toolbar # noqa
+    import debug_toolbar  # noqa
     DEBUG_TOOLBAR = True
 except:
     DEBUG_TOOLBAR = False
@@ -70,16 +70,16 @@ MEDIA_ROOT = os.path.join(PARENT_DIR, 'uploads')
 MEDIA_URL = '/media/'
 
 # All uploaded files world-readable
-FILE_UPLOAD_PERMISSIONS = 420 # 644 in octal, 'rw-r--r--'
+FILE_UPLOAD_PERMISSIONS = 420  # 644 in octal, 'rw-r--r--'
 
 # List of callables that know how to import templates from various sources.
 loaders = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 if not DEBUG:
-    loaders = ( ('django.template.loaders.cached.Loader', loaders), )
+    loaders = (('django.template.loaders.cached.Loader', loaders),)
 
 TEMPLATE_LOADERS = loaders
 
@@ -96,9 +96,9 @@ MIDDLEWARE_CLASSES = [
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 if DEBUG_TOOLBAR:
-    MIDDLEWARE_CLASSES.append( 'debug_toolbar.middleware.DebugToolbarMiddleware' )
+    MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
-INTERNAL_IPS = ( '127.0.0.1', )
+INTERNAL_IPS = ('127.0.0.1',)
 
 ROOT_URLCONF = 'example_project.urls'
 
@@ -112,7 +112,7 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_DIR, 'templates'),
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + ( "django.core.context_processors.request", )
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + ("django.core.context_processors.request",)
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -134,23 +134,23 @@ INSTALLED_APPS = [
 ]
 
 try:
-    import tastypie # noqa
-    INSTALLED_APPS.append( 'tastypie' )
+    import tastypie  # noqa
+    INSTALLED_APPS.append('tastypie')
 except ImportError:
     pass
 
 try:
-    import nose # noqa
-    INSTALLED_APPS.append( 'django_nose' )
+    import nose  # noqa
+    INSTALLED_APPS.append('django_nose')
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-    NOSE_PLUGINS = [ 'speeches.tests.nose_plugins.SkipMigrations' ]
+    NOSE_PLUGINS = ['speeches.tests.nose_plugins.SkipMigrations']
 except ImportError:
     # This is only present in 1.6+, but you shouldn't be running the tests
     # without installing the test requirements anyway
     TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 if DEBUG_TOOLBAR:
-    INSTALLED_APPS.append( 'debug_toolbar' )
+    INSTALLED_APPS.append('debug_toolbar')
 
 # Log WARN and above to stderr; ERROR and above by email when DEBUG is False.
 LOGGING = {
@@ -174,12 +174,12 @@ LOGGING = {
     },
     'loggers': {
         'django.request': {
-            'handlers': [ 'mail_admins', 'console' ],
+            'handlers': ['mail_admins', 'console'],
             'level': 'WARN',
             'propagate': True,
         },
         'speeches': {
-            'handlers': [ 'mail_admins', 'console' ],
+            'handlers': ['mail_admins', 'console'],
             'level': 'DEBUG',
             'propagate': True,
         },
@@ -240,14 +240,14 @@ if 'test' not in sys.argv:
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # django-bleach configuration
-from .bleach import *
+from .bleach import *  # noqa
 
 # easy-thumbnails configuration
-from .thumbnails import *
+from .thumbnails import *  # noqa
 
 # Haystack search settings
 

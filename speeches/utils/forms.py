@@ -6,6 +6,7 @@ from django.forms.models import ModelChoiceIterator, ModelChoiceField
 Things that are needed by multiple bits of code but are specific enough to
 this project not to be in a separate python package"""
 
+
 # From http://djangosnippets.org/snippets/2622/
 class GroupedModelChoiceField(ModelChoiceField):
     def __init__(self, queryset, group_by_field, group_label=None, *args, **kwargs):
@@ -29,6 +30,7 @@ class GroupedModelChoiceField(ModelChoiceField):
         return GroupedModelChoiceIterator(self)
     choices = property(_get_choices, ModelChoiceField._set_choices)
 
+
 # From http://djangosnippets.org/snippets/2622/
 class GroupedModelChoiceIterator(ModelChoiceIterator):
     def __iter__(self):
@@ -38,12 +40,14 @@ class GroupedModelChoiceIterator(ModelChoiceIterator):
             if self.field.choice_cache is None:
                 self.field.choice_cache = [
                     (self.field.group_label(group), [self.choice(ch) for ch in choices])
-                        for group,choices in groupby(self.queryset.all(),
-                            key=lambda row: getattr(row, self.field.group_by_field))
+                    for group, choices in groupby(
+                        self.queryset.all(),
+                        key=lambda row: getattr(row, self.field.group_by_field))
                 ]
             for choice in self.field.choice_cache:
                 yield choice
         else:
-            for group, choices in groupby(self.queryset.all(),
+            for group, choices in groupby(
+                    self.queryset.all(),
                     key=lambda row: getattr(row, self.field.group_by_field)):
                 yield (self.field.group_label(group), [self.choice(ch) for ch in choices])

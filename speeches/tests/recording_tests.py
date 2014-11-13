@@ -14,6 +14,7 @@ from speeches.tests import InstanceTestCase
 
 logging.disable(logging.WARNING)
 
+
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class RecordingTests(InstanceTestCase):
 
@@ -36,7 +37,7 @@ class RecordingTests(InstanceTestCase):
         for i in range(SPEECHES):
             t = 946684800 + i
             timestamps += '{"timestamp":' + str(t) + '000}'
-            if i<SPEECHES-1:
+            if i < SPEECHES - 1:
                 timestamps += ','
         timestamps += ']'
 
@@ -67,16 +68,16 @@ class RecordingTests(InstanceTestCase):
         self.assertEqual(Speech.objects.filter(section=section).count(), 0)
         resp = self.client.get('/recording/%s' % recording.id)
         self.assertContains(resp, 'A Section')
-        resp = self.client.post('/recording/%s' % recording.id, { 'section': section.id })
+        resp = self.client.post('/recording/%s' % recording.id, {'section': section.id})
         self.assertEqual(Speech.objects.filter(section=section).count(), SPEECHES)
 
-        # XXX Perhaps django-webtest (which has form.submit()) or 
+        # XXX Perhaps django-webtest (which has form.submit()) or
         # get things out of the view and test them independently.
         args = {
             "timestamps-TOTAL_FORMS": 4,
             "timestamps-INITIAL_FORMS": 4,
         }
-        new = [ 0, 1, 3, 4 ]
+        new = [0, 1, 3, 4]
         for i in range(SPEECHES):
             args['timestamps-%d-id' % i] = recording.timestamps.all()[i].id
             args['timestamps-%d-recording' % i] = recording.id
@@ -85,7 +86,7 @@ class RecordingTests(InstanceTestCase):
 
         # Now test the speeches are differently spaced apart
         last_start = None
-        diffs = [ None, 1, 2, 1 ]
+        diffs = [None, 1, 2, 1]
         for i, s in enumerate(Speech.objects.all()):
             start = datetime.combine(s.start_date, s.start_time)
             if last_start:

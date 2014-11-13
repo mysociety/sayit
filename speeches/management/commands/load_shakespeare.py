@@ -47,6 +47,7 @@ PLAYS = {
     "win_tale.xml": "A Winter's Tale",
 }
 
+
 class Command(BaseCommand):
     args = '<play>'
     help = 'Import a Shakespeare play into a SayIt instance'
@@ -96,7 +97,8 @@ class Command(BaseCommand):
 
         speakers = {}
         for act in play_xml:
-            if act.tag != 'ACT': continue
+            if act.tag != 'ACT':
+                continue
             act_heading = act[0].text
             act_section = self.make(Section, heading=act_heading, parent=play_section)
             scenes = act[1:]
@@ -109,7 +111,7 @@ class Command(BaseCommand):
                         self.make(Speech, section=scene_section, text='<p><i>%s</i></p>' % sp.text, type='narrative')
                         continue
 
-                    if  not sp[0].text:
+                    if not sp[0].text:
                         speaker = None
                     elif self.commit:
                         name = sp[0].text.replace('[', '').replace(']', '')
@@ -136,4 +138,3 @@ class Command(BaseCommand):
 
                     text = '<p>%s</p>' % text
                     self.make(Speech, speaker=speaker, section=scene_section, text=text, type='speech')
-

@@ -9,50 +9,51 @@ from speeches.tests import create_sections
 from instances.models import Instance
 from speeches.tests import InstanceTestCase
 
+
 class SectionModelTests(TestCase):
 
     def setUp(self):
         create_sections([
-            { 'heading': "Government Debates", 'subsections': [
-                { 'heading': "Monday 25th March", 'subsections': [
-                    { 'heading': "Oral Answers to Questions - Silly Walks",
-                      'speeches': [ 4, date(2013, 3, 25), time(9, 0) ],
-                    },
-                    { 'heading': "Bill on Silly Walks",
-                      'speeches': [ 2, date(2013, 3, 25), time(12, 0) ],
-                    },
-                ] },
-                { 'heading': "Friday 29th March", 'subsections': [
-                    { 'heading': "Fixed Easter Bill", 'subsections': [
-                        { 'heading': "Z Clause",
-                          'speeches': [ 2, date(2013, 3, 29), time(15, 00) ],
-                        },
-                        { 'heading': "Clause 1",
-                          'speeches': [ 3, date(2013, 3, 29), time(14, 30) ],
-                        },
-                        { 'heading': "New Clause 1",
-                          'speeches': [ 3, date(2013, 3, 29), time(14, 0) ],
-                        },
-                    ] },
-                ] },
-            ] },
-            { 'heading': "Government Written Answers", 'subsections': [
-                { 'heading': "Ministry of Aardvarks", 'subsections': [
-                    { 'heading': "March",
-                      'speeches': [ 3, None, None ],
-                    },
-                ] },
-                { 'heading': "Ministry of Silly Walks", 'subsections': [
-                    { 'heading': "Wednesday 6th of March",
-                      'speeches': [ 1, date(2013, 3, 6), None ],
-                    },
-                    { 'heading': "Thursday 7th of March",
-                      'speeches': [ 2, date(2013, 3, 7), None ],
-                    },
-                ] },
-                { 'heading': "Ministry of Something Else"
-                },
-            ] },
+            {'heading': "Government Debates", 'subsections': [
+                {'heading': "Monday 25th March", 'subsections': [
+                    {'heading': "Oral Answers to Questions - Silly Walks",
+                     'speeches': [4, date(2013, 3, 25), time(9, 0)],
+                     },
+                    {'heading': "Bill on Silly Walks",
+                     'speeches': [2, date(2013, 3, 25), time(12, 0)],
+                     },
+                ]},
+                {'heading': "Friday 29th March", 'subsections': [
+                    {'heading': "Fixed Easter Bill", 'subsections': [
+                        {'heading': "Z Clause",
+                         'speeches': [2, date(2013, 3, 29), time(15, 00)],
+                         },
+                        {'heading': "Clause 1",
+                         'speeches': [3, date(2013, 3, 29), time(14, 30)],
+                         },
+                        {'heading': "New Clause 1",
+                         'speeches': [3, date(2013, 3, 29), time(14, 0)],
+                         },
+                    ]},
+                ]},
+            ]},
+            {'heading': "Government Written Answers", 'subsections': [
+                {'heading': "Ministry of Aardvarks", 'subsections': [
+                    {'heading': "March",
+                     'speeches': [3, None, None],
+                     },
+                ]},
+                {'heading': "Ministry of Silly Walks", 'subsections': [
+                    {'heading': "Wednesday 6th of March",
+                     'speeches': [1, date(2013, 3, 6), None],
+                     },
+                    {'heading': "Thursday 7th of March",
+                     'speeches': [2, date(2013, 3, 7), None],
+                     },
+                ]},
+                {'heading': "Ministry of Something Else"
+                 },
+            ]},
         ])
 
     def test_datetimes(self):
@@ -79,48 +80,51 @@ class SectionModelTests(TestCase):
                          "The number of ministries was wrong")
 
         # Check that the sections are in insertion order:
-        all_ministries = [ a.heading.replace('Ministry of ', '') for a in all_ministries ]
-        self.assertEqual(all_ministries, [ 'Aardvarks', 'Silly Walks', 'Something Else' ])
+        all_ministries = [a.heading.replace('Ministry of ', '') for a in all_ministries]
+        self.assertEqual(all_ministries, ['Aardvarks', 'Silly Walks', 'Something Else'])
 
         # Get all speeches under a section, where everything should be
         # sorted by speech date:
         top_level = Section.objects.get(heading="Government Debates")
         children = top_level.get_descendants
-        children = [ c.heading for c in children ]
-        self.assertEqual(children, [ 'Monday 25th March', 'Oral Answers to Questions - Silly Walks', 'Bill on Silly Walks', 'Friday 29th March', 'Fixed Easter Bill', 'New Clause 1', 'Clause 1', 'Z Clause' ])
+        children = [c.heading for c in children]
+        self.assertEqual(children, [
+            'Monday 25th March', 'Oral Answers to Questions - Silly Walks', 'Bill on Silly Walks',
+            'Friday 29th March', 'Fixed Easter Bill', 'New Clause 1', 'Clause 1', 'Z Clause'])
 
     def test_section_next_previous(self):
         top_level = Section.objects.get(heading='Government Written Answers')
         depts = top_level.get_children
-        self.assertEqual( depts[0].get_previous_node(), None )
-        self.assertEqual( depts[1].get_previous_node(), depts[0] )
-        self.assertEqual( depts[2].get_previous_node(), depts[1] )
-        self.assertEqual( depts[0].get_next_node(), depts[1] )
-        self.assertEqual( depts[1].get_next_node(), depts[2] )
-        self.assertEqual( depts[2].get_next_node(), None )
+        self.assertEqual(depts[0].get_previous_node(), None)
+        self.assertEqual(depts[1].get_previous_node(), depts[0])
+        self.assertEqual(depts[2].get_previous_node(), depts[1])
+        self.assertEqual(depts[0].get_next_node(), depts[1])
+        self.assertEqual(depts[1].get_next_node(), depts[2])
+        self.assertEqual(depts[2].get_next_node(), None)
 
         day = Section.objects.get(heading='Monday 25th March')
         e = Section.objects.get(heading='Fixed Easter Bill')
         debs = day.get_children
-        self.assertEqual( debs[0].get_previous_node(), None )
-        self.assertEqual( debs[1].get_previous_node(), debs[0] )
-        self.assertEqual( debs[0].get_next_node(), debs[1] )
-        self.assertEqual( debs[1].get_next_node(), e )
+        self.assertEqual(debs[0].get_previous_node(), None)
+        self.assertEqual(debs[1].get_previous_node(), debs[0])
+        self.assertEqual(debs[0].get_next_node(), debs[1])
+        self.assertEqual(debs[1].get_next_node(), e)
 
     def test_section_speech_next_previous(self):
         first_next = Section.objects.get(heading='Bill on Silly Walks').speech_set.all()[0]
         speeches = Section.objects.get(heading='Oral Answers to Questions - Silly Walks').speech_set.all()
-        self.assertEqual( speeches[0].get_previous_speech(), None )
-        self.assertEqual( speeches[0].get_next_speech(), speeches[1] )
-        self.assertEqual( speeches[1].get_next_speech(), speeches[2] )
-        self.assertEqual( speeches[2].get_next_speech(), speeches[3] )
-        self.assertEqual( speeches[3].get_next_speech(), first_next )
+        self.assertEqual(speeches[0].get_previous_speech(), None)
+        self.assertEqual(speeches[0].get_next_speech(), speeches[1])
+        self.assertEqual(speeches[1].get_next_speech(), speeches[2])
+        self.assertEqual(speeches[2].get_next_speech(), speeches[3])
+        self.assertEqual(speeches[3].get_next_speech(), first_next)
 
-        speeches = Section.objects.get(heading='Ministry of Silly Walks').children.get(heading='Wednesday 6th of March').speech_set.all()
+        speeches = Section.objects.get(heading='Ministry of Silly Walks') \
+            .children.get(heading='Wednesday 6th of March').speech_set.all()
         p = Speech.objects.filter(section=Section.objects.get(heading='March')).reverse()[0]
         q = Speech.objects.filter(section=Section.objects.get(heading='Thursday 7th of March'))[0]
-        self.assertEqual( speeches[0].get_previous_speech(), p )
-        self.assertEqual( speeches[0].get_next_speech(), q )
+        self.assertEqual(speeches[0].get_previous_speech(), p)
+        self.assertEqual(speeches[0].get_next_speech(), q)
 
     def test_section_descendant_speeches_queryset(self):
         top_level = Section.objects.get(heading='Government Written Answers')
@@ -139,7 +143,7 @@ class SectionModelTests(TestCase):
         instance, _ = Instance.objects.get_or_create(label='get-or-create-with-parents')
 
         # Test that not passing an instance leads to an exception
-        self.assertRaises(Exception, Section.objects.get_or_create_with_parents, {"headings": ("Foo", "Bar", "Baz")} )
+        self.assertRaises(Exception, Section.objects.get_or_create_with_parents, {"headings": ("Foo", "Bar", "Baz")})
 
         # Create an initial set of sections
         baz_section = Section.objects.get_or_create_with_parents(instance=instance, headings=("Foo", "Bar", "Baz"))
@@ -151,7 +155,8 @@ class SectionModelTests(TestCase):
         self.assertEqual(foo_section.instance, instance)
 
         # Create the same ones again, check same child section returned
-        baz_again_section = Section.objects.get_or_create_with_parents(instance=instance, headings=("Foo", "Bar", "Baz"))
+        baz_again_section = Section.objects.get_or_create_with_parents(
+            instance=instance, headings=("Foo", "Bar", "Baz"))
         self.assertEqual(baz_again_section, baz_section)
 
         # Create a similar set and check only new ones created
@@ -205,7 +210,9 @@ class SectionSiteTests(InstanceTestCase):
             start_date=date(2014, 9, 17),
             )
         resp = self.client.get('/sections/%d' % subsection.id)
-        self.assertSequenceEqual([(speech, {'speech':True, 'new_level': True, 'closed_levels': [1]})], list(resp.context['section_tree']))
+        self.assertSequenceEqual(
+            [(speech, {'speech': True, 'new_level': True, 'closed_levels': [1]})],
+            list(resp.context['section_tree']))
 
         # Check that a second speech on the same date doesn't display a date
         Speech.objects.create(
@@ -230,7 +237,7 @@ class SectionSiteTests(InstanceTestCase):
                 len(re.findall(
                     r'<span class="speech__meta-data__date">\s*1[7,8] Sep 2014\s*</span>',
                     resp.content.decode())),
-            2)
+                2)
 
     def test_section_page_lists_subsections(self):
         section = Section.objects.create(heading='A test section', instance=self.instance)
@@ -250,17 +257,25 @@ class SectionSiteTests(InstanceTestCase):
         # Call the section's page
         resp = self.client.get('/sections/%d' % section.id)
 
-        self.assertContains(resp, '<a href="/speech/add?section=%d" class="button small right">Add speech</a>' % section.id, html=True)
-        self.assertContains(resp, '<a href="/sections/add?section=%d" class="button secondary small right">Add subsection</a>' % section.id, html=True)
-        self.assertContains(resp, '<a href="/sections/%d/edit" class="button secondary small right">Edit section</a>' % section.id, html=True)
-
+        self.assertContains(
+            resp, '<a href="/speech/add?section=%d" class="button small right">Add speech</a>' % section.id,
+            html=True)
+        self.assertContains(
+            resp,
+            '<a href="/sections/add?section=%d" class="button secondary small right">Add subsection</a>' % section.id,
+            html=True)
+        self.assertContains(
+            resp, '<a href="/sections/%d/edit" class="button secondary small right">Edit section</a>' % section.id,
+            html=True)
 
     def test_section_deletion(self):
         # Set up the section
         section = Section.objects.create(heading='A test section', instance=self.instance)
         speech = Speech.objects.create(text="A test speech", section=section, instance=self.instance)
         resp = self.client.get('/sections/%d' % section.id)
-        self.assertSequenceEqual([(speech, {'speech':True, 'new_level': True, 'closed_levels': [1]})], list(resp.context['section_tree']))
+        self.assertSequenceEqual(
+            [(speech, {'speech': True, 'new_level': True, 'closed_levels': [1]})],
+            list(resp.context['section_tree']))
 
         # GET form (confirmation page)
         resp = self.client.get(section.get_delete_url())
@@ -291,4 +306,4 @@ class SectionSiteTests(InstanceTestCase):
         section = Section.objects.create(heading='A test section', instance=other_instance)
         self.assertEqual(section.slug, 'a-test-section-2')
         resp = self.client.get('/a-test-section-2')
-        self.assertContains( resp, 'Not Found', status_code=404 )
+        self.assertContains(resp, 'Not Found', status_code=404)

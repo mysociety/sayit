@@ -8,6 +8,7 @@ from django_bleach.templatetags.bleach_tags import bleach_args
 
 register = template.Library()
 
+
 @register.filter(needs_autoescape=True)
 @stringfilter
 def linebreaks_with_lead(value, autoescape=None):
@@ -16,10 +17,12 @@ def linebreaks_with_lead(value, autoescape=None):
     out = out.replace('<p>', '<p class="lead">', 1)
     return mark_safe(out)
 
+
 @register.filter()
 def striptags_highlight(value):
     bleached_value = bleach.clean(value, tags=['em'], strip=True)
     return mark_safe(bleached_value)
+
 
 @register.filter('bleach')
 def bleach_value(value):

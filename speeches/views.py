@@ -263,7 +263,8 @@ class InstanceView(NamespaceMixin, InstanceViewMixin, ListView):
         context['count_speeches'] = Speech.objects.for_instance(self.request.instance).visible(self.request).count()
         context['count_sections'] = Section.objects.for_instance(self.request.instance).count()
         context['count_speakers'] = Speaker.objects.for_instance(self.request.instance).count()
-        context['average_length'] = Speech.objects.for_instance(self.request.instance).annotate(length=Length('text')).aggregate(avg=Avg('length'))['avg']
+        context['average_length'] = Speech.objects.for_instance(self.request.instance) \
+            .annotate(length=Length('text')).aggregate(avg=Avg('length'))['avg']
         return context
 
 
@@ -278,12 +279,14 @@ class SpeakerView(NamespaceMixin, InstanceViewMixin, Base32SingleObjectMixin, Li
     def get_queryset(self):
         queryset = super(SpeakerView, self).get_queryset()
         self.object = self.get_object(queryset)
-        return self.object.speech_set.all().visible(self.request).select_related('section', 'speaker').prefetch_related('tags')
+        return self.object.speech_set.all().visible(self.request) \
+            .select_related('section', 'speaker').prefetch_related('tags')
 
     def get_context_data(self, **kwargs):
         kwargs['speech_list'] = self.object_list
         context = super(SpeakerView, self).get_context_data(**kwargs)
-        context['section_count'] = self.object.speech_set.all().visible(self.request).aggregate(Count('section', distinct=True))['section__count']
+        context['section_count'] = self.object.speech_set.all().visible(self.request) \
+            .aggregate(Count('section', distinct=True))['section__count']
         context['longest_speech'] = self.object.speech_set.annotate(length=Length('text')).order_by('-length')[:1]
         context['title'] = _('View Speaker: %(speaker_name)s') % {'speaker_name': self.object.name}
         return context
@@ -431,7 +434,7 @@ class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
             if slug != obj.slug:
                 new_url = obj.get_absolute_url()
                 if i < len(slugs) - 1:
-                    new_url += '/' + '/'.join(slugs[i+1:])
+                    new_url += '/' + '/'.join(slugs[i + 1:])
                 raise UnmatchingSlugException(new_url)
             parent = obj
         return obj
@@ -462,8 +465,8 @@ class SectionViewAN(SectionView):
         context = super(SectionViewAN, self).get_context_data(**kwargs)
         speakers = set(
             s[0].speaker
-                for s in context['section_tree']
-                if isinstance(s[0], Speech) and s[0].speaker
+            for s in context['section_tree']
+            if isinstance(s[0], Speech) and s[0].speaker
         )
         context['speakers'] = speakers
         context['server_name'] = self.request.META.get('SERVER_NAME')
@@ -523,7 +526,8 @@ class RecordingUpdate(NamespaceMixin, InstanceFormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(RecordingUpdate, self).get_context_data(**kwargs)
-        context['recordingtimestamp_formset'] = RecordingTimestampFormSet(self.request.POST or None, instance=self.object)
+        context['recordingtimestamp_formset'] = RecordingTimestampFormSet(
+            self.request.POST or None, instance=self.object)
         return context
 
     def post(self, request, *args, **kwargs):

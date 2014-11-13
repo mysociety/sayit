@@ -14,6 +14,7 @@ register = template.Library()
 
 DEFAULT_WINDOW = getattr(settings, 'PAGINATION_DEFAULT_WINDOW', 4)
 
+
 def paginate(context, window=DEFAULT_WINDOW, hashtag=''):
     """
     Renders the ``pagination/pagination.html`` template, resulting in a
@@ -54,13 +55,13 @@ def paginate(context, window=DEFAULT_WINDOW, hashtag=''):
         last = set(page_range[-window:])
         # Now we look around our current page, making sure that we don't wrap
         # around.
-        current_start = page_obj.number-1-window
+        current_start = page_obj.number - 1 - window
         if current_start < 0:
             current_start = 0
-        current_end = page_obj.number-1+window
+        current_end = page_obj.number - 1 + window
         if current_end < 0:
             current_end = 0
-        current = set(page_range[current_start:current_end+1])
+        current = set(page_range[current_start:current_end + 1])
         pages = []
         # If there's no overlap between the first set of pages and the current
         # set of pages, then there's a possible need for elusion.

@@ -9,12 +9,14 @@ class SpeechAdmin(admin.ModelAdmin):
     date_hierarchy = 'start_date'
     list_filter = ('tags',)
     formfield_overrides = {
-        models.FileField: { 'widget': AudioFileInput },
+        models.FileField: {'widget': AudioFileInput},
     }
+
 
 class SectionAdmin(admin.ModelAdmin):
     search_fields = ('num', 'heading', 'subheading')
-    prepopulated_fields = { 'slug': ('num', 'heading', 'subheading') }
+    prepopulated_fields = {'slug': ('num', 'heading', 'subheading')}
+
 
 admin.site.register(Section, SectionAdmin)
 admin.site.register(Speaker)

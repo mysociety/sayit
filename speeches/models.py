@@ -29,8 +29,7 @@ if not aliases.get('speaker-rectangle'):
     aliases.set('speaker-rectangle', {'size': (96, 0), 'upscale': True})
 
 from instances.models import InstanceMixin, InstanceManager
-import speeches
-from speeches.utils import AudioHelper
+from speeches.utils.audio import AudioHelper
 from speeches.utils.text import url_to_unicode
 
 from djqmethod import Manager, querymethod
@@ -41,8 +40,9 @@ from sluggable.models import Slug as SlugModel
 logger = logging.getLogger(__name__)
 
 max_date = datetime.date(datetime.MAXYEAR, 12, 31)
-max_time = datetime.time(23,59)
+max_time = datetime.time(23, 59)
 max_datetime = datetime.datetime.combine(max_date, max_time)
+
 
 class cache(object):
     '''Computes attribute value and caches it in the instance.
@@ -56,6 +56,7 @@ class cache(object):
         self.method = method
         self.name = name or method.__name__
         self.__doc__ = method.__doc__
+
     def __get__(self, inst, cls):
         # self: <__main__.cache object at 0xb781340c>
         # inst: <__main__.Foo object at 0xb781348c>
@@ -69,6 +70,7 @@ class cache(object):
         # setattr redefines the instance's attribute so this doesn't get called again
         setattr(inst, self.name, result)
         return result
+
 
 class AuditedModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -84,11 +86,14 @@ class AuditedModel(models.Model):
         self.modified = now
         super(AuditedModel, self).save(*args, **kwargs)
 
+
 class Slug(SlugModel):
     pass
 
+
 def upload_to(inst, fn):
     return inst.get_image_cache_file_path(fn)
+
 
 # Speaker - someone who gave a speech
 @python_2_unicode_compatible
@@ -122,7 +127,7 @@ class Speaker(InstanceMixin, Person):
             try:
                 tmp_filename, headers = urlretrieve(self.image)
 
-                max_filename_length = self.image_cache.field.max_length # Usually 100
+                max_filename_length = self.image_cache.field.max_length  # Usually 100
                 template_needs = len(self.image_cache_file_path_template % '')
 
                 # We'll use the actual instance label size rather than the maximum that it could be
@@ -162,12 +167,11 @@ class Speaker(InstanceMixin, Person):
 
     @models.permalink
     def get_absolute_url(self):
-        return ( 'speeches:speaker-view', (), { 'slug': self.slug } )
+        return ('speeches:speaker-view', (), {'slug': self.slug})
 
     @models.permalink
     def get_edit_url(self):
-        return ( 'speeches:speaker-edit', (), { 'pk': self.person_ptr_id } )
-
+        return ('speeches:speaker-edit', (), {'pk': self.person_ptr_id})
 
 
 @python_2_unicode_compatible
@@ -254,7 +258,7 @@ class Section(AuditedModel, InstanceMixin):
             raise ValidationError(_('You must specify at least one of num/heading/subheading'))
 
     def speech_datetimes(self):
-        return (datetime.datetime.combine(s.start_date, s.start_time or datetime.time(0,0) )
+        return (datetime.datetime.combine(s.start_date, s.start_time or datetime.time(0, 0))
                 for s in self.speech_set.all())
 
     def is_leaf_node(self):
@@ -265,7 +269,7 @@ class Section(AuditedModel, InstanceMixin):
         tree = self.get_descendants
         try:
             lvl = tree[0].level
-            return [ s for s in tree if s.level == lvl ]
+            return [s for s in tree if s.level == lvl]
         except:
             return []
 
@@ -279,7 +283,7 @@ class Section(AuditedModel, InstanceMixin):
 
         if not self.parent_id:
             # Shortcut when we know there's no parent
-            s = [ self ]
+            s = [self]
         else:
             dir = ascending and 'ASC' or 'DESC'
             s = Section.objects.raw(
@@ -289,23 +293,24 @@ class Section(AuditedModel, InstanceMixin):
                     SELECT s.*, l+1 FROM cte JOIN speeches_section s ON cte.parent_id = s.id
                 )
                 SELECT * FROM cte ORDER BY l """ + dir,
-                [ self.id ]
+                [self.id]
             )
         if not include_self:
             s = ascending and s[1:] or s[:-1]
-        return list(s) # So it's evaluated and will be cached
+        return list(s)  # So it's evaluated and will be cached
 
     def _get_descendants(self, include_self=False, include_count='', include_min='', max_depth=''):
         """Return the descendants of the current Section, in depth-first order.
         Optionally, include speech counts, minimum speech times, and only
         descend a certain depth."""
-        select = [ '*' ]
+        select = ['*']
         if include_count:
             select.append("(SELECT COUNT(*) FROM speeches_speech WHERE section_id = cte.id) AS speech_count")
         if include_min:
-            select.append("(SELECT MIN( start_date + COALESCE(start_time, time '00:00') ) FROM speeches_speech WHERE section_id = cte.id) AS speech_min")
+            select.append("""(SELECT MIN( start_date + COALESCE(start_time, time '00:00') )
+                FROM speeches_speech WHERE section_id = cte.id) AS speech_min""")
         if max_depth:
-            max_depth = "WHERE array_upper(path, 1) < %d" % (max_depth+1)
+            max_depth = "WHERE array_upper(path, 1) < %d" % (max_depth + 1)
         s = Section.objects.raw(
             """WITH RECURSIVE cte AS (
                 SELECT speeches_section.*, 0 AS level, ARRAY[id] AS path FROM speeches_section WHERE id=%s
@@ -314,7 +319,7 @@ class Section(AuditedModel, InstanceMixin):
             """ + max_depth + """
             )
             SELECT """ + ','.join(select) + """ FROM cte ORDER BY path""",
-            [ self.id ]
+            [self.id]
         )
         if not include_self:
             s = s[1:]
@@ -326,16 +331,16 @@ class Section(AuditedModel, InstanceMixin):
         hierarchical structure containing the same information."""
         d = self._get_descendants_by_speech(include_count=True)
         prev = self
-        parents = [ ]
+        parents = []
         for node in d:
             if node.level > getattr(prev, 'level', 0):
-                parents.append( prev )
+                parents.append(prev)
                 prev._childs = []
             elif node.level < prev.level:
-                parents = parents[:node.level-prev.level]
-            elif node.path[:-1] != prev.path[:-1]: # Swapping parentage in some way
-                sw = next(( i for i in range(len(node.path)) if node.path[i] != prev.path[i] ))
-                parents = parents[:sw-node.level]
+                parents = parents[:node.level - prev.level]
+            elif node.path[:-1] != prev.path[:-1]:  # Swapping parentage in some way
+                sw = next((i for i in range(len(node.path)) if node.path[i] != prev.path[i]))
+                parents = parents[:sw - node.level]
                 for i in range(sw, node.level):
                     section = Section.objects.get(id=node.path[i])
                     section_copy = Section(
@@ -345,10 +350,10 @@ class Section(AuditedModel, InstanceMixin):
                         parent=section.parent,
                     )
                     section_copy._childs = []
-                    parents[-1]._childs.append( section_copy )
-                    parents.append( section_copy )
+                    parents[-1]._childs.append(section_copy)
+                    parents.append(section_copy)
             prev = node
-            parents[-1]._childs.append( node )
+            parents[-1]._childs.append(node)
         return d
 
     def get_descendants_tree_with_speeches(self, request, all_speeches=False):
@@ -356,11 +361,12 @@ class Section(AuditedModel, InstanceMixin):
         tree = self.get_descendants_tree
 
         # Fetch all speeches in this section, or all descendant sections
-        section_list = [ self ]
+        section_list = [self]
         if all_speeches:
-            section_list.extend( tree )
+            section_list.extend(tree)
 
-        speech_list = Speech.objects.filter(section__in=section_list).visible(request).select_related('speaker').prefetch_related('tags')
+        speech_list = Speech.objects.filter(
+            section__in=section_list).visible(request).select_related('speaker').prefetch_related('tags')
         self._speeches_by_section = {}
         for s in speech_list:
             self._speeches_by_section.setdefault(s.section_id, []).append(s)
@@ -371,10 +377,12 @@ class Section(AuditedModel, InstanceMixin):
 
         # Finally, work back into a flat format for template display
         tree_final = []
+
         def rec(s, l):
             for i, c in enumerate(s._childs):
                 attrs = {}
-                if i == 0: attrs['new_level'] = True
+                if i == 0:
+                    attrs['new_level'] = True
                 if isinstance(c, Speech):
                     attrs['speech'] = True
 
@@ -382,10 +390,10 @@ class Section(AuditedModel, InstanceMixin):
                     if c.type not in speech_type_choices:
                         c.type = 'other'
 
-                tree_final.append( ( c, attrs ) )
+                tree_final.append((c, attrs))
 
                 if isinstance(c, Section):
-                    rec(c, l+1)
+                    rec(c, l + 1)
 
                 if i == len(s._childs) - 1:
                     tree_final[-1][1].setdefault('closed_levels', []).append(l)
@@ -434,7 +442,7 @@ class Section(AuditedModel, InstanceMixin):
         ]
 
         # Sort by our sorting keys to interleave the two
-        tree_sorted = [ s[1] for s in sorted( tree_with_key + speech_list_with_key ) ]
+        tree_sorted = [s[1] for s in sorted(tree_with_key + speech_list_with_key)]
         section._childs = tree_sorted
 
     @cache
@@ -460,30 +468,31 @@ class Section(AuditedModel, InstanceMixin):
 
         # Set the speech_min to all the earliests
         for d in dqs:
-            if d.speech_min: continue
+            if d.speech_min:
+                continue
             for parent_id in reversed(d.path):
                 parent = lookup[parent_id]
                 if parent.speech_min:
                     d.speech_min = parent.speech_min
                     break
 
-        return sorted( dqs, key=lambda s: getattr(s, 'speech_min', max_datetime) )
+        return sorted(dqs, key=lambda s: getattr(s, 'speech_min', max_datetime))
 
     @models.permalink
     def get_absolute_url(self):
-        return ( 'speeches:section-view', (), { 'full_slug': self.get_path } )
+        return ('speeches:section-view', (), {'full_slug': self.get_path})
 
     @models.permalink
     def get_edit_url(self):
-        return ( 'speeches:section-edit', (), { 'pk': self.id } )
+        return ('speeches:section-edit', (), {'pk': self.id})
 
     @models.permalink
     def get_delete_url(self):
-        return ( 'speeches:section-delete', (), { 'pk': self.id } )
+        return ('speeches:section-delete', (), {'pk': self.id})
 
     @cache
     def get_path(self):
-        return '/'.join([ s.slug for s in self.get_ancestors ])
+        return '/'.join([s.slug for s in self.get_ancestors])
 
     def _get_next_previous_node(self, direction):
         if not self.parent:
@@ -492,11 +501,12 @@ class Section(AuditedModel, InstanceMixin):
         tree = root.get_descendants
         idx = tree.index(self)
         lvl = tree[idx].level
-        same_level = [ s for s in tree if s.level == lvl ]
+        same_level = [s for s in tree if s.level == lvl]
         idx = same_level.index(self)
-        if direction == -1 and idx == 0: return None
+        if direction == -1 and idx == 0:
+            return None
         try:
-            return same_level[idx+direction]
+            return same_level[idx + direction]
         except:
             return None
 
@@ -528,7 +538,7 @@ class AudioMP3Mixin(object):
                 # This is needed if it's newly uploaded
                 self.audio.save(self.audio.name, File(self.audio), save=False)
 
-            audio_helper = speeches.utils.AudioHelper()
+            audio_helper = AudioHelper()
 
             if needs_conversion:
                 mp3_filename = audio_helper.make_mp3(self.audio.path)
@@ -637,17 +647,21 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     class Meta:
         verbose_name = _('speech')
         verbose_name_plural = _('speeches')
-        ordering = ( 'start_date', 'start_time', 'id' )
+        ordering = ('start_date', 'start_time', 'id')
 
     def __str__(self):
         out = 'Speech'
         for att in ('num', 'heading', 'subheading'):
             if getattr(self, att, None):
                 out += ', %s' % getattr(self, att)
-        if self.speaker: out += ' by %s' % self.speaker
-        if self.start_date: out += ' at %s' % self.start_date
-        if self.text: out += ' (with text)'
-        if self.audio: out += ' (with audio)'
+        if self.speaker:
+            out += ' by %s' % self.speaker
+        if self.start_date:
+            out += ' at %s' % self.start_date
+        if self.text:
+            out += ' (with text)'
+        if self.audio:
+            out += ' (with audio)'
         return out
 
     @property
@@ -677,28 +691,28 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     @property
     def start_datetime(self):
         if self.start_date:
-            return datetime.datetime.combine(self.start_date, self.start_time or datetime.time(0,0))
+            return datetime.datetime.combine(self.start_date, self.start_time or datetime.time(0, 0))
         else:
             return None
 
     @property
     def end_datetime(self):
         if self.end_date:
-            return datetime.datetime.combine(self.end_date, self.end_time or datetime.time(0,0))
+            return datetime.datetime.combine(self.end_date, self.end_time or datetime.time(0, 0))
         else:
             return None
 
     @models.permalink
     def get_absolute_url(self):
-        return ( 'speeches:speech-view', (), { 'pk': self.id } )
+        return ('speeches:speech-view', (), {'pk': self.id})
 
     @models.permalink
     def get_edit_url(self):
-        return ( 'speeches:speech-edit', (), { 'pk': self.id } )
+        return ('speeches:speech-edit', (), {'pk': self.id})
 
     @models.permalink
     def get_delete_url(self):
-        return ( 'speeches:speech-delete', (), { 'pk': self.id } )
+        return ('speeches:speech-delete', (), {'pk': self.id})
 
     def get_next_speech(self):
         """Return the next speech to this one in the same section, in a start
@@ -715,17 +729,19 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
             q2 = Q(start_date__isnull=True)
         if self.start_time:
             # If the time is later, or not present, or the same with a greater ID
-            q3 = Q(start_time__gt=self.start_time) | Q(start_time__isnull=True) | Q(start_time=self.start_time, id__gt=self.id)
+            q3 = Q(start_time__gt=self.start_time) | Q(start_time__isnull=True) \
+                | Q(start_time=self.start_time, id__gt=self.id)
         else:
             # If the time is not present and the ID is greater
             q3 = Q(start_time__isnull=True, id__gt=self.id)
-        q = q1 | ( q2 & q3 )
+        q = q1 | (q2 & q3)
 
         if self.section:
             s = list(Speech.objects.filter(q, section=self.section)[:1])
         else:
             s = list(Speech.objects.filter(q, instance=self.instance, section__isnull=True)[:1])
-        if s: return s[0]
+        if s:
+            return s[0]
         if self.section:
             next_section = self.section.get_next_node()
             if next_section:
@@ -751,13 +767,14 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
         else:
             # If there is a time, or there isn't but the ID is smaller
             q3 = Q(start_time__isnull=False) | Q(start_time__isnull=True, id__lt=self.id)
-        q = q1 | ( q2 & q3 )
+        q = q1 | (q2 & q3)
 
         if self.section:
             s = list(Speech.objects.filter(q, section=self.section).reverse()[:1])
         else:
             s = list(Speech.objects.filter(q, instance=self.instance, section__isnull=True).reverse()[:1])
-        if s: return s[0]
+        if s:
+            return s[0]
         if self.section:
             prev_section = self.section.get_previous_node()
             if prev_section:
@@ -768,6 +785,7 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
         """In the past, kicked off a celery task to transcribe this speech"""
         return
 
+
 # A timestamp of a particular speaker at a particular time.
 # Used to record events like "This speaker started speaking at 00:33"
 # in a specific recording, before it's chopped up into a speech
@@ -775,7 +793,9 @@ class RecordingTimestamp(InstanceMixin, AuditedModel):
     speaker = models.ForeignKey(Speaker, blank=True, null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(db_index=True, blank=False)
     speech = models.ForeignKey(Speech, blank=True, null=True, on_delete=models.SET_NULL)
-    recording = models.ForeignKey('Recording',blank=False, null=False, related_name='timestamps', default=0) # kludge default 0, should not be used
+    recording = models.ForeignKey(
+        'Recording', blank=False, null=False, related_name='timestamps',
+        default=0)  # kludge default 0, should not be used
 
     class Meta:
         ordering = ('timestamp',)
@@ -790,8 +810,10 @@ class RecordingTimestamp(InstanceMixin, AuditedModel):
 @python_2_unicode_compatible
 class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
     audio = models.FileField(upload_to='recordings/%Y-%m-%d/', max_length=255, blank=False)
-    start_datetime = models.DateTimeField(blank=True, null=True, help_text='Datetime of first timestamp associated with recording')
-    audio_duration = models.IntegerField(blank=True, null=False, default=0, help_text='Duration of recording, in seconds')
+    start_datetime = models.DateTimeField(
+        blank=True, null=True, help_text='Datetime of first timestamp associated with recording')
+    audio_duration = models.IntegerField(
+        blank=True, null=False, default=0, help_text='Duration of recording, in seconds')
 
     def save(self, *args, **kwargs):
         kwargs['duration'] = True
@@ -802,7 +824,7 @@ class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
 
     @models.permalink
     def get_absolute_url(self):
-        return ( 'speeches:recording-view', (), { 'pk': self.id } )
+        return ('speeches:recording-view', (), {'pk': self.id})
 
     def add_speeches_to_section(self, section):
         return Speech.objects.filter(recordingtimestamp__recording=self).update(section=section)
@@ -818,8 +840,8 @@ class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
         for index, audio_file in enumerate(audio_files):
             new = True
             speech = Speech(
-                instance = instance,
-                public = False,
+                instance=instance,
+                public=False,
                 type='speech',
             )
             timestamp = None
@@ -850,7 +872,7 @@ class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
             speech.save()
 
             if new:
-                created_speeches.append( speech )
+                created_speeches.append(speech)
                 if timestamp:
                     timestamp.speech = speech
                     timestamp.save()

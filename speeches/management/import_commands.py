@@ -19,11 +19,19 @@ class ImportCommand(BaseCommand):
         make_option('--commit', action='store_true', help='Whether to commit to the database or not'),
         make_option('--instance', action='store', help='Label of instance to add data to'),
         make_option('--file', action='store', help='document to import'),
-        make_option('--dir',  action='store', help='directory of documents to import'),
-        make_option('--start-date',  action='store', default='', help='earliest date to process, in yyyy-mm-dd format'),
-        make_option('--dump-users',  action='store', default='', help='dump a json list to <file> (only valid with --dir for now)'),
-        make_option('--clobber-existing', action='store_true', dest='clobber', help='Whether to replace top-level sections with the same heading'),
-        make_option('--skip-existing', action='store_false', dest='clobber', help='Whether to skip top-level sections with the same heading'),
+        make_option('--dir', action='store', help='directory of documents to import'),
+        make_option(
+            '--start-date', action='store', default='',
+            help='earliest date to process, in yyyy-mm-dd format'),
+        make_option(
+            '--dump-users', action='store', default='',
+            help='dump a json list to <file> (only valid with --dir for now)'),
+        make_option(
+            '--clobber-existing', action='store_true', dest='clobber',
+            help='Whether to replace top-level sections with the same heading'),
+        make_option(
+            '--skip-existing', action='store_false', dest='clobber',
+            help='Whether to skip top-level sections with the same heading'),
     )
 
     def handle(self, *args, **options):
@@ -50,20 +58,19 @@ class ImportCommand(BaseCommand):
                 imports = [self.import_document(f, **options) for f in files]
 
                 if options['commit']:
-                    sections = [a for a,_ in imports]
+                    sections = [a for a, _ in imports]
                     if verbosity > 1:
-                        logger.info("Imported sections %s\n\n"
-                            % str( [s.id for s in sections]))
+                        logger.info("Imported sections %s\n\n" % str([s.id for s in sections]))
 
                 dump_users = os.path.expanduser(options['dump_users'])
                 if dump_users:
                     speakers = {}
-                    for (_,d) in imports:
+                    for (_, d) in imports:
                         speakers.update(d)
 
                     out = open(dump_users, 'w')
-                    speakers_list = [ (k, speakers[k]) for k in speakers]
-                    out.write( json.dumps( speakers_list, indent=4 ) )
+                    speakers_list = [(k, speakers[k]) for k in speakers]
+                    out.write(json.dumps(speakers_list, indent=4))
 
                     if verbosity > 1:
                         logger.info("Saved speakers list to %s\n" % dump_users)
@@ -78,7 +85,7 @@ class ImportCommand(BaseCommand):
         start_date = options['start_date']
         valid = lambda f: f >= start_date if start_date else lambda _: True
 
-        return [ os.path.join(root, filename)
+        return [os.path.join(root, filename)
                 for (root, _, files)
                 in os.walk(dir)
                 for filename in files
@@ -109,5 +116,3 @@ class ImportCommand(BaseCommand):
             return (None, {})
 
         return (section, importer.speakers)
-
-

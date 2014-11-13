@@ -10,6 +10,7 @@ from haystack.query import SearchQuerySet
 
 from speeches.models import Speech, Speaker, Section
 
+
 class SectionResource(NamespacedModelResource):
     parent = fields.ForeignKey('self', 'parent', null=True)
     children = fields.ToManyField('self', 'children')
@@ -21,7 +22,7 @@ class SectionResource(NamespacedModelResource):
         queryset = Section.objects.all()
         resource_name = 'section'
         excludes = []
-        allowed_methods = [ 'get' ]
+        allowed_methods = ['get']
         authentication = Authentication()
         authorization = ReadOnlyAuthorization()
         filtering = {
@@ -30,6 +31,7 @@ class SectionResource(NamespacedModelResource):
             'subheading': ALL,
             'parent': ALL,
         }
+
 
 class SpeakerResource(NamespacedModelResource):
     def get_object_list(self, request):
@@ -46,6 +48,7 @@ class SpeakerResource(NamespacedModelResource):
             'name': ALL,
         }
 
+
 class SpeechResource(NamespacedModelResource):
     speaker = fields.ForeignKey(SpeakerResource, 'speaker', null=True, full=True)
 
@@ -53,7 +56,7 @@ class SpeechResource(NamespacedModelResource):
         objects = super(SpeechResource, self).apply_filters(request, applicable_filters)
         if 'q' in request.GET:
             objects = objects.auto_query(request.GET['q'])
-            objects = [ result.object for result in objects ]
+            objects = [result.object for result in objects]
         return objects
 
     def get_object_list(self, request):
@@ -64,7 +67,7 @@ class SpeechResource(NamespacedModelResource):
     class Meta:
         queryset = Speech.objects.filter(public=True)
         resource_name = 'speech'
-        excludes = [ 'celery_task_id', 'public' ]
+        excludes = ['celery_task_id', 'public']
         allowed_methods = ['get', 'post']
         authentication = Authentication()
         authorization = ReadOnlyAuthorization()

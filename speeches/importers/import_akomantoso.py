@@ -174,7 +174,8 @@ class ImportAkomaNtoso (ImporterBase):
                     'pointOfOrder', 'adjournment',
                     ):
                 headings = self.construct_heading(child)
-                childSection = self.make(Section,
+                childSection = self.make(
+                    Section,
                     parent=section,
                     start_date=self.start_date,
                     **headings

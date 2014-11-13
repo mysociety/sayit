@@ -4,6 +4,7 @@ import sys
 
 file_dir = os.path.abspath(os.path.dirname(__file__))
 
+
 def read_file(filename):
     filepath = os.path.join(file_dir, filename)
     return open(filepath).read()

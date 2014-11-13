@@ -26,7 +26,7 @@ def detectFaces(im):
     cv.SetData(cv_im, im.tostring(), im.size[0])
 
     # variables
-    min_size = (20,20)
+    min_size = (20, 20)
     haar_scale = 1.1
     min_neighbors = 3
     haar_flags = 0
@@ -36,8 +36,8 @@ def detectFaces(im):
 
     # Detect the faces
     faces = cv.HaarDetectObjects(
-            cv_im, faceCascade, cv.CreateMemStorage(0),
-            haar_scale, min_neighbors, haar_flags, min_size
+        cv_im, faceCascade, cv.CreateMemStorage(0),
+        haar_scale, min_neighbors, haar_flags, min_size
         )
 
     return faces
@@ -56,15 +56,15 @@ def face_crop(im, size, face=False, **kwargs):
             if face[2] > cropBox[2] or face[3] > cropBox[3]:
                 cropBox = face
 
-        xDelta = int(max(cropBox[2]*0.25, 0))
-        yDelta = int(max(cropBox[3]*0.25, 0))
+        xDelta = int(max(cropBox[2] * 0.25, 0))
+        yDelta = int(max(cropBox[3] * 0.25, 0))
 
         # Convert cv box to PIL box [left, upper, right, lower]
         box = [
-            max(cropBox[0]-xDelta, 0),
-            max(cropBox[1]-yDelta, 0),
-            min(cropBox[0]+cropBox[2]+xDelta, source_x-1),
-            min(cropBox[1]+cropBox[3]+yDelta, source_y-1)
+            max(cropBox[0] - xDelta, 0),
+            max(cropBox[1] - yDelta, 0),
+            min(cropBox[0] + cropBox[2] + xDelta, source_x - 1),
+            min(cropBox[1] + cropBox[3] + yDelta, source_y - 1)
             ]
         im = im.crop(box)
 

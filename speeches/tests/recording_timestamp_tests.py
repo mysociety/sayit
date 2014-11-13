@@ -7,11 +7,12 @@ from django.conf import settings
 
 import speeches
 from speeches.models import Speech, Speaker, Recording
-from speeches.utils import AudioHelper
+from speeches.utils.audio import AudioHelper
 from speeches.tests import InstanceTestCase
 
 import logging
 logging.disable(logging.WARNING)
+
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class RecordingTimestampTests(InstanceTestCase):
@@ -56,11 +57,11 @@ class RecordingTimestampTests(InstanceTestCase):
         def check_audio_durations(recording, durations):
             audio_helper = AudioHelper()
             for (rt, d) in zip(recording.timestamps.all(), durations):
-                self.assertEqual( 
+                self.assertEqual(
                     audio_helper.get_audio_duration(rt.speech.audio.path),
                     d)
 
-        check_audio_durations(recording, [2,2,1])
+        check_audio_durations(recording, [2, 2, 1])
 
         form_data = {
             'timestamps-TOTAL_FORMS': 4,
@@ -84,16 +85,16 @@ class RecordingTimestampTests(InstanceTestCase):
             'timestamps-3-timestamp': "",
         }
         timestamps_2_id = timestamps[2].id
-        resp = self.client.post('/recording/%d/edit' % recording.id,
-            form_data)
+        resp = self.client.post(
+            '/recording/%d/edit' % recording.id, form_data)
         recording = check_response(resp, 302, 'text/html; charset=utf-8')
-        check_audio_durations(recording, [3,1,1])
+        check_audio_durations(recording, [3, 1, 1])
 
         form_data['timestamps-1-DELETE'] = 'on'
-        resp = self.client.post('/recording/%d/edit' % recording.id,
-            form_data)
+        resp = self.client.post(
+            '/recording/%d/edit' % recording.id, form_data)
         recording = check_response(resp, 302, 'text/html; charset=utf-8')
-        check_audio_durations(recording, [4,1])
+        check_audio_durations(recording, [4, 1])
 
         form_data = {
             'timestamps-TOTAL_FORMS': 2,
@@ -109,8 +110,8 @@ class RecordingTimestampTests(InstanceTestCase):
             'timestamps-1-speaker': "",
             'timestamps-1-timestamp': 1,
         }
-        resp = self.client.post('/recording/%d/edit' % recording.id,
-            form_data)
+        resp = self.client.post(
+            '/recording/%d/edit' % recording.id, form_data)
         recording = check_response(resp, 302, 'text/html; charset=utf-8')
         check_audio_durations(recording, [4])
 
@@ -128,10 +129,10 @@ class RecordingTimestampTests(InstanceTestCase):
             'timestamps-1-speaker': "",
             'timestamps-1-timestamp': 4,
         }
-        resp = self.client.post('/recording/%d/edit' % recording.id,
-            form_data)
+        resp = self.client.post(
+            '/recording/%d/edit' % recording.id, form_data)
         recording = check_response(resp, 302, 'text/html; charset=utf-8')
-        check_audio_durations(recording, [3,1])
+        check_audio_durations(recording, [3, 1])
 
         # test new timestamp BETWEEN
         form_data = {
@@ -151,10 +152,10 @@ class RecordingTimestampTests(InstanceTestCase):
             'timestamps-2-speaker': "",
             'timestamps-2-timestamp': 3,
         }
-        resp = self.client.post('/recording/%d/edit' % recording.id,
-            form_data)
+        resp = self.client.post(
+            '/recording/%d/edit' % recording.id, form_data)
         recording = check_response(resp, 302, 'text/html; charset=utf-8')
-        check_audio_durations(recording, [2,1,1])
+        check_audio_durations(recording, [2, 1, 1])
 
         # test new timestamp BEFORE
         form_data = {
@@ -178,10 +179,10 @@ class RecordingTimestampTests(InstanceTestCase):
             'timestamps-3-speaker': "",
             'timestamps-3-timestamp': 0,
         }
-        resp = self.client.post('/recording/%d/edit' % recording.id,
-            form_data)
+        resp = self.client.post(
+            '/recording/%d/edit' % recording.id, form_data)
         recording = check_response(resp, 302, 'text/html; charset=utf-8')
-        check_audio_durations(recording, [1,2,1,1])
+        check_audio_durations(recording, [1, 2, 1, 1])
 
     def test_can_get_form(self, filename='lamb.mp3'):
         audio = open(os.path.join(self._in_fixtures, filename), 'rb')
@@ -219,7 +220,7 @@ class RecordingTimestampTests(InstanceTestCase):
         speaker_2 = Speaker.objects.create(name='Yasmin', instance=self.instance)
 
         timestamps = recording.timestamps.all()
-        
+
         form_data = {
             'timestamps-TOTAL_FORMS': 2,
             'timestamps-INITIAL_FORMS': 2,
@@ -233,8 +234,8 @@ class RecordingTimestampTests(InstanceTestCase):
             'timestamps-1-speaker': speaker_2.id,
             'timestamps-1-timestamp': 1,
         }
-        resp = self.client.post('/recording/%d/edit' % recording.id,
-            form_data)
+        resp = self.client.post(
+            '/recording/%d/edit' % recording.id, form_data)
         recording = Recording.objects.order_by('-id')[0]
 
         timestamps = recording.timestamps.all()

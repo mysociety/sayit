@@ -281,7 +281,7 @@ class PopoloImporter(object):
             kwargs = {
                 'organization': Organization.objects.get(
                     identifiers__identifier=data['organization_id']),
-                'person': Speaker.objects.get( # Note - will not work with django.VERSION < (1, 6)
+                'person': Speaker.objects.get(  # Note - will not work with django.VERSION < (1, 6)
                     identifiers__identifier=data['person_id']),
             }
 

@@ -2,6 +2,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class ImporterBase (object):
     def __init__(self, instance=None, commit=True, clobber=None, **kwargs):
         self.instance = instance

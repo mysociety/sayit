@@ -1,9 +1,16 @@
 from django.conf.urls import patterns, url, include
 from django.views.decorators.csrf import csrf_exempt
 
-from speeches.views import *
+from speeches.views import (
+    AddAnSRedirectView, SpeechAudioCreate, SpeechCreate, SpeechUpdate,
+    SpeechDelete, SpeechView, SpeakerCreate, SpeakerUpdate, SpeakerDelete,
+    SpeakerView, SpeakerList, SectionCreate, SectionUpdate, SectionDelete,
+    SectionView, SectionViewAN, ParentlessList, RecordingList, RecordingView,
+    RecordingUpdate, RecordingAPICreate, InstanceView, Select2AutoResponseView,
+    PopoloImportView,
+    )
+
 from speeches.search import InstanceSearchView
-from speeches.views import Select2AutoResponseView
 
 try:
     from tastypie.api import NamespacedApi
@@ -17,7 +24,8 @@ try:
 except:
     v01_api = None
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(r'^$', InstanceView.as_view(), name='home'),
 
     # Override the usual AutoResponseView from django_select2 so as to limit
@@ -58,10 +66,10 @@ urlpatterns = patterns('',
 )
 
 if v01_api is not None:
-    urlpatterns += patterns('', url(r'^api/', include(v01_api.urls)) )
+    urlpatterns += patterns('', url(r'^api/', include(v01_api.urls)))
 
-urlpatterns += patterns('',
+urlpatterns += patterns(
+    '',
     url(r'^(?P<full_slug>.+)\.an$', SectionViewAN.as_view(), name='section-view'),
     url(r'^(?P<full_slug>.+)$', SectionView.as_view(), name='section-view'),
 )
-
