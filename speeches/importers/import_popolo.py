@@ -2,12 +2,13 @@ import os.path
 import json
 import requests
 
+import django
 from django.utils import six
 from django.forms import ValidationError
 from django.utils.translation import ugettext as _
 
 from instances.models import Instance
-from popolo.models import Membership, Organization, Post
+from popolo.models import Membership, Organization, Post, Identifier
 
 from speeches.models import Speaker
 
@@ -15,9 +16,44 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def get_or_create(qs, defaults=None, **kwargs):
+    if django.VERSION[:2] < (1, 6):
+        obj = None
+
+        if 'identifiers__identifier' in kwargs:
+            identifier = kwargs.pop('identifiers__identifier')
+            identifier_qs = Identifier.objects.filter(identifier=identifier)
+
+            for identifier in identifier_qs:
+                try:
+                    obj = qs.get(pk=identifier.content_object.id, **kwargs)
+                    break
+                except (identifier_qs.model.DoesNotExist, qs.model.DoesNotExist):
+                    pass
+        else:
+            try:
+                obj = qs.get(**kwargs)
+            except qs.model.DoesNotExist:
+                pass
+
+        if obj:
+            created = False
+        else:
+            if defaults:
+                kwargs.update(**defaults)
+
+            obj = qs.create(**kwargs)
+            created = True
+
+        return obj, created
+    else:
+        return qs.get_or_create(defaults=defaults, **kwargs)
+
+
 def update_or_create(qs, defaults=None, **kwargs):
     defaults = defaults or {}
-    obj, created = qs.get_or_create(defaults=defaults, **kwargs)
+    obj, created = get_or_create(qs, defaults=defaults, **kwargs)
+
     if created:
         return obj, created
     for k, v in six.iteritems(defaults):
@@ -245,7 +281,7 @@ class PopoloImporter(object):
             kwargs = {
                 'organization': Organization.objects.get(
                     identifiers__identifier=data['organization_id']),
-                'person': Speaker.objects.get(
+                'person': Speaker.objects.get( # Note - will not work with django.VERSION < (1, 6)
                     identifiers__identifier=data['person_id']),
             }
 
