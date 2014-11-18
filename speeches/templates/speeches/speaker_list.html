@@ -13,6 +13,7 @@
     <div class="page-header">
       {% if request.is_user_instance %}
         <a href="{% url "speeches:speaker-add" %}" class="button small right">{% trans "Add a new speaker" %}</a>
+        <a href="{% url "speeches:import-popolo" %}" class="button secondary small right">{% trans "Import Speakers" %}</a>
       {% endif %}
         <h1>{% trans "All Speakers" %}</h1>
     </div>
