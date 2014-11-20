@@ -2,7 +2,6 @@
 .sass-cache
 /speeches/static/speeches/sass/*.css
 /example_project/settings/local.py
-django.mo
 .apdisk
 .DS_Store
 chromedriver.log
