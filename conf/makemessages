@@ -8,8 +8,18 @@ import os
 import sys
 from shutil import rmtree
 
+import django
 from django.conf import settings
 from django.core.management import call_command
+
+# Django set up
+PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+sys.path.insert(0, PROJECT_ROOT)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'example_project.settings'
+
+if django.VERSION < (1, 7):
+    raise Exception, "This must be run on 1.7+ (for blocktrans' trimmed)"
+django.setup()
 
 os.chdir(os.path.join(settings.PROJECT_ROOT, 'speeches'))
 
