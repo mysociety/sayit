@@ -5,7 +5,7 @@ import logging
 from dateutil import parser as dateutil
 from lxml import etree
 from lxml import objectify
-from six.moves.urllib.request import urlopen
+import requests
 
 from speeches.importers.import_base import ImporterBase
 from speeches.models import Section, Speech, Speaker
@@ -18,7 +18,7 @@ class ImportAkomaNtoso (ImporterBase):
 
     def import_document(self, document_path):
         if document_path.startswith('http'):
-            self.xml = objectify.fromstring(urlopen(document_path).read())
+            self.xml = objectify.fromstring(requests.get(document_path).content)
         else:
             self.xml = objectify.parse(document_path).getroot()
         self.ns = self.xml.nsmap.get(None, None)

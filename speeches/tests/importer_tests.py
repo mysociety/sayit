@@ -2,19 +2,38 @@ import datetime
 import json
 import re
 import requests
-from mock import patch, Mock
+from mock import patch
 
 from speeches.tests import InstanceTestCase
-from speeches.importers.import_akomantoso import ImportAkomaNtoso
 from speeches.models import Speech, Speaker, Section
-from speeches.importers import import_akomantoso, import_popolo
-
-m = Mock()
-m.return_value = open(
-    'speeches/fixtures/test_inputs/Debate_Bungeni_1995-10-31.xml', 'rb')
+from speeches.importers.import_akomantoso import ImportAkomaNtoso
+from speeches.importers.import_popolo import PopoloImporter
 
 
-@patch.object(import_akomantoso, 'urlopen', m)
+class FakeRequestsOutput(object):
+    def __init__(self, source):
+        assert source.startswith('http://example.com/')
+
+        # We'll put things that would have been served from a url ending
+        # in a / at the same place ending in and _, so as to avoid a
+        # name clash with directories.
+        source = re.sub(r'/$', '_', source)
+        source = re.sub(
+            r'^http://example.com/',
+            'speeches/tests/data/fake_http/',
+            source)
+
+        self.file_path = source
+
+    def json(self):
+        return json.load(open(self.file_path))
+
+    @property
+    def content(self):
+        return open(self.file_path, 'rb').read()
+
+
+@patch.object(requests, 'get', FakeRequestsOutput)
 class AkomaNtosoImportTestCase(InstanceTestCase):
     def setUp(self):
         super(AkomaNtosoImportTestCase, self).setUp()
@@ -22,20 +41,7 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
 
     def test_import_sample_file(self):
         self.importer.import_document(
-            'speeches/fixtures/test_inputs/Debate_Bungeni_1995-10-31.xml')
-
-        # To get us started, let's just check that we get the right kind of
-        # speech in the right order.
-        self.assertEqual(
-            [x.type for x in Speech.objects.all()],
-            [u'scene', u'other', u'narrative', u'speech', u'question',
-             u'summary', u'speech', u'answer', u'narrative', u'speech',
-             u'narrative']
-            )
-
-    def test_import_remote_file(self):
-        self.importer.import_document(
-            'http://examples.akomantoso.org/php/download.php?file=Debate_Bungeni_1995-10-31.xml')  # noqa
+            'speeches/tests/data/fake_http/Debate_Bungeni_1995-10-31.xml')
 
         # To get us started, let's just check that we get the right kind of
         # speech in the right order.
@@ -157,24 +163,41 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
             self.assertEqual(speeches[i].speaker, s)
             self.assertEqual(speeches[i].speaker_display, sd)
 
+    def test_import_remote_file(self):
+        self.importer.import_document(
+            'http://example.com/Debate_Bungeni_1995-10-31.xml')
 
-class FakeRequestsOutput(object):
-    def __init__(self, source):
-        assert source.startswith('http://example.com/')
+        # To get us started, let's just check that we get the right kind of
+        # speech in the right order.
+        self.assertEqual(
+            [x.type for x in Speech.objects.all()],
+            [u'scene', u'other', u'narrative', u'speech', u'question',
+             u'summary', u'speech', u'answer', u'narrative', u'speech',
+             u'narrative']
+            )
 
-        # We'll put things that would have been served from a url ending
-        # in a / at the same place ending in and _, so as to avoid a
-        # name clash with directories.
-        source = re.sub(r'/$', '_', source)
-        source = re.sub(
-            r'^http://example.com/',
-            'speeches/tests/data/fake_http/',
-            source)
 
-        self.file_path = source
+@patch.object(requests, 'get', FakeRequestsOutput)
+class AkomaNtosoImportViewTestCase(InstanceTestCase):
+    def test_import_page_smoke_test(self):
+        resp = self.client.get('/import/akomantoso')
 
-    def json(self):
-        return json.load(open(self.file_path))
+        self.assertContains(resp, 'Import Speeches')
+
+    def test_import_data(self):
+        self.client.post(
+            '/import/akomantoso',
+            {'location': 'http://example.com/Debate_Bungeni_1995-10-31.xml'}
+            )
+
+        # To get us started, let's just check that we get the right kind of
+        # speech in the right order.
+        self.assertEqual(
+            [x.type for x in Speech.objects.all()],
+            [u'scene', u'other', u'narrative', u'speech', u'question',
+             u'summary', u'speech', u'answer', u'narrative', u'speech',
+             u'narrative']
+            )
 
 
 @patch.object(requests, 'get', FakeRequestsOutput)
@@ -182,7 +205,7 @@ class PopitImportTestCase(InstanceTestCase):
     popit_url = 'http://example.com/welsh_assembly_popit/'
 
     def test_popit_import_persons(self):
-        popit_importer = import_popolo.PopoloImporter(self.popit_url)
+        popit_importer = PopoloImporter(self.popit_url)
         popit_importer.import_all()
 
         self.assertEqual(
@@ -196,13 +219,24 @@ class PopoloImportTestCase(InstanceTestCase):
     popit_url = 'http://example.com/welsh_assembly/persons'
 
     def test_popit_import_persons(self):
-        popolo_importer = import_popolo.PopoloImporter(self.popit_url)
+        popolo_importer = PopoloImporter(self.popit_url)
         popolo_importer.import_all()
 
         self.assertEqual(Speaker.objects.filter(instance=popolo_importer.instance).count(), 3)
 
     def test_popolo_import_remote_single_json_file(self):
-        popolo_importer = import_popolo.PopoloImporter(
+        popolo_importer = PopoloImporter(
+            'http://example.com/welsh_assembly.json'
+            )
+        popolo_importer.import_all()
+
+        self.assertEqual(
+            Speaker.objects.filter(instance=popolo_importer.instance).count(),
+            3,
+            )
+
+    def test_popolo_import_remote_single_json_file(self):
+        popolo_importer = PopoloImporter(
             'http://example.com/welsh_assembly.json'
             )
         popolo_importer.import_all()
@@ -215,7 +249,7 @@ class PopoloImportTestCase(InstanceTestCase):
 
 class PopoloImportFromLocalSourceTestCase(InstanceTestCase):
     def test_import_persons(self):
-        popolo_importer = import_popolo.PopoloImporter(
+        popolo_importer = PopoloImporter(
             'speeches/tests/data/fake_http/welsh_assembly.json'
             )
         popolo_importer.import_all()
