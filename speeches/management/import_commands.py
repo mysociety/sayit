@@ -27,12 +27,15 @@ class ImportCommand(BaseCommand):
             '--dump-users', action='store', default='',
             help='dump a json list to <file> (only valid with --dir for now)'),
         make_option(
-            '--clobber-existing', action='store_true', dest='clobber',
-            help='Whether to replace top-level sections with the same heading'),
+            '--clobber-existing', action='store_const', const='replace', dest='clobber',
+            help='Whether to replace sections with the same heading'),
         make_option(
-            '--skip-existing', action='store_false', dest='clobber',
-            help='Whether to skip top-level sections with the same heading'),
-    )
+            '--skip-existing', action='store_const', const='skip', dest='clobber',
+            help='Whether to skip sections with the same heading'),
+        make_option(
+            '--merge-existing', action='store_const', const='merge', dest='clobber',
+            help='Whether to merge sections with the same heading'),
+     )
 
     def handle(self, *args, **options):
         verbosity = int(options['verbosity'])

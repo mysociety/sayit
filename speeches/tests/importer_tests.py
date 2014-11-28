@@ -56,14 +56,21 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         self.importer.import_document(
             'speeches/fixtures/test_inputs/test_xpath.xml')
 
-        ImportAkomaNtoso(instance=self.instance, commit=True, clobber=False).import_document(
+        ImportAkomaNtoso(instance=self.instance, commit=True, clobber='skip').import_document(
             'speeches/fixtures/test_inputs/test_clobber.xml')
         self.assertEqual(
             [x.text for x in Speech.objects.all()],
             ['<p>Hello</p>']
         )
 
-        ImportAkomaNtoso(instance=self.instance, commit=True, clobber=True).import_document(
+        ImportAkomaNtoso(instance=self.instance, commit=True, clobber='merge').import_document(
+            'speeches/fixtures/test_inputs/test_clobber.xml')
+        self.assertEqual(
+            [x.text for x in Speech.objects.all()],
+            ['<p>Hello</p>', '<p>Howdy</p>']
+        )
+
+        ImportAkomaNtoso(instance=self.instance, commit=True, clobber='replace').import_document(
             'speeches/fixtures/test_inputs/test_clobber.xml')
         self.assertEqual(
             [x.text for x in Speech.objects.all()],
@@ -78,7 +85,7 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         )
 
     def test_not_already_imported(self):
-        ImportAkomaNtoso(instance=self.instance, commit=True, clobber=False).import_document(
+        ImportAkomaNtoso(instance=self.instance, commit=True, clobber='skip').import_document(
             'speeches/fixtures/test_inputs/test_xpath.xml')
         self.assertEqual(
             [x.title for x in Section.objects.all()],
@@ -86,7 +93,15 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         )
         Section.objects.all().delete()
 
-        ImportAkomaNtoso(instance=self.instance, commit=True, clobber=True).import_document(
+        ImportAkomaNtoso(instance=self.instance, commit=True, clobber='merge').import_document(
+            'speeches/fixtures/test_inputs/test_xpath.xml')
+        self.assertEqual(
+            [x.title for x in Section.objects.all()],
+            ['This is the title']
+        )
+        Section.objects.all().delete()
+
+        ImportAkomaNtoso(instance=self.instance, commit=True, clobber='replace').import_document(
             'speeches/fixtures/test_inputs/test_xpath.xml')
         self.assertEqual(
             [x.title for x in Section.objects.all()],
@@ -106,25 +121,32 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         self.importer.import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
 
-        ImportAkomaNtoso(instance=self.instance, commit=True, clobber=False).import_document(
+        ImportAkomaNtoso(instance=self.instance, commit=True, clobber='skip').import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
         self.assertEqual(
-            [ x.title for x in Section.objects.all() ],
-            [ 'Untitled', 'Untitled' ]
+            [x.title for x in Section.objects.all()],
+            ['Untitled']
         )
 
-        ImportAkomaNtoso(instance=self.instance, commit=True, clobber=True).import_document(
+        ImportAkomaNtoso(instance=self.instance, commit=True, clobber='merge').import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
         self.assertEqual(
-            [ x.title for x in Section.objects.all() ],
-            [ 'Untitled', 'Untitled', 'Untitled' ]
+            [x.title for x in Section.objects.all()],
+            ['Untitled']
+        )
+
+        ImportAkomaNtoso(instance=self.instance, commit=True, clobber='replace').import_document(
+            'speeches/fixtures/test_inputs/test_empty_title.xml')
+        self.assertEqual(
+            [x.title for x in Section.objects.all()],
+            ['Untitled']
         )
 
         ImportAkomaNtoso(instance=self.instance, commit=True).import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
         self.assertEqual(
-            [ x.title for x in Section.objects.all() ],
-            [ 'Untitled', 'Untitled', 'Untitled', 'Untitled' ]
+            [x.title for x in Section.objects.all()],
+            ['Untitled', 'Untitled']
         )
 
     def test_xpath_preface_elements(self):
