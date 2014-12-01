@@ -55,7 +55,7 @@ class ImportCommand(BaseCommand):
                 if section and section.id:
                     logger.info("Imported section %d\n\n" % section.id)
         elif options['dir']:
-            files = self.document_list(options)
+            files = sorted(self.document_list(options))
 
             if len(files):
                 imports = [self.import_document(f, **options) for f in files]
