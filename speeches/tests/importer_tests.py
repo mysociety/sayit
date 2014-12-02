@@ -109,22 +109,22 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber=False).import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
         self.assertEqual(
-            [x.title for x in Section.objects.all()],
-            ['', '']
+            [ x.title for x in Section.objects.all() ],
+            [ 'Untitled', 'Untitled' ]
         )
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber=True).import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
         self.assertEqual(
-            [x.title for x in Section.objects.all()],
-            ['', '', '']
+            [ x.title for x in Section.objects.all() ],
+            [ 'Untitled', 'Untitled', 'Untitled' ]
         )
 
         ImportAkomaNtoso(instance=self.instance, commit=True).import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
         self.assertEqual(
-            [x.title for x in Section.objects.all()],
-            ['', '', '', '']
+            [ x.title for x in Section.objects.all() ],
+            [ 'Untitled', 'Untitled', 'Untitled', 'Untitled' ]
         )
 
     def test_xpath_preface_elements(self):

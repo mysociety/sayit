@@ -261,7 +261,9 @@ class Section(AuditedModel, InstanceMixin):
     @property
     def title(self):
         txt = filter(None, (self.num, self.heading, self.subheading))
-        return ', '.join(txt)
+        # If there's nothing to set the title from, we should still have something
+        # non-empty to make a slug out of.
+        return ', '.join(txt) or 'Untitled'
 
     def clean(self):
         super(Section, self).clean()
