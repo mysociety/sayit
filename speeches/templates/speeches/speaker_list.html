@@ -8,15 +8,18 @@
 
 {% block content %}
 
-  {% if speaker_list %}
 
     <div class="page-header">
       {% if request.is_user_instance %}
         <a href="{% url "speeches:speaker-add" %}" class="button small right">{% trans "Add a new speaker" %}</a>
         <a href="{% url "speeches:import-popolo" %}" class="button secondary small right">{% trans "Import speakers" %}</a>
       {% endif %}
+      {% if speaker_list %}
         <h1>{% trans "All Speakers" %}</h1>
+      {% endif %}
     </div>
+
+  {% if speaker_list %}
 
     <ul class="speaker-list">
       {% for speaker in speaker_list %}
@@ -40,7 +43,11 @@
       {% if request.is_user_instance %}
         <h1>{% trans 'You haven&rsquo;t added any speeches or statements yet' %}</h1>
         <p class="lead">{% trans 'Once you have, this page will contain a list of all the different people who made each statement in this SayIt site.' %}</p>
-        <p><a href="{% url "speeches:speech-add" %}" class="button">{% trans 'Add your first statement' %}</a></p>
+        <p>
+          <a href="{% url "speeches:speech-add" %}" class="button">{% trans 'Add your first statement' %}</a>
+          <a href="{% url "speeches:speaker-add" %}" class="button">{% trans 'Add your first speaker' %}</a>
+        </p>
+
       {% else %}
         <h1>{% trans 'This is a brand new SayIt site.' %}</h1>
         <p class="lead">{% trans 'Its creator hasn&rsquo;t yet added any speeches or statements for you to see.' %}</p>
