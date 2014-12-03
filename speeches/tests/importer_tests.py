@@ -231,7 +231,7 @@ class PopoloImportViewsTestCase(InstanceTestCase):
     def test_import_page_smoke_test(self):
         resp = self.client.get('/import/popolo')
 
-        self.assertContains(resp, 'Import Speakers')
+        self.assertContains(resp, 'Import speakers')
 
     def test_import_with_data(self):
         resp = self.client.post(
