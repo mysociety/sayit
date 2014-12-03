@@ -44,13 +44,13 @@
         <div class="primary-content__unit">
   {% endif %}
 
-          {% if structure.new_level %}<ul class="unstyled-list">{% else %}</li>{% endif %}
+          {% if structure.new_level %}<ul class="section-list">{% else %}</li>{% endif %}
 
           {% if structure.speech %}
             <li id="s{{ node.id }}" class="speech {% if node.speaker %}speech--with-portrait{% endif %} speech--{{ speech.type }} speech--border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
             {% include "speeches/speech.html" with speech=node nosection="1" section=section noli=1 %}
           {% else %}
-            <li class="speech section-signpost speech--with-portrait">
+            <li class="speech speech--section-signpost speech--with-portrait">
               <div class="speaker-portrait-wrapper">
                 <span class="section-dot"></span>
               </div>
