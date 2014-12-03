@@ -72,6 +72,10 @@ class ImportAkomaNtoso (ImporterBase):
         if session:
             session = session.text
 
+        source_url = self.get_preface_tag(debate, 'link') or ''
+        if source_url:
+            source_url = source_url.get('href')
+
         section = None
         if docTitle:
             kwargs = {
@@ -99,7 +103,7 @@ class ImportAkomaNtoso (ImporterBase):
                 except Section.DoesNotExist:
                     logger.info('Importing %s' % docTitle)
 
-            section = self.make(Section, **kwargs)
+            section = self.make(Section, source_url=source_url, **kwargs)
 
         self.visit(debate.debateBody, section)
 
