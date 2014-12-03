@@ -16,7 +16,6 @@ services:
 
 env:
   - MODULES="Django>=1.4.2,<1.5 django-tastypie==0.9.16"
-  - MODULES="Django>=1.5,<1.6 django-tastypie"
   - MODULES="Django>=1.6,<1.7 django-tastypie"
   - MODULES="Django>=1.7,<1.8 django-tastypie"
 # - MODULES="git+https://github.com/django/django.git@master#egg=django"
