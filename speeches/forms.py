@@ -28,6 +28,7 @@ except ImportError:
         value = re.sub(r'<br ?/?>', '', value)
         return value
 
+from django.utils.text import capfirst
 from django.utils.encoding import force_text
 from django import forms
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
@@ -45,7 +46,7 @@ logger = logging.getLogger(__name__)
 
 
 def verbose_name(model, field):
-    return model._meta.get_field(field).verbose_name
+    return capfirst(model._meta.get_field(field).verbose_name)
 
 
 class CleanAudioMixin(object):
