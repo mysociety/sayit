@@ -43,8 +43,19 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
             instance=self.instance,
             description='Section is described here',
             )
+        self.section_with_html_description = Section.objects.create(
+            heading='Bold Section',
+            instance=self.instance,
+            description='<b>Section is described <a href="/">here</a></b>',
+            )
         self.steve_speech = Speech.objects.create(
             text="A Steve speech",
+            instance=self.instance,
+            speaker=self.steve,
+            section=self.section,
+            )
+        self.speech_long_html_description = Speech.objects.create(
+            text="<i>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.</i>",
             instance=self.instance,
             speaker=self.steve,
             section=self.section,
@@ -131,6 +142,18 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
              }
             )
 
+        self.assert_opengraph_matches(
+            self.client.get('/speech/%s' % self.speech_long_html_description.id),
+            {'title': u'\u201cBut I must explain to you how ...\u201d :: SayIt',
+             'url': 'http://testing.example.org:8000/speech/%s' % self.speech_long_html_description.id,
+             'site_name': 'SayIt',
+             'description': 'But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, ...',
+             'type': 'website',
+             'image': re.compile('http://testing.example.org:8000/uploads/speakers/default/image.*.jpg'),
+             }
+            )
+
+
     def test_section_detail_page(self):
         self.assert_opengraph_matches(
             self.client.get('/sections/%s' % self.section.id),
@@ -148,6 +171,18 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
             self.client.get('/sections/%s' % self.section_with_description.id),
             {'title': 'View Section: Section with description :: SayIt',
              'url': 'http://testing.example.org:8000/sections/%s' % self.section_with_description.id,
+             'site_name': 'SayIt',
+             'description': 'Section is described here',
+             'type': 'website',
+             'image': 'http://testing.example.org:8000/static/speeches/img/apple-touch-icon-152x152.png',
+             }
+            )
+
+    def test_section_with_html_description_detail_page(self):
+        self.assert_opengraph_matches(
+            self.client.get('/sections/%s' % self.section_with_html_description.id),
+            {'title': 'View Section: Bold Section :: SayIt',
+             'url': 'http://testing.example.org:8000/sections/%s' % self.section_with_html_description.id,
              'site_name': 'SayIt',
              'description': 'Section is described here',
              'type': 'website',

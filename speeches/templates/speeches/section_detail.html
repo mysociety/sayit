@@ -13,7 +13,7 @@
 {% endwith %}
 {% endblock %}
 
-{% block og_description %}{% if section.description %}{{ section.description }}{% else %}{{ block.super }}{% endif %}{% endblock %}
+{% block og_description %}{% if section.description %}{{ section.description|striptags }}{% else %}{{ block.super }}{% endif %}{% endblock %}
 
 {% block content %}
 

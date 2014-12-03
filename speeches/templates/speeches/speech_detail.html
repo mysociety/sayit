@@ -19,7 +19,7 @@
 {% endwith %}
 {% endblock %}
 
-{% block og_description %}{{ speech.text|truncatewords_html:30 }}{% endblock %}
+{% block og_description %}{{ speech.text|striptags|truncatewords:30 }}{% endblock %}
 {% block og_image %}{% with speech.speaker as speaker %}{% if speaker.image_cache %}http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ speaker.image_cache.url }}{% elif speaker.image %}{{ speaker.image }}{% else %}{{ block.super }}{% endif %}{% endwith %}{% endblock %}
 {# we don't know the details of this image #}
 {% block og_image_details %}{% endblock %}
