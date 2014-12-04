@@ -1,0 +1,16 @@
+{% extends 'speeches/base_form.html' %}
+{% load staticfiles %}
+{% load django_select2_tags %}
+
+{% block extra_css %}
+  {% import_django_select2_css 0 %}
+  {{ block.super }}
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  {% import_django_select2_js 0 %}
+  {% if LANGUAGE_CODE == 'es' %}
+    <script src="{% static "speeches/js/select2_locale_es.js" %}"></script>
+  {% endif %}
+{% endblock %}

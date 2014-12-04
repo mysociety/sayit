@@ -1,4 +1,4 @@
-{% extends 'speeches/base_form.html' %}
+{% extends 'speeches/base_form_select2.html' %}
 {% load staticfiles %}
 {% load i18n %}
 
@@ -26,7 +26,49 @@
     {% else %}
         {% trans "Add section" as submit %}
     {% endif %}
-    {% include 'speeches/form.html' with type="section" submit=submit %}
-</form>
 
+    {% csrf_token %}
+
+{% if form.non_field_errors %}
+    <div class="error">
+        {{ form.non_field_errors }}
+    </div>
+{% endif %}
+
+{% for hidden in form.hidden_fields %}
+    {{ hidden }}
+{% endfor %}
+
+{% for field in form.visible_fields %}
+  {% if field.name != 'start_date' and field.name != 'start_time' %}
+    <div class="row{% if field.errors %} error{% endif %}" id="{{ field.auto_id }}_controls">
+      <div class="large-8 columns">
+        {{ field.label_tag }}
+        {{ field }}
+      {% if field.errors %}
+        <span class="error">{% for error in field.errors %}{{ error }}{% endfor %}</span>
+      {% endif %}
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}
+
+  <div class="row">
+      <div class="large-8 columns">
+          <div class="row">
+              <div class="small-7 column">
+                  {% include "speeches/form-item.html" with field=form.start_date %}
+              </div>
+              <div class="small-5 column">
+                  {% include "speeches/form-item.html" with field=form.start_time %}
+              </div>
+          </div>
+      </div>
+  </div>
+
+<div class="form-actions">
+    <input type="submit" id="section_submit" class="button" value="{{ submit }}">
+</div>
+
+</form>
 {% endblock %}

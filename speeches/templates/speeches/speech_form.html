@@ -1,20 +1,10 @@
-{% extends 'speeches/base_form.html' %}
+{% extends 'speeches/base_form_select2.html' %}
 {% load i18n %}
 {% load staticfiles %}
 {% load url from future %}
-{% load django_select2_tags %}
-
-{% block extra_css %}
-  {% import_django_select2_css 0 %}
-  {{ block.super }}
-{% endblock %}
 
 {% block extra_js %}
   {{ block.super }}
-  {% import_django_select2_js 0 %}
-  {% if LANGUAGE_CODE == 'es' %}
-    <script src="{% static "speeches/js/select2_locale_es.js" %}"></script>
-  {% endif %}
   <script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/vendor/jquery.ui.widget.js" %}" charset="utf-8"></script>
   <script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/jquery.iframe-transport.js" %}" charset="utf-8"></script>
   <script type="text/javascript" src="{% static "speeches/js/jQuery-File-Upload/js/jquery.fileupload.js" %}" charset="utf-8"></script>
@@ -66,57 +56,12 @@
 
     <div class="row">
         <div class="medium-8 column">
-
-          {% with form.text as field %}
-            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-              {{ field.label_tag }}
-              {{ field }}
-              {% if field.errors %}
-                <small class="error">{{ field.errors }}</small>
-              {% endif %}
-            </div>
-          {% endwith %}
-
+            {% include "speeches/form-item.html" with field=form.text %}
         </div>
         <div class="medium-4 column">
-
-          {% with form.speaker as field %}
-            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-              {{ field.label_tag }}
-              <!-- Coming soon!!
-              <ul class="suggested-speakers">
-                <li>Luke Skywalker</li>
-                <li>Obi-Wan Kenobi</li>
-                <li>Stormtrooper</li>
-              </ul>
-              -->
-              {{ field }}
-              {% if field.errors %}
-                <small class="error">{{ field.errors }}</small>
-              {% endif %}
-            </div>
-          {% endwith %}
-
-          {% with form.section as field %}
-            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-              {{ field.label_tag }}
-              {{ field }}
-              {% if field.errors %}
-                <small class="error">{{ field.errors }}</small>
-              {% endif %}
-            </div>
-          {% endwith %}
-
-          {% with form.source_url as field %}
-            <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-              {{ field.label_tag }}
-              {{ field }}
-              {% if field.errors %}
-                <small class="error">{{ field.errors }}</small>
-              {% endif %}
-            </div>
-          {% endwith %}
-
+            {% include "speeches/form-item.html" with field=form.speaker %}
+            {% include "speeches/form-item.html" with field=form.section %}
+            {% include "speeches/form-item.html" with field=form.source_url %}
         </div>
     </div>
 
@@ -127,51 +72,19 @@
             <div class="unimportant-form-section">
                   <div class="row">
                       <div class="small-5 column">
-                        {% with form.start_time as field %}
-                          <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.errors %}
-                              <small class="error">{{ field.errors }}</small>
-                            {% endif %}
-                          </div>
-                        {% endwith %}
+                          {% include "speeches/form-item.html" with field=form.start_time %}
                       </div>
                       <div class="small-7 column">
-                        {% with form.start_date as field %}
-                          <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.errors %}
-                              <small class="error">{{ field.errors }}</small>
-                            {% endif %}
-                          </div>
-                        {% endwith %}
+                          {% include "speeches/form-item.html" with field=form.start_date %}
                       </div>
                   </div>
 
                   <div class="row">
                       <div class="small-5 column">
-                        {% with form.end_time as field %}
-                          <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.errors %}
-                              <small class="error">{{ field.errors }}</small>
-                            {% endif %}
-                          </div>
-                        {% endwith %}
+                          {% include "speeches/form-item.html" with field=form.end_time %}
                       </div>
                       <div class="small-7 column">
-                        {% with form.end_date as field %}
-                          <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.errors %}
-                              <small class="error">{{ field.errors }}</small>
-                            {% endif %}
-                          </div>
-                        {% endwith %}
+                          {% include "speeches/form-item.html" with field=form.end_date %}
                       </div>
                   </div>
             </div>
@@ -181,24 +94,8 @@
 
             <div class="unimportant-form-section-header">{% trans "Event &amp; Location" %}</div>
             <div class="unimportant-form-section">
-              {% with form.location as field %}
-                <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                  {{ field.label_tag }}
-                  {{ field }}
-                  {% if field.errors %}
-                    <small class="error">{{ field.errors }}</small>
-                  {% endif %}
-                </div>
-              {% endwith %}
-              {% with form.event as field %}
-                <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                  {{ field.label_tag }}
-                  {{ field }}
-                  {% if field.errors %}
-                    <small class="error">{{ field.errors }}</small>
-                  {% endif %}
-                </div>
-              {% endwith %}
+                {% include "speeches/form-item.html" with field=form.location %}
+                {% include "speeches/form-item.html" with field=form.event %}
             </div>
 
         </div>
@@ -206,24 +103,8 @@
 
             <div class="unimportant-form-section-header">{% trans "Title &amp; Tags" %}</div>
             <div class="unimportant-form-section">
-              {% with form.heading as field %}
-                <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                  {{ field.label_tag }}
-                  {{ field }}
-                  {% if field.errors %}
-                    <small class="error">{{ field.errors }}</small>
-                  {% endif %}
-                </div>
-              {% endwith %}
-              {% with form.tags as field %}
-                <div class="{% if field.errors %} error{% endif %}" id="{{ field.auto_id}}_controls">
-                  {{ field.label_tag }}
-                  {{ field }}
-                  {% if field.errors %}
-                    <small class="error">{{ field.errors }}</small>
-                  {% endif %}
-                </div>
-              {% endwith %}
+                {% include "speeches/form-item.html" with field=form.heading %}
+                {% include "speeches/form-item.html" with field=form.tags %}
             </div>
 
         </div>

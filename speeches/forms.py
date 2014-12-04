@@ -38,7 +38,6 @@ from speeches.fields import FromStartIntegerField
 from speeches.models import (Speech, Speaker, Section,
                              Recording, RecordingTimestamp, Tag)
 from speeches.widgets import AudioFileInput, DatePickerWidget, TimePickerWidget
-from speeches.utils.forms import GroupedModelChoiceField
 from speeches.importers.import_popolo import PopoloImporter
 
 
@@ -196,22 +195,29 @@ class CreateAutoModelSelect2Field(AutoModelSelect2Field):
         return value
 
 
+class NonCreateAutoModelSelect2Field(CreateAutoModelSelect2Field):
+    widget = Select2Widget
+
+    def create_model(self, value):
+        raise forms.ValidationError(_('You must select an existing speaker'))
+
+
 class SpeakerField(CreateAutoModelSelect2Field):
     model = Speaker
     column = 'name'
 
 
-class NonCreateSpeakerField(CreateAutoModelSelect2Field):
+class NonCreateSpeakerField(NonCreateAutoModelSelect2Field):
     model = Speaker
     column = 'name'
-    widget = Select2Widget
-
-    def create_model(self, value):
-        raise forms.ValidationError(
-            _('You must select an existing speaker'))
 
 
 class SectionField(CreateAutoModelSelect2Field):
+    model = Section
+    column = 'heading'
+
+
+class NonCreateSectionField(NonCreateAutoModelSelect2Field):
     model = Section
     column = 'heading'
 
@@ -438,12 +444,7 @@ class SectionForm(forms.ModelForm):
         required=True,
         label=verbose_name(Section, 'heading'),
         )
-    parent = GroupedModelChoiceField(
-        Section.objects.all(),
-        'parent',
-        label=verbose_name(Section, 'parent'),
-        required=False,
-        )
+    parent = NonCreateSectionField(label=verbose_name(Section, 'parent'))
     start_date = forms.DateField(
         label=verbose_name(Section, 'start_date'),
         widget=DatePickerWidget,
@@ -456,6 +457,7 @@ class SectionForm(forms.ModelForm):
         widget=TimePickerWidget,
         required=False,
         )
+    source_url = forms.CharField(label=verbose_name(Section, 'source_url'), required=False)
 
     def __init__(self, *args, **kwargs):
         super(SectionForm, self).__init__(*args, **kwargs)
@@ -466,7 +468,7 @@ class SectionForm(forms.ModelForm):
 
     class Meta:
         model = Section
-        exclude = ('instance', 'slug', 'num', 'subheading')
+        fields = ('heading', 'description', 'parent', 'source_url', 'start_date', 'start_time')
 
     def clean_parent(self):
         parent = self.cleaned_data['parent']
@@ -487,7 +489,7 @@ class SpeakerForm(forms.ModelForm):
 
     class Meta:
         model = Speaker
-        exclude = ('instance', 'slug')
+        fields = ('name', 'image', 'summary')
 
 
 class SpeakerDeleteForm(forms.ModelForm):
