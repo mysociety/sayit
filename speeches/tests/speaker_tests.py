@@ -179,6 +179,13 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
         except HTTPError:
             self.fail("Speaker unexpectedly raised HTTPError")
 
+    def test_speaker_list_ordering(self):
+        Speaker.objects.create(name='alice', instance=self.instance)
+        Speaker.objects.create(name='Bob', instance=self.instance)
+        Speaker.objects.create(name='Eve', sort_name='AAA FIRST', instance=self.instance)
+        resp = self.client.get('/speakers')
+        assertRegex(self, resp.content.decode(), u'Eve.*alice.*Bob(?s)')
+
 
 class MergeDeleteSpeakerTests(InstanceTestCase):
     def test_no_speeches(self):

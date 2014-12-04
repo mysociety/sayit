@@ -7,6 +7,7 @@ from six.moves.urllib.parse import urlsplit
 from six.moves.urllib.request import urlretrieve
 from six.moves.urllib.error import HTTPError
 
+from django.utils import six
 from django.utils.translation import ugettext_lazy as _, ugettext
 from django.db import models
 from django.db.models import Q
@@ -31,6 +32,7 @@ if not aliases.get('speaker-rectangle'):
 from instances.models import InstanceMixin, InstanceManager
 from speeches.utils.audio import AudioHelper
 from speeches.utils.text import url_to_unicode
+from speeches.utils.djangopatch import GetQuerySetMetaclass
 
 from djqmethod import Manager, querymethod
 from popolo.models import Person
@@ -95,6 +97,13 @@ def upload_to(inst, fn):
     return inst.get_image_cache_file_path(fn)
 
 
+class SpeakerManager(six.with_metaclass(GetQuerySetMetaclass, InstanceManager)):
+    def get_queryset(self):
+        return super(SpeakerManager, self).get_queryset().extra(
+            select={"sorted_name": "LOWER(COALESCE(NULLIF(sort_name, ''), name))"},
+            order_by=("sorted_name",))
+
+
 # Speaker - someone who gave a speech
 @python_2_unicode_compatible
 class Speaker(InstanceMixin, Person):
@@ -113,10 +122,11 @@ class Speaker(InstanceMixin, Person):
         help_text=_('If image is set, a local copy will be stored here.'),
         )
 
+    objects = SpeakerManager()
+
     class Meta:
         verbose_name = _('speaker')
         verbose_name_plural = _('speakers')
-        ordering = ('name',)
         unique_together = ('instance', 'slug')
 
     def __str__(self):

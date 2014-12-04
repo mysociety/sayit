@@ -489,7 +489,7 @@ class SpeakerForm(forms.ModelForm):
 
     class Meta:
         model = Speaker
-        fields = ('name', 'image', 'summary')
+        fields = ('name', 'image', 'summary', 'sort_name')
 
 
 class SpeakerDeleteForm(forms.ModelForm):
