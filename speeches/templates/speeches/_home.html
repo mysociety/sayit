@@ -8,6 +8,16 @@
 
 {% block content %}
 
+  {% if request.is_user_instance %}
+    <div class="page-header">
+      {% block user_instance_header %}
+        <a href="{% url "speeches:speech-add" %}" class="button small right">{% trans "Add a new speech" %}</a>
+        <a href="{% url "speeches:section-add" %}" class="button secondary small right">{% trans "Add a section" %}</a>
+        <a href="{% url 'speeches:import-popolo' %}" class="button secondary small right">{% trans "Import speakers" %}</a>
+      {% endblock %}
+    </div>
+  {% endif %}
+
   {% if paginator.count %}
 
   <div class="page-content__row">
