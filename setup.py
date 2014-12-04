@@ -61,6 +61,7 @@ setup(
             dateutil,
         ],
         'develop': [
+            'flake8',
             'django-debug-toolbar',
             'South == 1.0',
             'popit-django == 0.0.3',

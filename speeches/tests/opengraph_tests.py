@@ -55,7 +55,12 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
             section=self.section,
             )
         self.speech_long_html_description = Speech.objects.create(
-            text="<i>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.</i>",
+            text=(
+                "<i>But I must explain to you how all this mistaken idea of "
+                "denouncing pleasure and praising pain was born and I will "
+                "give you a complete account of the system, and expound the "
+                "actual teachings of the great explorer of the truth, the "
+                "master-builder of human happiness.</i>"),
             instance=self.instance,
             speaker=self.steve,
             section=self.section,
@@ -147,12 +152,14 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
             {'title': u'\u201cBut I must explain to you how ...\u201d :: SayIt',
              'url': 'http://testing.example.org:8000/speech/%s' % self.speech_long_html_description.id,
              'site_name': 'SayIt',
-             'description': 'But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, ...',
+             'description': (
+                 'But I must explain to you how all this mistaken idea of '
+                 'denouncing pleasure and praising pain was born and I will '
+                 'give you a complete account of the system, ...'),
              'type': 'website',
              'image': re.compile('http://testing.example.org:8000/uploads/speakers/default/image.*.jpg'),
              }
             )
-
 
     def test_section_detail_page(self):
         self.assert_opengraph_matches(

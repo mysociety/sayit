@@ -32,3 +32,10 @@ if [ -n "$dir_sass" ]; then
     fi
     git add $out
 fi
+
+command -v flake8 >/dev/null 2>&1 || {
+  echo >&2 "flake8 does not appear to be available. Unable to lint code."
+  exit 1
+}
+
+flake8
