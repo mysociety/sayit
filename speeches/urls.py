@@ -51,10 +51,10 @@ urlpatterns = patterns(
     url(r'^speaker/(?P<pk>\d+)/delete$', SpeakerDelete.as_view(), name='speaker-delete'),
     url(r'^speaker/(?P<slug>.+)$', SpeakerView.as_view(), name='speaker-view'),
 
-    url(r'^sections/(?P<pk>\d+)$', SectionView.as_view(), name='section-id-view'),
-    url(r'^sections/add$', SectionCreate.as_view(), name='section-add'),
-    url(r'^sections/(?P<pk>\d+)/edit$', SectionUpdate.as_view(), name='section-edit'),
-    url(r'^sections/(?P<pk>\d+)/delete$', SectionDelete.as_view(), name='section-delete'),
+    url(r'^section/add$', SectionCreate.as_view(), name='section-add'),
+    url(r'^section/(?P<pk>\d+)$', SectionView.as_view(), name='section-id-view'),
+    url(r'^section/(?P<pk>\d+)/edit$', SectionUpdate.as_view(), name='section-edit'),
+    url(r'^section/(?P<pk>\d+)/delete$', SectionDelete.as_view(), name='section-delete'),
     url(r'^speeches$', ParentlessList.as_view(), name='parentless-list'),
 
     url(r'^recordings$', RecordingList.as_view(), name='recording-list'),

@@ -560,7 +560,7 @@ class SpeechViewTests(InstanceTestCase):
         section = Section.objects.create(heading='Test', instance=self.instance)
         speech.section = section
         speech.save()
-        resp = self.client.get('/sections/%d' % section.id)
+        resp = self.client.get('/section/%d' % section.id)
         self.assertContains(resp, 'Speech title')
 
     def test_visible_speeches(self):
@@ -570,7 +570,7 @@ class SpeechViewTests(InstanceTestCase):
             s = Speech.objects.create(text='Speech %d' % i, section=section, instance=self.instance, public=(i == 2))
             speeches.append(s)
 
-        resp = self.client.get('/sections/%d' % section.id)
+        resp = self.client.get('/section/%d' % section.id)
         self.assertEqual([x[0].public for x in resp.context['section_tree']], [False, False, True])
         self.assertContains(resp, 'Invisible', count=2)
 
@@ -587,7 +587,7 @@ class SpeechViewTests(InstanceTestCase):
             public=True, start_date=datetime.date(2000, 1, 1), end_date=datetime.date(2000, 1, 2)
         )
 
-        resp = self.client.get('/sections/%d' % section.id)
+        resp = self.client.get('/section/%d' % section.id)
         self.assertRegexpMatches(resp.content.decode(), '>\s+1 Jan 2000\s+&ndash;\s+2 Jan 2000\s+<')
 
     def test_speech_page_has_buttons_to_edit(self):

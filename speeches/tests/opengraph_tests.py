@@ -163,9 +163,9 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
 
     def test_section_detail_page(self):
         self.assert_opengraph_matches(
-            self.client.get('/sections/%s' % self.section.id),
+            self.client.get('/section/%s' % self.section.id),
             {'title': 'View Section: Test section :: SayIt',
-             'url': 'http://testing.example.org:8000/sections/%s' % self.section.id,
+             'url': 'http://testing.example.org:8000/section/%s' % self.section.id,
              'site_name': 'SayIt',
              'description': 'Transcripts for the modern internet',
              'type': 'website',
@@ -175,9 +175,9 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
 
     def test_section_with_description_detail_page(self):
         self.assert_opengraph_matches(
-            self.client.get('/sections/%s' % self.section_with_description.id),
+            self.client.get('/section/%s' % self.section_with_description.id),
             {'title': 'View Section: Section with description :: SayIt',
-             'url': 'http://testing.example.org:8000/sections/%s' % self.section_with_description.id,
+             'url': 'http://testing.example.org:8000/section/%s' % self.section_with_description.id,
              'site_name': 'SayIt',
              'description': 'Section is described here',
              'type': 'website',
@@ -187,9 +187,9 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
 
     def test_section_with_html_description_detail_page(self):
         self.assert_opengraph_matches(
-            self.client.get('/sections/%s' % self.section_with_html_description.id),
+            self.client.get('/section/%s' % self.section_with_html_description.id),
             {'title': 'View Section: Bold Section :: SayIt',
-             'url': 'http://testing.example.org:8000/sections/%s' % self.section_with_html_description.id,
+             'url': 'http://testing.example.org:8000/section/%s' % self.section_with_html_description.id,
              'site_name': 'SayIt',
              'description': 'Section is described here',
              'type': 'website',

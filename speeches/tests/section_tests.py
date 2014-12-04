@@ -169,11 +169,11 @@ class SectionSiteTests(InstanceTestCase):
     """Tests for the section functionality"""
 
     def test_add_section_fails_on_empty_form(self):
-        resp = self.client.post('/sections/add')
+        resp = self.client.post('/section/add')
         self.assertFormError(resp, 'form', None, 'You must specify at least one of num/heading/subheading')
 
     def test_add_section_with_heading(self):
-        resp = self.client.post('/sections/add', {
+        resp = self.client.post('/section/add', {
             'heading': 'A test section'
         })
         new_section = Section.objects.order_by('-id')[0]
@@ -184,7 +184,7 @@ class SectionSiteTests(InstanceTestCase):
 
     def test_add_section_in_section(self):
         section = Section.objects.create(heading='Test section', instance=self.instance)
-        resp = self.client.post('/sections/add', {
+        resp = self.client.post('/section/add', {
             'parent': section.id,
             'heading': 'A test subsection'
         })
@@ -200,7 +200,7 @@ class SectionSiteTests(InstanceTestCase):
         subsection = Section.objects.create(heading='A test subsection', parent=section, instance=self.instance)
 
         # Assert no speeches
-        resp = self.client.get('/sections/%d' % subsection.id)
+        resp = self.client.get('/section/%d' % subsection.id)
         self.assertSequenceEqual([], list(resp.context['section_tree']))
 
         speech = Speech.objects.create(
@@ -209,7 +209,7 @@ class SectionSiteTests(InstanceTestCase):
             instance=self.instance,
             start_date=date(2014, 9, 17),
             )
-        resp = self.client.get('/sections/%d' % subsection.id)
+        resp = self.client.get('/section/%d' % subsection.id)
         self.assertSequenceEqual(
             [(speech, {'speech': True, 'new_level': True, 'closed_levels': [1]})],
             list(resp.context['section_tree']))
@@ -231,7 +231,7 @@ class SectionSiteTests(InstanceTestCase):
         # Check that a section page which returns more than one speech on the
         # same date displays the date once. This breaks in Django 1.7 which
         # always shows the date, see https://code.djangoproject.com/ticket/23516
-        resp = self.client.get('/sections/%d' % subsection.id)
+        resp = self.client.get('/section/%d' % subsection.id)
         if django.VERSION < (1, 7):
             self.assertEqual(
                 len(re.findall(
@@ -243,11 +243,11 @@ class SectionSiteTests(InstanceTestCase):
         section = Section.objects.create(heading='A test section', instance=self.instance)
 
         # Assert no subsections
-        resp = self.client.get('/sections/%d' % section.id)
+        resp = self.client.get('/section/%d' % section.id)
         self.assertSequenceEqual([], resp.context['section'].get_descendants)
 
         subsection = Section.objects.create(heading="A test subsection", parent=section, instance=self.instance)
-        resp = self.client.get('/sections/%d' % section.id)
+        resp = self.client.get('/section/%d' % section.id)
         self.assertSequenceEqual([subsection], resp.context['section'].get_descendants)
 
     def test_section_page_has_buttons_to_edit(self):
@@ -255,24 +255,24 @@ class SectionSiteTests(InstanceTestCase):
         section = Section.objects.create(heading='A test section', instance=self.instance)
 
         # Call the section's page
-        resp = self.client.get('/sections/%d' % section.id)
+        resp = self.client.get('/section/%d' % section.id)
 
         self.assertContains(
             resp, '<a href="/speech/add?section=%d" class="button small right">Add speech</a>' % section.id,
             html=True)
         self.assertContains(
             resp,
-            '<a href="/sections/add?section=%d" class="button secondary small right">Add subsection</a>' % section.id,
+            '<a href="/section/add?section=%d" class="button secondary small right">Add subsection</a>' % section.id,
             html=True)
         self.assertContains(
-            resp, '<a href="/sections/%d/edit" class="button secondary small right">Edit section</a>' % section.id,
+            resp, '<a href="/section/%d/edit" class="button secondary small right">Edit section</a>' % section.id,
             html=True)
 
     def test_section_deletion(self):
         # Set up the section
         section = Section.objects.create(heading='A test section', instance=self.instance)
         speech = Speech.objects.create(text="A test speech", section=section, instance=self.instance)
-        resp = self.client.get('/sections/%d' % section.id)
+        resp = self.client.get('/section/%d' % section.id)
         self.assertSequenceEqual(
             [(speech, {'speech': True, 'new_level': True, 'closed_levels': [1]})],
             list(resp.context['section_tree']))

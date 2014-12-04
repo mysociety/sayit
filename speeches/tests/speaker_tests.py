@@ -113,7 +113,7 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
             speaker=speaker2, section=section,
             instance=self.instance, public=True)
 
-        resp = self.client.get('/sections/' + str(section.id))
+        resp = self.client.get('/section/' + str(section.id))
 
         # Prior to Django 1.5, override_settings didn't sort out MEDIA_ROOT
         # properly, see https://code.djangoproject.com/ticket/17744".
