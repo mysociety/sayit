@@ -1144,10 +1144,6 @@ form > .row {
     .site-search__button {
         font-size: 1.125em;
     }
-    @media (min-width: $medium-screen) {
-        margin-top: 4em;
-        margin-bottom: 4em;
-    }
 
     @media (min-width: $large-screen) {
         @include grid-column(8, $center:true);
