@@ -6,6 +6,32 @@ from speeches.models import Speaker, Section
 
 class SlugTests(InstanceTestCase):
 
+    def test_slug_updated_when_heading_changes(self):
+        section = Section.objects.create(heading=u'Heading', instance=self.instance)
+        self.assertEqual(section.slug, 'heading')
+        resp = self.client.get('/heading')
+        self.assertContains(resp, 'Heading')
+        resp = self.client.get('/sections/%d/edit' % section.id)
+        self.assertContains(resp, 'Heading')
+        resp = self.client.post('/sections/%d/edit' % section.id, {'heading': 'Different'})
+        section = Section.objects.get(id=section.id)
+        self.assertEqual(section.slug, 'different')
+        resp = self.client.get('/different')
+        self.assertContains(resp, 'Different')
+
+    def test_slug_updated_when_name_changes(self):
+        speaker = Speaker.objects.create(name=u'Bob', instance=self.instance)
+        self.assertEqual(speaker.slug, 'bob')
+        resp = self.client.get('/speaker/bob')
+        self.assertContains(resp, 'Bob')
+        resp = self.client.get('/speaker/%d/edit' % speaker.id)
+        self.assertContains(resp, 'Bob')
+        resp = self.client.post('/speaker/%d/edit' % speaker.id, {'name': 'Alice'})
+        section = Speaker.objects.get(id=speaker.id)
+        self.assertEqual(section.slug, 'alice')
+        resp = self.client.get('/speaker/alice')
+        self.assertContains(resp, 'Alice')
+
     def test_all_latin_speaker_slug(self):
         latin_speaker = Speaker.objects.create(
             name='Foo Bar',

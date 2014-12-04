@@ -99,7 +99,7 @@ def upload_to(inst, fn):
 @python_2_unicode_compatible
 class Speaker(InstanceMixin, Person):
     slug = SluggableField(
-        _('slug'), unique_with='instance', populate_from='name')
+        _('slug'), unique_with='instance', populate_from='name', always_update=True)
     slugs = generic.GenericRelation(Slug)
 
     # There's an unfortunate collision of things called 'instance' here.
@@ -233,7 +233,7 @@ class Section(AuditedModel, InstanceMixin):
         'self', verbose_name=_('parent'), null=True, blank=True,
         related_name='children')
     slug = SluggableField(
-        _('slug'), unique_with=('parent', 'instance'), populate_from='title')
+        _('slug'), unique_with=('parent', 'instance'), populate_from='title', always_update=True)
     source_url = models.TextField(_('source URL'), blank=True)
 
     slugs = generic.GenericRelation(Slug)
