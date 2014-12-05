@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-20 18:54+0000\n"
+"POT-Creation-Date: 2014-12-05 12:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extra-locales/popolo/behaviors/models.py:51 models.py:223 models.py:619
+#: extra-locales/popolo/behaviors/models.py:51 models.py:233 models.py:629
 msgid "start date"
 msgstr ""
 
@@ -25,7 +25,7 @@ msgstr ""
 msgid "The date when the validity of the item starts"
 msgstr ""
 
-#: extra-locales/popolo/behaviors/models.py:56 models.py:625
+#: extra-locales/popolo/behaviors/models.py:56 models.py:635
 msgid "end date"
 msgstr ""
 
@@ -272,7 +272,7 @@ msgstr ""
 msgid "A human-readable label for the contact detail"
 msgstr ""
 
-#: extra-locales/popolo/models.py:233 models.py:605
+#: extra-locales/popolo/models.py:233 models.py:615
 msgid "type"
 msgstr ""
 
@@ -341,39 +341,39 @@ msgstr ""
 msgid "Assign to section"
 msgstr ""
 
-#: forms.py:210
+#: forms.py:202
 msgid "You must select an existing speaker"
 msgstr ""
 
-#: forms.py:288
+#: forms.py:295
 msgid "Choose tags"
 msgstr ""
 
-#: forms.py:307
+#: forms.py:314
 msgid "You must provide either text or some audio"
 msgstr ""
 
-#: forms.py:325
+#: forms.py:332
 msgid "If you provide a start time you must give a start date too"
 msgstr ""
 
-#: forms.py:332
+#: forms.py:339
 msgid "If you provide an end time you must give an end date too"
 msgstr ""
 
-#: forms.py:475
+#: forms.py:478
 msgid "Something cannot be its own parent"
 msgstr ""
 
-#: forms.py:479
+#: forms.py:482
 msgid "Something cannot have a parent that is also a descendant"
 msgstr ""
 
-#: forms.py:494
+#: forms.py:497
 msgid "New speaker"
 msgstr ""
 
-#: forms.py:502
+#: forms.py:505
 #, python-format
 msgid "This speaker has %(count)d speech. What would you like to do with it?"
 msgid_plural ""
@@ -381,49 +381,49 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: forms.py:508
+#: forms.py:511
 msgid "Assign it to another speaker"
 msgid_plural "Assign them to another speaker"
 msgstr[0] ""
 msgstr[1] ""
 
-#: forms.py:510
+#: forms.py:513
 msgid "Make it into narrative (i.e. remove the speaker)"
 msgid_plural "Make them into narrative (i.e. remove the speaker)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: forms.py:512
+#: forms.py:515
 msgid "Delete it"
 msgid_plural "Delete them"
 msgstr[0] ""
 msgstr[1] ""
 
-#: forms.py:528
+#: forms.py:531
 msgid "You can't assign speeches to the speaker you're deleting"
 msgstr ""
 
-#: forms.py:534
+#: forms.py:537
 msgid "You must choose a new speaker if reassigning speeches"
 msgstr ""
 
-#: forms.py:540
+#: forms.py:543
 msgid "You must not choose a new speaker unless reassigning speeches"
 msgstr ""
 
-#: forms.py:589
+#: forms.py:592
 msgid "Start time is before recording start time!"
 msgstr ""
 
-#: forms.py:599
+#: forms.py:602
 msgid "Difference between timestamps is too long for the uploaded audio"
 msgstr ""
 
-#: forms.py:607
+#: forms.py:610
 msgid "Timestamps must be distinct"
 msgstr ""
 
-#: forms.py:622
+#: forms.py:625
 msgid "Location of Popolo JSON data"
 msgstr ""
 
@@ -448,231 +448,231 @@ msgstr ""
 msgid "Create a new dated search index for reindexing with no downtime"
 msgstr ""
 
-#: models.py:102 models.py:236
+#: models.py:111 models.py:246
 msgid "slug"
 msgstr ""
 
-#: models.py:109
+#: models.py:118
 msgid "image_cache"
 msgstr ""
 
-#: models.py:113
+#: models.py:122
 msgid "If image is set, a local copy will be stored here."
 msgstr ""
 
-#: models.py:117 models.py:599
+#: models.py:128 models.py:609
 msgid "speaker"
 msgstr ""
 
-#: models.py:118
+#: models.py:129
 msgid "speakers"
 msgstr ""
 
-#: models.py:185
+#: models.py:195
 msgid "tag"
 msgstr ""
 
-#: models.py:186 models.py:631
+#: models.py:196 models.py:641
 msgid "tags"
 msgstr ""
 
-#: models.py:214 models.py:580
+#: models.py:224 models.py:590
 msgid "number"
 msgstr ""
 
-#: models.py:214
+#: models.py:224
 msgid "The number of the section"
 msgstr ""
 
-#: models.py:216 models.py:583
+#: models.py:226 models.py:593
 msgid "heading"
 msgstr ""
 
-#: models.py:216
+#: models.py:226
 msgid "The heading of the section"
 msgstr ""
 
-#: models.py:218 models.py:586
+#: models.py:228 models.py:596
 msgid "subheading"
 msgstr ""
 
-#: models.py:219
+#: models.py:229
 msgid "The subheading of the section"
 msgstr ""
 
-#: models.py:221
+#: models.py:231
 msgid "description"
 msgstr ""
 
-#: models.py:221
+#: models.py:231
 msgid "Longer description, HTML"
 msgstr ""
 
-#: models.py:224
+#: models.py:234
 msgid "What date did the section start?"
 msgstr ""
 
-#: models.py:226 models.py:622
+#: models.py:236 models.py:632
 msgid "start time"
 msgstr ""
 
-#: models.py:227
+#: models.py:237
 msgid "What time did the section start?"
 msgstr ""
 
-#: models.py:228
+#: models.py:238
 msgid "document number"
 msgstr ""
 
-#: models.py:229
+#: models.py:239
 msgid "legislature"
 msgstr ""
 
-#: models.py:231
+#: models.py:241
 msgid "session"
 msgstr ""
 
-#: models.py:231
+#: models.py:241
 msgid "Legislative session"
 msgstr ""
 
-#: models.py:233
+#: models.py:243
 msgid "parent"
 msgstr ""
 
-#: models.py:237 models.py:640
+#: models.py:247 models.py:650
 msgid "source URL"
 msgstr ""
 
-#: models.py:242
+#: models.py:252
 msgid "section"
 msgstr ""
 
-#: models.py:243
+#: models.py:253
 msgid "sections"
 msgstr ""
 
-#: models.py:248 models.py:576
+#: models.py:258 models.py:586
 msgid "Section"
 msgstr ""
 
-#: models.py:258
+#: models.py:268
 msgid "You must specify at least one of num/heading/subheading"
 msgstr ""
 
-#: models.py:569
+#: models.py:579
 msgid "audio"
 msgstr ""
 
-#: models.py:571
+#: models.py:581
 msgid "text"
 msgstr ""
 
-#: models.py:572
+#: models.py:582
 msgid "The text of the speech"
 msgstr ""
 
-#: models.py:581
+#: models.py:591
 msgid "The number of the speech, if relevant"
 msgstr ""
 
-#: models.py:584
+#: models.py:594
 msgid "The heading of the speech, if relevant"
 msgstr ""
 
-#: models.py:587
+#: models.py:597
 msgid "The subheading of the speech, if relevant"
 msgstr ""
 
-#: models.py:591
+#: models.py:601
 msgid "event"
 msgstr ""
 
-#: models.py:592
+#: models.py:602
 msgid "Was the speech at a particular event?"
 msgstr ""
 
-#: models.py:594
+#: models.py:604
 msgid "location"
 msgstr ""
 
-#: models.py:595
+#: models.py:605
 msgid "Where the speech took place"
 msgstr ""
 
-#: models.py:600
+#: models.py:610
 msgid "Who gave this speech?"
 msgstr ""
 
-#: models.py:607
+#: models.py:617
 msgid "Speech"
 msgstr ""
 
-#: models.py:608
+#: models.py:618
 msgid "Question"
 msgstr ""
 
-#: models.py:609
+#: models.py:619
 msgid "Answer"
 msgstr ""
 
-#: models.py:610
+#: models.py:620
 msgid "Scene"
 msgstr ""
 
-#: models.py:611
+#: models.py:621
 msgid "Narrative"
 msgstr ""
 
-#: models.py:612
+#: models.py:622
 msgid "Summary"
 msgstr ""
 
-#: models.py:613
+#: models.py:623
 msgid "Other"
 msgstr ""
 
-#: models.py:615
+#: models.py:625
 msgid "What sort of speech is this?"
 msgstr ""
 
-#: models.py:620
+#: models.py:630
 msgid "What date did the speech start?"
 msgstr ""
 
-#: models.py:623
+#: models.py:633
 msgid "What time did the speech start?"
 msgstr ""
 
-#: models.py:626
+#: models.py:636
 msgid "What date did the speech end?"
 msgstr ""
 
-#: models.py:628
+#: models.py:638
 msgid "end time"
 msgstr ""
 
-#: models.py:629
+#: models.py:639
 msgid "What time did the speech end?"
 msgstr ""
 
-#: models.py:634
+#: models.py:644
 msgid "public"
 msgstr ""
 
-#: models.py:634
+#: models.py:644
 msgid "Is this speech public?"
 msgstr ""
 
-#: models.py:645
+#: models.py:655
 msgid "celery task ID"
 msgstr ""
 
-#: models.py:648
+#: models.py:658
 msgid "speech"
 msgstr ""
 
-#: models.py:649
+#: models.py:659
 msgid "speeches"
 msgstr ""
 
@@ -687,8 +687,8 @@ msgid "Next"
 msgstr ""
 
 #: templates/search/search.html:8 templates/search/search.html.py:11
-#: templates/search/search.html:12 templates/speeches/_home.html:19
-#: templates/speeches/_home.html.py:20
+#: templates/search/search.html:12 templates/speeches/_home.html:29
+#: templates/speeches/_home.html.py:30
 #: templates/speeches/speaker_detail.html:111
 msgid "Search"
 msgstr ""
@@ -711,11 +711,28 @@ msgstr ""
 msgid "No results found"
 msgstr ""
 
+#: templates/speeches/_home.html:14 templates/speeches/parentless_list.html:20
+msgid "Add a new speech"
+msgstr ""
+
+#: templates/speeches/_home.html:15 templates/speeches/parentless_list.html:21
+#: templates/speeches/section_form.html:9
+#: templates/speeches/section_form.html:19
+msgid "Add a section"
+msgstr ""
+
 #: templates/speeches/_home.html:16
+#: templates/speeches/popolo_import_form.html:6
+#: templates/speeches/popolo_import_form.html:12
+#: templates/speeches/speaker_list.html:15
+msgid "Import speakers"
+msgstr ""
+
+#: templates/speeches/_home.html:26
 msgid "Search speeches and statements"
 msgstr ""
 
-#: templates/speeches/_home.html:45
+#: templates/speeches/_home.html:55
 #, python-format
 msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> speech"
 msgid_plural ""
@@ -723,7 +740,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/_home.html:50
+#: templates/speeches/_home.html:60
 #, python-format
 msgid "<a href=\"%(url_speaker_list)s\"><strong>1</strong></a> speaker"
 msgid_plural ""
@@ -731,7 +748,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/_home.html:55
+#: templates/speeches/_home.html:65
 #, python-format
 msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> section"
 msgid_plural ""
@@ -739,39 +756,39 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/_home.html:71
+#: templates/speeches/_home.html:81
 msgid "Brilliant!"
 msgstr ""
 
-#: templates/speeches/_home.html:72
+#: templates/speeches/_home.html:82
 msgid ""
 "Now you&rsquo;ve got your own public database for speeches and statements."
 msgstr ""
 
-#: templates/speeches/_home.html:73
+#: templates/speeches/_home.html:83
 msgid ""
 "However, it&rsquo;s totally empty. Let&rsquo;s get started by adding "
 "something."
 msgstr ""
 
-#: templates/speeches/_home.html:74 templates/speeches/parentless_list.html:59
-#: templates/speeches/speaker_list.html:43
+#: templates/speeches/_home.html:84 templates/speeches/parentless_list.html:59
+#: templates/speeches/speaker_list.html:47
 msgid "Add your first statement"
 msgstr ""
 
-#: templates/speeches/_home.html:76 templates/speeches/parentless_list.html:61
-#: templates/speeches/speaker_list.html:45
+#: templates/speeches/_home.html:86 templates/speeches/parentless_list.html:61
+#: templates/speeches/speaker_list.html:52
 msgid "This is a brand new SayIt site."
 msgstr ""
 
-#: templates/speeches/_home.html:77 templates/speeches/parentless_list.html:62
-#: templates/speeches/speaker_list.html:46
+#: templates/speeches/_home.html:87 templates/speeches/parentless_list.html:62
+#: templates/speeches/speaker_list.html:53
 msgid ""
 "Its creator hasn&rsquo;t yet added any speeches or statements for you to see."
 msgstr ""
 
-#: templates/speeches/_home.html:78 templates/speeches/parentless_list.html:63
-#: templates/speeches/speaker_list.html:47
+#: templates/speeches/_home.html:88 templates/speeches/parentless_list.html:63
+#: templates/speeches/speaker_list.html:54
 msgid "Learn more about SayIt"
 msgstr ""
 
@@ -785,22 +802,12 @@ msgstr ""
 msgid "Speeches"
 msgstr ""
 
-#: templates/speeches/parentless_list.html:20
-msgid "Add a new speech"
-msgstr ""
-
-#: templates/speeches/parentless_list.html:21
-#: templates/speeches/section_form.html:9
-#: templates/speeches/section_form.html:19
-msgid "Add a section"
-msgstr ""
-
 #: templates/speeches/parentless_list.html:39
 msgid "Speeches not in a section"
 msgstr ""
 
 #: templates/speeches/parentless_list.html:57
-#: templates/speeches/speaker_list.html:41
+#: templates/speeches/speaker_list.html:44
 msgid "You haven&rsquo;t added any speeches or statements yet"
 msgstr ""
 
@@ -808,12 +815,6 @@ msgstr ""
 msgid ""
 "Once you have, you&rsquo;ll be able to browse speeches and organise them "
 "into sections here."
-msgstr ""
-
-#: templates/speeches/popolo_import_form.html:6
-#: templates/speeches/popolo_import_form.html:12
-#: templates/speeches/speaker_list.html:16
-msgid "Import Speakers"
 msgstr ""
 
 #: templates/speeches/popolo_import_form.html:15
@@ -936,13 +937,13 @@ msgstr ""
 msgid "Add section"
 msgstr ""
 
-#: templates/speeches/speaker_delete.html:21
-#: templates/speeches/speaker_delete.html:30
+#: templates/speeches/speaker_delete.html:7
+#: templates/speeches/speaker_delete.html:16
 #, python-format
 msgid "Delete speaker: %(name)s"
 msgstr ""
 
-#: templates/speeches/speaker_delete.html:37
+#: templates/speeches/speaker_delete.html:23
 #: templates/speeches/speaker_detail.html:26
 msgid "Delete speaker"
 msgstr ""
@@ -1002,14 +1003,18 @@ msgstr ""
 msgid "All Speakers"
 msgstr ""
 
-#: templates/speeches/speaker_list.html:15
+#: templates/speeches/speaker_list.html:14
 msgid "Add a new speaker"
 msgstr ""
 
-#: templates/speeches/speaker_list.html:42
+#: templates/speeches/speaker_list.html:45
 msgid ""
 "Once you have, this page will contain a list of all the different people who "
 "made each statement in this SayIt site."
+msgstr ""
+
+#: templates/speeches/speaker_list.html:48
+msgid "Add your first speaker"
 msgstr ""
 
 #: templates/speeches/speech.html:23
@@ -1122,39 +1127,39 @@ msgstr ""
 msgid "next speech"
 msgstr ""
 
-#: templates/speeches/speech_form.html:25
-#: templates/speeches/speech_form.html:47
+#: templates/speeches/speech_form.html:15
+#: templates/speeches/speech_form.html:37
 msgid "Edit speech"
 msgstr ""
 
-#: templates/speeches/speech_form.html:27
-#: templates/speeches/speech_form.html:49
+#: templates/speeches/speech_form.html:17
+#: templates/speeches/speech_form.html:39
 msgid "Add a speech"
 msgstr ""
 
-#: templates/speeches/speech_form.html:50
+#: templates/speeches/speech_form.html:40
 msgid ""
 "You can cut and paste quotes from news sites, social media or blogs,<br>or "
 "transcribe any audio or video records you may have access to"
 msgstr ""
 
-#: templates/speeches/speech_form.html:126
+#: templates/speeches/speech_form.html:71
 msgid "Date &amp; Time"
 msgstr ""
 
-#: templates/speeches/speech_form.html:182
+#: templates/speeches/speech_form.html:95
 msgid "Event &amp; Location"
 msgstr ""
 
-#: templates/speeches/speech_form.html:207
+#: templates/speeches/speech_form.html:104
 msgid "Title &amp; Tags"
 msgstr ""
 
-#: templates/speeches/speech_form.html:234
+#: templates/speeches/speech_form.html:115
 msgid "Save changes"
 msgstr ""
 
-#: templates/speeches/speech_form.html:236
+#: templates/speeches/speech_form.html:117
 msgid "Save speech"
 msgstr ""
 
@@ -1163,30 +1168,30 @@ msgstr ""
 msgid "View Speaker: %(speaker_name)s"
 msgstr ""
 
-#: views.py:451
+#: views.py:452
 #, python-format
 msgid "View Section: %(section_title)s"
 msgstr ""
 
-#: views.py:507
+#: views.py:508
 msgid "Speeches assigned."
 msgstr ""
 
-#: views.py:660
+#: views.py:661
 #, python-format
 msgid "%(created)d speaker created."
 msgid_plural "%(created)d speakers created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:665
+#: views.py:666
 #, python-format
 msgid "%(refreshed)d speaker refreshed."
 msgid_plural "%(refreshed)d speakers refreshed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:676
+#: views.py:677
 msgid "No speakers found."
 msgstr ""
 
