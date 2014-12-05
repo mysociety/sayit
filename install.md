@@ -13,6 +13,10 @@ You will need to have the following installed:
 * [PostgreSQL](http://www.postgresql.org/) (it's possible it could work on
   another database that e.g. handles recursive SQL, but this would need work)
 
+* If you are using Python 2, in order for the SNI-enabled SSL packages to
+  install, you will need to install some header packages as outlined at
+  [the Cryptography library install page](https://cryptography.io/en/latest/installation/).
+
 Installing SayIt as a Django app
 --------------------------------
 
