@@ -1,3 +1,26 @@
+v1.3, 2014-12-05
+    * Delete/ merge speaker front end interface. #407
+    * PopIt and Popolo JSON import management command and front end. #231 #310
+    * OpenGraph data output. #364 #416
+    * Dots in debate subsection timeline, fix section divider display. #372
+    * Spanish translation, bundled .mo files. #356
+    * Nicer section and speaker forms. #350
+    * Update the slug if you edit speaker or section. #433
+    * Show more editing buttons on home/ speakers pages. #417
+    * Improve speaker sorting, including ability to provide sort name.
+    * Use /section instead of /sections for editing URL endpoints.
+    * Akoma Ntoso import
+        * Options to clobber or skip existing data on import. #387
+        * No error if no files found on --dir import. #409
+        * Support for source_url. #354
+    * Development
+        * Quieten unneeded warning. #406
+        * flake8 everything, and add flake8 to pre-commit hook. #432
+        * Speed up Travis.
+
+Thanks to Duncan Parkes, James McKinney, and Matthew Somerville for their work
+on this release.
+
 v1.2.2, 2014-10-01
     * Fix a bug in South migrations introduced in v1.2 (80e3f0b4) where
       migrating could give an error when it tried to rename the content type.
@@ -12,7 +35,7 @@ v1.2.1, 2014-09-26
     * Don't error if speaker image caching fails
     * Add new-style migrations for Django 1.7
     * Allow loading of remote Akoma Ntoso files
-    * Make it easier to override the ImportCommand behavior that is
+    * Make it easier to override the ImportCommand behaviour that is
       filesystem-specific
     * Remove requirement to run collectstatic before tests
 

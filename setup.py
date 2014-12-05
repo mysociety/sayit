@@ -26,7 +26,7 @@ else:
 
 setup(
     name="django-sayit",
-    version='1.2.2',
+    version='1.3',
     description='A data store for speeches and transcripts to make them searchable and pretty.',
     long_description=read_file('README.rst'),
     author='mySociety',
@@ -78,6 +78,8 @@ setup(
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Intended Audience :: Developers',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
         'Topic :: Database :: Front-Ends',
         'Topic :: Internet :: WWW/HTTP',
     ],
