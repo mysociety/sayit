@@ -177,12 +177,20 @@ $image-path: '../img' !default;
   @media (min-width: $medium-screen) {
     @include grid-column(11, $offset:1);
   }
+}
+
+.speech--section-signpost .section-list,
+.speech--section-signpost .speech-wrapper:last-child {
   padding-bottom: 1em;
   border-bottom: 1px solid $colour_light_grey;
 }
 
 .speech--section-signpost .section-list .section-list {
   @include grid-column(12, $offset:0);
+}
+
+.speech--section-signpost .section-list .section-list,
+.speech--section-signpost .section-list .speech-wrapper {
   padding-bottom: 0;
   border-bottom: none;
 }
