@@ -112,7 +112,8 @@ class ImportCommand(BaseCommand):
         try:
             section = importer.import_document(path)
         except Exception as e:
-            logger.error(str(e))
+            logger.error("An exception of type %s occurred, arguments:\n%s" % (
+                type(e).__name__, e))
             return (None, {})
 
         return (section, importer.speakers)

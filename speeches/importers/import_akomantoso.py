@@ -147,13 +147,15 @@ class ImportAkomaNtoso (ImporterBase):
             display_name = None
 
         by_ref = child.get('by')
+        speaker = None
         if by_ref:
             if not by_ref.startswith('#'):
                 logger.warn(
                     "by attribute value doesn't begin with '#': %s" % by_ref)
-            speaker = self.speakers[by_ref[1:]]
-        else:
-            speaker = None
+            try:
+                speaker = self.speakers[by_ref[1:]]
+            except KeyError:
+                logger.warn("ID %s in speech has no corresponding TLCPerson entry" % by_ref)
 
         return speaker, display_name
 
