@@ -27,15 +27,15 @@ class AjaxTests(InstanceTestCase):
         Speaker.objects.create(name='Alan', instance=other_instance)
         Section.objects.create(heading='Other', instance=other_instance)
 
-    def test_lookup_speaker(self):
+    def _test_lookup(self, field, search, matches):
         # Copy what happens in AutoViewFieldMixin's __init__
         # in order to get the required field_id.
-        field_id = register_field('speeches.forms.SpeakerField', SpeakerField())
+        field_id = register_field('speeches.forms.%s' % field.__name__, field())
 
         # The ajax queries look something like this:
         # /select2/fields/auto.json?term=al&page=1&context=&field_id=f5af12d0dbb3800ea6b8d88b4720ad7b625f1ae4&_=1399984568706
         data = urlencode({
-            'term': 'al',
+            'term': search,
             'field_id': field_id,
             'page': 1,
             'context': '',
@@ -44,28 +44,17 @@ class AjaxTests(InstanceTestCase):
 
         results = json.loads(resp.content.decode())['results']
 
-        # We should see Alice and Alastair, but not Bob (doesn't match),
-        # or Alan (wrong instance).
         self.assertEqual(
             set([x['text'] for x in results]),
-            set((u'Alice', u'Alastair'))
+            set(matches)
             )
 
+    def test_lookup_speaker(self):
+        # We should see Alice and Alastair, but not Bob (doesn't match),
+        # or Alan (wrong instance).
+        self._test_lookup(SpeakerField, 'al', ('Alice', 'Alastair'))
+
     def test_lookup_section(self):
-        field_id = register_field('speeches.forms.SectionField', SectionField())
-        data = urlencode({
-            'term': 'se',
-            'field_id': field_id,
-            'page': 1,
-            'context': '',
-        })
-        resp = self.client.get('/select2/fields/auto.json?' + data)
-
-        results = json.loads(resp.content.decode())['results']
-
         # We should see Sections, but not Not This (doesn't match),
         # or Other (wrong instance).
-        self.assertEqual(
-            set([x['text'] for x in results]),
-            set((u'Section A', u'Section B'))
-        )
+        self._test_lookup(SectionField, 'se', ('Section A', 'Section B'))
