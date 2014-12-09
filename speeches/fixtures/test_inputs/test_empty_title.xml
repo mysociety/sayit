@@ -11,6 +11,17 @@
                     <p>Hello</p>
                 </speech>
             </debateSection>
+            <debateSection>
+                <speech>
+                    <p>Howdy</p>
+                </speech>
+            </debateSection>
+            <debateSection>
+                <heading>Conclusions</heading>
+                <speech>
+                    <p>Bye</p>
+                </speech>
+            </debateSection>
         </debateBody>
     </debate>
 </akomaNtoso>

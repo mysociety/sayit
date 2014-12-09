@@ -9,6 +9,12 @@
             <speech>
                 <p>Howdy</p>
             </speech>
+            <debateSection>
+                <heading>Conclusions</heading>
+                <speech>
+                    <p>Bye</p>
+                </speech>
+            </debateSection>
         </debateBody>
     </debate>
 </akomaNtoso>
