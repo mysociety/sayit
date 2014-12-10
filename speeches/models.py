@@ -173,7 +173,8 @@ class Speaker(InstanceMixin, Person):
 
     @property
     def colour(self):
-        return hashlib.sha1('%s' % self.person_ptr_id).hexdigest()[:6]
+        id = ('%s' % self.person_ptr_id).encode()
+        return hashlib.sha1(id).hexdigest()[:6]
 
     @models.permalink
     def get_absolute_url(self):

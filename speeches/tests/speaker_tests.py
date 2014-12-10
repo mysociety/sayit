@@ -1,3 +1,4 @@
+import hashlib
 import re
 from datetime import date
 from mock import patch, Mock
@@ -39,9 +40,12 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
             summary='A froody dude',
             image='http://example.com/image.jpg')
         self.speakers.append(speaker)
+        id = ('%s' % speaker.person_ptr_id).encode()
+        self.assertEqual(speaker.colour, hashlib.sha1(id).hexdigest()[:6])
 
         # Call the speaker's page
         resp = self.client.get('/speaker/%s' % speaker.slug)
+        assertRegex(self, resp.content.decode(), r'background-color: #[0-9a-f]{6}(?i)')
 
         self.assertSequenceEqual("Steve", resp.context['speaker'].name)
         self.assertSequenceEqual("A froody dude", resp.context['speaker'].summary)
