@@ -38,7 +38,6 @@ from speeches.fields import FromStartIntegerField
 from speeches.models import (Speech, Speaker, Section,
                              Recording, RecordingTimestamp, Tag)
 from speeches.widgets import AudioFileInput, DatePickerWidget, TimePickerWidget
-from speeches.importers.import_popolo import PopoloImporter
 
 logger = logging.getLogger(__name__)
 
@@ -619,24 +618,23 @@ RecordingTimestampFormSet = inlineformset_factory(
 )
 
 
-class PopoloImportForm(forms.Form):
-    location = forms.URLField(
-        label=_('Location of Popolo JSON data'))
+# class PopoloImportForm(forms.Form):
+#     location = forms.URLField(
+#         label=_('Location of Popolo JSON data'))
 
-    def __init__(self, instance=None, *args, **kwargs):
-        super(PopoloImportForm, self).__init__(*args, **kwargs)
-        self.instance = instance
+#     def __init__(self, instance=None, *args, **kwargs):
+#         super(PopoloImportForm, self).__init__(*args, **kwargs)
+#         self.instance = instance
 
-    def clean(self):
-        cleaned_data = super(PopoloImportForm, self).clean()
+#     def clean(self):
+#         cleaned_data = super(PopoloImportForm, self).clean()
 
-        cleaned_data['importer'] = PopoloImporter(
-            cleaned_data['location'],
-            instance=self.instance,
-            )
+#         cleaned_data['importer'] = PopoloImporter(
+#             cleaned_data['location'],
+#             instance=self.instance,
+#             )
 
-        return cleaned_data
-
+#         return cleaned_data
 
 class AkomaNtosoImportForm(forms.Form):
     location = forms.URLField(label=_('Location of Akoma Ntoso data'))
@@ -655,3 +653,8 @@ class AkomaNtosoImportForm(forms.Form):
                     ),
                 widget=forms.RadioSelect(),
                 )
+
+
+class PopoloImportForm(forms.Form):
+    location = forms.URLField(
+        label=_('Location of Popolo JSON data'))

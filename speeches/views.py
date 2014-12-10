@@ -28,14 +28,19 @@ from speeches.models import Speech, Speaker, Section, Recording, Tag
 from speeches.mixins import Base32SingleObjectMixin, UnmatchingSlugException
 from speeches.importers.import_akomantoso import ImportAkomaNtoso
 
+from speeches.importers.import_popolo import import_popolo
+
 from django.views.generic import (
     View, CreateView, UpdateView, DeleteView, DetailView, ListView,
-    RedirectView, FormView,
+    RedirectView, FormView, TemplateView,
     )
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import BaseFormView, BaseUpdateView
 
 from django_select2.views import AutoResponseView
+
+from rq.job import Job, NoSuchJobError
+import django_rq
 
 import logging
 
@@ -637,52 +642,6 @@ class Select2AutoResponseView(AutoResponseView):
         request._AutoResponseView__django_select2_local.queryset = qs
 
 
-class PopoloImportView(NamespaceMixin, InstanceFormMixin, FormView):
-    template_name = 'speeches/popolo_import_form.html'
-    form_class = PopoloImportForm
-
-    def get_success_url(self):
-        return self.reverse('speeches:speaker-list')
-
-    def get_form_kwargs(self):
-        kwargs = super(PopoloImportView, self).get_form_kwargs()
-        kwargs['instance'] = self.request.instance
-        return kwargs
-
-    def form_valid(self, form):
-        results = form.cleaned_data['importer'].import_persons()
-
-        created = results['created']
-        refreshed = results['refreshed']
-
-        if created or refreshed:
-            messages.add_message(
-                self.request,
-                messages.SUCCESS if created else messages.INFO,
-                ' '.join((
-                    ungettext(
-                        "%(created)d speaker created.",
-                        "%(created)d speakers created.",
-                        created,
-                        ) % {'created': created},
-                    ungettext(
-                        "%(refreshed)d speaker refreshed.",
-                        "%(refreshed)d speakers refreshed.",
-                        refreshed,
-                        ) % {'refreshed': refreshed},
-                    ))
-                )
-
-        else:
-            messages.add_message(
-                self.request,
-                messages.WARNING,
-                _('No speakers found.'),
-                )
-
-        return super(PopoloImportView, self).form_valid(form)
-
-
 class AkomaNtosoImportView(NamespaceMixin, InstanceFormMixin, FormView):
     template_name = 'speeches/akoma_ntoso_import_form.html'
     form_class = AkomaNtosoImportForm
@@ -746,3 +705,68 @@ class AkomaNtosoImportView(NamespaceMixin, InstanceFormMixin, FormView):
                 )
 
         return super(AkomaNtosoImportView, self).form_valid(form)
+
+
+class PopoloImportView(NamespaceMixin, InstanceFormMixin, FormView):
+    template_name = 'speeches/popolo_import_form.html'
+    form_class = PopoloImportForm
+
+    def form_valid(self, form):
+        job = django_rq.enqueue(
+            import_popolo,
+            form.cleaned_data['location'],
+            instance=self.request.instance,
+            )
+
+        return HttpResponseRedirect(
+            self.reverse('speeches:import-popolo-status', kwargs={'job_id': job.id}))
+
+
+class PopoloImportStatus(NamespaceMixin, TemplateView):
+    template_name = 'speeches/popolo_import_status.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        try:
+            context['job'] = job = Job.fetch(
+                kwargs['job_id'],
+                connection=django_rq.get_connection(),
+                )
+        except NoSuchJobError:
+            status = 'not found'
+        else:
+            status = job.get_status()
+
+        meta = job.meta
+        created = meta.get('created')
+        refreshed = meta.get('refreshed')
+
+        if status == 'finished':
+            if created or refreshed:
+                messages.add_message(
+                    request,
+                    messages.SUCCESS if created else messages.INFO,
+                    ' '.join((
+                        ungettext(
+                            "%(created)d speaker created.",
+                            "%(created)d speakers created.",
+                            created,
+                            ) % {'created': created},
+                        ungettext(
+                            "%(refreshed)d speaker refreshed.",
+                            "%(refreshed)d speakers refreshed.",
+                            refreshed,
+                            ) % {'refreshed': refreshed},
+                        ))
+                    )
+            else:
+                messages.add_message(
+                    request,
+                    messages.WARNING,
+                    _('No speakers found.'),
+                    )
+
+            return HttpResponseRedirect(reverse('speeches:speaker-list'))
+
+        return self.render_to_response(context)

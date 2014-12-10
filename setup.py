@@ -50,6 +50,7 @@ setup(
         'django-subdomain-instances >= 0.10.2',
         'easy-thumbnails >= 2.1',
         'unicode-slugify == 0.1.1',
+        'django-rq >= 0.7.0',
     ] + ssl,
     extras_require={
         'test': [

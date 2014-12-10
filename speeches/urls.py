@@ -7,7 +7,7 @@ from speeches.views import (
     SpeakerView, SpeakerList, SectionCreate, SectionUpdate, SectionDelete,
     SectionView, SectionViewAN, ParentlessList, RecordingList, RecordingView,
     RecordingUpdate, RecordingAPICreate, InstanceView, Select2AutoResponseView,
-    PopoloImportView, AkomaNtosoImportView,
+    PopoloImportView, AkomaNtosoImportView, PopoloImportStatus
     )
 
 from speeches.search import InstanceSearchView
@@ -62,7 +62,8 @@ urlpatterns = patterns(
     url(r'^recording/(?P<pk>\d+)/edit$', RecordingUpdate.as_view(), name='recording-edit'),
     url(r'^api/v0.1/recording/$', csrf_exempt(RecordingAPICreate.as_view()), name='recording-api-add'),
 
-    url(r'^import/popolo', PopoloImportView.as_view(), name='import-popolo'),
+    url(r'^import/popolo$', PopoloImportView.as_view(), name='import-popolo'),
+    url(r'^import/popolo/job/(?P<job_id>[0-9a-z-]+)$', PopoloImportStatus.as_view(), name='import-popolo-status'),
     url(r'^import/akomantoso', AkomaNtosoImportView.as_view(), name='import-akoma-ntoso'),
 )
 

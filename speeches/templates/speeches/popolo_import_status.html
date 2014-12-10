@@ -1,0 +1,25 @@
+{% extends 'speeches/base.html' %}
+{% load url from future %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %}{% trans "Import status" %}{% endblock %}
+
+{% block content %}
+  {% with status=job.get_status %}
+    <div class="page-header">
+      <h1>
+        {% if status == 'failed' %}
+          {% trans "Popolo import failed to complete" %}
+        {% elif status == 'not found' %}
+          {% trans "Import job not found" %}
+        {% else %}
+          {% trans "Popolo Import in Progress" %}
+        {% endif %}
+    </div>
+
+    <p>{{ job.meta.created }} speakers created</p>
+    <p>{{ job.meta.refreshed }} speakers refreshed</p>
+    <p>Feel free to refresh</p>
+  {% endwith %}
+{% endblock %}

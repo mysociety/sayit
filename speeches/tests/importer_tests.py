@@ -2,7 +2,7 @@ import datetime
 import json
 import re
 import requests
-from mock import patch
+from mock import patch, Mock
 
 from speeches.tests import InstanceTestCase
 from speeches.models import Speech, Speaker, Section
@@ -342,41 +342,57 @@ class PopoloImportViewsTestCase(InstanceTestCase):
 
         self.assertContains(resp, 'Import speakers')
 
-    def test_import_with_data(self):
+    @patch('speeches.views.django_rq',
+           new=Mock(**{'enqueue.return_value': Mock(id=23456)}))
+    @patch('speeches.views.Job', autospec=True)
+    def test_place_import_on_queue(self, mock_job):
         resp = self.client.post(
             '/import/popolo',
             {'location': 'http://example.com/welsh_assembly/persons'},
-            follow=True,
+            follow=False,
             )
 
-        self.assertEqual(
-            Speaker.objects.filter(instance=self.instance).count(),
-            3,
-            )
-        self.assertContains(resp, '3 speakers created. 0 speakers refreshed.')
-
-        # Repeat the same post
-        resp = self.client.post(
-            '/import/popolo',
-            {'location': 'http://example.com/welsh_assembly/persons'},
-            follow=True,
+        # Check that a redirect happens to the right place.
+        self.assertRedirects(
+            resp,
+            '/import/popolo/job/23456',
             )
 
-        self.assertEqual(
-            Speaker.objects.filter(instance=self.instance).count(),
-            3,
-            )
-        self.assertContains(resp, '0 speakers created. 3 speakers refreshed.')
+    # def test_import_with_data(self):
+    #     # Process the job
+    #     # Check that speakers are imported
+    #     # Fetch the status page again and check there is a redirect to speakers.
 
-    def test_import_empty(self):
-        resp = self.client.post(
-            '/import/popolo',
-            {'location': 'http://example.com/empty.json'},
-            follow=True,
-            )
+    #     self.assertEqual(
+    #         Speaker.objects.filter(instance=self.instance).count(),
+    #         3,
+    #         )
+    #     self.assertContains(resp, '3 speakers created. 0 speakers refreshed.')
 
-        self.assertEqual(
-            Speaker.objects.filter(instance=self.instance).count(),
-            0,
-            )
-        self.assertContains(resp, 'No speakers found')
+    #     # Repeat the same import post
+    #     resp = self.client.post(
+    #         '/import/popolo',
+    #         {'location': 'http://example.com/welsh_assembly/persons'},
+    #         follow=True,
+    #         )
+
+    #     self.assertEqual(
+    #         Speaker.objects.filter(instance=self.instance).count(),
+    #         3,
+    #         )
+    #     self.assertContains(resp, '0 speakers created. 3 speakers refreshed.')
+
+    # def test_import_empty(self):
+    #     print "This one"
+    #     resp = self.client.post(
+    #         '/import/popolo',
+    #         {'location': 'http://example.com/empty.json'},
+    #         follow=True,
+    #         )
+
+    #     self.assertEqual(
+    #         Speaker.objects.filter(instance=self.instance).count(),
+    #         0,
+    #         )
+    #     # import pdb;pdb.set_trace()
+    #     self.assertContains(resp, 'No speakers found')

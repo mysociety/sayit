@@ -37,3 +37,8 @@ urlpatterns += patterns(
 
     url(r'^', include('speeches.urls', app_name='speeches', namespace='speeches')),
 )
+
+urlpatterns += patterns(
+    '',
+    (r'^django-rq/', include('django_rq.urls')),
+    )

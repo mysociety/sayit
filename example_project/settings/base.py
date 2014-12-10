@@ -135,6 +135,7 @@ INSTALLED_APPS = [
     'instances',
     'speeches',
     'easy_thumbnails',
+    'django_rq',
 ]
 
 try:
@@ -273,6 +274,21 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+# This will set django_rq up to use a single queue called 'default'
+# based on a local Redis server at the standard port.
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        # 'PASSWORD': 'some-password',
+
+        # Imports can take some time, so set the default timeout to be relatively
+        # large - this is 10 hours.
+        'DEFAULT_TIMEOUT': 36000,
+        },
+    }
 
 # Allow local changes of settings
 try:

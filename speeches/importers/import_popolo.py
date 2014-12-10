@@ -2,6 +2,8 @@ import os.path
 import json
 import requests
 
+from rq import get_current_job
+
 import django
 from django.utils import six
 from django.forms import ValidationError
@@ -206,6 +208,8 @@ class PopoloImporter(object):
             )
 
     def import_persons(self):
+        self.job = get_current_job()
+
         created_count = 0
         refreshed_count = 0
 
@@ -231,6 +235,11 @@ class PopoloImporter(object):
                 created_count += 1
             else:
                 refreshed_count += 1
+
+            if self.job:
+                self.job.meta['created'] = created_count
+                self.job.meta['refreshed'] = refreshed_count
+                self.job.save()
 
         return {'created': created_count, 'refreshed': refreshed_count}
 
@@ -306,3 +315,8 @@ class PopoloImporter(object):
         self.import_persons()
         # self.import_posts()
         # self.import_memberships()
+
+
+def import_popolo(source, instance=None):
+    importer = PopoloImporter(source, instance)
+    return importer.import_persons()
