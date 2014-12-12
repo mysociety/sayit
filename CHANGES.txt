@@ -1,3 +1,10 @@
+v1.3.1, 2014-12-12
+    * Fix error in speaker colour display in Python 3.
+    * Akoma Ntoso import
+        * Better generic error handling, and of missing speaker TLCPersons
+
+Thanks to Jaroslav Semančík and johnfelipe for reporting these issues.
+
 v1.3, 2014-12-05
     * Delete/ merge speaker front end interface. #407
     * PopIt and Popolo JSON import management command and front end. #231 #310
