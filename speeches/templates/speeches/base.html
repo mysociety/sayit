@@ -44,11 +44,22 @@
             <div class="full-page__unit">
               <h1><a href="{% url 'speeches:home' %}">SayIt</a></h1>
 
-              <ul class="inline-list">
+              <ul class="inline-list left">
                 <li><a href="{% url 'speeches:home' %}">{% trans 'Home' %}</a></li>
                 <li><a href="{% url 'speeches:speaker-list' %}">{% trans 'Speakers' %}</a></li>
                 <li><a href="{% url 'speeches:parentless-list' %}">{% trans 'Speeches' %}</a></li>
               </ul>
+
+              <ul class="unstyled-list right">
+                {% if request.is_user_instance %}
+                  <li>{% trans 'Welcome,' %} {% firstof user.get_short_name user.get_username %}.
+                      <a href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+                  </li>
+                {% else %}
+                  <li><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
+                {% endif %}
+              </ul>
+
             </div>
           </div>
         </header>
