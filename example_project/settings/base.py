@@ -102,6 +102,8 @@ INTERNAL_IPS = ('127.0.0.1',)
 
 ROOT_URLCONF = 'example_project.urls'
 
+LOGIN_REDIRECT_URL = '/'
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'example_project.wsgi.application'
 
