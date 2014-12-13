@@ -8,7 +8,7 @@
 
 {% block content %}
 
-
+  {% if speaker_list or request.is_user_instance %}
     <div class="page-header">
       {% if request.is_user_instance %}
         <a href="{% url "speeches:speaker-add" %}" class="button small right">{% trans "Add a new speaker" %}</a>
@@ -18,6 +18,7 @@
         <h1>{% trans "All Speakers" %}</h1>
       {% endif %}
     </div>
+  {% endif %}
 
   {% if speaker_list %}
 
@@ -40,19 +41,15 @@
   {% else %}
 
     <div class="nothing-here-yet-message">
-      {% if request.is_user_instance %}
+      {% block nothing-here-yet %}
         <h1>{% trans 'You haven&rsquo;t added any speeches or statements yet' %}</h1>
         <p class="lead">{% trans 'Once you have, this page will contain a list of all the different people who made each statement in this SayIt site.' %}</p>
         <p>
-          <a href="{% url "speeches:speech-add" %}" class="button">{% trans 'Add your first statement' %}</a>
           <a href="{% url "speeches:speaker-add" %}" class="button">{% trans 'Add your first speaker' %}</a>
+          <a href="{% url "speeches:import-popolo" %}" class="button">{% trans "Import speakers" %}</a>
+          <a href="{% url "speeches:speech-add" %}" class="button secondary">{% trans 'Add your first statement' %}</a>
         </p>
-
-      {% else %}
-        <h1>{% trans 'This is a brand new SayIt site.' %}</h1>
-        <p class="lead">{% trans 'Its creator hasn&rsquo;t yet added any speeches or statements for you to see.' %}</p>
-        <p><a href="http://sayit.mysociety.org" class="button">{% trans 'Learn more about SayIt' %}</a></p>
-      {% endif %}
+      {% endblock %}
     </div>
 
   {% endif %}

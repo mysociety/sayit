@@ -77,16 +77,16 @@
   {% else %}
 
     <div class="nothing-here-yet-message">
-      {% if request.is_user_instance %}
+      {% block nothing-here-yet %}
         <h1>{% trans 'Brilliant!' %}</h1>
         <p class="lead">{% trans 'Now you&rsquo;ve got your own public database for speeches and statements.' %}</p>
         <p class="lead">{% trans 'However, it&rsquo;s totally empty. Let&rsquo;s get started by adding something.' %}</p>
-        <p><a href="{% url "speeches:speech-add" %}" class="button">{% trans 'Add your first statement' %}</a></p>
-      {% else %}
-        <h1>{% trans 'This is a brand new SayIt site.' %}</h1>
-        <p class="lead">{% trans 'Its creator hasn&rsquo;t yet added any speeches or statements for you to see.' %}</p>
-        <p><a href="http://sayit.mysociety.org" class="button">{% trans 'Learn more about SayIt' %}</a></p>
-      {% endif %}
+        <p>
+            <a href="{% url "speeches:speech-add" %}" class="button">{% trans 'Add your first statement' %}</a>
+            <a href="{% url "speeches:speaker-add" %}" class="button">{% trans 'Add your first speaker' %}</a>
+            <a href="{% url 'speeches:import-popolo' %}" class="button">{% trans "Import speakers" %}</a>
+        </p>
+      {% endblock %}
     </div>
 
   {% endif %}

@@ -13,8 +13,7 @@
 
 {% block content %}
 
-  {% if section_list or speech_list %}
-
+  {% if section_list or speech_list or request.is_user_instance %}
     <div class="page-header">
       {% if request.is_user_instance %}
         <a href="{% url "speeches:speech-add" %}" class="button small right">{% trans "Add a new speech" %}</a>
@@ -22,6 +21,9 @@
       {% endif %}
         <h1>{% trans "Speeches" %}</h1>
     </div>
+  {% endif %}
+
+  {% if section_list or speech_list %}
 
       {% if section_list %}
         <ul class="unstyled">
@@ -53,15 +55,11 @@
   {% else %}
 
     <div class="nothing-here-yet-message">
-      {% if request.is_user_instance %}
+      {% block nothing-here-yet %}
         <h1>{% trans 'You haven&rsquo;t added any speeches or statements yet' %}</h1>
         <p class="lead">{% trans 'Once you have, you&rsquo;ll be able to browse speeches and organise them into sections here.' %}</p>
         <p><a href="{% url "speeches:speech-add" %}" class="button">{% trans 'Add your first statement' %}</a></p>
-      {% else %}
-        <h1>{% trans 'This is a brand new SayIt site.' %}</h1>
-        <p class="lead">{% trans 'Its creator hasn&rsquo;t yet added any speeches or statements for you to see.' %}</p>
-        <p><a href="http://sayit.mysociety.org" class="button">{% trans 'Learn more about SayIt' %}</a></p>
-      {% endif %}
+      {% endblock %}
     </div>
 
   {% endif %}
