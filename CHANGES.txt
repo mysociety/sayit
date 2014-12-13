@@ -1,3 +1,7 @@
+v1.3.2, 2014-12-13
+    * Improved initial running of example project, providing login links
+      and buttons for adding or importing data. #222 #411 #419
+
 v1.3.1, 2014-12-12
     * Fix error in speaker colour display in Python 3.
     * Akoma Ntoso import
