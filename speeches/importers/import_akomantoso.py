@@ -44,9 +44,12 @@ class ImportAkomaNtoso (ImporterBase):
                 speaker = Speaker.objects.get(
                     instance=self.instance, identifiers__identifier=href)
             except Speaker.DoesNotExist:
-                speaker = Speaker(
-                    instance=self.instance, name=person.get('showAs'))
+                name = person.get('showAs')
+                if not name:
+                    raise Exception("TLCPerson '%s' is missing showAs" % href)
+                speaker = Speaker(instance=self.instance, name=name)
                 self.stats[Speaker] += 1
+
                 if self.commit:
                     speaker.save()
                     speaker.identifiers.create(
