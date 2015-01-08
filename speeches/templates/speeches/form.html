@@ -2,7 +2,7 @@
 {% csrf_token %}
 
 {% if form.non_field_errors %}
-    <div class="error">
+    <div class="alert alert-error">
         {{ form.non_field_errors }}
     </div>
 {% endif %}
