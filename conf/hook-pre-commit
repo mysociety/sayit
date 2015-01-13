@@ -38,4 +38,4 @@ command -v flake8 >/dev/null 2>&1 || {
   exit 1
 }
 
-flake8
+flake8 && echo -e "\033[32mOK \033[0mflake8" || echo -e "\033[31mFAILED \033[0mflake8"
