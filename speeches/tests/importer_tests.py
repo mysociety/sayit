@@ -80,16 +80,16 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Hello</p>', '<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>'],
+             })
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='replace').import_document(
             'speeches/fixtures/test_inputs/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>'],
+             })
 
         ImportAkomaNtoso(instance=self.instance, commit=True).import_document(
             'speeches/fixtures/test_inputs/test_clobber.xml')
@@ -98,8 +98,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
             {'This is the title': ['<p>Howdy</p>'],
              'Conclusions': ['<p>Bye</p>'],
              'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>'],
+             })
 
     def test_not_already_imported(self):
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='skip').import_document(
@@ -107,8 +107,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>'],
+             })
         Section.objects.all().delete()
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='merge').import_document(
@@ -116,8 +116,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>'],
+             })
         Section.objects.all().delete()
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='replace').import_document(
@@ -125,8 +125,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>'],
+             })
         Section.objects.all().delete()
 
         ImportAkomaNtoso(instance=self.instance, commit=True).import_document(
@@ -134,8 +134,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>'],
+             })
         Section.objects.all().delete()
 
     def test_empty_title(self):
@@ -145,8 +145,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
             self._list_sections(),
             {'Untitled': ['<p>Hello</p>'],
              'Untitled': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>'],
+             })
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='skip').import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
@@ -154,8 +154,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
             self._list_sections(),
             {'Untitled': ['<p>Hello</p>'],
              'Untitled': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>'],
+             })
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='merge').import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
@@ -163,8 +163,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
             self._list_sections(),
             {'Untitled': ['<p>Hello</p>', '<p>Hello</p>', '<p>Howdy</p>'],
              'Untitled': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>', '<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>', '<p>Bye</p>'],
+             })
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='replace').import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
@@ -172,8 +172,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
             self._list_sections(),
             {'Untitled': ['<p>Hello</p>'],
              'Untitled': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>'],
+             })
 
         ImportAkomaNtoso(instance=self.instance, commit=True).import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
@@ -184,8 +184,8 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
              'Conclusions': ['<p>Bye</p>'],
              'Untitled': ['<p>Hello</p>'],
              'Untitled': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>']
-            })
+             'Conclusions': ['<p>Bye</p>'],
+             })
 
     def test_xpath_preface_elements(self):
         self.importer.import_document(
@@ -296,17 +296,6 @@ class PopoloImportTestCase(InstanceTestCase):
         popolo_importer.import_all()
 
         self.assertEqual(Speaker.objects.filter(instance=popolo_importer.instance).count(), 3)
-
-    def test_popolo_import_remote_single_json_file(self):
-        popolo_importer = PopoloImporter(
-            'http://example.com/welsh_assembly.json'
-            )
-        popolo_importer.import_all()
-
-        self.assertEqual(
-            Speaker.objects.filter(instance=popolo_importer.instance).count(),
-            3,
-            )
 
     def test_popolo_import_remote_single_json_file(self):
         popolo_importer = PopoloImporter(

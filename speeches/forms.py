@@ -655,4 +655,3 @@ class AkomaNtosoImportForm(forms.Form):
                     ),
                 widget=forms.RadioSelect(),
                 )
-

@@ -13,7 +13,7 @@ from speeches.models import Section, Speech, Speaker
 logger = logging.getLogger(__name__)
 
 
-class ImportAkomaNtoso (ImporterBase):
+class ImportAkomaNtoso(ImporterBase):
     start_date = None
 
     def import_document(self, document_path):

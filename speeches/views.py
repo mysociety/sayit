@@ -707,7 +707,7 @@ class AkomaNtosoImportView(NamespaceMixin, InstanceFormMixin, FormView):
                 )
 
             stats = importer.import_document(form.cleaned_data['location'])
-        except Exception as e:
+        except:
             form._errors[NON_FIELD_ERRORS] = form.error_class(
                 [_('Sorry - something went wrong with the import')])
             return self.form_invalid(form)
@@ -721,7 +721,8 @@ class AkomaNtosoImportView(NamespaceMixin, InstanceFormMixin, FormView):
             messages.add_message(
                 self.request,
                 messages.SUCCESS,
-                _('Created: ') + ', '.join((
+                _('Created: ') + ', '.join(
+                    (
                         ungettext(
                             "%(speakers)d speaker",
                             "%(speakers)d speakers",
@@ -737,7 +738,8 @@ class AkomaNtosoImportView(NamespaceMixin, InstanceFormMixin, FormView):
                             "%(speeches)d speeches",
                             speeches,
                             ) % {'speeches': speeches},
-                        ))
+                        )
+                    )
                 )
         else:
             messages.add_message(

@@ -35,7 +35,7 @@ class ImportCommand(BaseCommand):
         make_option(
             '--merge-existing', action='store_const', const='merge', dest='clobber',
             help='Whether to merge sections with the same heading'),
-     )
+        )
 
     def handle(self, *args, **options):
         verbosity = int(options['verbosity'])
