@@ -696,14 +696,11 @@ class AkomaNtosoImportView(NamespaceMixin, InstanceFormMixin, FormView):
         return kwargs
 
     def form_valid(self, form):
-        clobber_picker = {'Skip': False, 'Clobber': True}
-        clobber = clobber_picker.get(form.cleaned_data.get('existing_sections'))
-
         try:
             importer = ImportAkomaNtoso(
                 instance=self.request.instance,
                 commit=True,
-                clobber=clobber,
+                clobber=form.cleaned_data.get('existing_sections'),
                 )
 
             stats = importer.import_document(form.cleaned_data['location'])
@@ -712,9 +709,9 @@ class AkomaNtosoImportView(NamespaceMixin, InstanceFormMixin, FormView):
                 [_('Sorry - something went wrong with the import')])
             return self.form_invalid(form)
 
-        speakers = stats.get(Speaker)
-        sections = stats.get(Section)
-        speeches = stats.get(Speech)
+        speakers = stats.get(Speaker, 0)
+        sections = stats.get(Section, 0)
+        speeches = stats.get(Speech, 0)
         success = speakers or sections or speeches
 
         if success:
