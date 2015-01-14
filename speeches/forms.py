@@ -649,10 +649,9 @@ class AkomaNtosoImportForm(forms.Form):
             self.fields['existing_sections'] = forms.ChoiceField(
                 label=_('What would you like to do with existing top level sections?'),
                 choices=(
-                    ('Skip', _('Skip them - keep them exactly as they are')),
-                    ('Clobber', _('Replace them - throw away the existing data and use the new')),
-                    ('Duplicate', _('Duplicate them - just make them again, leaving the old ones in place')),
+                    ('skip', _('Skip them - keep them exactly as they are')),
+                    ('replace', _('Replace them - throw away the existing data and use the new')),
+                    ('merge', _('Merge the new data into the existing sections - things in both will be duplicated')),
                     ),
                 widget=forms.RadioSelect(),
                 )
-
