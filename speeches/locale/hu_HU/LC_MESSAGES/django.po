@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sayit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-05 12:05+0000\n"
-"PO-Revision-Date: 2014-11-21 14:07+0000\n"
+"POT-Creation-Date: 2015-01-14 16:47+0000\n"
+"PO-Revision-Date: 2014-12-05 13:45+0000\n"
 "Last-Translator: mySociety <transifex@mysociety.org>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/"
 "sayit/language/hu_HU/)\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: extra-locales/popolo/behaviors/models.py:51 models.py:233 models.py:629
+#: extra-locales/popolo/behaviors/models.py:51 models.py:234 models.py:632
 msgid "start date"
 msgstr ""
 
@@ -28,7 +28,7 @@ msgstr ""
 msgid "The date when the validity of the item starts"
 msgstr ""
 
-#: extra-locales/popolo/behaviors/models.py:56 models.py:635
+#: extra-locales/popolo/behaviors/models.py:56 models.py:638
 msgid "end date"
 msgstr ""
 
@@ -275,7 +275,7 @@ msgstr ""
 msgid "A human-readable label for the contact detail"
 msgstr ""
 
-#: extra-locales/popolo/models.py:233 models.py:615
+#: extra-locales/popolo/models.py:233 models.py:618
 msgid "type"
 msgstr ""
 
@@ -340,43 +340,43 @@ msgstr ""
 msgid "A note, e.g. 'Parliament website'"
 msgstr ""
 
-#: forms.py:76
+#: forms.py:75
 msgid "Assign to section"
 msgstr "Hozzárendelés szakaszhoz"
 
-#: forms.py:202
+#: forms.py:201
 msgid "You must select an existing speaker"
 msgstr ""
 
-#: forms.py:295
+#: forms.py:294
 msgid "Choose tags"
 msgstr "Tagek kiválasztása"
 
-#: forms.py:314
+#: forms.py:313
 msgid "You must provide either text or some audio"
 msgstr "Szöveget vagy hangfelvételt kell csatolnia"
 
-#: forms.py:332
+#: forms.py:331
 msgid "If you provide a start time you must give a start date too"
 msgstr "Ha megadott kezdő időpontot, meg kell adnia kezdő dátumot is"
 
-#: forms.py:339
+#: forms.py:338
 msgid "If you provide an end time you must give an end date too"
 msgstr "Ha megadott záró időpontot, akkor meg kell adnia a záródátumot is"
 
-#: forms.py:478
+#: forms.py:477
 msgid "Something cannot be its own parent"
 msgstr ""
 
-#: forms.py:482
+#: forms.py:481
 msgid "Something cannot have a parent that is also a descendant"
 msgstr ""
 
-#: forms.py:497
+#: forms.py:496
 msgid "New speaker"
 msgstr ""
 
-#: forms.py:505
+#: forms.py:504
 #, python-format
 msgid "This speaker has %(count)d speech. What would you like to do with it?"
 msgid_plural ""
@@ -384,52 +384,74 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: forms.py:511
+#: forms.py:510
 msgid "Assign it to another speaker"
 msgid_plural "Assign them to another speaker"
 msgstr[0] ""
 msgstr[1] ""
 
-#: forms.py:513
+#: forms.py:512
 msgid "Make it into narrative (i.e. remove the speaker)"
 msgid_plural "Make them into narrative (i.e. remove the speaker)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: forms.py:515
+#: forms.py:514
 msgid "Delete it"
 msgid_plural "Delete them"
 msgstr[0] ""
 msgstr[1] ""
 
-#: forms.py:531
+#: forms.py:530
 msgid "You can't assign speeches to the speaker you're deleting"
 msgstr ""
 
-#: forms.py:537
+#: forms.py:536
 msgid "You must choose a new speaker if reassigning speeches"
 msgstr ""
 
-#: forms.py:543
+#: forms.py:542
 msgid "You must not choose a new speaker unless reassigning speeches"
 msgstr ""
 
-#: forms.py:592
+#: forms.py:591
 msgid "Start time is before recording start time!"
 msgstr "A kezdés időpontja a felvétel indulása előtt van!"
 
-#: forms.py:602
+#: forms.py:601
 msgid "Difference between timestamps is too long for the uploaded audio"
 msgstr ""
 "Az időbélyegek közti különbség túl hosszú a feltöltött hangfelvétel "
 "hosszához képest"
 
-#: forms.py:610
+#: forms.py:609
 msgid "Timestamps must be distinct"
 msgstr "Az időbélyeg nem lehet ugyanaz"
 
-#: forms.py:625
+#: forms.py:624
 msgid "Location of Popolo JSON data"
+msgstr ""
+
+#: forms.py:642
+msgid "Location of Akoma Ntoso data"
+msgstr ""
+
+#: forms.py:650
+msgid "What would you like to do with existing top level sections?"
+msgstr ""
+
+#: forms.py:652
+msgid "Skip them - keep them exactly as they are"
+msgstr ""
+
+#: forms.py:653
+msgid "Replace them - throw away the existing data and use the new"
+msgstr ""
+
+#: forms.py:654
+msgid ""
+"Merge the new data into the existing sections - things in both will be "
+"duplicated"
 msgstr ""
 
 #: importers/import_popolo.py:135
@@ -453,7 +475,7 @@ msgstr ""
 msgid "Create a new dated search index for reindexing with no downtime"
 msgstr ""
 
-#: models.py:111 models.py:246
+#: models.py:111 models.py:247
 msgid "slug"
 msgstr ""
 
@@ -465,7 +487,7 @@ msgstr ""
 msgid "If image is set, a local copy will be stored here."
 msgstr ""
 
-#: models.py:128 models.py:609
+#: models.py:128 models.py:612
 msgid "speaker"
 msgstr ""
 
@@ -473,211 +495,211 @@ msgstr ""
 msgid "speakers"
 msgstr ""
 
-#: models.py:195
+#: models.py:196
 msgid "tag"
 msgstr ""
 
-#: models.py:196 models.py:641
+#: models.py:197 models.py:644
 msgid "tags"
 msgstr ""
 
-#: models.py:224 models.py:590
+#: models.py:225 models.py:593
 msgid "number"
 msgstr ""
 
-#: models.py:224
+#: models.py:225
 msgid "The number of the section"
 msgstr ""
 
-#: models.py:226 models.py:593
+#: models.py:227 models.py:596
 msgid "heading"
 msgstr ""
 
-#: models.py:226
+#: models.py:227
 msgid "The heading of the section"
 msgstr ""
 
-#: models.py:228 models.py:596
+#: models.py:229 models.py:599
 msgid "subheading"
 msgstr ""
 
-#: models.py:229
+#: models.py:230
 msgid "The subheading of the section"
 msgstr ""
 
-#: models.py:231
+#: models.py:232
 msgid "description"
 msgstr ""
 
-#: models.py:231
+#: models.py:232
 msgid "Longer description, HTML"
 msgstr ""
 
-#: models.py:234
+#: models.py:235
 msgid "What date did the section start?"
 msgstr ""
 
-#: models.py:236 models.py:632
+#: models.py:237 models.py:635
 msgid "start time"
 msgstr ""
 
-#: models.py:237
+#: models.py:238
 msgid "What time did the section start?"
 msgstr ""
 
-#: models.py:238
+#: models.py:239
 msgid "document number"
 msgstr ""
 
-#: models.py:239
+#: models.py:240
 msgid "legislature"
 msgstr ""
 
-#: models.py:241
+#: models.py:242
 msgid "session"
 msgstr ""
 
-#: models.py:241
+#: models.py:242
 msgid "Legislative session"
 msgstr ""
 
-#: models.py:243
+#: models.py:244
 msgid "parent"
 msgstr ""
 
-#: models.py:247 models.py:650
+#: models.py:248 models.py:653
 msgid "source URL"
 msgstr ""
 
-#: models.py:252
+#: models.py:253
 msgid "section"
 msgstr ""
 
-#: models.py:253
+#: models.py:254
 msgid "sections"
 msgstr ""
 
-#: models.py:258 models.py:586
+#: models.py:259 models.py:589
 msgid "Section"
 msgstr ""
 
-#: models.py:268
+#: models.py:271
 msgid "You must specify at least one of num/heading/subheading"
 msgstr ""
 
-#: models.py:579
+#: models.py:582
 msgid "audio"
 msgstr ""
 
-#: models.py:581
+#: models.py:584
 msgid "text"
 msgstr ""
 
-#: models.py:582
+#: models.py:585
 msgid "The text of the speech"
 msgstr "Beszéd szövege"
 
-#: models.py:591
+#: models.py:594
 msgid "The number of the speech, if relevant"
 msgstr ""
 
-#: models.py:594
+#: models.py:597
 msgid "The heading of the speech, if relevant"
 msgstr ""
 
-#: models.py:597
+#: models.py:600
 msgid "The subheading of the speech, if relevant"
 msgstr ""
 
-#: models.py:601
+#: models.py:604
 msgid "event"
 msgstr ""
 
-#: models.py:602
+#: models.py:605
 msgid "Was the speech at a particular event?"
 msgstr "A beszéd valamilyen eseményen hangzott el?"
 
-#: models.py:604
+#: models.py:607
 msgid "location"
 msgstr ""
 
-#: models.py:605
+#: models.py:608
 msgid "Where the speech took place"
 msgstr "Hol hangzott el a beszéd?"
 
-#: models.py:610
+#: models.py:613
 msgid "Who gave this speech?"
 msgstr "Ki mondta a beszédet?"
 
-#: models.py:617
+#: models.py:620
 msgid "Speech"
 msgstr ""
 
-#: models.py:618
+#: models.py:621
 msgid "Question"
 msgstr ""
 
-#: models.py:619
+#: models.py:622
 msgid "Answer"
 msgstr ""
 
-#: models.py:620
+#: models.py:623
 msgid "Scene"
 msgstr ""
 
-#: models.py:621
+#: models.py:624
 msgid "Narrative"
 msgstr ""
 
-#: models.py:622
+#: models.py:625
 msgid "Summary"
 msgstr ""
 
-#: models.py:623
+#: models.py:626
 msgid "Other"
 msgstr ""
 
-#: models.py:625
+#: models.py:628
 msgid "What sort of speech is this?"
 msgstr ""
 
-#: models.py:630
+#: models.py:633
 msgid "What date did the speech start?"
 msgstr "Mi volt a beszéd elhangzásának dátuma?"
 
-#: models.py:633
+#: models.py:636
 msgid "What time did the speech start?"
 msgstr "Mikor kezdődött a beszéd?"
 
-#: models.py:636
+#: models.py:639
 msgid "What date did the speech end?"
 msgstr "Milyen dátumra esett a beszéd vége?"
 
-#: models.py:638
+#: models.py:641
 msgid "end time"
 msgstr ""
 
-#: models.py:639
+#: models.py:642
 msgid "What time did the speech end?"
 msgstr "Mikor fejeződött be a beszéd?"
 
-#: models.py:644
+#: models.py:647
 msgid "public"
 msgstr ""
 
-#: models.py:644
+#: models.py:647
 msgid "Is this speech public?"
 msgstr "Nyilvános ez a beszéd?"
 
-#: models.py:655
+#: models.py:658
 msgid "celery task ID"
 msgstr ""
 
-#: models.py:658
+#: models.py:661
 msgid "speech"
 msgstr ""
 
-#: models.py:659
+#: models.py:662
 msgid "speeches"
 msgstr ""
 
@@ -692,8 +714,8 @@ msgid "Next"
 msgstr "Következő"
 
 #: templates/search/search.html:8 templates/search/search.html.py:11
-#: templates/search/search.html:12 templates/speeches/_home.html:29
-#: templates/speeches/_home.html.py:30
+#: templates/search/search.html:12 templates/speeches/_home.html:30
+#: templates/speeches/_home.html.py:31
 #: templates/speeches/speaker_detail.html:111
 msgid "Search"
 msgstr "Keresés"
@@ -716,30 +738,37 @@ msgstr "<strong>&ldquo;%(query)s&rdquo;</strong> említése a beszédekben"
 msgid "No results found"
 msgstr ""
 
-#: templates/speeches/_home.html:14 templates/speeches/parentless_list.html:20
+#: templates/speeches/_home.html:14 templates/speeches/parentless_list.html:19
 msgid "Add a new speech"
 msgstr "Új beszéd hozzáadása"
 
-#: templates/speeches/_home.html:15 templates/speeches/parentless_list.html:21
+#: templates/speeches/_home.html:15 templates/speeches/parentless_list.html:20
 #: templates/speeches/section_form.html:9
 #: templates/speeches/section_form.html:19
 msgid "Add a section"
 msgstr ""
 
-#: templates/speeches/_home.html:16
+#: templates/speeches/_home.html:16 templates/speeches/_home.html.py:88
 #: templates/speeches/popolo_import_form.html:6
 #: templates/speeches/popolo_import_form.html:12
 #: templates/speeches/speaker_list.html:15
-#, fuzzy
-#| msgid "Speakers"
+#: templates/speeches/speaker_list.html:49
 msgid "Import speakers"
-msgstr "Felszólalók"
+msgstr ""
 
-#: templates/speeches/_home.html:26
+#: templates/speeches/_home.html:17
+#: templates/speeches/akoma_ntoso_import_form.html:6
+#: templates/speeches/parentless_list.html:21
+#, fuzzy
+#| msgid "Longest speech"
+msgid "Import speeches"
+msgstr "Leghosszabb megszólalás"
+
+#: templates/speeches/_home.html:27
 msgid "Search speeches and statements"
 msgstr ""
 
-#: templates/speeches/_home.html:55
+#: templates/speeches/_home.html:56
 #, python-format
 msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> speech"
 msgid_plural ""
@@ -747,7 +776,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/_home.html:60
+#: templates/speeches/_home.html:61
 #, python-format
 msgid "<a href=\"%(url_speaker_list)s\"><strong>1</strong></a> speaker"
 msgid_plural ""
@@ -755,7 +784,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/_home.html:65
+#: templates/speeches/_home.html:66
 #, python-format
 msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> section"
 msgid_plural ""
@@ -763,40 +792,36 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/speeches/_home.html:81
+#: templates/speeches/_home.html:82
 msgid "Brilliant!"
 msgstr ""
 
-#: templates/speeches/_home.html:82
+#: templates/speeches/_home.html:83
 msgid ""
 "Now you&rsquo;ve got your own public database for speeches and statements."
 msgstr ""
 
-#: templates/speeches/_home.html:83
+#: templates/speeches/_home.html:84
 msgid ""
 "However, it&rsquo;s totally empty. Let&rsquo;s get started by adding "
 "something."
 msgstr ""
 
-#: templates/speeches/_home.html:84 templates/speeches/parentless_list.html:59
-#: templates/speeches/speaker_list.html:47
+#: templates/speeches/_home.html:86 templates/speeches/parentless_list.html:62
+#: templates/speeches/speaker_list.html:50
 msgid "Add your first statement"
 msgstr ""
 
-#: templates/speeches/_home.html:86 templates/speeches/parentless_list.html:61
-#: templates/speeches/speaker_list.html:52
-msgid "This is a brand new SayIt site."
+#: templates/speeches/_home.html:87 templates/speeches/speaker_list.html:48
+msgid "Add your first speaker"
 msgstr ""
 
-#: templates/speeches/_home.html:87 templates/speeches/parentless_list.html:62
-#: templates/speeches/speaker_list.html:53
-msgid ""
-"Its creator hasn&rsquo;t yet added any speeches or statements for you to see."
+#: templates/speeches/akoma_ntoso_import_form.html:12
+msgid "Import speeches from Akoma Ntoso"
 msgstr ""
 
-#: templates/speeches/_home.html:88 templates/speeches/parentless_list.html:63
-#: templates/speeches/speaker_list.html:54
-msgid "Learn more about SayIt"
+#: templates/speeches/akoma_ntoso_import_form.html:16
+msgid "Import Akoma Ntoso (may take some time)"
 msgstr ""
 
 #: templates/speeches/base.html:48
@@ -809,16 +834,28 @@ msgstr ""
 msgid "Speeches"
 msgstr "Beszédek"
 
-#: templates/speeches/parentless_list.html:39
+#: templates/speeches/base.html:55
+msgid "Welcome,"
+msgstr ""
+
+#: templates/speeches/base.html:56
+msgid "Log out"
+msgstr ""
+
+#: templates/speeches/base.html:59
+msgid "Log in"
+msgstr ""
+
+#: templates/speeches/parentless_list.html:42
 msgid "Speeches not in a section"
 msgstr ""
 
-#: templates/speeches/parentless_list.html:57
-#: templates/speeches/speaker_list.html:44
+#: templates/speeches/parentless_list.html:60
+#: templates/speeches/speaker_list.html:45
 msgid "You haven&rsquo;t added any speeches or statements yet"
 msgstr ""
 
-#: templates/speeches/parentless_list.html:58
+#: templates/speeches/parentless_list.html:61
 msgid ""
 "Once you have, you&rsquo;ll be able to browse speeches and organise them "
 "into sections here."
@@ -1014,14 +1051,10 @@ msgstr "Minden megszólaló"
 msgid "Add a new speaker"
 msgstr ""
 
-#: templates/speeches/speaker_list.html:45
+#: templates/speeches/speaker_list.html:46
 msgid ""
 "Once you have, this page will contain a list of all the different people who "
 "made each statement in this SayIt site."
-msgstr ""
-
-#: templates/speeches/speaker_list.html:48
-msgid "Add your first speaker"
 msgstr ""
 
 #: templates/speeches/speech.html:23
@@ -1172,36 +1205,71 @@ msgstr ""
 msgid "Save speech"
 msgstr ""
 
-#: views.py:291
+#: views.py:294
 #, python-format
 msgid "View Speaker: %(speaker_name)s"
 msgstr "%(speaker_name)s megtekintése"
 
-#: views.py:452
+#: views.py:455
 #, python-format
 msgid "View Section: %(section_title)s"
 msgstr "%(section_title)s szakasz megtekintése"
 
-#: views.py:508
+#: views.py:511
 msgid "Speeches assigned."
 msgstr "Hozzárendelt beszédek."
 
-#: views.py:661
+#: views.py:664
 #, python-format
 msgid "%(created)d speaker created."
 msgid_plural "%(created)d speakers created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:666
+#: views.py:669
 #, python-format
 msgid "%(refreshed)d speaker refreshed."
 msgid_plural "%(refreshed)d speakers refreshed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:677
+#: views.py:680
 msgid "No speakers found."
+msgstr ""
+
+#: views.py:709
+msgid "Sorry - something went wrong with the import"
+msgstr ""
+
+#: views.py:721
+msgid "Created: "
+msgstr ""
+
+#: views.py:724
+#, python-format
+msgid "%(speakers)d speaker"
+msgid_plural "%(speakers)d speakers"
+msgstr[0] ""
+msgstr[1] ""
+
+#: views.py:729
+#, fuzzy, python-format
+#| msgid "previous section"
+msgid "%(sections)d section"
+msgid_plural "%(sections)d sections"
+msgstr[0] "előző szakasz"
+msgstr[1] "előző szakasz"
+
+#: views.py:734
+#, fuzzy, python-format
+#| msgid "Delete speech"
+msgid "%(speeches)d speech"
+msgid_plural "%(speeches)d speeches"
+msgstr[0] "Beszéd törlése"
+msgstr[1] "Beszéd törlése"
+
+#: views.py:745
+msgid "Nothing new to import."
 msgstr ""
 
 #: widgets.py:46

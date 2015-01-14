@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sayit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-05 12:05+0000\n"
-"PO-Revision-Date: 2014-11-21 14:07+0000\n"
+"POT-Creation-Date: 2015-01-14 16:47+0000\n"
+"PO-Revision-Date: 2014-12-05 13:45+0000\n"
 "Last-Translator: mySociety <transifex@mysociety.org>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/sayit/"
 "language/zh_TW/)\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: extra-locales/popolo/behaviors/models.py:51 models.py:233 models.py:629
+#: extra-locales/popolo/behaviors/models.py:51 models.py:234 models.py:632
 msgid "start date"
 msgstr "開始日期"
 
@@ -30,7 +30,7 @@ msgstr "開始日期"
 msgid "The date when the validity of the item starts"
 msgstr ""
 
-#: extra-locales/popolo/behaviors/models.py:56 models.py:635
+#: extra-locales/popolo/behaviors/models.py:56 models.py:638
 msgid "end date"
 msgstr "結束日期"
 
@@ -39,8 +39,10 @@ msgid "The date when the validity of the item ends"
 msgstr ""
 
 #: extra-locales/popolo/behaviors/models.py:70
+#, fuzzy
+#| msgid "end time"
 msgid "creation time"
-msgstr ""
+msgstr "結束時間"
 
 #: extra-locales/popolo/behaviors/models.py:71
 msgid "last modification time"
@@ -60,8 +62,10 @@ msgid "family name"
 msgstr "姓"
 
 #: extra-locales/popolo/models.py:27
+#, fuzzy
+#| msgid "family name"
 msgid "One or more family names"
-msgstr ""
+msgstr "姓"
 
 #: extra-locales/popolo/models.py:28
 msgid "given name"
@@ -72,8 +76,10 @@ msgid "One or more primary given names"
 msgstr ""
 
 #: extra-locales/popolo/models.py:29
+#, fuzzy
+#| msgid "family name"
 msgid "additional name"
-msgstr ""
+msgstr "姓"
 
 #: extra-locales/popolo/models.py:29
 msgid "One or more secondary given names"
@@ -96,16 +102,20 @@ msgid "One or more honorifics following a person's name"
 msgstr ""
 
 #: extra-locales/popolo/models.py:32
+#, fuzzy
+#| msgid "family name"
 msgid "patronymic name"
-msgstr ""
+msgstr "姓"
 
 #: extra-locales/popolo/models.py:32
 msgid "One or more patronymic names"
 msgstr ""
 
 #: extra-locales/popolo/models.py:33
+#, fuzzy
+#| msgid "name"
 msgid "sort name"
-msgstr ""
+msgstr "名稱"
 
 #: extra-locales/popolo/models.py:33
 msgid "A name to use in an lexicographically ordered list"
@@ -116,16 +126,20 @@ msgid "email"
 msgstr "電子郵件"
 
 #: extra-locales/popolo/models.py:34
+#, fuzzy
+#| msgid "A value, e.g. a phone number or email address"
 msgid "A preferred email address"
-msgstr ""
+msgstr "值，如電話或電郵位置"
 
 #: extra-locales/popolo/models.py:35
 msgid "gender"
 msgstr "性別"
 
 #: extra-locales/popolo/models.py:35
+#, fuzzy
+#| msgid "gender"
 msgid "A gender"
-msgstr ""
+msgstr "性別"
 
 #: extra-locales/popolo/models.py:36
 msgid "birth date"
@@ -172,8 +186,10 @@ msgid "A primary name, e.g. a legally recognized name"
 msgstr ""
 
 #: extra-locales/popolo/models.py:97
+#, fuzzy
+#| msgid "last modification time"
 msgid "classification"
-msgstr ""
+msgstr "上次修改時間"
 
 #: extra-locales/popolo/models.py:97
 msgid "An organization category, e.g. committee"
@@ -188,16 +204,22 @@ msgid "dissolution date"
 msgstr ""
 
 #: extra-locales/popolo/models.py:108
+#, fuzzy
+#| msgid "A date of death"
 msgid "A date of dissolution"
-msgstr ""
+msgstr "去世日期"
 
 #: extra-locales/popolo/models.py:109
+#, fuzzy
+#| msgid "end date"
 msgid "founding date"
-msgstr ""
+msgstr "結束日期"
 
 #: extra-locales/popolo/models.py:115
+#, fuzzy
+#| msgid "A date of birth"
 msgid "A date of founding"
-msgstr ""
+msgstr "出生日期"
 
 #: extra-locales/popolo/models.py:153 extra-locales/popolo/models.py:184
 #: extra-locales/popolo/models.py:232
@@ -277,7 +299,7 @@ msgstr "Facebook"
 msgid "A human-readable label for the contact detail"
 msgstr ""
 
-#: extra-locales/popolo/models.py:233 models.py:615
+#: extra-locales/popolo/models.py:233 models.py:618
 msgid "type"
 msgstr "類型"
 
@@ -315,8 +337,10 @@ msgid "identifier"
 msgstr "識別編號"
 
 #: extra-locales/popolo/models.py:267
+#, fuzzy
+#| msgid "An identifier scheme, e.g. DUNS"
 msgid "An issued identifier, e.g. a DUNS number"
-msgstr ""
+msgstr "識別編號架構，如 DUNS"
 
 #: extra-locales/popolo/models.py:268
 msgid "scheme"
@@ -342,90 +366,112 @@ msgstr "註記，如「維基百科頁面」"
 msgid "A note, e.g. 'Parliament website'"
 msgstr "註記，如「國會網站」"
 
-#: forms.py:76
+#: forms.py:75
 msgid "Assign to section"
 msgstr "指派至小節"
 
-#: forms.py:202
+#: forms.py:201
 msgid "You must select an existing speaker"
 msgstr ""
 
-#: forms.py:295
+#: forms.py:294
 msgid "Choose tags"
 msgstr "選擇標籤"
 
-#: forms.py:314
+#: forms.py:313
 msgid "You must provide either text or some audio"
 msgstr "必須提供全文或語音"
 
-#: forms.py:332
+#: forms.py:331
 msgid "If you provide a start time you must give a start date too"
 msgstr "若提供開始時間，亦須指定開始日期"
 
-#: forms.py:339
+#: forms.py:338
 msgid "If you provide an end time you must give an end date too"
 msgstr "若提供結束時間，亦須指定結束日期"
 
-#: forms.py:478
+#: forms.py:477
 msgid "Something cannot be its own parent"
 msgstr "一個東西無法是自己的上層"
 
-#: forms.py:482
+#: forms.py:481
 msgid "Something cannot have a parent that is also a descendant"
 msgstr "一個東西無法同時有既是上層又是下層的關係"
 
-#: forms.py:497
+#: forms.py:496
 msgid "New speaker"
 msgstr ""
 
-#: forms.py:505
+#: forms.py:504
 #, python-format
 msgid "This speaker has %(count)d speech. What would you like to do with it?"
 msgid_plural ""
 "This speaker has %(count)d speeches. What would you like to do with them?"
 msgstr[0] ""
 
-#: forms.py:511
+#: forms.py:510
 msgid "Assign it to another speaker"
 msgid_plural "Assign them to another speaker"
 msgstr[0] ""
 
-#: forms.py:513
+#: forms.py:512
 msgid "Make it into narrative (i.e. remove the speaker)"
 msgid_plural "Make them into narrative (i.e. remove the speaker)"
 msgstr[0] ""
 
-#: forms.py:515
+#: forms.py:514
 msgid "Delete it"
 msgid_plural "Delete them"
 msgstr[0] ""
 
-#: forms.py:531
+#: forms.py:530
 msgid "You can't assign speeches to the speaker you're deleting"
 msgstr ""
 
-#: forms.py:537
+#: forms.py:536
 msgid "You must choose a new speaker if reassigning speeches"
 msgstr ""
 
-#: forms.py:543
+#: forms.py:542
 msgid "You must not choose a new speaker unless reassigning speeches"
 msgstr ""
 
-#: forms.py:592
+#: forms.py:591
 msgid "Start time is before recording start time!"
 msgstr "開始時間在錄音開始時間之前！"
 
-#: forms.py:602
+#: forms.py:601
 msgid "Difference between timestamps is too long for the uploaded audio"
 msgstr ""
 
-#: forms.py:610
+#: forms.py:609
 msgid "Timestamps must be distinct"
 msgstr "時間戳記必須是唯一的"
 
-#: forms.py:625
+#: forms.py:624
 msgid "Location of Popolo JSON data"
+msgstr ""
+
+#: forms.py:642
+msgid "Location of Akoma Ntoso data"
+msgstr ""
+
+#: forms.py:650
+msgid "What would you like to do with existing top level sections?"
+msgstr ""
+
+#: forms.py:652
+msgid "Skip them - keep them exactly as they are"
+msgstr ""
+
+#: forms.py:653
+msgid "Replace them - throw away the existing data and use the new"
+msgstr ""
+
+#: forms.py:654
+msgid ""
+"Merge the new data into the existing sections - things in both will be "
+"duplicated"
 msgstr ""
 
 #: importers/import_popolo.py:135
@@ -449,7 +495,7 @@ msgstr ""
 msgid "Create a new dated search index for reindexing with no downtime"
 msgstr ""
 
-#: models.py:111 models.py:246
+#: models.py:111 models.py:247
 msgid "slug"
 msgstr "短址"
 
@@ -461,7 +507,7 @@ msgstr ""
 msgid "If image is set, a local copy will be stored here."
 msgstr ""
 
-#: models.py:128 models.py:609
+#: models.py:128 models.py:612
 msgid "speaker"
 msgstr "講者"
 
@@ -469,211 +515,211 @@ msgstr "講者"
 msgid "speakers"
 msgstr ""
 
-#: models.py:195
+#: models.py:196
 msgid "tag"
 msgstr ""
 
-#: models.py:196 models.py:641
+#: models.py:197 models.py:644
 msgid "tags"
 msgstr "標籤"
 
-#: models.py:224 models.py:590
+#: models.py:225 models.py:593
 msgid "number"
 msgstr ""
 
-#: models.py:224
+#: models.py:225
 msgid "The number of the section"
 msgstr "小節編號"
 
-#: models.py:226 models.py:593
+#: models.py:227 models.py:596
 msgid "heading"
 msgstr "標頭"
 
-#: models.py:226
+#: models.py:227
 msgid "The heading of the section"
 msgstr "小節標頭"
 
-#: models.py:228 models.py:596
+#: models.py:229 models.py:599
 msgid "subheading"
 msgstr "次標頭"
 
-#: models.py:229
+#: models.py:230
 msgid "The subheading of the section"
 msgstr "小節次標頭"
 
-#: models.py:231
+#: models.py:232
 msgid "description"
 msgstr "描述"
 
-#: models.py:231
+#: models.py:232
 msgid "Longer description, HTML"
 msgstr "長說明（HTML）"
 
-#: models.py:234
+#: models.py:235
 msgid "What date did the section start?"
 msgstr "小節開始日"
 
-#: models.py:236 models.py:632
+#: models.py:237 models.py:635
 msgid "start time"
 msgstr "開始時間"
 
-#: models.py:237
+#: models.py:238
 msgid "What time did the section start?"
 msgstr "小節開始日"
 
-#: models.py:238
+#: models.py:239
 msgid "document number"
 msgstr "文件編號"
 
-#: models.py:239
+#: models.py:240
 msgid "legislature"
 msgstr ""
 
-#: models.py:241
+#: models.py:242
 msgid "session"
 msgstr ""
 
-#: models.py:241
+#: models.py:242
 msgid "Legislative session"
 msgstr "立法會期"
 
-#: models.py:243
+#: models.py:244
 msgid "parent"
 msgstr "上層"
 
-#: models.py:247 models.py:650
+#: models.py:248 models.py:653
 msgid "source URL"
 msgstr "來源網址"
 
-#: models.py:252
+#: models.py:253
 msgid "section"
 msgstr ""
 
-#: models.py:253
+#: models.py:254
 msgid "sections"
 msgstr ""
 
-#: models.py:258 models.py:586
+#: models.py:259 models.py:589
 msgid "Section"
 msgstr "小節"
 
-#: models.py:268
+#: models.py:271
 msgid "You must specify at least one of num/heading/subheading"
 msgstr ""
 
-#: models.py:579
+#: models.py:582
 msgid "audio"
 msgstr "聲音"
 
-#: models.py:581
+#: models.py:584
 msgid "text"
 msgstr "文字"
 
-#: models.py:582
+#: models.py:585
 msgid "The text of the speech"
 msgstr "談話全文"
 
-#: models.py:591
+#: models.py:594
 msgid "The number of the speech, if relevant"
 msgstr "談話編號（如果有）"
 
-#: models.py:594
+#: models.py:597
 msgid "The heading of the speech, if relevant"
 msgstr "談話標題（如果有）"
 
-#: models.py:597
+#: models.py:600
 msgid "The subheading of the speech, if relevant"
 msgstr "談話次標題（如果有）"
 
-#: models.py:601
+#: models.py:604
 msgid "event"
 msgstr "活動"
 
-#: models.py:602
+#: models.py:605
 msgid "Was the speech at a particular event?"
 msgstr "此談話是在某個活動嗎？"
 
-#: models.py:604
+#: models.py:607
 msgid "location"
 msgstr "地點"
 
-#: models.py:605
+#: models.py:608
 msgid "Where the speech took place"
 msgstr "談話在哪裡發生？"
 
-#: models.py:610
+#: models.py:613
 msgid "Who gave this speech?"
 msgstr "誰說的？"
 
-#: models.py:617
+#: models.py:620
 msgid "Speech"
 msgstr "談話"
 
-#: models.py:618
+#: models.py:621
 msgid "Question"
 msgstr "問題"
 
-#: models.py:619
+#: models.py:622
 msgid "Answer"
 msgstr "答案"
 
-#: models.py:620
+#: models.py:623
 msgid "Scene"
 msgstr "場景"
 
-#: models.py:621
+#: models.py:624
 msgid "Narrative"
 msgstr ""
 
-#: models.py:622
+#: models.py:625
 msgid "Summary"
 msgstr "總結"
 
-#: models.py:623
+#: models.py:626
 msgid "Other"
 msgstr "其它"
 
-#: models.py:625
+#: models.py:628
 msgid "What sort of speech is this?"
 msgstr "這是哪種談話？"
 
-#: models.py:630
+#: models.py:633
 msgid "What date did the speech start?"
 msgstr "談話開始日？"
 
-#: models.py:633
+#: models.py:636
 msgid "What time did the speech start?"
 msgstr "談話開始時間？"
 
-#: models.py:636
+#: models.py:639
 msgid "What date did the speech end?"
 msgstr "談話結束日？"
 
-#: models.py:638
+#: models.py:641
 msgid "end time"
 msgstr "結束時間"
 
-#: models.py:639
+#: models.py:642
 msgid "What time did the speech end?"
 msgstr "談話結束時間？"
 
-#: models.py:644
+#: models.py:647
 msgid "public"
 msgstr "公開"
 
-#: models.py:644
+#: models.py:647
 msgid "Is this speech public?"
 msgstr "這是公開談話嗎？"
 
-#: models.py:655
+#: models.py:658
 msgid "celery task ID"
 msgstr ""
 
-#: models.py:658
+#: models.py:661
 msgid "speech"
 msgstr ""
 
-#: models.py:659
+#: models.py:662
 msgid "speeches"
 msgstr ""
 
@@ -688,8 +734,8 @@ msgid "Next"
 msgstr "下一頁"
 
 #: templates/search/search.html:8 templates/search/search.html.py:11
-#: templates/search/search.html:12 templates/speeches/_home.html:29
-#: templates/speeches/_home.html.py:30
+#: templates/search/search.html:12 templates/speeches/_home.html:30
+#: templates/speeches/_home.html.py:31
 #: templates/speeches/speaker_detail.html:111
 msgid "Search"
 msgstr "搜尋"
@@ -712,84 +758,87 @@ msgstr ""
 msgid "No results found"
 msgstr ""
 
-#: templates/speeches/_home.html:14 templates/speeches/parentless_list.html:20
+#: templates/speeches/_home.html:14 templates/speeches/parentless_list.html:19
 msgid "Add a new speech"
 msgstr "新增一段談話"
 
-#: templates/speeches/_home.html:15 templates/speeches/parentless_list.html:21
+#: templates/speeches/_home.html:15 templates/speeches/parentless_list.html:20
 #: templates/speeches/section_form.html:9
 #: templates/speeches/section_form.html:19
 msgid "Add a section"
 msgstr "增加小節"
 
-#: templates/speeches/_home.html:16
+#: templates/speeches/_home.html:16 templates/speeches/_home.html.py:88
 #: templates/speeches/popolo_import_form.html:6
 #: templates/speeches/popolo_import_form.html:12
 #: templates/speeches/speaker_list.html:15
-#, fuzzy
-#| msgid "Update speaker"
+#: templates/speeches/speaker_list.html:49
 msgid "Import speakers"
-msgstr "更新講者"
+msgstr ""
 
-#: templates/speeches/_home.html:26
+#: templates/speeches/_home.html:17
+#: templates/speeches/akoma_ntoso_import_form.html:6
+#: templates/speeches/parentless_list.html:21
+#, fuzzy
+#| msgid "Longest speech"
+msgid "Import speeches"
+msgstr "最長的談話"
+
+#: templates/speeches/_home.html:27
 msgid "Search speeches and statements"
 msgstr "搜尋談話與發言"
 
-#: templates/speeches/_home.html:55
+#: templates/speeches/_home.html:56
 #, python-format
 msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> speech"
 msgid_plural ""
 "<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> speeches"
 msgstr[0] ""
 
-#: templates/speeches/_home.html:60
+#: templates/speeches/_home.html:61
 #, python-format
 msgid "<a href=\"%(url_speaker_list)s\"><strong>1</strong></a> speaker"
 msgid_plural ""
 "<a href=\"%(url_speaker_list)s\"><strong>%(n)s</strong></a> speakers"
 msgstr[0] ""
 
-#: templates/speeches/_home.html:65
+#: templates/speeches/_home.html:66
 #, python-format
 msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> section"
 msgid_plural ""
 "<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> sections"
 msgstr[0] ""
 
-#: templates/speeches/_home.html:81
+#: templates/speeches/_home.html:82
 msgid "Brilliant!"
 msgstr "太棒了！"
 
-#: templates/speeches/_home.html:82
+#: templates/speeches/_home.html:83
 msgid ""
 "Now you&rsquo;ve got your own public database for speeches and statements."
 msgstr ""
 
-#: templates/speeches/_home.html:83
+#: templates/speeches/_home.html:84
 msgid ""
 "However, it&rsquo;s totally empty. Let&rsquo;s get started by adding "
 "something."
 msgstr "不過現在它空空如也，開始來新增點東西吧！"
 
-#: templates/speeches/_home.html:84 templates/speeches/parentless_list.html:59
-#: templates/speeches/speaker_list.html:47
+#: templates/speeches/_home.html:86 templates/speeches/parentless_list.html:62
+#: templates/speeches/speaker_list.html:50
 msgid "Add your first statement"
 msgstr ""
 
-#: templates/speeches/_home.html:86 templates/speeches/parentless_list.html:61
-#: templates/speeches/speaker_list.html:52
-msgid "This is a brand new SayIt site."
-msgstr "這是個全新的 SayIt 網站"
-
-#: templates/speeches/_home.html:87 templates/speeches/parentless_list.html:62
-#: templates/speeches/speaker_list.html:53
-msgid ""
-"Its creator hasn&rsquo;t yet added any speeches or statements for you to see."
+#: templates/speeches/_home.html:87 templates/speeches/speaker_list.html:48
+msgid "Add your first speaker"
 msgstr ""
 
-#: templates/speeches/_home.html:88 templates/speeches/parentless_list.html:63
-#: templates/speeches/speaker_list.html:54
-msgid "Learn more about SayIt"
+#: templates/speeches/akoma_ntoso_import_form.html:12
+msgid "Import speeches from Akoma Ntoso"
+msgstr ""
+
+#: templates/speeches/akoma_ntoso_import_form.html:16
+msgid "Import Akoma Ntoso (may take some time)"
 msgstr ""
 
 #: templates/speeches/base.html:48
@@ -802,16 +851,28 @@ msgstr "首頁"
 msgid "Speeches"
 msgstr "談話"
 
-#: templates/speeches/parentless_list.html:39
+#: templates/speeches/base.html:55
+msgid "Welcome,"
+msgstr ""
+
+#: templates/speeches/base.html:56
+msgid "Log out"
+msgstr ""
+
+#: templates/speeches/base.html:59
+msgid "Log in"
+msgstr ""
+
+#: templates/speeches/parentless_list.html:42
 msgid "Speeches not in a section"
 msgstr "不在小節中的談話"
 
-#: templates/speeches/parentless_list.html:57
-#: templates/speeches/speaker_list.html:44
+#: templates/speeches/parentless_list.html:60
+#: templates/speeches/speaker_list.html:45
 msgid "You haven&rsquo;t added any speeches or statements yet"
 msgstr ""
 
-#: templates/speeches/parentless_list.html:58
+#: templates/speeches/parentless_list.html:61
 msgid ""
 "Once you have, you&rsquo;ll be able to browse speeches and organise them "
 "into sections here."
@@ -1005,17 +1066,11 @@ msgstr "所有的講者"
 msgid "Add a new speaker"
 msgstr ""
 
-#: templates/speeches/speaker_list.html:45
+#: templates/speeches/speaker_list.html:46
 msgid ""
 "Once you have, this page will contain a list of all the different people who "
 "made each statement in this SayIt site."
 msgstr ""
-
-#: templates/speeches/speaker_list.html:48
-#, fuzzy
-#| msgid "Add a speaker"
-msgid "Add your first speaker"
-msgstr "新增講者"
 
 #: templates/speeches/speech.html:23
 msgid "Invisible"
@@ -1165,34 +1220,67 @@ msgstr "儲存變更"
 msgid "Save speech"
 msgstr "儲存談話"
 
-#: views.py:291
+#: views.py:294
 #, python-format
 msgid "View Speaker: %(speaker_name)s"
 msgstr ""
 
-#: views.py:452
+#: views.py:455
 #, python-format
 msgid "View Section: %(section_title)s"
 msgstr "檢視小節：%(section_title)s"
 
-#: views.py:508
+#: views.py:511
 msgid "Speeches assigned."
 msgstr "談話已指定。"
 
-#: views.py:661
+#: views.py:664
 #, python-format
 msgid "%(created)d speaker created."
 msgid_plural "%(created)d speakers created."
 msgstr[0] ""
 
-#: views.py:666
+#: views.py:669
 #, python-format
 msgid "%(refreshed)d speaker refreshed."
 msgid_plural "%(refreshed)d speakers refreshed."
 msgstr[0] ""
 
-#: views.py:677
+#: views.py:680
 msgid "No speakers found."
+msgstr ""
+
+#: views.py:709
+msgid "Sorry - something went wrong with the import"
+msgstr ""
+
+#: views.py:721
+msgid "Created: "
+msgstr ""
+
+#: views.py:724
+#, fuzzy, python-format
+#| msgid "Update speaker"
+msgid "%(speakers)d speaker"
+msgid_plural "%(speakers)d speakers"
+msgstr[0] "更新講者"
+
+#: views.py:729
+#, fuzzy, python-format
+#| msgid "previous section"
+msgid "%(sections)d section"
+msgid_plural "%(sections)d sections"
+msgstr[0] "上一節"
+
+#: views.py:734
+#, fuzzy, python-format
+#| msgid "Delete speech"
+msgid "%(speeches)d speech"
+msgid_plural "%(speeches)d speeches"
+msgstr[0] "刪除談話"
+
+#: views.py:745
+msgid "Nothing new to import."
 msgstr ""
 
 #: widgets.py:46
@@ -1218,3 +1306,6 @@ msgstr ""
 #: widgets.py:108
 msgid "hh:mm"
 msgstr ""
+
+#~ msgid "This is a brand new SayIt site."
+#~ msgstr "這是個全新的 SayIt 網站"
