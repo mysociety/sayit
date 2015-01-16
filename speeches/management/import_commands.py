@@ -10,6 +10,10 @@ from instances.models import Instance
 logger = logging.getLogger(__name__)
 
 
+def _stats_pretty(stats):
+    return ' '.join(["%s:%d" % (cls.__name__, n) for cls, n in stats.items()])
+
+
 class ImportCommand(BaseCommand):
 
     importer_class = None
@@ -50,27 +54,23 @@ class ImportCommand(BaseCommand):
 
         if options['file']:
             filename = os.path.expanduser(options['file'])
-            (section, speakers) = self.import_document(filename, **options)
-            if verbosity > 1:
-                if section and section.id:
-                    logger.info("Imported section %d\n\n" % section.id)
+            (stats, speakers) = self.import_document(filename, **options)
+            if verbosity > 1 and stats:
+                logger.info("Imported %s\n\n" % _stats_pretty(stats))
         elif options['dir']:
             files = sorted(self.document_list(options))
 
             if len(files):
-                imports = [self.import_document(f, **options) for f in files]
+                speakers = {}
+                for f in files:
+                    (stats, spkrs) = self.import_document(f, **options)
+                    speakers.update(spkrs)
 
-                if options['commit']:
-                    sections = [a for a, _ in imports]
-                    if verbosity > 1:
-                        logger.info("Imported sections %s\n\n" % str([s.id for s in sections]))
+                    if verbosity > 1 and stats:
+                        logger.info("%s: Imported %s\n" % (f, _stats_pretty(stats)))
 
                 dump_users = os.path.expanduser(options['dump_users'])
                 if dump_users:
-                    speakers = {}
-                    for (_, d) in imports:
-                        speakers.update(d)
-
                     out = open(dump_users, 'w')
                     speakers_list = [(k, speakers[k]) for k in speakers]
                     out.write(json.dumps(speakers_list, indent=4))
@@ -113,10 +113,10 @@ class ImportCommand(BaseCommand):
         importer = self.importer_class(**options)
 
         try:
-            section = importer.import_document(path)
+            importer.import_document(path)
         except Exception as e:
             logger.error("An exception of type %s occurred, arguments:\n%s" % (
                 type(e).__name__, e))
             return (None, {})
 
-        return (section, importer.speakers)
+        return (importer.stats, importer.speakers)
