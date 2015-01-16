@@ -69,14 +69,14 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
             )
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='skip').import_document(
-            'speeches/fixtures/test_inputs/test_clobber.xml')
+            'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Hello</p>']}
             )
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='merge').import_document(
-            'speeches/fixtures/test_inputs/test_clobber.xml')
+            'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Hello</p>', '<p>Howdy</p>'],
@@ -84,7 +84,7 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
              })
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='replace').import_document(
-            'speeches/fixtures/test_inputs/test_clobber.xml')
+            'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Howdy</p>'],
@@ -92,7 +92,7 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
              })
 
         ImportAkomaNtoso(instance=self.instance, commit=True).import_document(
-            'speeches/fixtures/test_inputs/test_clobber.xml')
+            'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Howdy</p>'],
@@ -103,7 +103,7 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
 
     def test_not_already_imported(self):
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='skip').import_document(
-            'speeches/fixtures/test_inputs/test_clobber.xml')
+            'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Howdy</p>'],
@@ -112,7 +112,7 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         Section.objects.all().delete()
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='merge').import_document(
-            'speeches/fixtures/test_inputs/test_clobber.xml')
+            'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Howdy</p>'],
@@ -121,7 +121,7 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         Section.objects.all().delete()
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='replace').import_document(
-            'speeches/fixtures/test_inputs/test_clobber.xml')
+            'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Howdy</p>'],
@@ -130,7 +130,7 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         Section.objects.all().delete()
 
         ImportAkomaNtoso(instance=self.instance, commit=True).import_document(
-            'speeches/fixtures/test_inputs/test_clobber.xml')
+            'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
             {'This is the title': ['<p>Howdy</p>'],
@@ -262,12 +262,25 @@ class AkomaNtosoImportViewTestCase(InstanceTestCase):
 
         self.assertContains(resp, 'Created: 7 speakers, 8 sections, 11 speeches')
 
+    def test_import_data_twice_skipped(self):
+        for i in range(2):
+            resp = self.client.post(
+                '/import/akomantoso',
+                {'location': 'http://example.com/test_clobber.xml', 'existing_sections': 'skip'},
+                follow=True,
+                )
+
+        self.assertEqual(
+            [x.type for x in Speech.objects.all()],
+            [u'speech', u'speech']
+            )
+
+        self.assertContains(resp, 'Nothing new to import.')
+
     def test_import_bad_data(self):
         resp = self.client.post(
             '/import/akomantoso',
-            {'location': 'http://example.com/welsh_assembly/persons',
-             'existing_sections': 'Skip',
-             },
+            {'location': 'http://example.com/welsh_assembly/persons'},
             )
 
         self.assertContains(resp, 'Sorry - something went wrong with the import')

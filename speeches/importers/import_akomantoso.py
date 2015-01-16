@@ -97,7 +97,7 @@ class ImportAkomaNtoso(ImporterBase):
             section = self.make_section(source_url=source_url or '', **kwargs)
 
             if not section:
-                return
+                return self.stats
 
         self.visit(debate.debateBody, section)
         return self.stats
