@@ -8,6 +8,8 @@ from django.conf import global_settings
 
 from .paths import *  # noqa
 
+TESTING = 'test' in sys.argv
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 try:
@@ -234,7 +236,7 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-if 'test' not in sys.argv:
+if not TESTING:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 # List of finder classes that know how to find static files in
@@ -254,7 +256,7 @@ from .thumbnails import *  # noqa
 # Haystack search settings
 
 SEARCH_INDEX_NAME = DATABASES['default']['NAME']
-if 'test' in sys.argv:
+if TESTING:
     SEARCH_INDEX_NAME += '_test'
 
 HAYSTACK_CONNECTIONS = {
