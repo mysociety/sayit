@@ -434,7 +434,7 @@ class Section(AuditedModel, InstanceMixin):
             (
                 (
                     getattr(d, 'speech_min', None) or max_datetime,
-                    '',
+                    float('inf'),  # Always compares greater than speech ID
                     i
                 ),
                 d
