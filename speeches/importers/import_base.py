@@ -3,11 +3,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class ImporterBase (object):
-    def __init__(self, instance=None, commit=True, clobber=None, **kwargs):
+class ImporterBase(object):
+    def __init__(self, instance=None, commit=True, clobber=None, verify=True, **kwargs):
         self.instance = instance
         self.commit = commit
         self.clobber = clobber
+        self.verify = verify
         self.speakers = {}
 
         self.stats = {}

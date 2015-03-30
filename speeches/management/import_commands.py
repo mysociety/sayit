@@ -26,6 +26,9 @@ class ImportCommand(BaseCommand):
         make_option('--file', action='store', help='document to import'),
         make_option('--dir', action='store', help='directory of documents to import'),
         make_option(
+            '--no-verify', action='store_false', default=True, dest='verify',
+            help='Whether to verify SSL certificates or not'),
+        make_option(
             '--start-date', action='store', default='',
             help='earliest date to process, in yyyy-mm-dd format'),
         make_option(

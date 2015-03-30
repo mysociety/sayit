@@ -11,7 +11,7 @@ from speeches.importers.import_popolo import PopoloImporter
 
 
 class FakeRequestsOutput(object):
-    def __init__(self, source):
+    def __init__(self, source, verify=True):
         assert source.startswith('http://example.com/')
 
         # We'll put things that would have been served from a url ending

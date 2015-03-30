@@ -18,7 +18,7 @@ class ImportAkomaNtoso(ImporterBase):
 
     def import_document(self, document_path):
         if document_path.startswith('http'):
-            self.xml = objectify.fromstring(requests.get(document_path).content)
+            self.xml = objectify.fromstring(requests.get(document_path, verify=self.verify).content)
         else:
             self.xml = objectify.parse(document_path).getroot()
         self.ns = self.xml.nsmap.get(None, None)
