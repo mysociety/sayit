@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import traceback
 from optparse import make_option
 
 from django.core.management.base import BaseCommand, CommandError
@@ -115,8 +116,8 @@ class ImportCommand(BaseCommand):
         try:
             importer.import_document(path)
         except Exception as e:
-            logger.error("An exception of type %s occurred, arguments:\n%s" % (
-                type(e).__name__, e))
+            logger.error("An exception of type %s occurred, arguments:\n%s\n%s" % (
+                type(e).__name__, e, traceback.format_exc()))
             return (None, {})
 
         return (importer.stats, importer.speakers)
