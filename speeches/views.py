@@ -283,7 +283,7 @@ class SpeakerView(NamespaceMixin, InstanceViewMixin, Base32SingleObjectMixin, Li
         queryset = super(SpeakerView, self).get_queryset()
         self.object = self.get_object(queryset)
         return self.object.speech_set.all().visible(self.request) \
-            .select_related('section', 'speaker').prefetch_related('tags')
+            .select_related('section', 'speaker').prefetch_related('tags').reverse()
 
     def get_context_data(self, **kwargs):
         kwargs['speech_list'] = self.object_list

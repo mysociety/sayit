@@ -83,6 +83,17 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
         self.assertEqual(
             len(re.findall(r'<span class="breadcrumbs__date">\s*17 Sep 2014\s*</span>', resp.content.decode())), 2)
 
+        # Add another speech on a different date and check the order
+        speech = Speech.objects.create(
+            text="A third speech",
+            speaker=speaker,
+            instance=self.instance,
+            start_date=date(2014, 9, 18),
+            )
+
+        resp = self.client.get('/speaker/%s' % speaker.slug)
+        self.assertEqual(resp.context['speech_list'][0].start_date, date(2014, 9, 18))
+
     def test_speaker_page_has_button_to_add_speech(self):
         # Add a speaker
         speaker = Speaker.objects.create(name='Steve', instance=self.instance)
