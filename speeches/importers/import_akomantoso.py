@@ -58,7 +58,7 @@ class ImportAkomaNtoso(ImporterBase):
             self.speakers[id] = speaker
 
         docDate = self.get_preface_tag(debate, 'docDate')
-        if docDate:
+        if docDate is not None:
             self.start_date = dateutil.parse(docDate.get('date'))
 
         docTitle = self.get_preface_tag(debate, 'docTitle')
@@ -77,8 +77,8 @@ class ImportAkomaNtoso(ImporterBase):
         if session:
             session = session.text
 
-        source_url = self.get_preface_tag(debate, 'link') or ''
-        if source_url:
+        source_url = self.get_preface_tag(debate, 'link')
+        if source_url is not None:
             source_url = source_url.get('href')
 
         self.imported_section_ids = set()

@@ -187,6 +187,14 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
              'Conclusions': ['<p>Bye</p>'],
              })
 
+    def test_empty_docDate(self):
+        self.importer.import_document(
+            'speeches/fixtures/test_inputs/test_empty_docDate.xml')
+        self.assertEqual(
+            [(x.start_date, x.title, x.source_url) for x in Section.objects.all()],
+            [(datetime.date(2012, 3, 7), 'Title', 'http://example.org')]
+        )
+
     def test_xpath_preface_elements(self):
         self.importer.import_document(
             'speeches/fixtures/test_inputs/test_xpath.xml')
