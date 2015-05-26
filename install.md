@@ -17,6 +17,9 @@ You will need to have the following installed:
   install, you will need to install some header packages as outlined at
   [the Cryptography library install page](https://cryptography.io/en/latest/installation/).
 
+* For thumbnail generation to work, you will need the JPEG development headers;
+  e.g. this is the `libjpeg-dev` package on Debian/Ubuntu.
+
 Installing SayIt as a Django app
 --------------------------------
 
