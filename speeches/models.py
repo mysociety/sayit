@@ -666,9 +666,9 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
         out = 'Speech'
         for att in ('num', 'heading', 'subheading'):
             if getattr(self, att, None):
-                out += ', %s' % getattr(self, att)
+                out += u', %s' % getattr(self, att)
         if self.speaker:
-            out += ' by %s' % self.speaker
+            out += u' by %s' % self.speaker
         if self.start_date:
             out += ' at %s' % self.start_date
         if self.text:

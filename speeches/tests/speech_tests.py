@@ -621,3 +621,11 @@ class SpeechViewTests(InstanceTestCase):
         self.assertRedirects(resp, 'speeches')
 
         self.assertEqual(Speech.objects.filter(id=speech.id).count(), 0)
+
+
+class SpeechTests(InstanceTestCase):
+    def test_speech_with_i18n(self):
+        speaker = Speaker.objects.create(name=u'Beyonc\u00e9', instance=self.instance)
+        speech = Speech.objects.create(
+            heading=u'D\u00e9j\u00e0 Vu', text='Bass', speaker=speaker, instance=self.instance)
+        self.assertEqual(u'%s' % speech, u'Speech, D\u00e9j\u00e0 Vu by Beyonc\u00e9 (with text)')
