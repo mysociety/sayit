@@ -48,7 +48,7 @@
 
           {% if structure.speech %}
             <li id="s{{ node.id }}" class="speech {% if node.speaker %}speech--with-portrait{% endif %} speech--{{ speech.type }} speech--border"{% if node.speaker.colour %} style="border-left-color: #{{ node.speaker.colour }};"{% endif %}>
-            {% include "speeches/speech.html" with speech=node nosection="1" section=section noli=1 %}
+            {% include speech_template with speech=node nosection="1" section=section noli=1 %}
           {% else %}
             <li class="speech speech--section-signpost speech--with-portrait">
               <div class="speaker-portrait-wrapper">

@@ -8,6 +8,7 @@ from django.core import serializers
 from django.contrib import messages
 from django.forms import Form
 from django.forms.forms import NON_FIELD_ERRORS
+from django.template import loader
 
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext as _, ungettext
@@ -454,6 +455,7 @@ class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
         )
         context['title'] = _('View Section: %(section_title)s') % {'section_title': self.object.title}
 
+        context['speech_template'] = loader.get_template('speeches/speech.html')
         return context
 
 
