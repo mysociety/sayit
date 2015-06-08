@@ -7,36 +7,36 @@ notifications:
 
 language: python
 
-python:
-  - "2.7"
-  - "3.3"
-
 services:
   - elasticsearch
 
 env:
-  - MODULES="Django>=1.4.2,<1.5 django-tastypie==0.9.16"
-  - MODULES="Django>=1.6,<1.7 django-tastypie"
-  - MODULES="Django>=1.7,<1.8 django-tastypie"
-# - MODULES="git+https://github.com/django/django.git@master#egg=django"
+  global:
+    - CFLAGS="-O0"
+  matrix:
+    - TOXENV=flake8
+    - TOXENV=py27-1.4
+    - TOXENV=py27-1.7
+    - TOXENV=py27-1.8
+    - TOXENV=py27-1.9
+    - TOXENV=py33-1.7
+    - TOXENV=py33-1.8
+    - TOXENV=py33-1.9
 
-# Django 1.4 did not support Python 3.
 matrix:
-  exclude:
-    - python: "3.3"
-      env: MODULES="Django>=1.4.2,<1.5 django-tastypie==0.9.16"
+  allow_failures:
+    - env: TOXENV=py27-1.9
+    - env: TOXENV=py33-1.9
 
 install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq ffmpeg libavcodec-extra-53 iceweasel xvfb
-  - pip install $MODULES
-  - CFLAGS="-O0" pip install -e .[test]
+  - 'if [ $TOXENV != "flake8" ]; then sudo apt-get update -qq; fi'
+  - 'if [ $TOXENV != "flake8" ]; then sudo apt-get install -qq ffmpeg libavcodec-extra-53 iceweasel xvfb; fi'
+  - pip install tox
 
 before_script:
   - psql -c 'create database "sayit-example-project";' -U postgres
-  - ./manage.py syncdb --noinput
   - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  - 'if [ $TOXENV != "flake8" ]; then sh -e /etc/init.d/xvfb start; fi'
 
 script:
-  - SELENIUM_TESTS=1 ./manage.py test
+  - tox

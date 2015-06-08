@@ -1,5 +1,6 @@
 *.pyc
 .sass-cache
+.tox
 /speeches/static/speeches/sass/*.css
 /example_project/settings/local.py
 .apdisk
