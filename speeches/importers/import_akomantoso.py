@@ -59,7 +59,14 @@ class ImportAkomaNtoso(ImporterBase):
 
         docDate = self.get_preface_tag(debate, 'docDate')
         if docDate is not None:
-            self.start_date = dateutil.parse(docDate.get('date'))
+            date = docDate.get('date')
+            if date:
+                try:
+                    self.start_date = dateutil.parse(date)
+                except ValueError:
+                    logger.warn("docDate element did not parse '%s'" % date)
+            else:
+                logger.warn("docDate element missing required date attribute")
 
         docTitle = self.get_preface_tag(debate, 'docTitle')
         if docTitle:
