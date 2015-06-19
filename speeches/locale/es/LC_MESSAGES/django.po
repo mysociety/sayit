@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# johnfelipe <ingenierofelipeurrego@gmail.com>, 2014
+# johnfelipe <ingenierofelipeurrego@gmail.com>, 2014-2015
 # johnfelipe <ingenierofelipeurrego@gmail.com>, 2014
 # mySociety <transifex@mysociety.org>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: sayit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-14 16:47+0000\n"
-"PO-Revision-Date: 2014-12-23 17:10+0000\n"
+"POT-Creation-Date: 2015-06-19 11:56+0100\n"
+"PO-Revision-Date: 2015-01-16 20:51+0000\n"
 "Last-Translator: johnfelipe <ingenierofelipeurrego@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/sayit/language/"
 "es/)\n"
@@ -445,28 +445,28 @@ msgid "Location of Popolo JSON data"
 msgstr "Ubicación de los datos Popolo JSON"
 
 #: forms.py:642
-#, fuzzy
-#| msgid "Location of Popolo JSON data"
 msgid "Location of Akoma Ntoso data"
-msgstr "Ubicación de los datos Popolo JSON"
+msgstr "Ubicación de datos Akoma Ntoso"
 
 #: forms.py:650
 msgid "What would you like to do with existing top level sections?"
-msgstr ""
+msgstr "¿Qué te gustaría hacer con secciones de nivel superior existente?"
 
 #: forms.py:652
 msgid "Skip them - keep them exactly as they are"
-msgstr ""
+msgstr "Saltarlos - mantenerlos tal como estan"
 
 #: forms.py:653
 msgid "Replace them - throw away the existing data and use the new"
-msgstr ""
+msgstr "Reemplazarlos - tirar los datos existentes y utilizar el nuevo"
 
 #: forms.py:654
 msgid ""
 "Merge the new data into the existing sections - things in both will be "
 "duplicated"
 msgstr ""
+"Combinar los nuevos datos en las secciones existentes - las cosas en tanto "
+"se duplicarán"
 
 #: importers/import_popolo.py:135
 msgid "Either a file path or a URL is needed."
@@ -777,10 +777,8 @@ msgstr "Importar oradores"
 #: templates/speeches/_home.html:17
 #: templates/speeches/akoma_ntoso_import_form.html:6
 #: templates/speeches/parentless_list.html:21
-#, fuzzy
-#| msgid "Import speakers"
 msgid "Import speeches"
-msgstr "Importar oradores"
+msgstr "Importar discursos"
 
 #: templates/speeches/_home.html:27
 msgid "Search speeches and statements"
@@ -841,13 +839,20 @@ msgstr "Añadir su primer Orador / Ponente"
 
 #: templates/speeches/akoma_ntoso_import_form.html:12
 msgid "Import speeches from Akoma Ntoso"
-msgstr ""
+msgstr "Importar discursos desde Akoma Ntoso"
 
 #: templates/speeches/akoma_ntoso_import_form.html:16
-#, fuzzy
-#| msgid "Import People (may take some time)"
 msgid "Import Akoma Ntoso (may take some time)"
-msgstr "Importar Personas (puede tardar algún tiempo)"
+msgstr "Importación Akoma Ntoso (puede tardar algún tiempo)"
+
+#: templates/speeches/base.html:8 templates/speeches/base.html.py:9
+#: templates/speeches/base.html:25 templates/speeches/base.html.py:45
+msgid "SayIt"
+msgstr ""
+
+#: templates/speeches/base.html:10
+msgid "Transcripts for the modern internet"
+msgstr ""
 
 #: templates/speeches/base.html:48
 msgid "Home"
@@ -861,15 +866,15 @@ msgstr "Actas"
 
 #: templates/speeches/base.html:55
 msgid "Welcome,"
-msgstr ""
+msgstr "Bienvenido,"
 
 #: templates/speeches/base.html:56
 msgid "Log out"
-msgstr ""
+msgstr "Salir"
 
 #: templates/speeches/base.html:59
 msgid "Log in"
-msgstr ""
+msgstr "Iniciar Sesion"
 
 #: templates/speeches/parentless_list.html:42
 msgid "Speeches not in a section"
@@ -1282,73 +1287,70 @@ msgstr "Guardar cambios"
 msgid "Save speech"
 msgstr "Guardar Acta"
 
-#: views.py:294
+#: views.py:295
 #, python-format
 msgid "View Speaker: %(speaker_name)s"
 msgstr "Ver orador: %(speaker_name)s"
 
-#: views.py:455
+#: views.py:456
 #, python-format
 msgid "View Section: %(section_title)s"
 msgstr "Ver Sección: %(section_title)s"
 
-#: views.py:511
+#: views.py:513
 msgid "Speeches assigned."
 msgstr "Discursos asignados."
 
-#: views.py:664
+#: views.py:666
 #, python-format
 msgid "%(created)d speaker created."
 msgid_plural "%(created)d speakers created."
 msgstr[0] "%(created)d orador creado."
 msgstr[1] "%(created)d oradores creados."
 
-#: views.py:669
+#: views.py:671
 #, python-format
 msgid "%(refreshed)d speaker refreshed."
 msgid_plural "%(refreshed)d speakers refreshed."
 msgstr[0] "%(refreshed)d orador actualizado."
 msgstr[1] "%(refreshed)d oradores actualizados."
 
-#: views.py:680
+#: views.py:682
 msgid "No speakers found."
 msgstr "No se encontraron oradores."
 
-#: views.py:709
+#: views.py:711
 msgid "Sorry - something went wrong with the import"
-msgstr ""
+msgstr "Lo sentimos - algo salió mal con la importación"
 
-#: views.py:721
+#: views.py:723
 msgid "Created: "
-msgstr ""
+msgstr "Creado:"
 
-#: views.py:724
-#, fuzzy, python-format
-#| msgid "Update speaker"
+#: views.py:726
+#, python-format
 msgid "%(speakers)d speaker"
 msgid_plural "%(speakers)d speakers"
-msgstr[0] "actualización de ponente"
-msgstr[1] "actualización de ponente"
+msgstr[0] "%(speakers)d Orador"
+msgstr[1] "%(speakers)d Oradores"
 
-#: views.py:729
-#, fuzzy, python-format
-#| msgid "previous section"
+#: views.py:731
+#, python-format
 msgid "%(sections)d section"
 msgid_plural "%(sections)d sections"
-msgstr[0] "sección anterior"
-msgstr[1] "sección anterior"
+msgstr[0] "%(sections)d sección"
+msgstr[1] "%(sections)d secciones"
 
-#: views.py:734
-#, fuzzy, python-format
-#| msgid "Delete speech"
+#: views.py:736
+#, python-format
 msgid "%(speeches)d speech"
 msgid_plural "%(speeches)d speeches"
-msgstr[0] "Eliminar acta"
-msgstr[1] "Eliminar acta"
+msgstr[0] "%(speeches)d intervención"
+msgstr[1] "%(speeches)d intervenciones"
 
-#: views.py:745
+#: views.py:747
 msgid "Nothing new to import."
-msgstr ""
+msgstr "Nada nuevo que importar"
 
 #: widgets.py:46
 msgid "yyyy-mm-dd"
@@ -1373,16 +1375,3 @@ msgstr "mm/dd/yy"
 #: widgets.py:108
 msgid "hh:mm"
 msgstr "hh:mm"
-
-#~ msgid "This is a brand new SayIt site."
-#~ msgstr "Este es un nuevo sitio marca SayIt."
-
-#~ msgid ""
-#~ "Its creator hasn&rsquo;t yet added any speeches or statements for you to "
-#~ "see."
-#~ msgstr ""
-#~ "Su creador aún no ha añadido ningún discursos o declaraciones para que "
-#~ "usted vea."
-
-#~ msgid "Learn more about SayIt"
-#~ msgstr "Aprenda más sobre SayIt"

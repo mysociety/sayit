@@ -5,9 +5,9 @@
 
         {% block opengraph %}
           <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
-          <meta property="og:title" content="{% block og_title %}{% if title %}{{ title }} :: {% endif %}SayIt{% endblock %}">
-          <meta property="og:site_name" content="{% block og_site_name %}SayIt{% endblock %}">
-          <meta property="og:description" content="{% block og_description %}Transcripts for the modern internet{% endblock %}">
+          <meta property="og:title" content="{% block og_title %}{% if title %}{{ title }} :: {% endif %}{% trans "SayIt" %}{% endblock %}">
+          <meta property="og:site_name" content="{% block og_site_name %}{% trans "SayIt" %}{% endblock %}">
+          <meta property="og:description" content="{% block og_description %}{% trans "Transcripts for the modern internet" %}{% endblock %}">
           <meta property="og:type" content="{% block og_type %}website{% endblock %}">
           <meta property="og:image" content="{% block og_image %}http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{% static "speeches/img/apple-touch-icon-152x152.png" %}{% endblock %}">
 
@@ -22,7 +22,7 @@
 
         <title>
           {% block fulltitle %}{% block title %}{{ title }}{% endblock %}
-            :: SayIt
+            :: {% trans "SayIt" %}
           {% endblock %}
         </title>
 
@@ -42,7 +42,7 @@
         <header>
           <div class="full-page__row">
             <div class="full-page__unit">
-              <h1><a href="{% url 'speeches:home' %}">SayIt</a></h1>
+              <h1><a href="{% url 'speeches:home' %}">{% trans "SayIt" %}</a></h1>
 
               <ul class="inline-list left">
                 <li><a href="{% url 'speeches:home' %}">{% trans 'Home' %}</a></li>

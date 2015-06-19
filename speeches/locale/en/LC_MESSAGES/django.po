@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-14 16:47+0000\n"
+"POT-Creation-Date: 2015-06-19 11:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -817,6 +817,15 @@ msgstr ""
 msgid "Import Akoma Ntoso (may take some time)"
 msgstr ""
 
+#: templates/speeches/base.html:8 templates/speeches/base.html.py:9
+#: templates/speeches/base.html:25 templates/speeches/base.html.py:45
+msgid "SayIt"
+msgstr ""
+
+#: templates/speeches/base.html:10
+msgid "Transcripts for the modern internet"
+msgstr ""
+
 #: templates/speeches/base.html:48
 msgid "Home"
 msgstr ""
@@ -1196,68 +1205,68 @@ msgstr ""
 msgid "Save speech"
 msgstr ""
 
-#: views.py:294
+#: views.py:295
 #, python-format
 msgid "View Speaker: %(speaker_name)s"
 msgstr ""
 
-#: views.py:455
+#: views.py:456
 #, python-format
 msgid "View Section: %(section_title)s"
 msgstr ""
 
-#: views.py:511
+#: views.py:513
 msgid "Speeches assigned."
 msgstr ""
 
-#: views.py:664
+#: views.py:666
 #, python-format
 msgid "%(created)d speaker created."
 msgid_plural "%(created)d speakers created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:669
+#: views.py:671
 #, python-format
 msgid "%(refreshed)d speaker refreshed."
 msgid_plural "%(refreshed)d speakers refreshed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:680
+#: views.py:682
 msgid "No speakers found."
 msgstr ""
 
-#: views.py:709
+#: views.py:711
 msgid "Sorry - something went wrong with the import"
 msgstr ""
 
-#: views.py:721
+#: views.py:723
 msgid "Created: "
 msgstr ""
 
-#: views.py:724
+#: views.py:726
 #, python-format
 msgid "%(speakers)d speaker"
 msgid_plural "%(speakers)d speakers"
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:729
+#: views.py:731
 #, python-format
 msgid "%(sections)d section"
 msgid_plural "%(sections)d sections"
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:734
+#: views.py:736
 #, python-format
 msgid "%(speeches)d speech"
 msgid_plural "%(speeches)d speeches"
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:745
+#: views.py:747
 msgid "Nothing new to import."
 msgstr ""
 

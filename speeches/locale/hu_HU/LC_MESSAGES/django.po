@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sayit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-14 16:47+0000\n"
+"POT-Creation-Date: 2015-06-19 10:45+0100\n"
 "PO-Revision-Date: 2014-12-05 13:45+0000\n"
 "Last-Translator: mySociety <transifex@mysociety.org>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/"
@@ -824,6 +824,15 @@ msgstr ""
 msgid "Import Akoma Ntoso (may take some time)"
 msgstr ""
 
+#: templates/speeches/base.html:8 templates/speeches/base.html.py:9
+#: templates/speeches/base.html:25 templates/speeches/base.html.py:45
+msgid "SayIt"
+msgstr ""
+
+#: templates/speeches/base.html:10
+msgid "Transcripts for the modern internet"
+msgstr ""
+
 #: templates/speeches/base.html:48
 msgid "Home"
 msgstr ""
@@ -1205,54 +1214,54 @@ msgstr ""
 msgid "Save speech"
 msgstr ""
 
-#: views.py:294
+#: views.py:295
 #, python-format
 msgid "View Speaker: %(speaker_name)s"
 msgstr "%(speaker_name)s megtekintése"
 
-#: views.py:455
+#: views.py:456
 #, python-format
 msgid "View Section: %(section_title)s"
 msgstr "%(section_title)s szakasz megtekintése"
 
-#: views.py:511
+#: views.py:513
 msgid "Speeches assigned."
 msgstr "Hozzárendelt beszédek."
 
-#: views.py:664
+#: views.py:666
 #, python-format
 msgid "%(created)d speaker created."
 msgid_plural "%(created)d speakers created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:669
+#: views.py:671
 #, python-format
 msgid "%(refreshed)d speaker refreshed."
 msgid_plural "%(refreshed)d speakers refreshed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:680
+#: views.py:682
 msgid "No speakers found."
 msgstr ""
 
-#: views.py:709
+#: views.py:711
 msgid "Sorry - something went wrong with the import"
 msgstr ""
 
-#: views.py:721
+#: views.py:723
 msgid "Created: "
 msgstr ""
 
-#: views.py:724
+#: views.py:726
 #, python-format
 msgid "%(speakers)d speaker"
 msgid_plural "%(speakers)d speakers"
 msgstr[0] ""
 msgstr[1] ""
 
-#: views.py:729
+#: views.py:731
 #, fuzzy, python-format
 #| msgid "previous section"
 msgid "%(sections)d section"
@@ -1260,7 +1269,7 @@ msgid_plural "%(sections)d sections"
 msgstr[0] "előző szakasz"
 msgstr[1] "előző szakasz"
 
-#: views.py:734
+#: views.py:736
 #, fuzzy, python-format
 #| msgid "Delete speech"
 msgid "%(speeches)d speech"
@@ -1268,7 +1277,7 @@ msgid_plural "%(speeches)d speeches"
 msgstr[0] "Beszéd törlése"
 msgstr[1] "Beszéd törlése"
 
-#: views.py:745
+#: views.py:747
 msgid "Nothing new to import."
 msgstr ""
 
