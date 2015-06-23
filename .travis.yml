@@ -19,19 +19,21 @@ env:
     - TOXENV=py27-1.7
     - TOXENV=py27-1.8
     - TOXENV=py27-1.9
-    - TOXENV=py33-1.7
-    - TOXENV=py33-1.8
-    - TOXENV=py33-1.9
+    - TOXENV=py34-1.7
+    - TOXENV=py34-1.8
+    - TOXENV=py34-1.9
 
 matrix:
   allow_failures:
     - env: TOXENV=py27-1.9
-    - env: TOXENV=py33-1.9
+    - env: TOXENV=py34-1.9
 
 install:
   - 'if [ $TOXENV != "flake8" ]; then sudo apt-get update -qq; fi'
   - 'if [ $TOXENV != "flake8" ]; then sudo apt-get install -qq ffmpeg libavcodec-extra-53 iceweasel xvfb; fi'
-  - pip install tox
+  - 'if [ $TOXENV != "py27-1.4" ]; then pip install tox; fi'
+  - 'if [ $TOXENV == "py27-1.4" ]; then pip install "Django>=1.4,<1.5" django-tastypie==0.9.16; fi'
+  - 'if [ $TOXENV == "py27-1.4" ]; then pip install -e .[test]; fi'
 
 before_script:
   - psql -c 'create database "sayit-example-project";' -U postgres
@@ -39,4 +41,5 @@ before_script:
   - 'if [ $TOXENV != "flake8" ]; then sh -e /etc/init.d/xvfb start; fi'
 
 script:
-  - tox
+  - 'if [ $TOXENV == "py27-1.4" ]; then python manage.py test; fi'
+  - 'if [ $TOXENV != "py27-1.4" ]; then tox; fi'

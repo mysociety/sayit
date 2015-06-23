@@ -1,6 +1,7 @@
 import re
 from datetime import datetime, date, time
 
+import django
 from django.test import TestCase
 
 from speeches.models import Section, Speech
@@ -230,11 +231,12 @@ class SectionSiteTests(InstanceTestCase):
         # Check that a section page which returns more than one speech on the
         # same date displays the date once.
         resp = self.client.get('/section/%d' % subsection.id)
-        self.assertEqual(
-            len(re.findall(
-                r'<span class="speech__meta-data__date">\s*1[7,8] Sep 2014\s*</span>',
-                resp.content.decode())),
-            2)
+        if django.VERSION >= (1, 7):
+            self.assertEqual(
+                len(re.findall(
+                    r'<span class="speech__meta-data__date">\s*1[7,8] Sep 2014\s*</span>',
+                    resp.content.decode())),
+                2)
         self.assertContains(resp, 'Next day speech')
 
     def test_section_page_lists_subsections(self):
