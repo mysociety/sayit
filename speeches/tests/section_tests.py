@@ -235,6 +235,7 @@ class SectionSiteTests(InstanceTestCase):
                 r'<span class="speech__meta-data__date">\s*1[7,8] Sep 2014\s*</span>',
                 resp.content.decode())),
             2)
+        self.assertContains(resp, 'Next day speech')
 
     def test_section_page_lists_subsections(self):
         section = Section.objects.create(heading='A test section', instance=self.instance)

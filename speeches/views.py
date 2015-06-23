@@ -2,6 +2,7 @@ import datetime
 import json
 from six import string_types
 
+import django
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse, reverse_lazy, resolve
 from django.core import serializers
@@ -455,7 +456,10 @@ class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
         )
         context['title'] = _('View Section: %(section_title)s') % {'section_title': self.object.title}
 
-        context['speech_template'] = loader.get_template('speeches/speech.html')
+        if django.VERSION < (1, 7):
+            context['speech_template'] = 'speeches/speech.html'
+        else:
+            context['speech_template'] = loader.get_template('speeches/speech.html')
         return context
 
 
