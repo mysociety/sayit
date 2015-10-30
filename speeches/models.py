@@ -7,7 +7,6 @@ from six.moves.urllib.parse import urlsplit
 from six.moves.urllib.request import urlretrieve
 from six.moves.urllib.error import HTTPError
 
-from django.utils import six
 from django.utils.translation import ugettext_lazy as _, ugettext
 from django.db import models
 from django.db.models import Q
@@ -17,7 +16,7 @@ from django.template.defaultfilters import timesince
 from django.conf import settings
 from django.core.files import File
 from django.core.exceptions import ValidationError
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation
 from django.utils.encoding import python_2_unicode_compatible
 
 from easy_thumbnails.fields import ThumbnailerImageField
@@ -32,9 +31,7 @@ if not aliases.get('speaker-rectangle'):
 from instances.models import InstanceMixin, InstanceManager
 from speeches.utils.audio import AudioHelper
 from speeches.utils.text import url_to_unicode
-from speeches.utils.djangopatch import GetQuerySetMetaclass
 
-from djqmethod import Manager, querymethod
 from popolo.models import Person
 from sluggable.fields import SluggableField
 from sluggable.models import Slug as SlugModel
@@ -97,7 +94,7 @@ def upload_to(inst, fn):
     return inst.get_image_cache_file_path(fn)
 
 
-class SpeakerManager(six.with_metaclass(GetQuerySetMetaclass, InstanceManager)):
+class SpeakerManager(InstanceManager):
     def get_queryset(self):
         return super(SpeakerManager, self).get_queryset().extra(
             select={"sorted_name": "LOWER(COALESCE(NULLIF(sort_name, ''), name))"},
@@ -109,7 +106,7 @@ class SpeakerManager(six.with_metaclass(GetQuerySetMetaclass, InstanceManager)):
 class Speaker(InstanceMixin, Person):
     slug = SluggableField(
         _('slug'), unique_with='instance', populate_from='name', always_update=True)
-    slugs = generic.GenericRelation(Slug)
+    slugs = GenericRelation(Slug)
 
     # There's an unfortunate collision of things called 'instance' here.
     # inst is the model instance, in this case a Speaker. inst.instance
@@ -197,7 +194,7 @@ class Tag(InstanceMixin, AuditedModel):
         verbose_name_plural = _('tags')
 
 
-class SectionManager(InstanceManager, Manager):
+class SectionManager(InstanceManager):
 
     def get_or_create_with_parents(self, instance, headings):
         """Get or create the entire hierarchy of sections given, returning the bottom one."""
@@ -247,7 +244,7 @@ class Section(AuditedModel, InstanceMixin):
         _('slug'), unique_with=('parent', 'instance'), populate_from='title', always_update=True)
     source_url = models.TextField(_('source URL'), blank=True)
 
-    slugs = generic.GenericRelation(Slug)
+    slugs = GenericRelation(Slug)
 
     class Meta:
         verbose_name = _('section')
@@ -566,8 +563,14 @@ class AudioMP3Mixin(object):
 
 
 # Speech manager
-class SpeechManager(InstanceManager, Manager):
-    pass
+class SpeechQuerySet(models.QuerySet):
+    def visible(query, request=None):
+        if not request.is_user_instance:
+            query = query.filter(public=True)
+        return query
+
+
+SpeechManager = InstanceManager.from_queryset(SpeechQuerySet)
 
 
 # Speech that a speaker gave
@@ -641,7 +644,7 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
         _('end time'), blank=True, null=True,
         help_text=_('What time did the speech end?'))
     tags = models.ManyToManyField(
-        Tag, verbose_name=_('tags'), blank=True, null=True)
+        Tag, verbose_name=_('tags'), blank=True)
 
     public = models.BooleanField(
         _('public'), default=True, help_text=_('Is this speech public?'))
@@ -681,12 +684,6 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
     def title(self):
         txt = filter(None, (self.num, self.heading, self.subheading))
         return ', '.join(txt)
-
-    @querymethod
-    def visible(query, request=None):
-        if not request.is_user_instance:
-            query = query.filter(public=True)
-        return query
 
     @property
     def is_public(self):

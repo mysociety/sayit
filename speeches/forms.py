@@ -7,7 +7,7 @@ import pytz
 
 from django_select2.widgets import (
     Select2MultipleWidget, AutoHeavySelect2Widget,
-    JSFunctionInContext, HeavySelect2Widget
+    HeavySelect2Widget
     )
 from django_select2.fields import AutoModelSelect2Field
 
@@ -112,10 +112,15 @@ class Select2Widget(AutoHeavySelect2Widget):
 
 
 class Select2CreateWidget(Select2Widget):
+    """This widget is to allow someone to select an existing database entry,
+    but also create a new one if needed."""
     def init_options(self):
         super(Select2Widget, self).init_options()
-        self.options['createSearchChoice'] = JSFunctionInContext(
-            'django_select2.createSearchChoice')
+        # Version 4.3 of django-select2 changed, in
+        # https://github.com/applegrew/django-select2/commit/36bac057, how
+        # functions could be passed to the browser unaltered, using string
+        # markers.
+        self.options['createSearchChoice'] = '*START*django_select2.createSearchChoice*END*'
 
 
 class StripWhitespaceField(forms.CharField):

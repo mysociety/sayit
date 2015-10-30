@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.views.decorators.csrf import csrf_exempt
 
 from speeches.views import (
@@ -24,8 +24,7 @@ try:
 except:
     v01_api = None
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$', InstanceView.as_view(), name='home'),
 
     # Override the usual AutoResponseView from django_select2 so as to limit
@@ -64,13 +63,12 @@ urlpatterns = patterns(
 
     url(r'^import/popolo', PopoloImportView.as_view(), name='import-popolo'),
     url(r'^import/akomantoso', AkomaNtosoImportView.as_view(), name='import-akoma-ntoso'),
-)
+]
 
 if v01_api is not None:
-    urlpatterns += patterns('', url(r'^api/', include(v01_api.urls)))
+    urlpatterns += [url(r'^api/', include(v01_api.urls))]
 
-urlpatterns += patterns(
-    '',
+urlpatterns += [
     url(r'^(?P<full_slug>.+)\.an$', SectionViewAN.as_view(), name='section-view'),
     url(r'^(?P<full_slug>.+)$', SectionView.as_view(), name='section-view'),
-)
+]

@@ -9,13 +9,11 @@ def read_file(filename):
     filepath = os.path.join(file_dir, filename)
     return open(filepath).read()
 
-# Fix for Select2 py3 branching
+# Fix for dateutil/SSL py3 support
 if sys.version_info >= (3,):
-    select2 = 'Django-Select2-Py3 >= 4.2.1, < 4.3'
     dateutil = 'python-dateutil >= 2'
     ssl = []
 else:
-    select2 = 'Django-Select2 >= 4.2.2, < 4.3'
     dateutil = 'python-dateutil < 2'
     # @see https://github.com/kennethreitz/requests/blob/master/requests/packages/urllib3/contrib/pyopenssl.py
     ssl = [
@@ -23,6 +21,11 @@ else:
         'ndg-httpsclient == 0.3.2',
         'pyasn1 == 0.1.7',
     ]
+
+if os.environ.get('TOX'):
+    django = 'Django >= 1.8.5'
+else:
+    django = 'Django >= 1.8.5, < 1.9'
 
 setup(
     name="django-sayit",
@@ -38,16 +41,15 @@ setup(
         'psycopg2 >= 2.5.1, < 2.6',
         'pytz >= 2013d',
         'six >= 1.4.1',
-        'Django >= 1.4.2, < 1.8',
-        select2,
-        'django-qmethod == 0.0.3',
+        django,
+        'Django-Select2 == 4.3.2',
         'audioread >= 1.0.1',
-        'pyelasticsearch >= 0.6, < 0.7',
-        'django-haystack >= 2.1, < 2.2',
+        'elasticsearch >= 0.4',
+        'django-haystack >= 2.4, < 2.5',
         'django-bleach >= 0.2.1',
-        'mysociety-django-popolo >= 0.0.2',
-        'mysociety-django-sluggable >= 0.2.6',
-        'django-subdomain-instances >= 0.10.2',
+        'mysociety-django-popolo >= 0.0.5',
+        'mysociety-django-sluggable >= 0.2.7',
+        'django-subdomain-instances >= 1.0',
         'easy-thumbnails >= 2.1',
         'unicode-slugify == 0.1.1',
     ] + ssl,
@@ -55,20 +57,18 @@ setup(
         'test': [
             'selenium',
             'mock',
-            'django-nose == 1.2',
+            'django-nose == 1.4.2',
             'Mutagen',
             'lxml',
             dateutil,
+            'requests_cache',
         ],
         'develop': [
             'flake8',
             'django-debug-toolbar',
-            'South == 1.0',
-            'popit-django == 0.0.3',
         ],
         'scraping': [
             'beautifulsoup4',
-            'requests_cache',
         ],
     },
     classifiers=[

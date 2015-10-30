@@ -21,6 +21,7 @@ class RecordingTests(InstanceTestCase):
     @classmethod
     def setUpClass(cls):
         cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
+        super(RecordingTests, cls).setUpClass()
 
     def tearDown(self):
         # Clear the recordings folder if it exists

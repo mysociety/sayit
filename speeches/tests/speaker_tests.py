@@ -4,7 +4,6 @@ from datetime import date
 from mock import patch, Mock
 from six.moves.urllib.error import HTTPError
 
-import django
 from django.test.utils import override_settings
 from django.utils.six import assertRegex
 from django.utils.encoding import smart_text
@@ -130,16 +129,12 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
 
         resp = self.client.get('/section/' + str(section.id))
 
-        # Prior to Django 1.5, override_settings didn't sort out MEDIA_ROOT
-        # properly, see https://code.djangoproject.com/ticket/17744".
-        # So best to skip the following assertion.
-        if django.VERSION[:2] >= (1, 5):
-            assertRegex(
-                self,
-                resp.content.decode(),
-                r'(?s)<img src="/uploads/speakers/default/imag%%C3%%A9.jpg.96x96_q85_crop-smart_face_upscale.jpg"'
-                r'.*?<a href="/speaker/%s">\s*' % (speaker1.slug)
-                )
+        assertRegex(
+            self,
+            resp.content.decode(),
+            r'(?s)<img src="/uploads/speakers/default/imag%%C3%%A9.jpg.96x96_q85_crop-smart_face_upscale.jpg"'
+            r'.*?<a href="/speaker/%s">\s*' % (speaker1.slug)
+            )
         assertRegex(
             self,
             resp.content.decode(),
