@@ -45,7 +45,7 @@ setup(
         'Django-Select2 == 4.3.2',
         'audioread >= 1.0.1',
         'elasticsearch >= 0.4',
-        'django-haystack >= 2.4, < 2.5',
+        'django-haystack >= 2.5, < 2.6',
         'django-bleach >= 0.2.1',
         'mysociety-django-popolo >= 0.0.5',
         'mysociety-django-sluggable >= 0.2.7',
