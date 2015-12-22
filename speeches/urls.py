@@ -36,7 +36,7 @@ urlpatterns = [
     url(r'^(?P<path>speaker|recording)/?$', AddAnSRedirectView.as_view()),
     url(r'^(?P<path>speech)/?$', AddAnSRedirectView.as_view(suffix='es')),
 
-    url(r'^search/', lambda request: InstanceSearchView()(request), name='haystack_search'),
+    url(r'^search/', InstanceSearchView.as_view(), name='haystack_search'),
 
     url(r'^speech/add$', SpeechCreate.as_view(), name='speech-add'),
     url(r'^speech/ajax_audio$', SpeechAudioCreate.as_view(), name='speech-ajax-audio'),

@@ -36,7 +36,7 @@
             {% endif %}
             <h2>{% blocktrans %}Mentions of <strong>&ldquo;{{ query }}&rdquo;</strong> in speeches{% endblocktrans %}</h2>
             <ul class="unstyled-list search-results-list">
-            {% for result in page.object_list %}
+            {% for result in object_list %}
                 {% if result.model_name == 'speech' %}
                     {% include 'speeches/speech.html' with speech=result.object highlight=result.highlighted.0 %}
                 {% elif result.model_name == 'section' %}
@@ -47,7 +47,7 @@
             {% endfor %}
             </ul>
 
-            {% with page_obj=page %} {% paginate %} {% endwith %}
+            {% paginate %}
 
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}

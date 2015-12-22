@@ -1,7 +1,7 @@
 from django import forms
 
 from haystack.forms import SearchForm
-from haystack.views import SearchView
+from haystack.generic_views import SearchView
 from haystack.query import SearchQuerySet
 
 from speeches.models import Speaker, Speech, Section
@@ -43,22 +43,17 @@ class InstanceSearchView(SearchView):
     A subclass that filters the search query set to speeches within the current
     request's instace.
     """
-    def __init__(self, *args, **kwargs):
-        kwargs['form_class'] = SpeechForm
-        super(InstanceSearchView, self).__init__(*args, **kwargs)
+    form_class = SpeechForm
 
-    def build_form(self, *args, **kwargs):
+    def get_queryset(self):
         sqs = SearchQuerySet()
         sqs = sqs.narrow('instance:"%s"' % self.request.instance.label)
-        self.searchqueryset = sqs
-        return super(InstanceSearchView, self).build_form(*args, **kwargs)
+        return sqs
 
-    def extra_context(self):
-        if not self.query:
-            return {}
+    def get_context_data(self, **kwargs):
+        context = super(InstanceSearchView, self).get_context_data(**kwargs)
+        if kwargs.get('query'):
+            person_form = self.get_form(SpeakerForm)
+            context['speaker_results'] = person_form.search()
 
-        self.form_class = SpeakerForm
-        person_form = self.build_form()
-        return {
-            'speaker_results': person_form.search(),
-        }
+        return context
