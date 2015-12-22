@@ -619,7 +619,7 @@ class SpeechViewTests(InstanceTestCase):
         # POST form (do the deletion)
         resp = self.client.post(speech.get_delete_url())
 
-        self.assertRedirects(resp, 'speeches')
+        self.assertRedirects(resp, '/speeches')
 
         self.assertEqual(Speech.objects.filter(id=speech.id).count(), 0)
 
