@@ -176,7 +176,7 @@ class SectionSiteTests(InstanceTestCase):
             'heading': 'A test section'
         })
         new_section = Section.objects.order_by('-id')[0]
-        self.assertRedirects(resp, '%s' % new_section.slug)
+        self.assertRedirects(resp, '/%s' % new_section.slug)
         # Check in db
         section = Section.objects.get(id=new_section.id)
         self.assertEqual(section.heading, 'A test section')
@@ -188,7 +188,7 @@ class SectionSiteTests(InstanceTestCase):
             'heading': 'A test subsection'
         })
         new_section = Section.objects.order_by('-id')[0]
-        self.assertRedirects(resp, '%s/%s' % (section.slug, new_section.slug))
+        self.assertRedirects(resp, '/%s/%s' % (section.slug, new_section.slug))
         # Check in db
         subsection = Section.objects.get(id=new_section.id)
         self.assertEqual(subsection.heading, 'A test subsection')
@@ -288,7 +288,7 @@ class SectionSiteTests(InstanceTestCase):
         # POST form (do the deletion)
         resp = self.client.post(section.get_delete_url())
 
-        self.assertRedirects(resp, 'speeches')
+        self.assertRedirects(resp, '/speeches')
 
         self.assertEqual(Section.objects.filter(id=section.id).count(), 0)
 
