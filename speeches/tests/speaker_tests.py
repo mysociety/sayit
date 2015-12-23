@@ -144,7 +144,7 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
     def test_create_speaker_with_long_image_url(self):
         sixtyfive = '1234567890' * 6 + '12345'
         ninetynine = '1234567890' * 9 + '123456789'
-        long_image_url = 'http://example.com/image%%E2%%97%%8F%s.jpg' % ninetynine
+        long_image_url = 'http://example.com/image%%E1%%BD%%A0%s.jpg' % ninetynine
 
         s1 = Speaker.objects.create(
             name='Long Image URL',
@@ -161,7 +161,7 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
         # Note the filename in image_cache has been truncated.
         self.assertEqual(
             s1.image_cache,
-            u'speakers/default/image\u25cf%s.jpg' % sixtyfive,
+            u'speakers/default/image\u1f60%s.jpg' % sixtyfive,
             )
 
         # The truncated filename for the second speaker has some random stuff at the end.
@@ -170,7 +170,7 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
         assertRegex(
             self,
             smart_text(s2.image_cache),
-            u'^speakers/default/image\u25cf%s_.{7}\.jpg$' % sixtyfive,
+            u'^speakers/default/image\u1f60%s_.{7}\.jpg$' % sixtyfive,
             )
 
     def test_add_speaker_with_whitespace(self):
