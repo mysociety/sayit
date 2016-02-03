@@ -22,12 +22,6 @@ from django.utils.encoding import python_2_unicode_compatible
 from easy_thumbnails.fields import ThumbnailerImageField
 from easy_thumbnails.alias import aliases
 
-if not aliases.get('speaker-thumb'):
-    aliases.set('speaker-thumb', {'size': (96, 96), 'crop': 'smart', 'upscale': True, 'face': True})
-
-if not aliases.get('speaker-rectangle'):
-    aliases.set('speaker-rectangle', {'size': (96, 0), 'upscale': True})
-
 from instances.models import InstanceMixin, InstanceManager
 from speeches.utils.audio import AudioHelper
 from speeches.utils.text import url_to_unicode
@@ -35,6 +29,12 @@ from speeches.utils.text import url_to_unicode
 from popolo.models import Person
 from sluggable.fields import SluggableField
 from sluggable.models import Slug as SlugModel
+
+if not aliases.get('speaker-thumb'):
+    aliases.set('speaker-thumb', {'size': (96, 96), 'crop': 'smart', 'upscale': True, 'face': True})
+
+if not aliases.get('speaker-rectangle'):
+    aliases.set('speaker-rectangle', {'size': (96, 0), 'upscale': True})
 
 logger = logging.getLogger(__name__)
 

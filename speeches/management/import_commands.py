@@ -90,14 +90,18 @@ class ImportCommand(BaseCommand):
         dir = os.path.expanduser(options['dir'])
 
         start_date = options['start_date']
-        valid = lambda f: f >= start_date if start_date else lambda _: True
+        if start_date:
+            def valid(f):
+                return f >= start_date
+        else:
+            def valid(f):
+                return True
 
         return [os.path.join(root, filename)
                 for (root, _, files)
                 in os.walk(dir)
                 for filename in files
-                if filename[-4:] == '.%s' % self.document_extension
-                and valid(filename)]
+                if filename[-4:] == '.%s' % self.document_extension and valid(filename)]
 
     def document_valid(self, path):
         return os.path.isfile(path)
