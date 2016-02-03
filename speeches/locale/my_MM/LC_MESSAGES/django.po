@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# noamoss <noamoss@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: sayit\n"
@@ -11,171 +10,167 @@ msgstr ""
 "POT-Creation-Date: 2016-02-03 15:01+0000\n"
 "PO-Revision-Date: 2015-06-19 20:15+0000\n"
 "Last-Translator: mySociety <transifex@mysociety.org>\n"
-"Language-Team: Hebrew (http://www.transifex.com/mysociety/sayit/language/"
-"he/)\n"
-"Language: he\n"
+"Language-Team: Burmese (Myanmar) (http://www.transifex.com/mysociety/sayit/"
+"language/my_MM/)\n"
+"Language: my_MM\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: extra-locales/popolo/admin.py:41
-#, fuzzy
-#| msgid "number"
 msgid "Member"
-msgstr "מספר"
+msgstr ""
 
 #: extra-locales/popolo/admin.py:42
-#, fuzzy
-#| msgid "The number of the section"
 msgid "Members of this organization"
-msgstr "מספר החלק"
+msgstr ""
 
 #: extra-locales/popolo/behaviors/models.py:56 models.py:231 models.py:635
 msgid "start date"
-msgstr "תאריך התחלה"
+msgstr ""
 
 #: extra-locales/popolo/behaviors/models.py:58
 msgid "The date when the validity of the item starts"
-msgstr "התאריך בו מתחיל הפריט להיות בעל תוקף"
+msgstr ""
 
 #: extra-locales/popolo/behaviors/models.py:61 models.py:641
 msgid "end date"
-msgstr "תאריך סיום"
+msgstr ""
 
 #: extra-locales/popolo/behaviors/models.py:63
 msgid "The date when the validity of the item ends"
-msgstr "התאריך בו מסתיים תוקפו של הפריט"
+msgstr ""
 
 #: extra-locales/popolo/behaviors/models.py:75
 msgid "creation time"
-msgstr "תאריך היצירה"
+msgstr ""
 
 #: extra-locales/popolo/behaviors/models.py:76
 msgid "last modification time"
-msgstr "תאריך השינוי האחרון"
+msgstr ""
 
 #: extra-locales/popolo/models.py:29 extra-locales/popolo/models.py:97
 #: extra-locales/popolo/models.py:289 extra-locales/popolo/models.py:360
 #: extra-locales/popolo/models.py:391
 msgid "name"
-msgstr "שם"
+msgstr ""
 
 #: extra-locales/popolo/models.py:29
 msgid "A person's preferred full name"
-msgstr "שמם המלא/מועדף של האיש/ה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:37
 msgid "family name"
-msgstr "שם משפחה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:37
 msgid "One or more family names"
-msgstr "שם משפחה אחד או יותר"
+msgstr ""
 
 #: extra-locales/popolo/models.py:38
 msgid "given name"
-msgstr "שם פרטי"
+msgstr ""
 
 #: extra-locales/popolo/models.py:38
 msgid "One or more primary given names"
-msgstr "שם פרטי אחד או יותר"
+msgstr ""
 
 #: extra-locales/popolo/models.py:39
 msgid "additional name"
-msgstr "שם נוסף"
+msgstr ""
 
 #: extra-locales/popolo/models.py:39
 msgid "One or more secondary given names"
-msgstr "שם שני אחד או יותר"
+msgstr ""
 
 #: extra-locales/popolo/models.py:40
 msgid "honorific prefix"
-msgstr "תואר מכבד"
+msgstr ""
 
 #: extra-locales/popolo/models.py:40
 msgid "One or more honorifics preceding a person's name"
-msgstr "הקדמת כבוד אחת או יותר"
+msgstr ""
 
 #: extra-locales/popolo/models.py:41
 msgid "honorific suffix"
-msgstr "סיומת כבוד"
+msgstr ""
 
 #: extra-locales/popolo/models.py:41
 msgid "One or more honorifics following a person's name"
-msgstr "סיומת כבוד שמופיעה לאחר שם האדם"
+msgstr ""
 
 #: extra-locales/popolo/models.py:42
 msgid "patronymic name"
-msgstr "שם פטרון"
+msgstr ""
 
 #: extra-locales/popolo/models.py:42
 msgid "One or more patronymic names"
-msgstr "שם פטרון אחד או יותר"
+msgstr ""
 
 #: extra-locales/popolo/models.py:43
 msgid "sort name"
-msgstr "שם למיון"
+msgstr ""
 
 #: extra-locales/popolo/models.py:43
 msgid "A name to use in an lexicographically ordered list"
-msgstr "שם לשימוש ברשימה לקסיגרפית"
+msgstr ""
 
 #: extra-locales/popolo/models.py:44
 msgid "email"
-msgstr "דוא\"ל"
+msgstr ""
 
 #: extra-locales/popolo/models.py:44
 msgid "A preferred email address"
-msgstr "כתובת דוא\"ל מועדפת"
+msgstr ""
 
 #: extra-locales/popolo/models.py:45
 msgid "gender"
-msgstr "מין"
+msgstr ""
 
 #: extra-locales/popolo/models.py:45
 msgid "A gender"
-msgstr "מין"
+msgstr ""
 
 #: extra-locales/popolo/models.py:46
 msgid "birth date"
-msgstr "תאריך לידה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:46
 msgid "A date of birth"
-msgstr "תאריך הלידה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:47
 msgid "death date"
-msgstr "תאריך פטירה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:47
 msgid "A date of death"
-msgstr "תאריך הפטירה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:48 extra-locales/popolo/models.py:130
 msgid "image"
-msgstr "מונה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:48
 msgid "A URL of a head shot"
-msgstr "כתובות URL של צילום ראש"
+msgstr ""
 
 #: extra-locales/popolo/models.py:49 extra-locales/popolo/models.py:98
 msgid "summary"
-msgstr "סיכום"
+msgstr ""
 
 #: extra-locales/popolo/models.py:49
 msgid "A one-line account of a person's life"
-msgstr "סיכום של שורה של חיי האדם"
+msgstr ""
 
 #: extra-locales/popolo/models.py:50 extra-locales/popolo/models.py:99
 msgid "biography"
-msgstr "ביוגרפיה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:50
 msgid "An extended account of a person's life"
-msgstr "סיכום מורחב של חיי האדם"
+msgstr ""
 
 #: extra-locales/popolo/models.py:51
 msgid "national identity"
@@ -187,51 +182,47 @@ msgstr ""
 
 #: extra-locales/popolo/models.py:97
 msgid "A primary name, e.g. a legally recognized name"
-msgstr "שם ראש, לדוגמה, שם בעל הכרה חוקית"
+msgstr ""
 
 #: extra-locales/popolo/models.py:98
 msgid "A one-line description of an organization"
 msgstr ""
 
 #: extra-locales/popolo/models.py:99
-#, fuzzy
-#| msgid "An extended account of a person's life"
 msgid "An extended description of an organization"
-msgstr "סיכום מורחב של חיי האדם"
+msgstr ""
 
 #: extra-locales/popolo/models.py:106
 msgid "classification"
-msgstr "סיווג"
+msgstr ""
 
 #: extra-locales/popolo/models.py:106
 msgid "An organization category, e.g. committee"
-msgstr "קטגוריה ארגונית, לדוגמא \"ועדה\""
+msgstr ""
 
 #: extra-locales/popolo/models.py:110
 msgid "The organization that contains this organization"
-msgstr "הארגון אשר כולל ארגון זה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:114
-#, fuzzy
-#| msgid "The organization that contains this organization"
 msgid "The geographic area to which this organization is related"
-msgstr "הארגון אשר כולל ארגון זה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:116
 msgid "founding date"
-msgstr "תאריך יסוד"
+msgstr ""
 
 #: extra-locales/popolo/models.py:122
 msgid "A date of founding"
-msgstr "תאריך הייסוד"
+msgstr ""
 
 #: extra-locales/popolo/models.py:123
 msgid "dissolution date"
-msgstr "תאריך פירוק"
+msgstr ""
 
 #: extra-locales/popolo/models.py:129
 msgid "A date of dissolution"
-msgstr "תאריך הפירוק"
+msgstr ""
 
 #: extra-locales/popolo/models.py:130
 msgid "A URL of an image, to identify the organization visually"
@@ -240,17 +231,15 @@ msgstr ""
 #: extra-locales/popolo/models.py:169 extra-locales/popolo/models.py:207
 #: extra-locales/popolo/models.py:269
 msgid "label"
-msgstr "תוית"
+msgstr ""
 
 #: extra-locales/popolo/models.py:169
 msgid "A label describing the post"
-msgstr "תוית המתארת פרסום זה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:170
-#, fuzzy
-#| msgid "label"
 msgid "other label"
-msgstr "תוית"
+msgstr ""
 
 #: extra-locales/popolo/models.py:170
 msgid "An alternate label, such as an abbreviation"
@@ -258,46 +247,44 @@ msgstr ""
 
 #: extra-locales/popolo/models.py:172 extra-locales/popolo/models.py:208
 msgid "role"
-msgstr "תפקיד"
+msgstr ""
 
 #: extra-locales/popolo/models.py:172
 msgid "The function that the holder of the post fulfills"
-msgstr "התפקיד בו מחזיק בעל הפרסום"
+msgstr ""
 
 #: extra-locales/popolo/models.py:176
 msgid "The organization in which the post is held"
-msgstr "הארגון בו מוחזק הפרסום"
+msgstr ""
 
 #: extra-locales/popolo/models.py:180 extra-locales/popolo/models.py:228
-#, fuzzy
-#| msgid "The organization in which the post is held"
 msgid "The geographic area to which the post is related"
-msgstr "הארגון בו מוחזק הפרסום"
+msgstr ""
 
 #: extra-locales/popolo/models.py:207
 msgid "A label describing the membership"
-msgstr "תוית המתארת את החברות"
+msgstr ""
 
 #: extra-locales/popolo/models.py:208
 msgid "The role that the person fulfills in the organization"
-msgstr "התפקיד אשר האם ממלא בארגון"
+msgstr ""
 
 #: extra-locales/popolo/models.py:212
 msgid "The person who is a party to the relationship"
-msgstr "האדם השותף לקשר"
+msgstr ""
 
 #: extra-locales/popolo/models.py:217
 msgid "The organization that is a party to the relationship"
-msgstr "הארגון אשר שותף לקשר"
+msgstr ""
 
 #: extra-locales/popolo/models.py:220
 msgid ""
 "The organization on whose behalf the person is a party to the relationship"
-msgstr "הארגון שבשמו האדם שותף בקשר"
+msgstr ""
 
 #: extra-locales/popolo/models.py:224
 msgid "The post held by the person in the organization through this membership"
-msgstr "הפרסום מוחזק בידי אדם בארגון באמצעות קשר זה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:252
 msgid "Address"
@@ -305,33 +292,31 @@ msgstr ""
 
 #: extra-locales/popolo/models.py:253
 msgid "Email"
-msgstr "דוא\"ל"
+msgstr ""
 
 #: extra-locales/popolo/models.py:254
-#, fuzzy
-#| msgid "url"
 msgid "Url"
-msgstr "כתובת URL"
+msgstr ""
 
 #: extra-locales/popolo/models.py:255
 msgid "Snail mail"
-msgstr "כתובת דואר רגילה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:256
 msgid "Twitter"
-msgstr "טוויטר"
+msgstr ""
 
 #: extra-locales/popolo/models.py:257
 msgid "Facebook"
-msgstr "פייסבוק"
+msgstr ""
 
 #: extra-locales/popolo/models.py:258
 msgid "Telephone"
-msgstr "טלפון"
+msgstr ""
 
 #: extra-locales/popolo/models.py:259
 msgid "Mobile"
-msgstr "טלפון נייד"
+msgstr ""
 
 #: extra-locales/popolo/models.py:260
 msgid "Text"
@@ -343,7 +328,7 @@ msgstr ""
 
 #: extra-locales/popolo/models.py:262
 msgid "Fax"
-msgstr "פקס"
+msgstr ""
 
 #: extra-locales/popolo/models.py:263
 msgid "Cell"
@@ -358,80 +343,78 @@ msgid "Pager"
 msgstr ""
 
 #: extra-locales/popolo/models.py:266
-#, fuzzy
-#| msgid "Telephone"
 msgid "Textphone"
-msgstr "טלפון"
+msgstr ""
 
 #: extra-locales/popolo/models.py:269
 msgid "A human-readable label for the contact detail"
-msgstr "תוית קריאה לאדם לפרטי יצירת קשר"
+msgstr ""
 
 #: extra-locales/popolo/models.py:270 models.py:621
 msgid "type"
-msgstr "סוג"
+msgstr ""
 
 #: extra-locales/popolo/models.py:270
 msgid "A type of medium, e.g. 'fax' or 'email'"
-msgstr "סוג המדיה, למשל 'פקס' או 'דוא\"ל'"
+msgstr ""
 
 #: extra-locales/popolo/models.py:271
 msgid "value"
-msgstr "ערך"
+msgstr ""
 
 #: extra-locales/popolo/models.py:271
 msgid "A value, e.g. a phone number or email address"
-msgstr "ערך, למשל מספר טלפון או כתובת דוא\"ל"
+msgstr ""
 
 #: extra-locales/popolo/models.py:272 extra-locales/popolo/models.py:290
 #: extra-locales/popolo/models.py:318 extra-locales/popolo/models.py:331
 msgid "note"
-msgstr "הערה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:272
 msgid "A note, e.g. for grouping contact details by physical location"
-msgstr "הערה, לדוגמא, קיבוץ פרטי התקשרות על פי מיקום פיזי"
+msgstr ""
 
 #: extra-locales/popolo/models.py:289
 msgid "An alternate or former name"
-msgstr "שם אחר או קודם"
+msgstr ""
 
 #: extra-locales/popolo/models.py:290
 msgid "A note, e.g. 'Birth name'"
-msgstr "הערה, למשל, 'שם בלידה'"
+msgstr ""
 
 #: extra-locales/popolo/models.py:304 extra-locales/popolo/models.py:361
 #: extra-locales/popolo/models.py:362
 msgid "identifier"
-msgstr "מזהה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:304
 msgid "An issued identifier, e.g. a DUNS number"
-msgstr "בעיה עם המזהה, למשל מספר DNUS"
+msgstr ""
 
 #: extra-locales/popolo/models.py:305
 msgid "scheme"
-msgstr "סכימה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:305
 msgid "An identifier scheme, e.g. DUNS"
-msgstr "מזהה סכימה, למשל DUNS"
+msgstr ""
 
 #: extra-locales/popolo/models.py:317 extra-locales/popolo/models.py:330
 msgid "url"
-msgstr "כתובת URL"
+msgstr ""
 
 #: extra-locales/popolo/models.py:317 extra-locales/popolo/models.py:330
 msgid "A URL"
-msgstr "כתובת URL"
+msgstr ""
 
 #: extra-locales/popolo/models.py:318
 msgid "A note, e.g. 'Wikipedia page'"
-msgstr "הערה, למשל, 'עמוד ויקיפדיה'"
+msgstr ""
 
 #: extra-locales/popolo/models.py:331
 msgid "A note, e.g. 'Parliament website'"
-msgstr "הערה, למשל, 'אתר הפרלמנט'"
+msgstr ""
 
 #: extra-locales/popolo/models.py:345
 msgid "DbPedia URI of the resource"
@@ -442,454 +425,437 @@ msgid "English name of the language"
 msgstr ""
 
 #: extra-locales/popolo/models.py:360
-#, fuzzy
-#| msgid "patronymic name"
 msgid "A primary name"
-msgstr "שם פטרון"
+msgstr ""
 
 #: extra-locales/popolo/models.py:361
-#, fuzzy
-#| msgid "An issued identifier, e.g. a DUNS number"
 msgid "An issued identifier"
-msgstr "בעיה עם המזהה, למשל מספר DNUS"
+msgstr ""
 
 #: extra-locales/popolo/models.py:362
-#, fuzzy
-#| msgid "An organization category, e.g. committee"
 msgid "An area category, e.g. city"
-msgstr "קטגוריה ארגונית, לדוגמא \"ועדה\""
+msgstr ""
 
 #: extra-locales/popolo/models.py:369
-#, fuzzy
-#| msgid "The organization that contains this organization"
 msgid "The area that contains this area"
-msgstr "הארגון אשר כולל ארגון זה"
+msgstr ""
 
 #: extra-locales/popolo/models.py:372
 msgid "geom"
 msgstr ""
 
 #: extra-locales/popolo/models.py:372
-#, fuzzy
-#| msgid "A gender"
 msgid "A geometry"
-msgstr "מין"
+msgstr ""
 
 #: extra-locales/popolo/models.py:375
 msgid "inhabitants"
 msgstr ""
 
 #: extra-locales/popolo/models.py:375
-#, fuzzy
-#| msgid "The number of the section"
 msgid "The total number of inhabitants"
-msgstr "מספר החלק"
+msgstr ""
 
 #: forms.py:75
 msgid "Assign to section"
-msgstr "הקצאת אזור"
+msgstr ""
 
 #: forms.py:206
 msgid "You must select an existing speaker"
-msgstr "אתם חייבים לבחור דובר/ת קיימים"
+msgstr ""
 
 #: forms.py:299
 msgid "Choose tags"
-msgstr "בחר/י תגיות"
+msgstr ""
 
 #: forms.py:318
 msgid "You must provide either text or some audio"
-msgstr "אתם חייבים להזין טקסט או קטע אודיו כלשהו"
+msgstr ""
 
 #: forms.py:336
 msgid "If you provide a start time you must give a start date too"
-msgstr "אם תזינו זמן התחלה עליכם להזין גם תאריך התחלה"
+msgstr ""
 
 #: forms.py:343
 msgid "If you provide an end time you must give an end date too"
-msgstr "אם תזינו זמן סיום עליכם להזין גם תאריך סיום"
+msgstr ""
 
 #: forms.py:482
 msgid "Something cannot be its own parent"
-msgstr "משהו לא יכול ההורה של עצמו"
+msgstr ""
 
 #: forms.py:486
 msgid "Something cannot have a parent that is also a descendant"
-msgstr "לא יכול להיות הורה שהוא גם צאצא"
+msgstr ""
 
 #: forms.py:501
 msgid "New speaker"
-msgstr "דובר/ת חדשים"
+msgstr ""
 
 #: forms.py:509
 #, python-format
 msgid "This speaker has %(count)d speech. What would you like to do with it?"
 msgid_plural ""
 "This speaker has %(count)d speeches. What would you like to do with them?"
-msgstr[0] "לדובר/ת זה/זאת נאום %(count)d. מה תרצו לעשות איתו?"
-msgstr[1] "לדובר/ת זה/זאת %(count)d נאומים. מה תרצו לעשות איתם?"
+msgstr[0] ""
 
 #: forms.py:515
 msgid "Assign it to another speaker"
 msgid_plural "Assign them to another speaker"
-msgstr[0] "לחבר אותו לדובר אחר"
-msgstr[1] "לחבר אותם לדובר אחר"
+msgstr[0] ""
 
 #: forms.py:517
 msgid "Make it into narrative (i.e. remove the speaker)"
 msgid_plural "Make them into narrative (i.e. remove the speaker)"
-msgstr[0] "להפוך אותו לנרטיב (למשל, להסיר את הדובר/ת)"
-msgstr[1] "להפוך אותם לנרטיב (למשל, להסיר את הדובר/ת)"
+msgstr[0] ""
 
 #: forms.py:519
 msgid "Delete it"
 msgid_plural "Delete them"
-msgstr[0] "למחוק אותו"
-msgstr[1] "למחוק אותם"
+msgstr[0] ""
 
 #: forms.py:535
 msgid "You can't assign speeches to the speaker you're deleting"
-msgstr "אינך יכול/ה לחבר נאומים לדובר שאתם מוחקים"
+msgstr ""
 
 #: forms.py:541
 msgid "You must choose a new speaker if reassigning speeches"
-msgstr "את/ה חייב/ת לבחור דובר חדש לחיבור מחדש של נאומים לדוברים/דוברות"
+msgstr ""
 
 #: forms.py:547
 msgid "You must not choose a new speaker unless reassigning speeches"
 msgstr ""
-"אינכם יכולים לבחור דובר/ת חדשים אלא אם כן אתם מחברים מחדש נאומים לדוברים"
 
 #: forms.py:596
 msgid "Start time is before recording start time!"
-msgstr "זמן ההתחלה הוא לפני זמן תחילת ההקלטה!"
+msgstr ""
 
 #: forms.py:606
 msgid "Difference between timestamps is too long for the uploaded audio"
-msgstr "ההפרש בין תבניות הזמן ארוך מידי עבור הוידאו שהועלה"
+msgstr ""
 
 #: forms.py:614
 msgid "Timestamps must be distinct"
-msgstr "תבניות זמן חייבות להיות מדוייקות"
+msgstr ""
 
 #: forms.py:629
 msgid "Location of Popolo JSON data"
-msgstr "מיקומו של מידע ה-JSON של Popolo"
+msgstr ""
 
 #: forms.py:647
 msgid "Location of Akoma Ntoso data"
-msgstr "מיקומו של מידע ה-Akoma Ntoso"
+msgstr ""
 
 #: forms.py:655
 msgid "What would you like to do with existing top level sections?"
-msgstr "מה תרצו לעשות עם החלקים הקיימים ברמה העליונה?"
+msgstr ""
 
 #: forms.py:657
 msgid "Skip them - keep them exactly as they are"
-msgstr "לדלג עליהם - השאירו אותם בדיוק כפי שהם"
+msgstr ""
 
 #: forms.py:658
 msgid "Replace them - throw away the existing data and use the new"
-msgstr "להחליפם - זרקו את המידע הקיים והשתמשו במידע החדש"
+msgstr ""
 
 #: forms.py:659
 msgid ""
 "Merge the new data into the existing sections - things in both will be "
 "duplicated"
-msgstr "למזג את המידע החדש אל תוך החלקים הקיימים - מה שמופיע בשניהם ישוכפל"
+msgstr ""
 
 #: importers/import_popolo.py:135
 msgid "Either a file path or a URL is needed."
-msgstr "יש צורך בנתיב לקובץ או בכתובת URL."
+msgstr ""
 
 #: importers/import_popolo.py:138
 #, python-format
 msgid "Failed to decode JSON at %(source)s"
-msgstr "נכשל הניסיון לפענח קובץ JSON ב-%(source)s"
+msgstr ""
 
 #: importers/import_popolo.py:164
 msgid "The json must contain either an object or an array"
-msgstr "קובץ ה-JSON חייב להכיל אובייקט או מערך"
+msgstr ""
 
 #: management/commands/sayit_search_make_index_live.py:9
 msgid "Update the default alias to point at search index write alias is using"
-msgstr "עדכנו את כינוי ברירת המחדל שיצביע על כינוי לשימוש אינדקס חיפוש"
+msgstr ""
 
 #: management/commands/sayit_search_new_index.py:11
 msgid "Create a new dated search index for reindexing with no downtime"
-msgstr "יצירת אינדקס חיפוש מונחה תאריך חדש לאינדוקס מחדש ללא השבתה"
+msgstr ""
 
 #: models.py:108 models.py:244
 msgid "slug"
-msgstr "אסימון"
+msgstr ""
 
 #: models.py:115
 msgid "image_cache"
-msgstr "image_cache"
+msgstr ""
 
 #: models.py:119
 msgid "If image is set, a local copy will be stored here."
-msgstr "אם מיזוג מופעל, עותק מקומי יישמר כאן."
+msgstr ""
 
 #: models.py:125 models.py:615
 msgid "speaker"
-msgstr "דובר/ת"
+msgstr ""
 
 #: models.py:126
 msgid "speakers"
-msgstr "דוברים/דוברות"
+msgstr ""
 
 #: models.py:193
 msgid "tag"
-msgstr "תגית"
+msgstr ""
 
 #: models.py:194 models.py:647
 msgid "tags"
-msgstr "תגיות"
+msgstr ""
 
 #: models.py:222 models.py:596
 msgid "number"
-msgstr "מספר"
+msgstr ""
 
 #: models.py:222
 msgid "The number of the section"
-msgstr "מספר החלק"
+msgstr ""
 
 #: models.py:224 models.py:599
 msgid "heading"
-msgstr "כותרת"
+msgstr ""
 
 #: models.py:224
 msgid "The heading of the section"
-msgstr "כותרת החלק"
+msgstr ""
 
 #: models.py:226 models.py:602
 msgid "subheading"
-msgstr "כותרת משנה"
+msgstr ""
 
 #: models.py:227
 msgid "The subheading of the section"
-msgstr "כותרת המשנה של החלק"
+msgstr ""
 
 #: models.py:229
 msgid "description"
-msgstr "תיאור"
+msgstr ""
 
 #: models.py:229
 msgid "Longer description, HTML"
-msgstr "תיאור ארוך, HTML"
+msgstr ""
 
 #: models.py:232
 msgid "What date did the section start?"
-msgstr "באיזה תאריך החל חלק זה?"
+msgstr ""
 
 #: models.py:234 models.py:638
 msgid "start time"
-msgstr "זמן התחלה"
+msgstr ""
 
 #: models.py:235
 msgid "What time did the section start?"
-msgstr "באיזה זמן התחיל החלק הזה?"
+msgstr ""
 
 #: models.py:236
 msgid "document number"
-msgstr "מספר המסמך"
+msgstr ""
 
 #: models.py:237
 msgid "legislature"
-msgstr "מחוקק/ת"
+msgstr ""
 
 #: models.py:239
 msgid "session"
-msgstr "פגישה"
+msgstr ""
 
 #: models.py:239
 msgid "Legislative session"
-msgstr "מפגש חקיקה"
+msgstr ""
 
 #: models.py:241
 msgid "parent"
-msgstr "הורה"
+msgstr ""
 
 #: models.py:245 models.py:656
 msgid "source URL"
-msgstr "כתובת URL למקור"
+msgstr ""
 
 #: models.py:250
 msgid "section"
-msgstr "חלק"
+msgstr ""
 
 #: models.py:251
 msgid "sections"
-msgstr "חלקים"
+msgstr ""
 
 #: models.py:256 models.py:592
 msgid "Section"
-msgstr "חלק"
+msgstr ""
 
 #: models.py:268
 msgid "You must specify at least one of num/heading/subheading"
-msgstr "עליכם להזין לפחות מספר/כותרת/כותרת משנה אחד"
+msgstr ""
 
 #: models.py:585
 msgid "audio"
-msgstr "אודיו"
+msgstr ""
 
 #: models.py:587
 msgid "text"
-msgstr "טקסט"
+msgstr ""
 
 #: models.py:588
 msgid "The text of the speech"
-msgstr "המלל של הנאום"
+msgstr ""
 
 #: models.py:597
 msgid "The number of the speech, if relevant"
-msgstr "מספר הנאום, אם רלוונטי"
+msgstr ""
 
 #: models.py:600
 msgid "The heading of the speech, if relevant"
-msgstr "הכותרת של הנאום, אם רלווני"
+msgstr ""
 
 #: models.py:603
 msgid "The subheading of the speech, if relevant"
-msgstr "כותרת המשנה של הנאום, אם רלווני"
+msgstr ""
 
 #: models.py:607
 msgid "event"
-msgstr "ארוע"
+msgstr ""
 
 #: models.py:608
 msgid "Was the speech at a particular event?"
-msgstr "האם הנאום היה בארוע מיוחד?"
+msgstr ""
 
 #: models.py:610
 msgid "location"
-msgstr "מיקום"
+msgstr ""
 
 #: models.py:611
 msgid "Where the speech took place"
-msgstr "איפה הושמע הנאום"
+msgstr ""
 
 #: models.py:616
 msgid "Who gave this speech?"
-msgstr "מי נאם/נאמה?"
+msgstr ""
 
 #: models.py:623
 msgid "Speech"
-msgstr "נאום"
+msgstr ""
 
 #: models.py:624
 msgid "Question"
-msgstr "שאלה"
+msgstr ""
 
 #: models.py:625
 msgid "Answer"
-msgstr "תשובה"
+msgstr ""
 
 #: models.py:626
 msgid "Scene"
-msgstr "נוף/סצנה"
+msgstr ""
 
 #: models.py:627
 msgid "Narrative"
-msgstr "נרטיב"
+msgstr ""
 
 #: models.py:628
 msgid "Summary"
-msgstr "סיכום"
+msgstr ""
 
 #: models.py:629
 msgid "Other"
-msgstr "אחר"
+msgstr ""
 
 #: models.py:631
 msgid "What sort of speech is this?"
-msgstr "איזה סוג של נאום זה?"
+msgstr ""
 
 #: models.py:636
 msgid "What date did the speech start?"
-msgstr "באיזה תאריך החל הנאום?"
+msgstr ""
 
 #: models.py:639
 msgid "What time did the speech start?"
-msgstr "באיזו שעה החל הנאום?"
+msgstr ""
 
 #: models.py:642
 msgid "What date did the speech end?"
-msgstr "באיזה תאריך הסתיים הנאום?"
+msgstr ""
 
 #: models.py:644
 msgid "end time"
-msgstr "שעת הסיום"
+msgstr ""
 
 #: models.py:645
 msgid "What time did the speech end?"
-msgstr "באיזו שעה הסתיים הנאום?"
+msgstr ""
 
 #: models.py:650
 msgid "public"
-msgstr "ציבורי"
+msgstr ""
 
 #: models.py:650
 msgid "Is this speech public?"
-msgstr "האם זהו נאום ציבורי?"
+msgstr ""
 
 #: models.py:661
 msgid "celery task ID"
-msgstr "מזהה משימת celery"
+msgstr ""
 
 #: models.py:664
 msgid "speech"
-msgstr "נאום"
+msgstr ""
 
 #: models.py:665
 msgid "speeches"
-msgstr "נאומים"
+msgstr ""
 
 #: templates/pagination/pagination.html:5
 #: templates/pagination/pagination.html:7
 msgid "Previous"
-msgstr "קודם"
+msgstr ""
 
 #: templates/pagination/pagination.html:21
 #: templates/pagination/pagination.html:23
 msgid "Next"
-msgstr "הבא"
+msgstr ""
 
 #: templates/search/search.html:7 templates/search/search.html.py:10
 #: templates/search/search.html:11 templates/speeches/_home.html.py:29
 #: templates/speeches/_home.html:30 templates/speeches/speaker_detail.html:110
 msgid "Search"
-msgstr "חיפוש"
+msgstr ""
 
 #: templates/search/search.html:15
 #, python-format
 msgid "Search only speeches by %(speaker)s"
-msgstr "חיפוש רק נאומים של %(speaker)s"
+msgstr ""
 
 #: templates/search/search.html:28 templates/speeches/base.html.py:49
 msgid "Speakers"
-msgstr "דוברים"
+msgstr ""
 
 #: templates/search/search.html:37
 #, python-format
 msgid "Mentions of <strong>&ldquo;%(query)s&rdquo;</strong> in speeches"
-msgstr "אזכורים של <strong>&ldquo;%(query)s&rdquo;</strong> בנאומים"
+msgstr ""
 
 #: templates/search/search.html:46
 msgid "No results found"
-msgstr "לא נמצאו תוצאות"
+msgstr ""
 
 #: templates/speeches/_home.html:13 templates/speeches/parentless_list.html:18
 msgid "Add a new speech"
-msgstr "הוספת נאום חדש"
+msgstr ""
 
 #: templates/speeches/_home.html:14 templates/speeches/parentless_list.html:19
 #: templates/speeches/section_form.html:9
 #: templates/speeches/section_form.html:19
 msgid "Add a section"
-msgstr "הוספת חלק"
+msgstr ""
 
 #: templates/speeches/_home.html:15 templates/speeches/_home.html.py:87
 #: templates/speeches/popolo_import_form.html:6
@@ -897,17 +863,17 @@ msgstr "הוספת חלק"
 #: templates/speeches/speaker_list.html:14
 #: templates/speeches/speaker_list.html:48
 msgid "Import speakers"
-msgstr "יבוא דוברים ודוברות"
+msgstr ""
 
 #: templates/speeches/_home.html:16
 #: templates/speeches/akoma_ntoso_import_form.html:6
 #: templates/speeches/parentless_list.html:20
 msgid "Import speeches"
-msgstr "יבוא נאומים"
+msgstr ""
 
 #: templates/speeches/_home.html:26
 msgid "Search speeches and statements"
-msgstr "חיפוש נאומים והצהרות"
+msgstr ""
 
 #: templates/speeches/_home.html:55
 #, python-format
@@ -915,59 +881,52 @@ msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> speech"
 msgid_plural ""
 "<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> speeches"
 msgstr[0] ""
-"נאום <a href=\"%(url_parentless_list)s\"><strong>1</strong></a> speech"
-msgstr[1] ""
-"<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> נאומים"
 
 #: templates/speeches/_home.html:60
 #, python-format
 msgid "<a href=\"%(url_speaker_list)s\"><strong>1</strong></a> speaker"
 msgid_plural ""
 "<a href=\"%(url_speaker_list)s\"><strong>%(n)s</strong></a> speakers"
-msgstr[0] "דובר/ת <a href=\"%(url_speaker_list)s\"><strong>1</strong></a>"
-msgstr[1] ""
-"<a href=\"%(url_speaker_list)s\"><strong>%(n)s</strong></a> דוברים/דוברות"
+msgstr[0] ""
 
 #: templates/speeches/_home.html:65
 #, python-format
 msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> section"
 msgid_plural ""
 "<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> sections"
-msgstr[0] "חלק<a href=\"%(url_parentless_list)s\"><strong>1</strong></a>"
-msgstr[1] ""
-"<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> חלקים"
+msgstr[0] ""
 
 #: templates/speeches/_home.html:81
 msgid "Brilliant!"
-msgstr "מבריק!"
+msgstr ""
 
 #: templates/speeches/_home.html:82
 msgid ""
 "Now you&rsquo;ve got your own public database for speeches and statements."
-msgstr "כעת יש לך&rsquo;ve מאגר מידע ציבורי משלך לנאומים והצהרות."
+msgstr ""
 
 #: templates/speeches/_home.html:83
 msgid ""
 "However, it&rsquo;s totally empty. Let&rsquo;s get started by adding "
 "something."
-msgstr "עם זאת הוא&rsquo;s ריק לגמרי. בואו&rsquo;s נתחיל בלהוסיף משהו."
+msgstr ""
 
 #: templates/speeches/_home.html:85 templates/speeches/parentless_list.html:61
 #: templates/speeches/speaker_list.html:49
 msgid "Add your first statement"
-msgstr "הוסיפ/י את ההצהרה הראשונה שלך"
+msgstr ""
 
 #: templates/speeches/_home.html:86 templates/speeches/speaker_list.html:47
 msgid "Add your first speaker"
-msgstr "הוסיפו את הדובר/ת הראשונים"
+msgstr ""
 
 #: templates/speeches/akoma_ntoso_import_form.html:12
 msgid "Import speeches from Akoma Ntoso"
-msgstr "יבוא נאומים מ-Akoma Ntoso"
+msgstr ""
 
 #: templates/speeches/akoma_ntoso_import_form.html:16
 msgid "Import Akoma Ntoso (may take some time)"
-msgstr "יבוא Akoma Ntoso (עשוי לקחת קצת זמן)"
+msgstr ""
 
 #: templates/speeches/base.html:8 templates/speeches/base.html.py:9
 #: templates/speeches/base.html:25 templates/speeches/base.html.py:45
@@ -980,40 +939,40 @@ msgstr ""
 
 #: templates/speeches/base.html:48
 msgid "Home"
-msgstr "בית"
+msgstr ""
 
 #: templates/speeches/base.html:50 templates/speeches/parentless_list.html:6
 #: templates/speeches/parentless_list.html:22
 #: templates/speeches/speaker_detail.html:96
 msgid "Speeches"
-msgstr "נאומים"
+msgstr ""
 
 #: templates/speeches/base.html:55
 msgid "Welcome,"
-msgstr "ברוכים הבאים,"
+msgstr ""
 
 #: templates/speeches/base.html:56
 msgid "Log out"
-msgstr "התנתקות"
+msgstr ""
 
 #: templates/speeches/base.html:59
 msgid "Log in"
-msgstr "התחברות"
+msgstr ""
 
 #: templates/speeches/parentless_list.html:41
 msgid "Speeches not in a section"
-msgstr "נאומים שאינם בחלק"
+msgstr ""
 
 #: templates/speeches/parentless_list.html:59
 #: templates/speeches/speaker_list.html:44
 msgid "You haven&rsquo;t added any speeches or statements yet"
-msgstr "לא הוספת שום נאום או הצהרות עדיין"
+msgstr ""
 
 #: templates/speeches/parentless_list.html:60
 msgid ""
 "Once you have, you&rsquo;ll be able to browse speeches and organise them "
 "into sections here."
-msgstr "ברגע שתוסיפו, תוכלו לגלוש בין נאומים ולארגן אותם בתוך חלקים כאן."
+msgstr ""
 
 #: templates/speeches/popolo_import_form.html:15
 msgid ""
@@ -1049,37 +1008,10 @@ msgid ""
 "    </p>\n"
 "  "
 msgstr ""
-"\n"
-"<p> דוברים יכולים להיות מיובאים אל SayIt אם הם זמינים בפורמט <a href='http://"
-"www.popoloproject.com/'>Popolo JSON</a>.<p>\n"
-"<p>הזינו את מיקום הנתונים כ:\n"
-"<ul>\n"
-"<li>\n"
-"כתובת URL, או נתיב לקובץ מקומי הכולל מבנה Popolo JSON\n"
-"<pre>\n"
-" {\n"
-" 'persons': [&lt;a list of persons&gt;],\n"
-" 'organizations': [],\n"
-" 'posts': [],\n"
-" ...\n"
-" }\n"
-"</pre>\n"
-"<li>\n"
-"כתובת URL, או נתיב לקובץ מקומי הכולל מבנה Popolo JSON\n"
-"<pre>\n"
-" [&lt;a list of persons&gt;]\n"
-" </pre>\n"
-" </li>\n"
-"<li>כתובת URL ל-API בסיסי של PopIt, כמו\n"
-"<a href=\"https://kenyan-politicians.popit.mysociety.org/api/v0.1/\">https://"
-"kenyan-politicians.popit.mysociety.org/api/v0.1/</a>\n"
-"</li>\n"
-"</ul>\n"
-"</p>"
 
 #: templates/speeches/popolo_import_form.html:44
 msgid "Import People (may take some time)"
-msgstr "ייבוא אנשים (עשוי לקחת זמן מה)"
+msgstr ""
 
 #: templates/speeches/recording_detail.html:5
 #: templates/speeches/recording_detail.html:10
@@ -1087,211 +1019,206 @@ msgstr "ייבוא אנשים (עשוי לקחת זמן מה)"
 #: templates/speeches/recording_form.html:10
 #, python-format
 msgid "Recording #%(id)s"
-msgstr "הקלטה #%(id)s"
+msgstr ""
 
 #: templates/speeches/recording_detail.html:15
 #: templates/speeches/recording_form.html:14 templates/speeches/speech.html:83
 msgid "This speech has audio"
-msgstr "לנאום זה יש אודיו"
+msgstr ""
 
 #: templates/speeches/recording_detail.html:41
 #: templates/speeches/recording_form.html:18
 msgid "Actions"
-msgstr "פעולות"
+msgstr ""
 
 #: templates/speeches/recording_detail.html:47
 #: templates/speeches/recording_form.html:39
 msgid "Update"
-msgstr "עדכון"
+msgstr ""
 
 #: templates/speeches/section_confirm_delete.html:5
 msgid "Delete section"
-msgstr "מחיקת חלק"
+msgstr ""
 
 #: templates/speeches/section_confirm_delete.html:11
 #: templates/speeches/speech_confirm_delete.html:11
 msgid "Confirm delete?"
-msgstr "מאשרים מחיקה?"
+msgstr ""
 
 #: templates/speeches/section_detail.html:22
 #: templates/speeches/speaker_detail.html:101
 msgid "Add speech"
-msgstr "הוסיפו נאום"
+msgstr ""
 
 #: templates/speeches/section_detail.html:23
 msgid "Add subsection"
-msgstr "הוספת תת-חלק"
+msgstr ""
 
 #: templates/speeches/section_detail.html:24
 #: templates/speeches/section_form.html:7
 #: templates/speeches/section_form.html:17
 msgid "Edit section"
-msgstr "עריכת בחירה"
+msgstr ""
 
 #: templates/speeches/section_detail.html:32
 #: templates/speeches/speech_detail.html:144
 msgid "Source"
-msgstr "ר"
+msgstr ""
 
 #: templates/speeches/section_detail.html:93
 #: templates/speeches/speech_detail.html:167
 msgid "Keyboard shortcuts"
-msgstr "קיצורי מקלדת"
+msgstr ""
 
 #: templates/speeches/section_detail.html:94
 msgid "previous section"
-msgstr "החלק הקודם"
+msgstr ""
 
 #: templates/speeches/section_detail.html:95
 msgid "next section"
-msgstr "החלק הבא"
+msgstr ""
 
 #: templates/speeches/section_detail.html:109
 msgid "This section is empty"
-msgstr "חלק זה ריק"
+msgstr ""
 
 #: templates/speeches/section_detail.html:110
 msgid "Add a new speech here"
-msgstr "הוסיפו נאום חדש כאן"
+msgstr ""
 
 #: templates/speeches/section_form.html:25
 msgid "Update section"
-msgstr "עדכון החלק"
+msgstr ""
 
 #: templates/speeches/section_form.html:27
 msgid "Add section"
-msgstr "הוספת חלק"
+msgstr ""
 
 #: templates/speeches/speaker_delete.html:6
 #: templates/speeches/speaker_delete.html:15
 #, python-format
 msgid "Delete speaker: %(name)s"
-msgstr "מחיקת הדובר/ת: %(name)s"
+msgstr ""
 
 #: templates/speeches/speaker_delete.html:22
 #: templates/speeches/speaker_detail.html:25
 msgid "Delete speaker"
-msgstr "מחיקת דובר/ת"
+msgstr ""
 
 #: templates/speeches/speaker_detail.html:14
 #, python-format
 msgid "Speeches by %(speaker)s"
-msgstr "נאומים של %(speaker)s"
+msgstr ""
 
 #: templates/speeches/speaker_detail.html:24
 #: templates/speeches/speaker_form.html:6
 #: templates/speeches/speaker_form.html:16
 msgid "Edit speaker"
-msgstr "עריכת דובר/ת"
+msgstr ""
 
 #: templates/speeches/speaker_detail.html:48
 msgid "Appearance"
 msgid_plural "Appearances"
-msgstr[0] "מופע"
-msgstr[1] "הופעות"
+msgstr[0] ""
 
 #: templates/speeches/speaker_detail.html:57
 msgctxt "speaker count"
 msgid "Speech"
 msgid_plural "Speeches"
-msgstr[0] "נאום"
-msgstr[1] "נאומים"
+msgstr[0] ""
 
 #: templates/speeches/speaker_detail.html:84
 msgid "Longest speech"
-msgstr "נאום הארוך ביותר"
+msgstr ""
 
 #: templates/speeches/speaker_detail.html:109
 msgid "Search this person's speeches"
-msgstr "חפש בנאומים של אדם זה"
+msgstr ""
 
 #: templates/speeches/speaker_detail.html:119
 #, python-format
 msgid "%(speaker)s has no recorded speeches yet."
-msgstr "אין עדיין נאומים מאוכסנים של %(speaker)s."
+msgstr ""
 
 #: templates/speeches/speaker_form.html:8
 #: templates/speeches/speaker_form.html:18
 msgid "Add a speaker"
-msgstr "הוספת דובר/ת"
+msgstr ""
 
 #: templates/speeches/speaker_form.html:24
 msgid "Update speaker"
-msgstr "עדכון דובר/ת"
+msgstr ""
 
 #: templates/speeches/speaker_form.html:26
 msgid "Add speaker"
-msgstr "הוספת דובר/ת"
+msgstr ""
 
 #: templates/speeches/speaker_list.html:6
 #: templates/speeches/speaker_list.html:17
 msgid "All Speakers"
-msgstr "כל הדוברים/דוברות"
+msgstr ""
 
 #: templates/speeches/speaker_list.html:13
 msgid "Add a new speaker"
-msgstr "הוספת דובר/ת חדש/ה"
+msgstr ""
 
 #: templates/speeches/speaker_list.html:45
 msgid ""
 "Once you have, this page will contain a list of all the different people who "
 "made each statement in this SayIt site."
 msgstr ""
-"ברגע שתעשו זאת, עמוד זה יכלול רשימה של כל האנשים שמיוחסת להם הצהרה באתר זה "
-"של SayIt."
 
 #: templates/speeches/speech.html:22
 msgid "Invisible"
-msgstr "בלתי נראה"
+msgstr ""
 
 #: templates/speeches/speech.html:93 templates/speeches/speech.html.py:109
 #: templates/speeches/speech.html:134
 msgid "Link in context"
-msgstr "קישור בהקשר"
+msgstr ""
 
 #: templates/speeches/speech.html:95 templates/speeches/speech.html.py:111
 #: templates/speeches/speech.html:136
 msgid "Link"
-msgstr "קישור"
+msgstr ""
 
 #: templates/speeches/speech.html:105
 msgid "[ recorded audio ]"
-msgstr "[ אודיו מוקלט ]"
+msgstr ""
 
 #: templates/speeches/speech.html:130 templates/speeches/speech_detail.html:147
 msgid "Edit"
-msgstr "עריכה"
+msgstr ""
 
 #: templates/speeches/speech.html:131 templates/speeches/speech_detail.html:148
 msgid "Delete"
-msgstr "מחיקה"
+msgstr ""
 
 #: templates/speeches/speech_confirm_delete.html:5
 msgid "Delete speech"
-msgstr "מחיקת נאום"
+msgstr ""
 
 #: templates/speeches/speech_detail.html:30
 msgid ""
 "Please wait, audio is being transcribed. This page will automatically "
 "refresh in 5 seconds..."
 msgstr ""
-"אנא המתינו, קטע השמע מתומלל. עמוד זה ירענן עצמו אוטומטית בעוד 5 שניות ..."
 
 #: templates/speeches/speech_detail.html:38
 msgid "Your speech has been saved!"
-msgstr "הנאום שלך נשמר!"
+msgstr ""
 
 #: templates/speeches/speech_detail.html:40
 msgid "Add another speech like this"
-msgstr "הוסיפו נאום נוסף כמו זה"
+msgstr ""
 
 #: templates/speeches/speech_detail.html:41
 msgid "Show speech in context"
-msgstr "הצגת הנאום בהקשר"
+msgstr ""
 
 #: templates/speeches/speech_detail.html:43
 msgid "Add another speech"
-msgstr "הוספת נאום נוסף"
+msgstr ""
 
 #: templates/speeches/speech_detail.html:61
 #, python-format
@@ -1301,10 +1228,6 @@ msgid ""
 "%(speaker)s</a> </span> on <span class=\"speech__meta-data__date\">%(date)s</"
 "span>"
 msgstr ""
-"<span class=\"speech__meta-data__speech-type\">%(type)s</span> על ידי <span "
-"class=\"speech__meta-data__speaker-name\"> <a href=\"%(speaker_url)s\">"
-"%(speaker)s</a> </span> ב<span class=\"speech__meta-data__date\">%(date)s</"
-"span>"
 
 #: templates/speeches/speech_detail.html:71
 #, python-format
@@ -1313,9 +1236,6 @@ msgid ""
 "class=\"speech__meta-data__speaker-name\"> <a href=\"%(speaker_url)s\">"
 "%(speaker)s</a> </span>"
 msgstr ""
-"<span class=\"speech__meta-data__speech-type\">%(type)s</span> על ידי<span "
-"class=\"speech__meta-data__speaker-name\"> <a href=\"%(speaker_url)s\">"
-"%(speaker)s</a> </span>"
 
 #: templates/speeches/speech_detail.html:81
 #, python-format
@@ -1324,9 +1244,6 @@ msgid ""
 "class=\"speech__meta-data__speaker-name\">an unknown speaker</span> on <span "
 "class=\"speech__meta-data__date\">%(date)s</span>"
 msgstr ""
-"<span class=\"speech__meta-data__speech-type\">%(type)s</span> על ידי <span "
-"class=\"speech__meta-data__speaker-name\">לא ידוע/ה speaker</span> ב<span "
-"class=\"speech__meta-data__date\">%(date)s</span>"
 
 #: templates/speeches/speech_detail.html:89
 #, python-format
@@ -1334,8 +1251,6 @@ msgid ""
 "<span class=\"speech__meta-data__speech-type\">%(type)s</span> by <span "
 "class=\"speech__meta-data__speaker-name\">an unknown speaker</span>"
 msgstr ""
-"<span class=\"speech__meta-data__speech-type\">%(type)s</span> על ידי <span "
-"class=\"speech__meta-data__speaker-name\">דובר/ת לא ידועה</span>"
 
 #: templates/speeches/speech_detail.html:98
 #, python-format
@@ -1343,149 +1258,140 @@ msgid ""
 "<span class=\"speech__meta-data__speech-type\">%(type)s</span> on <span "
 "class=\"speech__meta-data__date\">%(date)s</span>"
 msgstr ""
-"span class=\"speech__meta-data__speech-type\">%(type)s</span> ב<span class="
-"\"speech__meta-data__date\">%(date)s</span>"
 
 #: templates/speeches/speech_detail.html:104
 #, python-format
 msgid "<span class=\"speech__meta-data__speech-type\">%(type)s</span>"
-msgstr "<span class=\"speech__meta-data__speech-type\">%(type)s</span>"
+msgstr ""
 
 #: templates/speeches/speech_detail.html:141
 msgid "Show context"
-msgstr "הצגת ההקשר"
+msgstr ""
 
 #: templates/speeches/speech_detail.html:168
 msgid "previous speech"
-msgstr "הנאום הקודם"
+msgstr ""
 
 #: templates/speeches/speech_detail.html:169
 msgid "next speech"
-msgstr "הנאום הבא"
+msgstr ""
 
 #: templates/speeches/speech_form.html:14
 #: templates/speeches/speech_form.html:36
 msgid "Edit speech"
-msgstr "עריכת נאום"
+msgstr ""
 
 #: templates/speeches/speech_form.html:16
 #: templates/speeches/speech_form.html:38
 msgid "Add a speech"
-msgstr "הוספת נאום"
+msgstr ""
 
 #: templates/speeches/speech_form.html:39
 msgid ""
 "You can cut and paste quotes from news sites, social media or blogs,<br>or "
 "transcribe any audio or video records you may have access to"
 msgstr ""
-"אתם יכולים לגזור ולהדביק ציטוטים מאתרים חדשים, מדיה חברתית או בלוגים,<br>או "
-"לתמלל כל קטע אודיו או וידאו שיש לכם גישה אליהם"
 
 #: templates/speeches/speech_form.html:70
 msgid "Date &amp; Time"
-msgstr "תאריך &amp; שעה"
+msgstr ""
 
 #: templates/speeches/speech_form.html:94
 msgid "Event &amp; Location"
-msgstr "ארוע &amp; מיקום"
+msgstr ""
 
 #: templates/speeches/speech_form.html:103
 msgid "Title &amp; Tags"
-msgstr "כותרת &amp; תגיות"
+msgstr ""
 
 #: templates/speeches/speech_form.html:114
 msgid "Save changes"
-msgstr "שמירת שינויים"
+msgstr ""
 
 #: templates/speeches/speech_form.html:116
 msgid "Save speech"
-msgstr "שמירת נאום"
+msgstr ""
 
 #: views.py:296
 #, python-format
 msgid "View Speaker: %(speaker_name)s"
-msgstr "הצגת הדובר/ת: %(speaker_name)s"
+msgstr ""
 
 #: views.py:457
 #, python-format
 msgid "View Section: %(section_title)s"
-msgstr "הצגת החלק %(section_title)s"
+msgstr ""
 
 #: views.py:517
 msgid "Speeches assigned."
-msgstr "נאומים שהוקצו."
+msgstr ""
 
 #: views.py:670
 #, python-format
 msgid "%(created)d speaker created."
 msgid_plural "%(created)d speakers created."
-msgstr[0] "דובר/ת %(created)d נוצר/ה."
-msgstr[1] "%(created)d נוצרו."
+msgstr[0] ""
 
 #: views.py:675
 #, python-format
 msgid "%(refreshed)d speaker refreshed."
 msgid_plural "%(refreshed)d speakers refreshed."
-msgstr[0] "דובר/ת %(refreshed)d נוצר/ה."
-msgstr[1] "%(refreshed)d רועננו"
+msgstr[0] ""
 
 #: views.py:686
 msgid "No speakers found."
-msgstr "לא נמצאו דוברים או דוברות."
+msgstr ""
 
 #: views.py:715
 msgid "Sorry - something went wrong with the import"
-msgstr "מצטערים - משהו השתבש בפעולת היבוא"
+msgstr ""
 
 #: views.py:727
 msgid "Created: "
-msgstr "נוצר:"
+msgstr ""
 
 #: views.py:730
 #, python-format
 msgid "%(speakers)d speaker"
 msgid_plural "%(speakers)d speakers"
-msgstr[0] "דובר/ת %(speakers)d"
-msgstr[1] "%(speakers)d דוברים"
+msgstr[0] ""
 
 #: views.py:735
 #, python-format
 msgid "%(sections)d section"
 msgid_plural "%(sections)d sections"
-msgstr[0] "חלק %(sections)d "
-msgstr[1] "%(sections)d חלקים"
+msgstr[0] ""
 
 #: views.py:740
 #, python-format
 msgid "%(speeches)d speech"
 msgid_plural "%(speeches)d speeches"
-msgstr[0] "נאום %(speeches)d"
-msgstr[1] "%(speeches)d נאומים"
+msgstr[0] ""
 
 #: views.py:751
 msgid "Nothing new to import."
-msgstr "אין שום דבר לייבא."
+msgstr ""
 
 #: widgets.py:46
 msgid "yyyy-mm-dd"
-msgstr "yyyy-mm-dd"
+msgstr ""
 
 #: widgets.py:47
 msgid "dd/mm/yyyy"
-msgstr "dd/mm/yyyy"
+msgstr ""
 
 #: widgets.py:48
 msgid "dd/mm/yy"
-msgstr "dd/mm/yy"
+msgstr ""
 
 #: widgets.py:49
 msgid "mm/dd/yyyy"
-msgstr "mm/dd/yyyy"
+msgstr ""
 
 #: widgets.py:50
 msgid "mm/dd/yy"
-msgstr "mm/dd/yy"
+msgstr ""
 
 #: widgets.py:108
 msgid "hh:mm"
-msgstr "hh:mm"
+msgstr ""

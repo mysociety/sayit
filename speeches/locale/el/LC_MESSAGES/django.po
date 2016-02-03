@@ -1,0 +1,1484 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# wfdd, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: sayit\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-24 15:16+0000\n"
+"PO-Revision-Date: 2016-02-04 12:21+0000\n"
+"Last-Translator: wfdd\n"
+"Language-Team: Greek (http://www.transifex.com/mysociety/sayit/language/"
+"el/)\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: extra-locales/popolo/admin.py:45
+msgid "Member"
+msgstr "Μέλος"
+
+#: extra-locales/popolo/admin.py:46
+msgid "Members of this organization"
+msgstr "Μέλη του οργανισμού"
+
+#: extra-locales/popolo/behaviors/models.py:56 models.py:231 models.py:635
+msgid "start date"
+msgstr "ημερομηνία έναρξης"
+
+#: extra-locales/popolo/behaviors/models.py:58
+msgid "The date when the validity of the item starts"
+msgstr "Ημερομηνία που ξεκινά η ισχύ του αντικειμένου"
+
+#: extra-locales/popolo/behaviors/models.py:61 models.py:641
+msgid "end date"
+msgstr "ημερομηνία λήξης"
+
+#: extra-locales/popolo/behaviors/models.py:63
+msgid "The date when the validity of the item ends"
+msgstr "Ημερομηνία που παύει η ισχύ του αντικειμένου"
+
+#: extra-locales/popolo/behaviors/models.py:75
+msgid "creation time"
+msgstr "ώρα δημιουργίας"
+
+#: extra-locales/popolo/behaviors/models.py:76
+msgid "last modification time"
+msgstr "ώρα τελευταίας αναθεώρησης"
+
+#: extra-locales/popolo/models.py:37 extra-locales/popolo/models.py:109
+#: extra-locales/popolo/models.py:317 extra-locales/popolo/models.py:392
+#: extra-locales/popolo/models.py:423
+msgid "name"
+msgstr "όνομα"
+
+#: extra-locales/popolo/models.py:37
+msgid "A person's preferred full name"
+msgstr "Ονοματεπώνυμο προτίμησης του ατόμου"
+
+#: extra-locales/popolo/models.py:45
+msgid "family name"
+msgstr "επώνυμο"
+
+#: extra-locales/popolo/models.py:45
+msgid "One or more family names"
+msgstr "Ένα ή περισσότερα επώνυμα"
+
+#: extra-locales/popolo/models.py:46
+msgid "given name"
+msgstr "όνομα (μικρό)"
+
+#: extra-locales/popolo/models.py:46
+msgid "One or more primary given names"
+msgstr "Ένα ή περισσότερα κυρίως ονόματα (μικρά)"
+
+#: extra-locales/popolo/models.py:47
+msgid "additional name"
+msgstr "επιπλέον ονόματα"
+
+#: extra-locales/popolo/models.py:47
+msgid "One or more secondary given names"
+msgstr "Ένα ή περισσότερα δευτερεύοντα ονόματα (μικρά)"
+
+#: extra-locales/popolo/models.py:48
+msgid "honorific prefix"
+msgstr "τιμητικά προθέματα"
+
+#: extra-locales/popolo/models.py:48
+msgid "One or more honorifics preceding a person's name"
+msgstr "Τιμητικοί τίτλοι που προηγούνται του ονόματος"
+
+#: extra-locales/popolo/models.py:49
+msgid "honorific suffix"
+msgstr "τιμητικά επιθέματα"
+
+#: extra-locales/popolo/models.py:49
+msgid "One or more honorifics following a person's name"
+msgstr "Τιμητικοί τίτλοι που ακολουθούν το όνομα"
+
+#: extra-locales/popolo/models.py:50
+msgid "patronymic name"
+msgstr "πατρώνυμο"
+
+#: extra-locales/popolo/models.py:50
+msgid "One or more patronymic names"
+msgstr "Ένα ή περισσότερα πατρώνυμα"
+
+#: extra-locales/popolo/models.py:51
+msgid "sort name"
+msgstr "ταξινομικό όνομα"
+
+#: extra-locales/popolo/models.py:51
+msgid "A name to use in an lexicographically ordered list"
+msgstr "Όνομα για χρήση σε αλφαβητικό κατάλογο"
+
+#: extra-locales/popolo/models.py:52
+msgid "email"
+msgstr "email"
+
+#: extra-locales/popolo/models.py:52
+msgid "A preferred email address"
+msgstr "Διεύθυνση ηλεκτρονικού ταχυδρομείου της προτίμησής τους"
+
+#: extra-locales/popolo/models.py:53
+msgid "gender"
+msgstr "φύλο"
+
+#: extra-locales/popolo/models.py:53
+msgid "A gender"
+msgstr "Φύλο"
+
+#: extra-locales/popolo/models.py:54
+msgid "birth date"
+msgstr "ημερομηνία γέννησης"
+
+#: extra-locales/popolo/models.py:54
+msgid "A date of birth"
+msgstr "Ημερομηνία γέννησης"
+
+#: extra-locales/popolo/models.py:55
+msgid "death date"
+msgstr "ημερομηνία θανάτου"
+
+#: extra-locales/popolo/models.py:55
+msgid "A date of death"
+msgstr "Ημερομηνία θανάτου"
+
+#: extra-locales/popolo/models.py:56 extra-locales/popolo/models.py:142
+msgid "image"
+msgstr "φωτογραφία"
+
+#: extra-locales/popolo/models.py:56
+msgid "A URL of a head shot"
+msgstr "URL φωτογραφίας προσώπου"
+
+#: extra-locales/popolo/models.py:57 extra-locales/popolo/models.py:110
+msgid "summary"
+msgstr "περιληπτική βιογραφία"
+
+#: extra-locales/popolo/models.py:57
+msgid "A one-line account of a person's life"
+msgstr "Βιογραφία ατόμου (μία πρόταση)"
+
+#: extra-locales/popolo/models.py:58 extra-locales/popolo/models.py:111
+msgid "biography"
+msgstr "βιογραφία"
+
+#: extra-locales/popolo/models.py:58
+msgid "An extended account of a person's life"
+msgstr "Εκτενέστερη βιογραφία του ατόμου"
+
+#: extra-locales/popolo/models.py:59
+msgid "national identity"
+msgstr "εθνική ταυτότητα"
+
+#: extra-locales/popolo/models.py:59
+msgid "A national identity"
+msgstr "Εθνική ταυτότητα"
+
+#: extra-locales/popolo/models.py:109
+msgid "A primary name, e.g. a legally recognized name"
+msgstr "Κυρίως όνομα, π.χ. το νομικό όνομα"
+
+#: extra-locales/popolo/models.py:110
+msgid "A one-line description of an organization"
+msgstr "Περιγραφή του οργανισμού (μια πρόταση)"
+
+#: extra-locales/popolo/models.py:111
+msgid "An extended description of an organization"
+msgstr "Εκτενέστερη περιγραφή του οργανισμού"
+
+#: extra-locales/popolo/models.py:118
+msgid "classification"
+msgstr "είδος"
+
+#: extra-locales/popolo/models.py:118
+msgid "An organization category, e.g. committee"
+msgstr "Είδος οργανισμού, π.χ. «επιτροπή»"
+
+#: extra-locales/popolo/models.py:122
+msgid "The organization that contains this organization"
+msgstr "Ο οργανισμός στον οποίο υπάγεται αυτός ο οργανισμός"
+
+#: extra-locales/popolo/models.py:126
+msgid "The geographic area to which this organization is related"
+msgstr "Η γεωγραφική περιοχή με την οποία ο οργανισμός συσχετίζεται"
+
+#: extra-locales/popolo/models.py:128
+msgid "founding date"
+msgstr "ημερομηνία ίδρυσης"
+
+#: extra-locales/popolo/models.py:134
+msgid "A date of founding"
+msgstr "Ημερομηνία ίδρυσης"
+
+#: extra-locales/popolo/models.py:135
+msgid "dissolution date"
+msgstr "ημερομηνία διάλυσης"
+
+#: extra-locales/popolo/models.py:141
+msgid "A date of dissolution"
+msgstr "Ημερομηνία διάλυσης"
+
+#: extra-locales/popolo/models.py:142
+msgid "A URL of an image, to identify the organization visually"
+msgstr "URL εικόνας που απεικονίζει τον οργανισμό"
+
+#: extra-locales/popolo/models.py:185 extra-locales/popolo/models.py:227
+#: extra-locales/popolo/models.py:293
+msgid "label"
+msgstr "επιγραφή"
+
+#: extra-locales/popolo/models.py:185
+msgid "A label describing the post"
+msgstr "Επιγραφή (label) που χαρακτηρίζει την θέση"
+
+#: extra-locales/popolo/models.py:186
+msgid "other label"
+msgstr "άλλη επιγραφή (label)"
+
+#: extra-locales/popolo/models.py:186
+msgid "An alternate label, such as an abbreviation"
+msgstr "Εναλλακτική επιγραφή, π.χ. μια συντομογραφία"
+
+#: extra-locales/popolo/models.py:188 extra-locales/popolo/models.py:228
+msgid "role"
+msgstr "ρόλος"
+
+#: extra-locales/popolo/models.py:188
+msgid "The function that the holder of the post fulfills"
+msgstr "Ο ρόλος με τον οποίο ο κάτοχος της θέσης εξουσιοδοτείται"
+
+#: extra-locales/popolo/models.py:192
+msgid "The organization in which the post is held"
+msgstr "Ο οργανισμός που παρέχει αυτή την θέση"
+
+#: extra-locales/popolo/models.py:196 extra-locales/popolo/models.py:248
+msgid "The geographic area to which the post is related"
+msgstr "Η γεωγραφική περιοχή με την οποία συσχετίζεται η θέση"
+
+#: extra-locales/popolo/models.py:227
+msgid "A label describing the membership"
+msgstr "Επιγραφή που περιγράφει την ιδιότητα μέλους"
+
+#: extra-locales/popolo/models.py:228
+msgid "The role that the person fulfills in the organization"
+msgstr "Ο ρόλος τον οποίο πληρεί το άτομο εντός του οργανισμού"
+
+#: extra-locales/popolo/models.py:232
+msgid "The person who is a party to the relationship"
+msgstr "Το άτομο που είναι συμβαλλόμενο μέρος του συσχετισμού"
+
+#: extra-locales/popolo/models.py:237
+msgid "The organization that is a party to the relationship"
+msgstr "Ο οργανισμός που είναι συμβαλλόμενο μέρος του συσχετισμού"
+
+#: extra-locales/popolo/models.py:240
+msgid ""
+"The organization on whose behalf the person is a party to the relationship"
+msgstr "Τον οργανισμό που εκπροσωπεί το άτομο"
+
+#: extra-locales/popolo/models.py:244
+msgid "The post held by the person in the organization through this membership"
+msgstr ""
+"Την θέση που κατέχει στον οργανισμό το άτομο μέσω της ιδιότητάς του ως μέλος"
+
+#: extra-locales/popolo/models.py:276
+msgid "Address"
+msgstr "Διεύθυνση"
+
+#: extra-locales/popolo/models.py:277
+msgid "Email"
+msgstr "Email"
+
+#: extra-locales/popolo/models.py:278
+msgid "Url"
+msgstr "URL"
+
+#: extra-locales/popolo/models.py:279
+msgid "Snail mail"
+msgstr "Snail mail"
+
+#: extra-locales/popolo/models.py:280
+msgid "Twitter"
+msgstr "Twitter"
+
+#: extra-locales/popolo/models.py:281
+msgid "Facebook"
+msgstr "Facebook"
+
+#: extra-locales/popolo/models.py:282
+msgid "Telephone"
+msgstr "Τηλέφωνο"
+
+#: extra-locales/popolo/models.py:283
+msgid "Mobile"
+msgstr "Κινητό τηλέφωνο"
+
+#: extra-locales/popolo/models.py:284
+msgid "Text"
+msgstr "Τηλεφωνικός αριθμός για μηνύματα (SMS)"
+
+#: extra-locales/popolo/models.py:285
+msgid "Voice"
+msgstr "Τηλεφωνικός αριθμός για ηχοκλήσεις"
+
+#: extra-locales/popolo/models.py:286
+msgid "Fax"
+msgstr "Fax"
+
+#: extra-locales/popolo/models.py:287
+msgid "Cell"
+msgstr "Κινητό τηλέφωνο"
+
+#: extra-locales/popolo/models.py:288
+msgid "Video"
+msgstr "Τηλεφωνικός αριθμός για βιντεοκλήσεις"
+
+#: extra-locales/popolo/models.py:289
+msgid "Pager"
+msgstr "Τηλεειδοποιητής (pager)"
+
+#: extra-locales/popolo/models.py:290
+msgid "Textphone"
+msgstr "Textphone"
+
+#: extra-locales/popolo/models.py:293
+msgid "A human-readable label for the contact detail"
+msgstr "Επιγραφή για τα στοιχεία επικοινωνίας αυτά"
+
+#: extra-locales/popolo/models.py:294 models.py:621
+msgid "type"
+msgstr "τύπος"
+
+#: extra-locales/popolo/models.py:294
+msgid "A type of medium, e.g. 'fax' or 'email'"
+msgstr "Το μέσο επικοινωνίας, π.χ. «fax» ή «email»"
+
+#: extra-locales/popolo/models.py:295
+msgid "value"
+msgstr "τιμή"
+
+#: extra-locales/popolo/models.py:295
+msgid "A value, e.g. a phone number or email address"
+msgstr "Μια τιμή (value), π.χ. τηλεφωνικός αριθμός ή email"
+
+#: extra-locales/popolo/models.py:296 extra-locales/popolo/models.py:318
+#: extra-locales/popolo/models.py:350 extra-locales/popolo/models.py:363
+msgid "note"
+msgstr "σημείωση"
+
+#: extra-locales/popolo/models.py:296
+msgid "A note, e.g. for grouping contact details by physical location"
+msgstr "Σημείωση, π.χ. για να επισημανθεί η τοποθεσία"
+
+#: extra-locales/popolo/models.py:317
+msgid "An alternate or former name"
+msgstr "Εναλλακτικό η προηγούμενο όνομα"
+
+#: extra-locales/popolo/models.py:318
+msgid "A note, e.g. 'Birth name'"
+msgstr "Σημείωση, π.χ. «ημερομηνία γέννησης»"
+
+#: extra-locales/popolo/models.py:336 extra-locales/popolo/models.py:393
+#: extra-locales/popolo/models.py:394
+msgid "identifier"
+msgstr "κωδικός αναγνώρισης"
+
+#: extra-locales/popolo/models.py:336
+msgid "An issued identifier, e.g. a DUNS number"
+msgstr "Εκδοθέν κωδικός αναγνώρισης, π.χ. αριθμός DUNS"
+
+#: extra-locales/popolo/models.py:337
+msgid "scheme"
+msgstr "σύστημα"
+
+#: extra-locales/popolo/models.py:337
+msgid "An identifier scheme, e.g. DUNS"
+msgstr "Σύστημα κωδικού αναγνώρισης, π.χ. DUNS"
+
+#: extra-locales/popolo/models.py:349 extra-locales/popolo/models.py:362
+msgid "url"
+msgstr "URL"
+
+#: extra-locales/popolo/models.py:349 extra-locales/popolo/models.py:362
+msgid "A URL"
+msgstr "URL"
+
+#: extra-locales/popolo/models.py:350
+msgid "A note, e.g. 'Wikipedia page'"
+msgstr "Σημείωση, π.χ. «σελίδα στο Wikipedia»"
+
+#: extra-locales/popolo/models.py:363
+msgid "A note, e.g. 'Parliament website'"
+msgstr "Σημείωση, π.χ. «προφίλ στην ιστοσελίδα της Βουλής»"
+
+#: extra-locales/popolo/models.py:377
+msgid "DbPedia URI of the resource"
+msgstr "URI του αντικειμένου στο DbPedia"
+
+#: extra-locales/popolo/models.py:380
+msgid "English name of the language"
+msgstr "Αγγλική ονομασία της γλώσσας"
+
+#: extra-locales/popolo/models.py:392
+msgid "A primary name"
+msgstr "Κυρίως όνομα"
+
+#: extra-locales/popolo/models.py:393
+msgid "An issued identifier"
+msgstr "Εκδοθέν κωδικός αναγνώρισης"
+
+#: extra-locales/popolo/models.py:394
+msgid "An area category, e.g. city"
+msgstr "Κατηγορία περιοχής, π.χ. «city»"
+
+#: extra-locales/popolo/models.py:401
+msgid "The area that contains this area"
+msgstr "Η περιοχή που περιέχει αυτή την περιοχή"
+
+#: extra-locales/popolo/models.py:404
+msgid "geom"
+msgstr "geom"
+
+#: extra-locales/popolo/models.py:404
+msgid "A geometry"
+msgstr "Γεωμετρία"
+
+#: extra-locales/popolo/models.py:407
+msgid "inhabitants"
+msgstr "κάτοικοι"
+
+#: extra-locales/popolo/models.py:407
+msgid "The total number of inhabitants"
+msgstr "Ο συνολικός αριθμός κατοίκων"
+
+#: forms.py:75
+msgid "Assign to section"
+msgstr "Τοποθέτησε σε ενότητα"
+
+#: forms.py:206
+msgid "You must select an existing speaker"
+msgstr "Πρέπει να επιλέξεις υπάρχοντα ομιλητή"
+
+#: forms.py:299
+msgid "Choose tags"
+msgstr "Επέλεξε ετικέτες"
+
+#: forms.py:318
+msgid "You must provide either text or some audio"
+msgstr "Πρέπει να παράσχεις είτε κείμενο, είτε ηχητικό αρχείο"
+
+#: forms.py:336
+msgid "If you provide a start time you must give a start date too"
+msgstr ""
+"Όταν παράσχεις ώρα έναρξης, πρέπει επίσης να παράσχεις ημερομηνία έναρξης"
+
+#: forms.py:343
+msgid "If you provide an end time you must give an end date too"
+msgstr "Όταν παράσχεις ώρα λήξης, πρέπει επίσης να παράσχεις ημερομηνία λήξης"
+
+#: forms.py:482
+msgid "Something cannot be its own parent"
+msgstr "Δεν γίνεται κάτι να έχει για πρόγονο τον εαυτό του"
+
+#: forms.py:486
+msgid "Something cannot have a parent that is also a descendant"
+msgstr "Δεν γίνεται κάτι να έχει τον ίδιο πρόγονο και απόγονο"
+
+#: forms.py:501
+msgid "New speaker"
+msgstr "Νέος ομιλητής"
+
+#: forms.py:509
+#, python-format
+msgid "This speaker has %(count)d speech. What would you like to do with it?"
+msgid_plural ""
+"This speaker has %(count)d speeches. What would you like to do with them?"
+msgstr[0] ""
+"Αυτό το άτομο έχει δώσει %(count)d ομιλία. Τι θέλετε να κάνετε με αυτή;"
+msgstr[1] ""
+"Αυτό το άτομο έχει δώσει %(count)d ομιλίες. Τι θέλετε να κάνετε με αυτές;"
+
+#: forms.py:515
+msgid "Assign it to another speaker"
+msgid_plural "Assign them to another speaker"
+msgstr[0] "Ανάθεσέ την σε άλλο ομιλητή"
+msgstr[1] "Ανάθεσέ τις σε άλλο ομιλητή"
+
+#: forms.py:517
+msgid "Make it into narrative (i.e. remove the speaker)"
+msgid_plural "Make them into narrative (i.e. remove the speaker)"
+msgstr[0] "Μετέτρεψέ την σε «αφήγηση» (δηλαδή αφαίρεσε τον ομιλητή)"
+msgstr[1] "Μετέτρεψέ τις σε «αφηγήσεις» (δηλαδή αφαίρεσε τον ομιλητή)"
+
+#: forms.py:519
+msgid "Delete it"
+msgid_plural "Delete them"
+msgstr[0] "Διέγραψέ την"
+msgstr[1] "Διέγραψέ τις"
+
+#: forms.py:535
+msgid "You can't assign speeches to the speaker you're deleting"
+msgstr "Δεν μπορείς να αναθέσεις ομιλίες σε ομιλητή που διαγράφεις"
+
+#: forms.py:541
+msgid "You must choose a new speaker if reassigning speeches"
+msgstr "Πρέπει να επιλέξεις νέο ομιλητή όταν επανα-αναθέτεις ομιλίες"
+
+#: forms.py:547
+msgid "You must not choose a new speaker unless reassigning speeches"
+msgstr "Πρέπει να επιλέξεις νέο ομιλητή εκτός και αν επανα-αναθέτεις ομιλίες"
+
+#: forms.py:596
+msgid "Start time is before recording start time!"
+msgstr "Η ώρα έναρξης είναι πριν την ώρα έναρξης του ήχου"
+
+#: forms.py:606
+msgid "Difference between timestamps is too long for the uploaded audio"
+msgstr ""
+"Η διαφορά χρόνου μεταξύ των χρονοσημάνσεων της ηχογράφησης που ανέβασες "
+"είναι πολύ μεγάλη"
+
+#: forms.py:614
+msgid "Timestamps must be distinct"
+msgstr "Οι χρονοσημάνσεις πρέπει να είναι διαφορετικές"
+
+#: forms.py:629
+msgid "Location of Popolo JSON data"
+msgstr "Τοποθεσία δεδομένων μορφής Popolo JSON"
+
+#: forms.py:647
+msgid "Location of Akoma Ntoso data"
+msgstr "Τοποθεσία δεδομένων μορφής Akoma Ntoso"
+
+#: forms.py:655
+msgid "What would you like to do with existing top level sections?"
+msgstr "Τι θέλεις να κάνεις με τις υφιστάμενες ανώτατες ενότητες;"
+
+#: forms.py:657
+msgid "Skip them - keep them exactly as they are"
+msgstr "Άφησέ τις ως έχουν"
+
+#: forms.py:658
+msgid "Replace them - throw away the existing data and use the new"
+msgstr ""
+"Αντικατέστησέ τις: πέταξε τα υφιστάμενα δεδομένα και χρησιμοποίησε τα "
+"καινούρια"
+
+#: forms.py:659
+msgid ""
+"Merge the new data into the existing sections - things in both will be "
+"duplicated"
+msgstr ""
+"Συγχώνευσε τα νέα δεδομένα εντός υφιστάμενων ενοτήτων· αντικείμενα που "
+"παρουσιάζονται και στα παλιά και στα νέα δεδομένα θα παραμείνουν εις διπλούν"
+
+#: importers/import_popolo.py:100
+msgid "Either a file path or a URL is needed."
+msgstr "Απαιτείται URL ή διαδρομή σε αρχείο."
+
+#: importers/import_popolo.py:103
+#, python-format
+msgid "Failed to decode JSON at %(source)s"
+msgstr "Αποτύχαμε να αποκωδικοποιήσουμε το αρχείο JSON στο %(source)s"
+
+#: importers/import_popolo.py:129
+msgid "The json must contain either an object or an array"
+msgstr ""
+"Το αρχείο JSON πρέπει να περιέχει είτε αντικείμενο (object), είτε πίνακα "
+"(array)"
+
+#: management/commands/sayit_search_make_index_live.py:9
+msgid "Update the default alias to point at search index write alias is using"
+msgstr ""
+"Αντικατέστησε το προεπιλεγμένο ψευδώνυμο («default alias») με το ψευδώνυμο "
+"που χρησιμοποιείται για το ευρετήριο αναζήτησης («search index write alias»)"
+
+#: management/commands/sayit_search_new_index.py:11
+msgid "Create a new dated search index for reindexing with no downtime"
+msgstr ""
+"Δημιούργησε χρονολογημένο ευρετήριο αναζήτησης («dated search index») χωρίς "
+"να διακοπεί η πρόσβαση στην σελίδα"
+
+#: models.py:108 models.py:244
+msgid "slug"
+msgstr "slug"
+
+#: models.py:115
+msgid "image_cache"
+msgstr "image_cache"
+
+#: models.py:119
+msgid "If image is set, a local copy will be stored here."
+msgstr "Αν δοθεί εικόνα, αντίγραφό της θα αποθηκευτεί εδώ."
+
+#: models.py:125 models.py:615
+msgid "speaker"
+msgstr "ομιλητής"
+
+#: models.py:126
+msgid "speakers"
+msgstr "ομιλητές"
+
+#: models.py:193
+msgid "tag"
+msgstr "ετικέτα"
+
+#: models.py:194 models.py:647
+msgid "tags"
+msgstr "ετικέτες"
+
+#: models.py:222 models.py:596
+msgid "number"
+msgstr "αριθμός"
+
+#: models.py:222
+msgid "The number of the section"
+msgstr "Ο αριθμός της ενότητας"
+
+#: models.py:224 models.py:599
+msgid "heading"
+msgstr "επικεφαλίδα"
+
+#: models.py:224
+msgid "The heading of the section"
+msgstr "Επικεφαλίδα ενότητας"
+
+#: models.py:226 models.py:602
+msgid "subheading"
+msgstr "υπότιτλος"
+
+#: models.py:227
+msgid "The subheading of the section"
+msgstr "Υπότιτλος ενότητας"
+
+#: models.py:229
+msgid "description"
+msgstr "περιγραφή"
+
+#: models.py:229
+msgid "Longer description, HTML"
+msgstr "Μακρύτερη περιγραφή σε μορφή HTML"
+
+#: models.py:232
+msgid "What date did the section start?"
+msgstr "Πότε άρχισε η ενότητα;"
+
+#: models.py:234 models.py:638
+msgid "start time"
+msgstr "ώρα έναρξης"
+
+#: models.py:235
+msgid "What time did the section start?"
+msgstr "Τι ώρα άρχισε η ενότητα;"
+
+#: models.py:236
+msgid "document number"
+msgstr "αριθμός εγγράφου"
+
+#: models.py:237
+msgid "legislature"
+msgstr "νομοθετικό σώμα"
+
+#: models.py:239
+msgid "session"
+msgstr "σύνοδος"
+
+#: models.py:239
+msgid "Legislative session"
+msgstr "Βουλευτική σύνοδος"
+
+#: models.py:241
+msgid "parent"
+msgstr "πρόγονος"
+
+#: models.py:245 models.py:656
+msgid "source URL"
+msgstr "URL πηγής"
+
+#: models.py:250
+msgid "section"
+msgstr "ενότητα"
+
+#: models.py:251
+msgid "sections"
+msgstr "ενότητες"
+
+#: models.py:256 models.py:592
+msgid "Section"
+msgstr "Ενότητα"
+
+#: models.py:268
+msgid "You must specify at least one of num/heading/subheading"
+msgstr ""
+"Πρέπει να προσδιορίσεις τουλάχιστον ένα από τα ακόλουθα: αριθμός· τίτλος· "
+"υπότιτλος"
+
+#: models.py:585
+msgid "audio"
+msgstr "ήχος"
+
+#: models.py:587
+msgid "text"
+msgstr "κείμενο"
+
+#: models.py:588
+msgid "The text of the speech"
+msgstr "Το κείμενο της ομιλίας"
+
+#: models.py:597
+msgid "The number of the speech, if relevant"
+msgstr "Ο αριθμός της ομιλίας, αν υπάρχει"
+
+#: models.py:600
+msgid "The heading of the speech, if relevant"
+msgstr "Ο τίτλος της ομιλίας, αν υπάρχει"
+
+#: models.py:603
+msgid "The subheading of the speech, if relevant"
+msgstr "Ο υπότιτλος της ομιλίας, αν υπάρχει"
+
+#: models.py:607
+msgid "event"
+msgstr "συμβάν"
+
+#: models.py:608
+msgid "Was the speech at a particular event?"
+msgstr "Δόθηκε η ομιλία σε κάποιο συγκεκριμένο συμβάν;"
+
+#: models.py:610
+msgid "location"
+msgstr "τοποθεσία"
+
+#: models.py:611
+msgid "Where the speech took place"
+msgstr "Εκεί όπου δόθηκε η ομιλία"
+
+#: models.py:616
+msgid "Who gave this speech?"
+msgstr "Ποιος έδωσε την ομιλία;"
+
+#: models.py:623
+msgid "Speech"
+msgstr "Ομιλία"
+
+#: models.py:624
+msgid "Question"
+msgstr "Ερώτηση"
+
+#: models.py:625
+msgid "Answer"
+msgstr "Απάντηση"
+
+#: models.py:626
+msgid "Scene"
+msgstr "Σκηνή"
+
+#: models.py:627
+msgid "Narrative"
+msgstr "Αφήγηση"
+
+#: models.py:628
+msgid "Summary"
+msgstr "Σύνοψη"
+
+#: models.py:629
+msgid "Other"
+msgstr "Άλλο"
+
+#: models.py:631
+msgid "What sort of speech is this?"
+msgstr "Τι είδους ομιλία είναι;"
+
+#: models.py:636
+msgid "What date did the speech start?"
+msgstr "Ποια ήταν η ημερομηνία όταν άρχισε η ομιλία;"
+
+#: models.py:639
+msgid "What time did the speech start?"
+msgstr "Τι ώρα άρχισε η ομιλία;"
+
+#: models.py:642
+msgid "What date did the speech end?"
+msgstr "Ποια ήταν η ημερομηνία όταν τελείωσε η ομιλία;"
+
+#: models.py:644
+msgid "end time"
+msgstr "ώρα λήξης"
+
+#: models.py:645
+msgid "What time did the speech end?"
+msgstr "Τι ώρα τελείωσε η ομιλία;"
+
+#: models.py:650
+msgid "public"
+msgstr "δημόσια"
+
+#: models.py:650
+msgid "Is this speech public?"
+msgstr "Είναι δημόσια η ομιλία;"
+
+#: models.py:661
+msgid "celery task ID"
+msgstr "celery task ID"
+
+#: models.py:664
+msgid "speech"
+msgstr "ομιλία"
+
+#: models.py:665
+msgid "speeches"
+msgstr "ομιλίες"
+
+#: templates/pagination/pagination.html:5
+#: templates/pagination/pagination.html:7
+msgid "Previous"
+msgstr "Προηγούμενη"
+
+#: templates/pagination/pagination.html:21
+#: templates/pagination/pagination.html:23
+msgid "Next"
+msgstr "Επόμενη"
+
+#: templates/search/search.html:7 templates/search/search.html.py:10
+#: templates/search/search.html:11 templates/speeches/_home.html:29
+#: templates/speeches/_home.html.py:30
+#: templates/speeches/speaker_detail.html:110
+msgid "Search"
+msgstr "Αναζήτηση"
+
+#: templates/search/search.html:15
+#, python-format
+msgid "Search only speeches by %(speaker)s"
+msgstr "Βρες μόνο ομιλίες τ@ς %(speaker)s"
+
+#: templates/search/search.html:28 templates/speeches/base.html:49
+msgid "Speakers"
+msgstr "Ομιλητές"
+
+#: templates/search/search.html:37
+#, python-format
+msgid "Mentions of <strong>&ldquo;%(query)s&rdquo;</strong> in speeches"
+msgstr "Αναφορές σε <strong>«%(query)s»</strong> στις ομιλίες"
+
+#: templates/search/search.html:46
+msgid "No results found"
+msgstr "Δεν βρέθηκαν αποτελέσματα"
+
+#: templates/speeches/_home.html:13 templates/speeches/parentless_list.html:18
+msgid "Add a new speech"
+msgstr "Πρόσθεσε ομιλία"
+
+#: templates/speeches/_home.html:14 templates/speeches/parentless_list.html:19
+#: templates/speeches/section_form.html:9
+#: templates/speeches/section_form.html:19
+msgid "Add a section"
+msgstr "Πρόσθεσε ενότητα"
+
+#: templates/speeches/_home.html:15 templates/speeches/_home.html.py:87
+#: templates/speeches/popolo_import_form.html:6
+#: templates/speeches/popolo_import_form.html:12
+#: templates/speeches/speaker_list.html:14
+#: templates/speeches/speaker_list.html:48
+msgid "Import speakers"
+msgstr "Εισάγετε ομιλητές"
+
+#: templates/speeches/_home.html:16
+#: templates/speeches/akoma_ntoso_import_form.html:6
+#: templates/speeches/parentless_list.html:20
+msgid "Import speeches"
+msgstr "Εισάγετε ομιλίες"
+
+#: templates/speeches/_home.html:26
+msgid "Search speeches and statements"
+msgstr "Βρες ομιλίες και δηλώσεις"
+
+#: templates/speeches/_home.html:55
+#, python-format
+msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> speech"
+msgid_plural ""
+"<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> speeches"
+msgstr[0] "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> ομιλία"
+msgstr[1] ""
+"<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> ομιλίες"
+
+#: templates/speeches/_home.html:60
+#, python-format
+msgid "<a href=\"%(url_speaker_list)s\"><strong>1</strong></a> speaker"
+msgid_plural ""
+"<a href=\"%(url_speaker_list)s\"><strong>%(n)s</strong></a> speakers"
+msgstr[0] "<a href=\"%(url_speaker_list)s\"><strong>1</strong></a> ομιλητής"
+msgstr[1] ""
+"<a href=\"%(url_speaker_list)s\"><strong>%(n)s</strong></a> ομιλητές"
+
+#: templates/speeches/_home.html:65
+#, python-format
+msgid "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> section"
+msgid_plural ""
+"<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> sections"
+msgstr[0] "<a href=\"%(url_parentless_list)s\"><strong>1</strong></a> ενότητα"
+msgstr[1] ""
+"<a href=\"%(url_parentless_list)s\"><strong>%(n)s</strong></a> ενότητες"
+
+#: templates/speeches/_home.html:81
+msgid "Brilliant!"
+msgstr "Θαυμάσια!"
+
+#: templates/speeches/_home.html:82
+msgid ""
+"Now you&rsquo;ve got your own public database for speeches and statements."
+msgstr "Τώρα έχεις τη δική σου δημόσια βάση δεδομένων ομιλιών και δηλώσεων."
+
+#: templates/speeches/_home.html:83
+msgid ""
+"However, it&rsquo;s totally empty. Let&rsquo;s get started by adding "
+"something."
+msgstr "Ωστόσο, είναι άδεια· ας αρχίσουμε προσθέτοντας πληροφορίες."
+
+#: templates/speeches/_home.html:85 templates/speeches/parentless_list.html:61
+#: templates/speeches/speaker_list.html:49
+msgid "Add your first statement"
+msgstr "Πρόσθεσε τη πρώτη σου δήλωση"
+
+#: templates/speeches/_home.html:86 templates/speeches/speaker_list.html:47
+msgid "Add your first speaker"
+msgstr "Πρόσθεσε τον πρώτο σου ομιλητή"
+
+#: templates/speeches/akoma_ntoso_import_form.html:12
+msgid "Import speeches from Akoma Ntoso"
+msgstr "Εισάγετε ομιλίες σε μορφή Akoma Ntoso"
+
+#: templates/speeches/akoma_ntoso_import_form.html:16
+msgid "Import Akoma Ntoso (may take some time)"
+msgstr "Εισάγετε σε μορφή Akoma Ntoso (μπορεί να πάρει λίγη ώρα)"
+
+#: templates/speeches/base.html:8 templates/speeches/base.html.py:9
+#: templates/speeches/base.html:25 templates/speeches/base.html.py:45
+msgid "SayIt"
+msgstr "SayIt"
+
+#: templates/speeches/base.html:10
+msgid "Transcripts for the modern internet"
+msgstr "Πρακτικά για το σύγχρονο διαδίκτυο"
+
+#: templates/speeches/base.html:48
+msgid "Home"
+msgstr "Αρχική"
+
+#: templates/speeches/base.html:50 templates/speeches/parentless_list.html:6
+#: templates/speeches/parentless_list.html:22
+#: templates/speeches/speaker_detail.html:96
+msgid "Speeches"
+msgstr "Ομιλίες"
+
+#: templates/speeches/base.html:55
+msgid "Welcome,"
+msgstr "Καλωσορίσατε"
+
+#: templates/speeches/base.html:56
+msgid "Log out"
+msgstr "Αποσύνδεση"
+
+#: templates/speeches/base.html:59
+msgid "Log in"
+msgstr "Σύνδεση"
+
+#: templates/speeches/parentless_list.html:41
+msgid "Speeches not in a section"
+msgstr "Ομιλίες εκτός ενοτήτων"
+
+#: templates/speeches/parentless_list.html:59
+#: templates/speeches/speaker_list.html:44
+msgid "You haven&rsquo;t added any speeches or statements yet"
+msgstr "Δεν έχεις προσθέσει καμία ομιλία ή δήλωση μέχρι τώρα"
+
+#: templates/speeches/parentless_list.html:60
+msgid ""
+"Once you have, you&rsquo;ll be able to browse speeches and organise them "
+"into sections here."
+msgstr ""
+"Όταν θα το έχεις πράξει, θα εμφανιστούν εδώ οι ομιλίες και θα μπορέσεις να "
+"τις ταξινομήσεις ανά ενότητα."
+
+#: templates/speeches/popolo_import_form.html:15
+msgid ""
+"\n"
+"    <p>Speakers can be imported into SayIt if they are available in <a "
+"href='http://www.popoloproject.com/'>Popolo JSON</a> format.<p>\n"
+"    <p>Enter the location of the speaker data as either\n"
+"      <ul>\n"
+"        <li>\n"
+"          A URL, or path to a local file, containing Popolo JSON in the "
+"format\n"
+"          <pre>\n"
+"{\n"
+"    'persons': [&lt;a list of persons&gt;],\n"
+"    'organizations': [],\n"
+"    'posts': [],\n"
+"    ...\n"
+"}\n"
+"          </pre>\n"
+"        <li>\n"
+"          A URL, or path to a local file, containing Popolo JSON in the "
+"format\n"
+"          <pre>\n"
+"[&lt;a list of persons&gt;]\n"
+"          </pre>\n"
+"        </li>\n"
+"        <li>\n"
+"          A PopIt API base url, such as\n"
+"          <a href=\"https://kenyan-politicians.popit.mysociety.org/api/v0.1/"
+"\">https://kenyan-politicians.popit.mysociety.org/api/v0.1/</a>\n"
+"        </li>\n"
+"      </ul>\n"
+"    </p>\n"
+"  "
+msgstr ""
+"\n"
+"    <p>Μπορείς να εισάγεις ομιλίες σε μορφή <a href='http://www."
+"popoloproject.com/'>Popolo JSON</a> καταχωρώντας ένα από τα ακόλουθα:\n"
+"      <ul>\n"
+"        <li>\n"
+"          URL ή διαδρομή στον δίσκο σε αρχείο της παρακάτω μορφής\n"
+"          <pre>\n"
+"{\n"
+"    'persons': [&lt;λίστα ατόμων&gt;],\n"
+"    'organizations': [],\n"
+"    'posts': [],\n"
+"    ...\n"
+"}\n"
+"          </pre>\n"
+"        <li>\n"
+"          «Base» URL ή διαδρομή στον δίσκο σε αρχείο της παρακάτω μορφής\n"
+"          <pre>\n"
+"[&lt;λίστα ατόμων&gt;]\n"
+"          </pre>\n"
+"        </li>\n"
+"        <li>\n"
+"          Διεύθυνση PopIt API, όπως \n"
+"          <a href=\"https://kenyan-politicians.popit.mysociety.org/api/v0.1/"
+"\">https://kenyan-politicians.popit.mysociety.org/api/v0.1/</a>\n"
+"        </li>\n"
+"      </ul>\n"
+"    </p>\n"
+"  "
+
+#: templates/speeches/popolo_import_form.html:44
+msgid "Import People (may take some time)"
+msgstr "Εισάγετε άτομα (μπορεί να πάρει λίγη ώρα)"
+
+#: templates/speeches/recording_detail.html:5
+#: templates/speeches/recording_detail.html:10
+#: templates/speeches/recording_form.html:5
+#: templates/speeches/recording_form.html:10
+#, python-format
+msgid "Recording #%(id)s"
+msgstr "Ηχογράφηση #%(id)s"
+
+#: templates/speeches/recording_detail.html:15
+#: templates/speeches/recording_form.html:14 templates/speeches/speech.html:83
+msgid "This speech has audio"
+msgstr "Αυτή η ομιλία έχει ήχο"
+
+#: templates/speeches/recording_detail.html:41
+#: templates/speeches/recording_form.html:18
+msgid "Actions"
+msgstr "Ενέργειες"
+
+#: templates/speeches/recording_detail.html:47
+#: templates/speeches/recording_form.html:39
+msgid "Update"
+msgstr "Ενημέρωση"
+
+#: templates/speeches/section_confirm_delete.html:5
+msgid "Delete section"
+msgstr "Διέγραψε την ενότητα"
+
+#: templates/speeches/section_confirm_delete.html:11
+#: templates/speeches/speech_confirm_delete.html:11
+msgid "Confirm delete?"
+msgstr "Διέγραψε πράγματι;"
+
+#: templates/speeches/section_detail.html:22
+#: templates/speeches/speaker_detail.html:101
+msgid "Add speech"
+msgstr "Πρόσθεσε ομιλία"
+
+#: templates/speeches/section_detail.html:23
+msgid "Add subsection"
+msgstr "Πρόσθεσε υποενότητα"
+
+#: templates/speeches/section_detail.html:24
+#: templates/speeches/section_form.html:7
+#: templates/speeches/section_form.html:17
+msgid "Edit section"
+msgstr "Επεξεργάσου την ενότητα"
+
+#: templates/speeches/section_detail.html:32
+#: templates/speeches/speech_detail.html:144
+msgid "Source"
+msgstr "Πηγή"
+
+#: templates/speeches/section_detail.html:93
+#: templates/speeches/speech_detail.html:167
+msgid "Keyboard shortcuts"
+msgstr "Συντομεύσεις πληκτρολογίου"
+
+#: templates/speeches/section_detail.html:94
+msgid "previous section"
+msgstr "προηγούμενη ενότητα"
+
+#: templates/speeches/section_detail.html:95
+msgid "next section"
+msgstr "επόμενη ενότητα"
+
+#: templates/speeches/section_detail.html:109
+msgid "This section is empty"
+msgstr "Αυτή η ενότητα είναι άδεια"
+
+#: templates/speeches/section_detail.html:110
+msgid "Add a new speech here"
+msgstr "Πρόσθεσε νέα ομιλία εδώ"
+
+#: templates/speeches/section_form.html:25
+msgid "Update section"
+msgstr "Ανανέωσε την ενότητα"
+
+#: templates/speeches/section_form.html:27
+msgid "Add section"
+msgstr "Πρόσθεσε ενότητα"
+
+#: templates/speeches/speaker_delete.html:6
+#: templates/speeches/speaker_delete.html:15
+#, python-format
+msgid "Delete speaker: %(name)s"
+msgstr "Διαγραφή ομιλητή «%(name)s»"
+
+#: templates/speeches/speaker_delete.html:22
+#: templates/speeches/speaker_detail.html:25
+msgid "Delete speaker"
+msgstr "Διέγραψε τον ομιλητή"
+
+#: templates/speeches/speaker_detail.html:14
+#, python-format
+msgid "Speeches by %(speaker)s"
+msgstr "Ομιλίες τ@ς %(speaker)s"
+
+#: templates/speeches/speaker_detail.html:24
+#: templates/speeches/speaker_form.html:6
+#: templates/speeches/speaker_form.html:16
+msgid "Edit speaker"
+msgstr "Επεξεργάσου τον ομιλητή"
+
+#: templates/speeches/speaker_detail.html:48
+msgid "Appearance"
+msgid_plural "Appearances"
+msgstr[0] "Παρουσία"
+msgstr[1] "Παρουσίες"
+
+#: templates/speeches/speaker_detail.html:57
+msgctxt "speaker count"
+msgid "Speech"
+msgid_plural "Speeches"
+msgstr[0] "Ομιλία"
+msgstr[1] "Ομιλίες"
+
+#: templates/speeches/speaker_detail.html:84
+msgid "Longest speech"
+msgstr "Μακρύτερη ομιλία"
+
+#: templates/speeches/speaker_detail.html:109
+msgid "Search this person's speeches"
+msgstr "Αναζήτησε στις ομιλίες αυτού του ατόμου"
+
+#: templates/speeches/speaker_detail.html:119
+#, python-format
+msgid "%(speaker)s has no recorded speeches yet."
+msgstr "Ακόμη δεν έχουν καταχωρηθεί ομιλίες τ@ %(speaker)s."
+
+#: templates/speeches/speaker_form.html:8
+#: templates/speeches/speaker_form.html:18
+msgid "Add a speaker"
+msgstr "Πρόσθεσε ομιλητή"
+
+#: templates/speeches/speaker_form.html:24
+msgid "Update speaker"
+msgstr "Ανανέωσε ομιλητή"
+
+#: templates/speeches/speaker_form.html:26
+msgid "Add speaker"
+msgstr "Πρόσθεσε ομιλητή"
+
+#: templates/speeches/speaker_list.html:6
+#: templates/speeches/speaker_list.html:17
+msgid "All Speakers"
+msgstr "Όλοι οι ομιλητές"
+
+#: templates/speeches/speaker_list.html:13
+msgid "Add a new speaker"
+msgstr "Πρόσθεσε νέο ομιλητή"
+
+#: templates/speeches/speaker_list.html:45
+msgid ""
+"Once you have, this page will contain a list of all the different people who "
+"made each statement in this SayIt site."
+msgstr ""
+"Όταν θα το έχεις πράξει, θα εμφανιστεί εδώ λίστα με όλους τους ομιλητές."
+
+#: templates/speeches/speech.html:22
+msgid "Invisible"
+msgstr "Αόρατη"
+
+#: templates/speeches/speech.html:93 templates/speeches/speech.html.py:109
+#: templates/speeches/speech.html:134
+msgid "Link in context"
+msgstr "Σύνδεσμος με συγκείμενο"
+
+#: templates/speeches/speech.html:95 templates/speeches/speech.html.py:111
+#: templates/speeches/speech.html:136
+msgid "Link"
+msgstr "Σύνδεσμος"
+
+#: templates/speeches/speech.html:105
+msgid "[ recorded audio ]"
+msgstr "[ ηχογράφηση ]"
+
+#: templates/speeches/speech.html:130 templates/speeches/speech_detail.html:147
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: templates/speeches/speech.html:131 templates/speeches/speech_detail.html:148
+msgid "Delete"
+msgstr "Διέγραψε"
+
+#: templates/speeches/speech_confirm_delete.html:5
+msgid "Delete speech"
+msgstr "Διέγραψε την ομιλία"
+
+#: templates/speeches/speech_detail.html:30
+msgid ""
+"Please wait, audio is being transcribed. This page will automatically "
+"refresh in 5 seconds..."
+msgstr ""
+"Παρακαλώ περιμένετε ενόσω ο ήχος μεταγράφεται. Η σελίδα θα επαναφορτωθεί "
+"αυτόματα σε 5 δευτερόλεπτα."
+
+#: templates/speeches/speech_detail.html:38
+msgid "Your speech has been saved!"
+msgstr "Η ομιλία έχει αποθηκευτεί"
+
+#: templates/speeches/speech_detail.html:40
+msgid "Add another speech like this"
+msgstr "Πρόσθεσε ακόμα μία παρόμοια ομιλία"
+
+#: templates/speeches/speech_detail.html:41
+msgid "Show speech in context"
+msgstr "Δες την ομιλία στο συγκείμενο"
+
+#: templates/speeches/speech_detail.html:43
+msgid "Add another speech"
+msgstr "Πρόσθεσε ακόμα μία ομιλία"
+
+#: templates/speeches/speech_detail.html:61
+#, python-format
+msgid ""
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> by <span "
+"class=\"speech__meta-data__speaker-name\"> <a href=\"%(speaker_url)s\">"
+"%(speaker)s</a> </span> on <span class=\"speech__meta-data__date\">%(date)s</"
+"span>"
+msgstr ""
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> από <span "
+"class=\"speech__meta-data__speaker-name\"> <a href=\"%(speaker_url)s\">"
+"%(speaker)s</a> </span> στις <span class=\"speech__meta-data__date\">"
+"%(date)s</span>"
+
+#: templates/speeches/speech_detail.html:71
+#, python-format
+msgid ""
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> by <span "
+"class=\"speech__meta-data__speaker-name\"> <a href=\"%(speaker_url)s\">"
+"%(speaker)s</a> </span>"
+msgstr ""
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> από <span "
+"class=\"speech__meta-data__speaker-name\"> <a href=\"%(speaker_url)s\">"
+"%(speaker)s</a> </span>"
+
+#: templates/speeches/speech_detail.html:81
+#, python-format
+msgid ""
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> by <span "
+"class=\"speech__meta-data__speaker-name\">an unknown speaker</span> on <span "
+"class=\"speech__meta-data__date\">%(date)s</span>"
+msgstr ""
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> από <span "
+"class=\"speech__meta-data__speaker-name\">άγνωστο ομιλητή</span> στις <span "
+"class=\"speech__meta-data__date\">%(date)s</span>"
+
+#: templates/speeches/speech_detail.html:89
+#, python-format
+msgid ""
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> by <span "
+"class=\"speech__meta-data__speaker-name\">an unknown speaker</span>"
+msgstr ""
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> από <span "
+"class=\"speech__meta-data__speaker-name\">άγνωστο ομιλητή</span>"
+
+#: templates/speeches/speech_detail.html:98
+#, python-format
+msgid ""
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> on <span "
+"class=\"speech__meta-data__date\">%(date)s</span>"
+msgstr ""
+"<span class=\"speech__meta-data__speech-type\">%(type)s</span> στις <span "
+"class=\"speech__meta-data__date\">%(date)s</span>"
+
+#: templates/speeches/speech_detail.html:104
+#, python-format
+msgid "<span class=\"speech__meta-data__speech-type\">%(type)s</span>"
+msgstr "<span class=\"speech__meta-data__speech-type\">%(type)s</span>"
+
+#: templates/speeches/speech_detail.html:141
+msgid "Show context"
+msgstr "Δες συγκείμενο"
+
+#: templates/speeches/speech_detail.html:168
+msgid "previous speech"
+msgstr "προηγούμενη ομιλία"
+
+#: templates/speeches/speech_detail.html:169
+msgid "next speech"
+msgstr "επόμενη ομιλία"
+
+#: templates/speeches/speech_form.html:14
+#: templates/speeches/speech_form.html:36
+msgid "Edit speech"
+msgstr "Επεξεργάσου ομιλία"
+
+#: templates/speeches/speech_form.html:16
+#: templates/speeches/speech_form.html:38
+msgid "Add a speech"
+msgstr "Πρόσθεσε ομιλία"
+
+#: templates/speeches/speech_form.html:39
+msgid ""
+"You can cut and paste quotes from news sites, social media or blogs,<br>or "
+"transcribe any audio or video records you may have access to"
+msgstr ""
+"Μπορείς να αποκόψεις και να επικολλήσεις αναφορές σε δημοσιεύματα από "
+"ενημερωτικές ιστοσελίδες, μέσα κοινωνικής δικτύωσης ή blogs· ή και να "
+"μεταγράψεις οπτικοακουστικό υλικό στο οποίο τυχών έχεις πρόσβαση."
+
+#: templates/speeches/speech_form.html:70
+msgid "Date &amp; Time"
+msgstr "Ημερομηνία και ώρα"
+
+#: templates/speeches/speech_form.html:94
+msgid "Event &amp; Location"
+msgstr "Τοποθεσία και συμβάν"
+
+#: templates/speeches/speech_form.html:103
+msgid "Title &amp; Tags"
+msgstr "Επικεφαλίδα και ετικέτες"
+
+#: templates/speeches/speech_form.html:114
+msgid "Save changes"
+msgstr "Αποθήκευση αλλαγών"
+
+#: templates/speeches/speech_form.html:116
+msgid "Save speech"
+msgstr "Αποθήκευση ομιλίας"
+
+#: views.py:295
+#, python-format
+msgid "View Speaker: %(speaker_name)s"
+msgstr "Δες τ@ ομιλητή: %(speaker_name)s"
+
+#: views.py:456
+#, python-format
+msgid "View Section: %(section_title)s"
+msgstr "Δες την ενότητα: %(section_title)s"
+
+#: views.py:512
+msgid "Speeches assigned."
+msgstr "Ομιλίες που ανήκουν σε ομιλητές."
+
+#: views.py:665
+#, python-format
+msgid "%(created)d speaker created."
+msgid_plural "%(created)d speakers created."
+msgstr[0] "Δημιουργήθηκε %(created)d ομιλητής."
+msgstr[1] "Δημιουργήθηκαν %(created)d ομιλητές."
+
+#: views.py:670
+#, python-format
+msgid "%(refreshed)d speaker refreshed."
+msgid_plural "%(refreshed)d speakers refreshed."
+msgstr[0] "Ανανεώθηκε %(refreshed)d ομιλητής."
+msgstr[1] "Ανανεώθηκαν %(refreshed)d ομιλητές."
+
+#: views.py:681
+msgid "No speakers found."
+msgstr "Δεν βρέθηκαν ομιλητές."
+
+#: views.py:710
+msgid "Sorry - something went wrong with the import"
+msgstr "Κάτι πήγε λάθος με την εισαγωγή των πληροφοριών."
+
+#: views.py:722
+msgid "Created: "
+msgstr "Δημιουργήθηκε: "
+
+#: views.py:725
+#, python-format
+msgid "%(speakers)d speaker"
+msgid_plural "%(speakers)d speakers"
+msgstr[0] "%(speakers)d ομιλητής"
+msgstr[1] "%(speakers)d ομιλητές"
+
+#: views.py:730
+#, python-format
+msgid "%(sections)d section"
+msgid_plural "%(sections)d sections"
+msgstr[0] "%(sections)d ενότητα"
+msgstr[1] "%(sections)d ενότητες"
+
+#: views.py:735
+#, python-format
+msgid "%(speeches)d speech"
+msgid_plural "%(speeches)d speeches"
+msgstr[0] "%(speeches)d ομιλία"
+msgstr[1] "%(speeches)d ομιλίες"
+
+#: views.py:746
+msgid "Nothing new to import."
+msgstr "Δεν βρέθηκε τίποτε καινούριο για εισαγωγή."
+
+#: widgets.py:46
+msgid "yyyy-mm-dd"
+msgstr "εεεε-μμ-ηη"
+
+#: widgets.py:47
+msgid "dd/mm/yyyy"
+msgstr "ηη/μμ/εεεε"
+
+#: widgets.py:48
+msgid "dd/mm/yy"
+msgstr "ηη/μμ/εε"
+
+#: widgets.py:49
+msgid "mm/dd/yyyy"
+msgstr "μμ/ηη/εεεε"
+
+#: widgets.py:50
+msgid "mm/dd/yy"
+msgstr "μμ/ηη/εε"
+
+#: widgets.py:108
+msgid "hh:mm"
+msgstr "ωω:λλ"
