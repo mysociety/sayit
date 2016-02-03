@@ -12,14 +12,11 @@ env:
   matrix:
     - TOXENV=flake8
     - TOXENV=py-27-1.8
-    - TOXENV=py-27-1.9
+    - TOXENV=py-27-1.10
+    - TOXENV=py-27-1.11
     - TOXENV=py-34-1.8
-    - TOXENV=py-34-1.9
-
-matrix:
-  allow_failures:
-    - env: TOXENV=py-27-1.9
-    - env: TOXENV=py-34-1.9
+    - TOXENV=py-34-1.10
+    - TOXENV=py-34-1.11
 
 install:
   - 'if [ $TOXENV != "flake8" ]; then sudo apt-get update -qq; fi'
