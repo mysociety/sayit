@@ -157,10 +157,10 @@
                 <div class="speech-navigation">
                   <div class="speech-navigation__column speech-navigation__column--one">
                     {% if previous %}
-                     <a href="{% url "speeches:speech-view" previous.id %}" class="button speech-navigation__button">&laquo; {{ previous.summary|bleach }}</a>
+                     <a href="{% url "speeches:speech-view" previous.id %}" class="button speech-navigation__button">&larr; {{ previous.summary|bleach }}</a>
                     {% endif %}
                     {% if next %}
-                      <a href="{% url "speeches:speech-view" next.id %}" class="button speech-navigation__button">{{ next.summary|bleach }} &raquo;</a>
+                      <a href="{% url "speeches:speech-view" next.id %}" class="button speech-navigation__button">{{ next.summary|bleach }} &rarr;</a>
                     {% endif %}
                   </div>
                   <div class="speech-navigation__column speech-navigation__column--two">

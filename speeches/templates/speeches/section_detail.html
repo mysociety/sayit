@@ -68,10 +68,10 @@
             {% if previous or next %}
               <div class="section-navigation speech-list-navigation">
                 {% if previous %}
-                  <a href="{% url "speeches:section-view" previous.get_path %}" class="button speech-navigation__button">&laquo; {{ previous.title }}</a>
+                  <a href="{% url "speeches:section-view" previous.get_path %}" class="button speech-navigation__button">&larr; {{ previous.title }}</a>
                 {% endif %}
                 {% if next %}
-                  <a href="{% url "speeches:section-view" next.get_path %}" class="button speech-navigation__button">{{ next.title }} &raquo;</a>
+                  <a href="{% url "speeches:section-view" next.get_path %}" class="button speech-navigation__button">{{ next.title }} &rarr;</a>
                 {% endif %}
               </div>
             {% endif %}
@@ -84,10 +84,10 @@
               {% if previous or next %}
                 <div class="section-navigation">
                   {% if previous %}
-                    <a href="{% url "speeches:section-view" previous.get_path %}" class="button speech-navigation__button">&laquo; {{ previous.title }}</a>
+                    <a href="{% url "speeches:section-view" previous.get_path %}" class="button speech-navigation__button">&larr; {{ previous.title }}</a>
                   {% endif %}
                   {% if next %}
-                    <a href="{% url "speeches:section-view" next.get_path %}" class="button speech-navigation__button">{{ next.title }} &raquo;</a>
+                    <a href="{% url "speeches:section-view" next.get_path %}" class="button speech-navigation__button">{{ next.title }} &rarr;</a>
                   {% endif %}
                 </div>
                 <div class="ui-instructions cleared">
