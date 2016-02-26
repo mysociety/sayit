@@ -4,6 +4,7 @@ v1.4, 2016-02-24
     * Show speaker's speeches most recent first. #482
     * Hebrew and Slovak translations.
     * Improved testing using tox.
+    * Use regular arrows in back/forward buttons. #509
     * Akoma Ntoso import
         * Add improved skip/replace/merge import options. #456 #434
         * On directory import, import files in sorted order.
