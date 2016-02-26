@@ -1,6 +1,5 @@
 import json
-
-from django.utils import unittest
+import unittest
 
 from speeches.tests import InstanceTestCase
 from speeches.models import Speech

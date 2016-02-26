@@ -21,6 +21,7 @@ class SpeechFormTests(InstanceTestCase):
     @classmethod
     def setUpClass(cls):
         cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
+        super(SpeechFormTests, cls).setUpClass()
 
     def tearDown(self):
         # Clear the speeches folder if it exists
@@ -86,8 +87,8 @@ class SpeechFormTests(InstanceTestCase):
 
         self.assertEqual(Speaker.objects.filter(name='New Bod').count(), 1)
         self.assertEqual(Section.objects.filter(heading='New Section').count(), 1)
-        self.assertContains(resp, ".txt(['New Bod'])")
-        self.assertContains(resp, ".txt(['New Section'])")
+        self.assertContains(resp, '.txt(["New Bod"])')
+        self.assertContains(resp, '.txt(["New Section"])')
         self.assertContains(resp, "You must provide either text or some audio")
 
     def test_add_speech_with_unknown_section(self):
@@ -269,7 +270,7 @@ class SpeechFormTests(InstanceTestCase):
 
         # Check that the edit page for this speech contains the speaker's name
         resp = self.client.get('/speech/{}/edit'.format(speech.id))
-        self.assertContains(resp, ".txt(['Steve'])")
+        self.assertContains(resp, '.txt(["Steve"])')
 
     def test_add_and_remove_speaker_from_speech(self):
         # Test form with speaker, we need to add a speaker first

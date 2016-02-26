@@ -5,7 +5,7 @@ from django import forms
 from django.core import validators
 from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
-from django.forms.util import flatatt
+from django.forms.utils import flatatt
 
 from django_select2.widgets import Select2MultipleWidget
 

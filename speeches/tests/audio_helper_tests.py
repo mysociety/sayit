@@ -33,6 +33,7 @@ class AudioHelperTests(InstanceTestCase):
     def setUpClass(cls):
         cls._in_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'test_inputs')
         cls._expected_fixtures = os.path.join(os.path.abspath(speeches.__path__[0]), 'fixtures', 'expected_outputs')
+        super(AudioHelperTests, cls).setUpClass()
 
     def setUp(self):
         super(AudioHelperTests, self).setUp()

@@ -3,11 +3,9 @@ from mock import patch, Mock
 
 import lxml.html
 
-import django
 from django.utils.six import assertRegex
 from django.utils.six.moves import urllib
 from django.test.utils import override_settings
-from django.utils import unittest
 
 from speeches.tests import InstanceTestCase, OverrideMediaRootMixin
 from speeches.models import Speaker, Speech, Section
@@ -15,12 +13,6 @@ from speeches import models
 
 m = Mock()
 m.return_value = ('speeches/fixtures/test_inputs/Ferdinand_Magellan.jpg', None)
-
-skip_old_django = unittest.skipIf(
-    django.VERSION[:2] == (1, 4),
-    "Prior to Django 1.5, override_settings didn't sort out MEDIA_URL properly - "
-    "see https://code.djangoproject.com/ticket/17744",
-    )
 
 
 @override_settings(MEDIA_URL='/uploads/')
@@ -121,7 +113,6 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
              }
             )
 
-    @skip_old_django
     def test_speaker_detail_page(self):
         self.assert_opengraph_matches(
             self.client.get('/speaker/%s' % self.steve.slug),
@@ -134,7 +125,6 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
              }
             )
 
-    @skip_old_django
     def test_speech_detail_page(self):
         self.assert_opengraph_matches(
             self.client.get('/speech/%s' % self.steve_speech.id),

@@ -1,3 +1,29 @@
+v1.4, 2016-02-24
+    * Drop support for Django before 1.8.
+    * Add a web interface for importing Akoma Ntoso files. #435
+    * Show speaker's speeches most recent first. #482
+    * Hebrew and Slovak translations.
+    * Improved testing using tox.
+    * Akoma Ntoso import
+        * Add improved skip/replace/merge import options. #456 #434
+        * On directory import, import files in sorted order.
+        * Raise exception on empty 'showAs' attributes. #442
+        * Warn if docDate missing attribute or doesn't parse. #492
+        * Print out statistics in command line import. #460
+        * Print traceback for import exceptions. #475
+        * Make SSL certificate verification optional. #476
+    * Bugfixes
+        * Add translation of metadata. #497
+        * Fix issue with importing empty docDate/source_url. #484
+        * Compare section and speech keys with same type. #472
+        * Fix redisplaying of speech date in Django 1.7+.
+        * Give sections with no headings a title of 'Untitled'.
+        * Fix flake8 part of pre-commit hook, and colour code output.
+        * Fix display of speaker name when used in code.
+
+Thanks to James McKinney, Duncan Parkes, Jaroslav Semančík and Matthew
+Somerville for their work on this release.
+
 v1.3.2, 2014-12-13
     * Improved initial running of example project, providing login links
       and buttons for adding or importing data. #222 #411 #419

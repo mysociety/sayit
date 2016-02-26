@@ -2,7 +2,6 @@ import datetime
 import json
 from six import string_types
 
-import django
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse, reverse_lazy, resolve
 from django.core import serializers
@@ -106,7 +105,7 @@ class SpeechMixin(NamespaceMixin, InstanceFormMixin):
     model = Speech
     form_class = SpeechForm
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=None):
         form = super(SpeechMixin, self).get_form(form_class)
 
         form.fields['section'].queryset = Section.objects.for_instance(self.request.instance)
@@ -334,7 +333,7 @@ class SpeakerDelete(SpeakerMixin, BaseUpdateView, SpeakerDeleteNoSpeechesMixin, 
     def get_success_url(self):
         return self.reverse('speeches:speaker-list')
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=None):
         if self.object.speech_set.exists():
             form = super(SpeakerDelete, self).get_form(form_class)
             form.fields['new_speaker'].queryset = Speaker.objects.for_instance(self.request.instance)
@@ -386,7 +385,7 @@ class SectionMixin(NamespaceMixin, InstanceFormMixin):
     model = Section
     form_class = SectionForm
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=None):
         form = super(SectionMixin, self).get_form(form_class)
         form.fields['parent'].queryset = Section.objects.for_instance(self.request.instance)
         form.fields['parent'].instance = self.request.instance
@@ -455,11 +454,7 @@ class SectionView(NamespaceMixin, InstanceViewMixin, DetailView):
             all_speeches=all_speeches,
         )
         context['title'] = _('View Section: %(section_title)s') % {'section_title': self.object.title}
-
-        if django.VERSION < (1, 7):
-            context['speech_template'] = 'speeches/speech.html'
-        else:
-            context['speech_template'] = loader.get_template('speeches/speech.html')
+        context['speech_template'] = loader.get_template('speeches/speech.html')
         return context
 
 
