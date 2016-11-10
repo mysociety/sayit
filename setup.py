@@ -29,7 +29,7 @@ else:
 
 setup(
     name="django-sayit",
-    version='1.4',
+    version='1.4.1',
     description='A data store for speeches and transcripts to make them searchable and pretty.',
     long_description=read_file('README.rst'),
     author='mySociety',
@@ -55,7 +55,7 @@ setup(
     ] + ssl,
     extras_require={
         'test': [
-            'selenium',
+            'selenium < 3',
             'mock',
             'django-nose == 1.4.2',
             'Mutagen',
