@@ -17,9 +17,9 @@ else:
     dateutil = 'python-dateutil < 2'
     # @see https://github.com/kennethreitz/requests/blob/master/requests/packages/urllib3/contrib/pyopenssl.py
     ssl = [
-        'pyOpenSSL == 0.14',
-        'ndg-httpsclient == 0.3.2',
-        'pyasn1 == 0.1.7',
+        'pyOpenSSL >= 0.14',
+        'ndg-httpsclient >= 0.3.2',
+        'pyasn1 >= 0.1.7',
     ]
 
 if os.environ.get('TOX'):
