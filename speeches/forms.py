@@ -614,6 +614,7 @@ class BaseRecordingTimestampFormSet(BaseInlineFormSet):
                         _('Timestamps must be distinct'))
             previous_timestamp = timestamp
 
+
 RecordingTimestampFormSet = inlineformset_factory(
     Recording,
     RecordingTimestamp,

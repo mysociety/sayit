@@ -9,6 +9,7 @@ def read_file(filename):
     filepath = os.path.join(file_dir, filename)
     return open(filepath).read()
 
+
 # Fix for dateutil/SSL py3 support
 if sys.version_info >= (3,):
     dateutil = 'python-dateutil >= 2'
