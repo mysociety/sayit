@@ -1,6 +1,8 @@
 notifications:
   email: false
 
+sudo: false
+
 language: python
 
 services:
@@ -18,9 +20,21 @@ env:
     - TOXENV=py34-1.10
     - TOXENV=py34-1.11
 
+addons:
+  firefox: latest
+  apt:
+    packages:
+      - ffmpeg
+      - libavcodec-extra-53
+      - xvfb
+
+before_install:
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.17.0/geckodriver-v0.17.0-linux64.tar.gz
+  - mkdir geckodriver
+  - tar -xzf geckodriver-v0.17.0-linux64.tar.gz -C geckodriver
+  - export PATH=$PATH:$PWD/geckodriver
+
 install:
-  - 'if [ $TOXENV != "flake8" ]; then sudo apt-get update -qq; fi'
-  - 'if [ $TOXENV != "flake8" ]; then sudo apt-get install -qq ffmpeg libavcodec-extra-53 iceweasel xvfb; fi'
   - pip install tox
 
 before_script:

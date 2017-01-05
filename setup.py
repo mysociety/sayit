@@ -56,7 +56,7 @@ setup(
     ] + ssl,
     extras_require={
         'test': [
-            'selenium < 3',
+            'selenium >= 3',
             'mock',
             'django-nose == 1.4.4',
             'Mutagen',
