@@ -40,12 +40,12 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
         self.importer = ImportAkomaNtoso(instance=self.instance, commit=True)
 
     def _list_sections(self):
-        # Make mapping {section name: list of its speeches' texts}
+        # Make list [section name: list of its speeches' texts}
         sections = {section.id: [] for section in Section.objects.all()}
         for speech in Speech.objects.all():
             if speech.section_id:
                 sections[speech.section_id].append(speech.text)
-        return {section.title: sections[section.id] for section in Section.objects.all()}
+        return [(section.title, sections[section.id]) for section in Section.objects.all()]
 
     def test_import_sample_file(self):
         self.importer.import_document(
@@ -65,77 +65,77 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
             'speeches/fixtures/test_inputs/test_xpath.xml')
         self.assertEqual(
             self._list_sections(),
-            {'This is the title': ['<p>Hello</p>']}
+            [('This is the title', ['<p>Hello</p>'])]
             )
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='skip').import_document(
             'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
-            {'This is the title': ['<p>Hello</p>']}
+            [('This is the title', ['<p>Hello</p>'])]
             )
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='merge').import_document(
             'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
-            {'This is the title': ['<p>Hello</p>', '<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             })
+            [('This is the title', ['<p>Hello</p>', '<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ])
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='replace').import_document(
             'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
-            {'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             })
+            [('This is the title', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ])
 
         ImportAkomaNtoso(instance=self.instance, commit=True).import_document(
             'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
-            {'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             })
+            [('This is the title', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ('This is the title', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ])
 
     def test_not_already_imported(self):
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='skip').import_document(
             'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
-            {'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             })
+            [('This is the title', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ])
         Section.objects.all().delete()
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='merge').import_document(
             'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
-            {'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             })
+            [('This is the title', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ])
         Section.objects.all().delete()
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='replace').import_document(
             'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
-            {'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             })
+            [('This is the title', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ])
         Section.objects.all().delete()
 
         ImportAkomaNtoso(instance=self.instance, commit=True).import_document(
             'speeches/tests/data/fake_http/test_clobber.xml')
         self.assertEqual(
             self._list_sections(),
-            {'This is the title': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             })
+            [('This is the title', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ])
         Section.objects.all().delete()
 
     def test_empty_title(self):
@@ -143,49 +143,49 @@ class AkomaNtosoImportTestCase(InstanceTestCase):
             'speeches/fixtures/test_inputs/test_empty_title.xml')
         self.assertEqual(
             self._list_sections(),
-            {'Untitled': ['<p>Hello</p>'],
-             'Untitled': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             })
+            [('Untitled', ['<p>Hello</p>']),
+             ('Untitled', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ])
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='skip').import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
         self.assertEqual(
             self._list_sections(),
-            {'Untitled': ['<p>Hello</p>'],
-             'Untitled': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             })
+            [('Untitled', ['<p>Hello</p>']),
+             ('Untitled', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ])
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='merge').import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
         self.assertEqual(
             self._list_sections(),
-            {'Untitled': ['<p>Hello</p>', '<p>Hello</p>', '<p>Howdy</p>'],
-             'Untitled': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>', '<p>Bye</p>'],
-             })
+            [('Untitled', ['<p>Hello</p>', '<p>Hello</p>', '<p>Howdy</p>']),
+             ('Untitled', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>', '<p>Bye</p>']),
+             ])
 
         ImportAkomaNtoso(instance=self.instance, commit=True, clobber='replace').import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
         self.assertEqual(
             self._list_sections(),
-            {'Untitled': ['<p>Hello</p>'],
-             'Untitled': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             })
+            [('Untitled', ['<p>Hello</p>']),
+             ('Untitled', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ])
 
         ImportAkomaNtoso(instance=self.instance, commit=True).import_document(
             'speeches/fixtures/test_inputs/test_empty_title.xml')
         self.assertEqual(
             self._list_sections(),
-            {'Untitled': ['<p>Hello</p>'],
-             'Untitled': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             'Untitled': ['<p>Hello</p>'],
-             'Untitled': ['<p>Howdy</p>'],
-             'Conclusions': ['<p>Bye</p>'],
-             })
+            [('Untitled', ['<p>Hello</p>']),
+             ('Untitled', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ('Untitled', ['<p>Hello</p>']),
+             ('Untitled', ['<p>Howdy</p>']),
+             ('Conclusions', ['<p>Bye</p>']),
+             ])
 
     def test_empty_docDate(self):
         self.importer.import_document(

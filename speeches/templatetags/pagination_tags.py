@@ -135,5 +135,6 @@ def paginate(context, window=DEFAULT_WINDOW, hashtag=''):
     except (KeyError, AttributeError):
         return {}
 
+
 register.inclusion_tag('pagination/pagination.html', takes_context=True)(
     paginate)
