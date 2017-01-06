@@ -3,3 +3,5 @@ pygments: true
 baseurl: /sayit/
 permalink: pretty
 markdown: kramdown
+sass:
+    style: compressed
