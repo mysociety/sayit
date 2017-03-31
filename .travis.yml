@@ -1,9 +1,5 @@
 notifications:
   email: false
-  irc:
-    channels:
-      - "irc.mysociety.org#sayit"
-    use_notice: true
 
 language: python
 
