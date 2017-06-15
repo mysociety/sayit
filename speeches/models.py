@@ -553,7 +553,7 @@ class AudioMP3Mixin(object):
             if needs_conversion:
                 mp3_filename = audio_helper.make_mp3(self.audio.path)
                 mp3_file = open(mp3_filename, 'rb')
-                self.audio.save(mp3_file.name, File(mp3_file), save=False)
+                self.audio.save(os.path.basename(mp3_file.name), File(mp3_file), save=False)
 
             if duration:
                 self.audio_duration = audio_helper.get_audio_duration(self.audio.path)
@@ -878,7 +878,7 @@ class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
                     speech.end_time = next_timestamp.timestamp.time()
 
             audio_file = open(audio_file, 'rb')
-            speech.audio = File(audio_file)
+            speech.audio = File(audio_file, name=os.path.basename(audio_file.name))
             speech.save()
 
             if new:
