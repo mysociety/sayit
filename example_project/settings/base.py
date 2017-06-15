@@ -31,7 +31,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 SECRET_KEY = 'secret'
 
