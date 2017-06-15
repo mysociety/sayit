@@ -134,10 +134,6 @@ class StripWhitespaceField(forms.CharField):
 class CreateAutoModelSelect2Field(AutoModelSelect2Field):
     empty_values = [None, '', [], (), {}]
 
-    # If anything tries to run a query on .queryset, it means we've missed
-    # somewhere where we needed to limit things to the instance
-    queryset = 'UNUSED'
-
     # instance will be set to an instance in the django-subdomain-instances
     # sense by the form
     instance = None
