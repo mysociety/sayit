@@ -102,7 +102,12 @@ class Select2Widget(AutoHeavySelect2Widget):
         # If data is non-trivial and not a MultiValueDict, then an error will
         # be thrown, which is a good thing.
         if data:
-            return data.getlist(name)
+            # Django 1.11 made getlist return a copy (#27198) which would break this,
+            # so use its internal function in the absence of a larger refactor.
+            if hasattr(data, '_getlist'):
+                return data._getlist(name)
+            else:
+                return data.getlist(name)
 
     def render(self, name, value, attrs=None, choices=()):
         """Because of the above; if we are given a list here, we don't want it."""
@@ -133,10 +138,6 @@ class StripWhitespaceField(forms.CharField):
 
 class CreateAutoModelSelect2Field(AutoModelSelect2Field):
     empty_values = [None, '', [], (), {}]
-
-    # If anything tries to run a query on .queryset, it means we've missed
-    # somewhere where we needed to limit things to the instance
-    queryset = 'UNUSED'
 
     # instance will be set to an instance in the django-subdomain-instances
     # sense by the form
