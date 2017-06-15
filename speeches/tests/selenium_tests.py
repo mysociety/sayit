@@ -46,7 +46,7 @@ class SeleniumTests(InstanceLiveServerTestCase):
     @property
     def live_server_url(self):
         url = super(SeleniumTests, self).live_server_url
-        return url.replace('localhost', 'testing.127.0.0.1.xip.io')
+        return url.replace('localhost', 'testing.127.0.0.1.nip.io')
 
     def test_select_text(self):
         self.selenium.get('%s%s' % (self.live_server_url, '/speech/add'))
