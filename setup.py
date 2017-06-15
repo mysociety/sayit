@@ -58,7 +58,7 @@ setup(
         'test': [
             'selenium >= 3',
             'mock',
-            'django-nose == 1.4.2',
+            'django-nose == 1.4.4',
             'Mutagen',
             'lxml',
             dateutil,
