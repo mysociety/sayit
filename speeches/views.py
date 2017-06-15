@@ -14,11 +14,11 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext as _, ungettext
 
 from django.db.models import Count, Avg
+from django.db.models.functions import Length
 from django.shortcuts import get_object_or_404
 
 from instances.views import InstanceFormMixin, InstanceViewMixin
 
-from speeches.aggregates import Length
 from speeches.forms import (
     SpeechForm, SpeechAudioForm, SectionForm,
     RecordingAPIForm, SpeakerForm, SectionPickForm,
@@ -72,15 +72,15 @@ class NamespaceMixin(object):
     """Mixin for adding current_app based on namespace"""
 
     def reverse(self, template, **kwargs):
-        kwargs['current_app'] = resolve(self.request.path).namespace
+        self.request.current_app = resolve(self.request.path).namespace
         return reverse(template, **kwargs)
 
     def reverse_lazy(self, template, **kwargs):
-        kwargs['current_app'] = resolve(self.request.path).namespace
+        self.request.current_app = resolve(self.request.path).namespace
         return reverse_lazy(template, **kwargs)
 
     def render_to_response(self, context, **kwargs):
-        kwargs['current_app'] = resolve(self.request.path).namespace
+        self.request.current_app = resolve(self.request.path).namespace
         return super(NamespaceMixin, self).render_to_response(context, **kwargs)
 
 
