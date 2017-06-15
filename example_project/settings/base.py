@@ -4,12 +4,10 @@ from __future__ import absolute_import
 
 import os
 import sys
-from django.conf import global_settings
 
 from .paths import *  # noqa
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 try:
     import debug_toolbar  # noqa
     DEBUG_TOOLBAR = True
@@ -81,8 +79,27 @@ loaders = (
 if not DEBUG:
     loaders = (('django.template.loaders.cached.Loader', loaders),)
 
-TEMPLATE_LOADERS = loaders
-
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(PROJECT_DIR, 'templates'),
+        ],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+            ],
+            'loaders': loaders,
+        },
+    },
+]
 MIDDLEWARE_CLASSES = [
     'django.middleware.gzip.GZipMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -106,16 +123,6 @@ LOGIN_REDIRECT_URL = '/'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'example_project.wsgi.application'
-
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_DIR, 'templates'),
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    tuple(global_settings.TEMPLATE_CONTEXT_PROCESSORS) + ("django.core.context_processors.request",))
 
 INSTALLED_APPS = [
     'django.contrib.auth',
