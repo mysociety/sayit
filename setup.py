@@ -50,8 +50,8 @@ setup(
         'django-bleach >= 0.2.1',
         'mysociety-django-popolo >= 0.0.5',
         'mysociety-django-sluggable >= 0.2.7',
-        'django-subdomain-instances >= 1.0',
-        'easy-thumbnails >= 2.1',
+        'django-subdomain-instances >= 2.0',
+        'easy-thumbnails >= 2.4.1',
         'unicode-slugify == 0.1.1',
     ] + ssl,
     extras_require={
