@@ -44,20 +44,6 @@ pip:
         'instances',
         'speeches',
 
-1.  **Only if you're using South**  
-    You will need to make sure you are either using South 1.0, or that
-    `speeches`, `easy_thumbnails` and `instances` are in your
-    `SOUTH_MIGRATION_MODULES`, e.g.:
-
-        SOUTH_MIGRATION_MODULES = {
-            'speeches': 'speeches.south_migrations',
-            'instances': 'instances.south_migrations',
-            'easy_thumbnails': 'easy_thumbnails.south_migrations',
-        }
-
-    You will also need to install `popit-django` and add `popit` to the start
-    of `INSTALLED_APPS` as that is used by some of our older South migrations.
-
 1. Add the following line to your `MIDDLEWARE_CLASSES`:
 
         'speeches.middleware.InstanceMiddleware',
@@ -73,9 +59,9 @@ like:
             },
         }
 
-1. Run syncdb (or migrate) to get the new SayIt models:
+1. Run migrate to get the new SayIt models:
 
-        ./manage.py syncdb
+        ./manage.py migrate
 
 1. Add to your project `urls.py`:
 
@@ -146,7 +132,7 @@ and python-virtualenv).
 
 1. Set up the database:
 
-        ./manage.py syncdb
+        ./manage.py migrate
 
     This will ask you if you wish to create a Django superuser, which you'll
 use to access the admin interface. You can always do it later with `./manage.py
