@@ -1,3 +1,6 @@
+v1.5, 2017-06-16
+    * Django 1.10 and 1.11 support.
+
 v1.4.1, 2016-11-10
     * Fix issue with some exactly-pinned dependencies.
     * Bundle some missing .mo files.
