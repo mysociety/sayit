@@ -102,7 +102,12 @@ class Select2Widget(AutoHeavySelect2Widget):
         # If data is non-trivial and not a MultiValueDict, then an error will
         # be thrown, which is a good thing.
         if data:
-            return data.getlist(name)
+            # Django 1.11 made getlist return a copy (#27198) which would break this,
+            # so use its internal function in the absence of a larger refactor.
+            if hasattr(data, '_getlist'):
+                return data._getlist(name)
+            else:
+                return data.getlist(name)
 
     def render(self, name, value, attrs=None, choices=()):
         """Because of the above; if we are given a list here, we don't want it."""
