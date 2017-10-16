@@ -8,7 +8,7 @@ Installation
 
 You will need to have the following installed:
 
-* [elasticsearch](http://elasticsearch.org/)
+* [elasticsearch](http://elasticsearch.org/) (version 5 is not yet supported)
 
 * [PostgreSQL](http://www.postgresql.org/) (it's possible it could work on
   another database that e.g. handles recursive SQL, but this would need work)
