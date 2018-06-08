@@ -10,12 +10,10 @@ def read_file(filename):
     return open(filepath).read()
 
 
-# Fix for dateutil/SSL py3 support
+# Fix for SSL py3 support
 if sys.version_info >= (3,):
-    dateutil = 'python-dateutil >= 2'
     ssl = []
 else:
-    dateutil = 'python-dateutil < 2'
     # @see https://github.com/kennethreitz/requests/blob/master/requests/packages/urllib3/contrib/pyopenssl.py
     ssl = [
         'pyOpenSSL >= 0.14',
@@ -39,15 +37,16 @@ setup(
     packages=find_packages(exclude=('example_project', 'example_project.*')),
     include_package_data=True,
     install_requires=[
-        'psycopg2 >= 2.5.1, < 2.6',
+        'psycopg2 >= 2.7.4',
         'pytz >= 2013d',
         'six >= 1.4.1',
         django,
+        'lxml',
         'mysociety-Django-Select2 == 4.3.2.1',
         'audioread >= 1.0.1',
         'elasticsearch >= 0.4',
         'django-haystack >= 2.5, < 2.6',
-        'django-bleach >= 0.2.1',
+        'django-bleach >= 0.3.0',
         'mysociety-django-popolo >= 0.0.5',
         'mysociety-django-sluggable >= 0.2.7',
         'django-subdomain-instances >= 2.0',
@@ -58,10 +57,9 @@ setup(
         'test': [
             'selenium >= 3',
             'mock',
-            'django-nose == 1.4.4',
+            'django-nose == 1.4.5',
             'Mutagen',
-            'lxml',
-            dateutil,
+            'python-dateutil >= 2.1',
             'requests_cache',
         ],
         'develop': [
