@@ -6,9 +6,6 @@ sudo: false
 language: python
 python: 3.5
 
-services:
-  - elasticsearch
-
 matrix:
   include:
     - python: 2.7
@@ -17,6 +14,9 @@ matrix:
 env:
   global:
     - CFLAGS="-O0"
+    - ES_VERSION=1.4.0
+    - GECKODRIVER=0.20.1
+    - ES_TOX="elasticsearch==$ES_VERSION"
   matrix:
     - TOXENV=flake8
     - TOXENV=py35-1.11
@@ -24,7 +24,6 @@ env:
     - TOXENV=py35-2.2
 
 addons:
-  firefox: latest
   postgresql: 9.6
   apt:
     packages:
@@ -32,13 +31,16 @@ addons:
       - xvfb
 
 before_install:
-  - wget https://github.com/mozilla/geckodriver/releases/download/v0.17.0/geckodriver-v0.17.0-linux64.tar.gz
+  - wget https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER/geckodriver-v$GECKODRIVER-linux64.tar.gz
   - mkdir geckodriver
-  - tar -xzf geckodriver-v0.17.0-linux64.tar.gz -C geckodriver
+  - tar -xzf geckodriver-v$GECKODRIVER-linux64.tar.gz -C geckodriver
   - export PATH=$PATH:$PWD/geckodriver
 
 install:
   - pip install tox
+  - wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-$ES_VERSION.tar.gz
+  - tar -xzf elasticsearch-$ES_VERSION.tar.gz
+  - ./elasticsearch-$ES_VERSION/bin/elasticsearch &
 
 before_script:
   - psql -c 'create database "sayit-example-project";' -U postgres
@@ -46,4 +48,5 @@ before_script:
   - 'if [ $TOXENV != "flake8" ]; then sh -e /etc/init.d/xvfb start; fi'
 
 script:
+  - wget -q --waitretry=1 --retry-connrefused -T 10 -O - http://127.0.0.1:9200
   - tox

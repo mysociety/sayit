@@ -269,6 +269,8 @@ HAYSTACK_CONNECTIONS = {
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
+FFMPEG = 'avconv'
+
 # Allow local changes of settings
 try:
     with open(SETTINGS_DIR + '/local.py') as f:

@@ -4,6 +4,7 @@ import logging
 import tempfile
 import calendar
 import audioread.ffdec
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -138,7 +139,7 @@ class AudioHelper(object):
 
     def _build_ffmpeg_options(self, in_filename):
         return [
-            'ffmpeg',
+            settings.FFMPEG,
             # Tell ffmpeg to shut up
             '-loglevel',
             '0',
