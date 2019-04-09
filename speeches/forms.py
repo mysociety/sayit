@@ -109,11 +109,11 @@ class Select2Widget(AutoHeavySelect2Widget):
             else:
                 return data.getlist(name)
 
-    def render(self, name, value, attrs=None, choices=()):
+    def render(self, name, value, attrs=None, renderer=None):
         """Because of the above; if we are given a list here, we don't want it."""
         if isinstance(value, list):
             value = value[0] if len(value) else None
-        return super(Select2Widget, self).render(name, value, attrs, choices)
+        return super(Select2Widget, self).render(name, value, attrs, renderer)
 
 
 class Select2CreateWidget(Select2Widget):
@@ -228,7 +228,7 @@ class NonCreateSectionField(NonCreateAutoModelSelect2Field):
 
 
 class SpeechTextFieldWidget(forms.Textarea):
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         # These first two steps are also done in the superclass, but it's
         # safe to repeat them here to get value to the right state.
         if value is None:
@@ -237,7 +237,7 @@ class SpeechTextFieldWidget(forms.Textarea):
         value = re.sub(r'<br ?/?>', '<br />\n', value)
         value = remove_p_and_br(value)
 
-        return super(SpeechTextFieldWidget, self).render(name, value, attrs)
+        return super(SpeechTextFieldWidget, self).render(name, value, attrs, renderer)
 
 
 class SpeechTextField(StripWhitespaceField):
@@ -324,7 +324,7 @@ class SpeechForm(forms.ModelForm, CleanAudioMixin):
         # <br /> and get rid of the ones round the outside.
         if 'text' in cleaned_data and not cleaned_data.get('speaker'):
             text = cleaned_data['text']
-            text = re.sub(r'</p>\n\n<p>', '<br />\n', text)
+            text = re.sub(r'</p>\n\n<p>', '<br>\n', text)
             text = re.sub(r'</?p>', '', text)
             cleaned_data['text'] = text
 

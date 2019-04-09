@@ -1,5 +1,4 @@
 import datetime
-from itertools import chain
 
 from django import forms
 from django.core import validators
@@ -44,7 +43,7 @@ class FromStartIntegerField(forms.IntegerField):
 # database.
 
 class TagWidget(forms.SelectMultiple):
-    def render(self, name, value, attrs=None, choices=()):
+    def render(self, name, value, attrs=None, renderer=None):
         if value is None:
             value = []
         final_attrs = self.build_attrs(attrs, type='text', name=name)
@@ -52,7 +51,7 @@ class TagWidget(forms.SelectMultiple):
         value = set(force_text(v) for v in value)
         selected = []
         all_tags = []
-        for option_value, option_label in chain(self.choices, choices):
+        for option_value, option_label in self.choices:
             option_value = force_text(option_value)
             option_label = force_text(option_label)
             if option_value in value:

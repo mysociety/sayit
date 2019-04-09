@@ -24,6 +24,7 @@ try:
 except:
     v01_api = None
 
+app_name = 'speeches'
 urlpatterns = [
     url(r'^$', InstanceView.as_view(), name='home'),
 

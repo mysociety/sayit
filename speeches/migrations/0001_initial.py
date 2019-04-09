@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('audio', models.FileField(max_length=255, upload_to='recordings/%Y-%m-%d/')),
                 ('start_datetime', models.DateTimeField(help_text='Datetime of first timestamp associated with recording', null=True, blank=True)),
                 ('audio_duration', models.IntegerField(help_text='Duration of recording, in seconds', blank=True, default=0)),
-                ('instance', models.ForeignKey(to='instances.Instance')),
+                ('instance', models.ForeignKey(to='instances.Instance', on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -40,8 +40,8 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('timestamp', models.DateTimeField(db_index=True)),
-                ('instance', models.ForeignKey(to='instances.Instance')),
-                ('recording', models.ForeignKey(related_name='timestamps', to='speeches.Recording', default=0)),
+                ('instance', models.ForeignKey(to='instances.Instance', on_delete=models.CASCADE)),
+                ('recording', models.ForeignKey(related_name='timestamps', to='speeches.Recording', default=0, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('timestamp',),
@@ -65,8 +65,8 @@ class Migration(migrations.Migration):
                 ('session', models.TextField(help_text='Legislative session', verbose_name='session', blank=True)),
                 ('slug', sluggable.fields.SluggableField(verbose_name='slug')),
                 ('source_url', models.TextField(verbose_name='source URL', blank=True)),
-                ('instance', models.ForeignKey(to='instances.Instance')),
-                ('parent', models.ForeignKey(related_name='children', to='speeches.Section', null=True, blank=True, verbose_name='parent')),
+                ('instance', models.ForeignKey(to='instances.Instance', on_delete=models.CASCADE)),
+                ('parent', models.ForeignKey(related_name='children', to='speeches.Section', null=True, blank=True, verbose_name='parent', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('id',),
@@ -83,7 +83,7 @@ class Migration(migrations.Migration):
                 ('slug', models.CharField(max_length=255, verbose_name='URL', db_index=True)),
                 ('redirect', models.BooleanField(default=False, verbose_name='Redirection')),
                 ('created', models.DateTimeField(auto_now_add=True)),
-                ('content_type', models.ForeignKey(to='contenttypes.ContentType')),
+                ('content_type', models.ForeignKey(to='contenttypes.ContentType', on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -93,10 +93,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Speaker',
             fields=[
-                ('person_ptr', models.OneToOneField(to='popolo.Person', auto_created=True, parent_link=True, serialize=False, primary_key=True)),
+                ('person_ptr', models.OneToOneField(to='popolo.Person', auto_created=True, parent_link=True, serialize=False, primary_key=True, on_delete=models.CASCADE)),
                 ('slug', sluggable.fields.SluggableField(verbose_name='slug')),
                 ('image_cache', easy_thumbnails.fields.ThumbnailerImageField(help_text='If image is set, a local copy will be stored here.', null=True, upload_to=speeches.models.upload_to, verbose_name='image_cache', blank=True)),
-                ('instance', models.ForeignKey(to='instances.Instance')),
+                ('instance', models.ForeignKey(to='instances.Instance', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('name',),
@@ -127,7 +127,7 @@ class Migration(migrations.Migration):
                 ('public', models.BooleanField(help_text='Is this speech public?', verbose_name='public', default=True)),
                 ('source_url', models.TextField(verbose_name='source URL', blank=True)),
                 ('celery_task_id', models.CharField(null=True, max_length=256, verbose_name='celery task ID', blank=True)),
-                ('instance', models.ForeignKey(to='instances.Instance')),
+                ('instance', models.ForeignKey(to='instances.Instance', on_delete=models.CASCADE)),
                 ('section', models.ForeignKey(to='speeches.Section', help_text='The section that this speech is contained in', null=True, blank=True, on_delete=django.db.models.deletion.SET_NULL, verbose_name='Section')),
                 ('speaker', models.ForeignKey(to='speeches.Speaker', help_text='Who gave this speech?', null=True, blank=True, on_delete=django.db.models.deletion.SET_NULL, verbose_name='speaker')),
             ],
@@ -145,7 +145,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(unique=True, max_length=100)),
-                ('instance', models.ForeignKey(to='instances.Instance')),
+                ('instance', models.ForeignKey(to='instances.Instance', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'tag',

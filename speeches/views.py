@@ -3,7 +3,7 @@ import json
 from six import string_types
 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse, reverse_lazy, resolve
+from django.urls import reverse, reverse_lazy, resolve
 from django.core import serializers
 from django.contrib import messages
 from django.forms import Form

@@ -18,27 +18,27 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recording',
             name='instance',
-            field=models.ForeignKey(verbose_name='instance', to='instances.Instance'),
+            field=models.ForeignKey(verbose_name='instance', to='instances.Instance', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='recordingtimestamp',
             name='instance',
-            field=models.ForeignKey(verbose_name='instance', to='instances.Instance'),
+            field=models.ForeignKey(verbose_name='instance', to='instances.Instance', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='section',
             name='instance',
-            field=models.ForeignKey(verbose_name='instance', to='instances.Instance'),
+            field=models.ForeignKey(verbose_name='instance', to='instances.Instance', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='speaker',
             name='instance',
-            field=models.ForeignKey(verbose_name='instance', to='instances.Instance'),
+            field=models.ForeignKey(verbose_name='instance', to='instances.Instance', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='speech',
             name='instance',
-            field=models.ForeignKey(verbose_name='instance', to='instances.Instance'),
+            field=models.ForeignKey(verbose_name='instance', to='instances.Instance', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='speech',
@@ -48,6 +48,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='tag',
             name='instance',
-            field=models.ForeignKey(verbose_name='instance', to='instances.Instance'),
+            field=models.ForeignKey(verbose_name='instance', to='instances.Instance', on_delete=models.CASCADE),
         ),
     ]

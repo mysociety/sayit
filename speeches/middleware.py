@@ -1,13 +1,16 @@
 from instances.models import Instance
 
 
-class InstanceMiddleware:
+def InstanceMiddleware(get_response):
     """This middleware sets request.instance to the default Instance for all
     requests. This can be changed/overridden if you use SayIt in a way that
     uses multiple instances."""
-    def process_request(self, request):
+    def middleware(request):
         request.instance, _ = Instance.objects.get_or_create(label='default')
         request.is_user_instance = (
-            hasattr(request, 'user') and request.user.is_authenticated() and
+            hasattr(request, 'user') and request.user.is_authenticated and
             (request.instance in request.user.instances.all() or request.user.is_superuser)
         )
+        return get_response(request)
+
+    return middleware

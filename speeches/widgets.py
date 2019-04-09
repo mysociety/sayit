@@ -15,7 +15,7 @@ class AudioFileInput(ClearableFileInput):
         u'%(clear_checkbox_label)s</label>'
 
     # Overridden whole function to provide nicer input button
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         substitutions = {
             'initial_text': self.initial_text,
             'input_text': self.input_text,
@@ -25,7 +25,7 @@ class AudioFileInput(ClearableFileInput):
             'pretty_input_end': self.pretty_input_end,
         }
         template = u'%(pretty_input_start)s%(input)s%(pretty_input_end)s'
-        substitutions['input'] = super(ClearableFileInput, self).render(name, value, attrs)
+        substitutions['input'] = super(ClearableFileInput, self).render(name, value, attrs, renderer)
 
         if value and hasattr(value, "url"):
             template = self.template_with_initial
@@ -36,7 +36,8 @@ class AudioFileInput(ClearableFileInput):
                 checkbox_id = self.clear_checkbox_id(checkbox_name)
                 substitutions['clear_checkbox_name'] = conditional_escape(checkbox_name)
                 substitutions['clear_checkbox_id'] = conditional_escape(checkbox_id)
-                substitutions['clear'] = CheckboxInput().render(checkbox_name, False, attrs={'id': checkbox_id})
+                substitutions['clear'] = CheckboxInput().render(
+                    checkbox_name, False, attrs={'id': checkbox_id}, renderer=renderer)
                 substitutions['clear_template'] = self.template_with_clear % substitutions
 
         return mark_safe(template % substitutions)
@@ -61,7 +62,7 @@ class DatePickerWidget(DateInput):
     http://foundation-datepicker.peterbeno.com/example.html
     """
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         """Extend the output to return a foundation-datepicker."""
 
         # Set a placeholder attribute - this should be the right thing
@@ -85,7 +86,7 @@ class DatePickerWidget(DateInput):
 
         return mark_safe(
             u'<div class="input-append">' +
-            super(DatePickerWidget, self).render(name, value, attrs) +
+            super(DatePickerWidget, self).render(name, value, attrs, renderer) +
             u'</div>'
             )
 
@@ -101,10 +102,10 @@ class TimePickerWidget(TimeInput):
     replace this with a time picker of some sort.
     """
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         """Extend the output to include a placeholder."""
 
         # Set a placeholder attribute
         attrs['placeholder'] = _('hh:mm')
 
-        return super(TimePickerWidget, self).render(name, value, attrs)
+        return super(TimePickerWidget, self).render(name, value, attrs, renderer)

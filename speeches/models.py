@@ -7,6 +7,7 @@ from six.moves.urllib.parse import urlsplit
 from six.moves.urllib.request import urlretrieve
 from six.moves.urllib.error import HTTPError
 
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _, ugettext
 from django.db import models
 from django.db.models import Q
@@ -173,13 +174,11 @@ class Speaker(InstanceMixin, Person):
         id = ('%s' % self.person_ptr_id).encode()
         return hashlib.sha1(id).hexdigest()[:6]
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('speeches:speaker-view', (), {'slug': self.slug})
+        return reverse('speeches:speaker-view', kwargs={'slug': self.slug})
 
-    @models.permalink
     def get_edit_url(self):
-        return ('speeches:speaker-edit', (), {'pk': self.person_ptr_id})
+        return reverse('speeches:speaker-edit', kwargs={'pk': self.person_ptr_id})
 
 
 @python_2_unicode_compatible
@@ -239,6 +238,7 @@ class Section(AuditedModel, InstanceMixin):
         _('session'), blank=True, help_text=_('Legislative session'))
     parent = models.ForeignKey(
         'self', verbose_name=_('parent'), null=True, blank=True,
+        on_delete=models.CASCADE,
         related_name='children')
     slug = SluggableField(
         _('slug'), unique_with=('parent', 'instance'), populate_from='title', always_update=True)
@@ -488,17 +488,14 @@ class Section(AuditedModel, InstanceMixin):
 
         return sorted(dqs, key=lambda s: getattr(s, 'speech_min', max_datetime))
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('speeches:section-view', (), {'full_slug': self.get_path})
+        return reverse('speeches:section-view', kwargs={'full_slug': self.get_path})
 
-    @models.permalink
     def get_edit_url(self):
-        return ('speeches:section-edit', (), {'pk': self.id})
+        return reverse('speeches:section-edit', kwargs={'pk': self.id})
 
-    @models.permalink
     def get_delete_url(self):
-        return ('speeches:section-delete', (), {'pk': self.id})
+        return reverse('speeches:section-delete', kwargs={'pk': self.id})
 
     @cache
     def get_path(self):
@@ -712,17 +709,14 @@ class Speech(InstanceMixin, AudioMP3Mixin, AuditedModel):
         else:
             return None
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('speeches:speech-view', (), {'pk': self.id})
+        return reverse('speeches:speech-view', kwargs={'pk': self.id})
 
-    @models.permalink
     def get_edit_url(self):
-        return ('speeches:speech-edit', (), {'pk': self.id})
+        return reverse('speeches:speech-edit', kwargs={'pk': self.id})
 
-    @models.permalink
     def get_delete_url(self):
-        return ('speeches:speech-delete', (), {'pk': self.id})
+        return reverse('speeches:speech-delete', kwargs={'pk': self.id})
 
     def get_next_speech(self):
         """Return the next speech to this one in the same section, in a start
@@ -805,6 +799,7 @@ class RecordingTimestamp(InstanceMixin, AuditedModel):
     speech = models.ForeignKey(Speech, blank=True, null=True, on_delete=models.SET_NULL)
     recording = models.ForeignKey(
         'Recording', blank=False, null=False, related_name='timestamps',
+        on_delete=models.CASCADE,
         default=0)  # kludge default 0, should not be used
 
     class Meta:
@@ -832,9 +827,8 @@ class Recording(InstanceMixin, AudioMP3Mixin, AuditedModel):
     def __str__(self):
         return u'Recording made %s ago' % timesince(self.created)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('speeches:recording-view', (), {'pk': self.id})
+        return reverse('speeches:recording-view', kwargs={'pk': self.id})
 
     def add_speeches_to_section(self, section):
         return Speech.objects.filter(recordingtimestamp__recording=self).update(section=section)

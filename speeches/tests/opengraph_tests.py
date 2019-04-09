@@ -139,13 +139,13 @@ class OpenGraphTests(OverrideMediaRootMixin, InstanceTestCase):
 
         self.assert_opengraph_matches(
             self.client.get('/speech/%s' % self.speech_long_html_description.id),
-            {'title': u'\u201cBut I must explain to you how ...\u201d :: SayIt',
+            {'title': re.compile(u'\u201cBut I must explain to you how (...|\u2026)\u201d :: SayIt'),
              'url': 'http://testing.example.org:8000/speech/%s' % self.speech_long_html_description.id,
              'site_name': 'SayIt',
-             'description': (
+             'description': re.compile(
                  'But I must explain to you how all this mistaken idea of '
                  'denouncing pleasure and praising pain was born and I will '
-                 'give you a complete account of the system, ...'),
+                 u'give you a complete account of the system, (...|\u2026)'),
              'type': 'website',
              'image': re.compile('http://testing.example.org:8000/uploads/speakers/default/image.*.jpg'),
              }

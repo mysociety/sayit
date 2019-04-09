@@ -29,6 +29,10 @@ class SpeechFormTests(InstanceTestCase):
         if(os.path.exists(speeches_folder)):
             shutil.rmtree(speeches_folder)
 
+    def assertEqualWithOrWithoutSlash(self, a, b):
+        bb = b.replace('<br />', '<br>')
+        self.assertIn(a, [b, bb])
+
     def test_add_speech_page_exists(self):
         # Test that the page exists and has the right title
         resp = self.client.get('/speech/add')
@@ -278,7 +282,7 @@ class SpeechFormTests(InstanceTestCase):
 
         orig_text = 'This is a Steve speech\nAfter break\n\nNew paragraph'
         with_speaker_text = '<p>This is a Steve speech<br />After break</p>\n\n<p>New paragraph</p>'
-        no_speaker_text = 'This is a Steve speech<br />After break<br />\nNew paragraph'
+        no_speaker_text = 'This is a Steve speech<br />After break<br>\nNew paragraph'
 
         resp = self.client.post('/speech/add', {
             'text': orig_text,
@@ -286,7 +290,7 @@ class SpeechFormTests(InstanceTestCase):
         })
 
         speech = Speech.objects.get(speaker_id=speaker.id)
-        self.assertEqual(speech.text, with_speaker_text)
+        self.assertEqualWithOrWithoutSlash(speech.text, with_speaker_text)
         self.assertEqual(speech.type, 'speech')
 
         resp = self.client.get('/speech/{}/edit'.format(speech.id))
@@ -298,7 +302,7 @@ class SpeechFormTests(InstanceTestCase):
             )
 
         speech = Speech.objects.get(id=speech.id)
-        self.assertEqual(speech.text, no_speaker_text)
+        self.assertEqualWithOrWithoutSlash(speech.text, no_speaker_text)
         self.assertEqual(speech.type, 'narrative')
 
         resp = self.client.get('/speech/{}/edit'.format(speech.id))
@@ -310,7 +314,7 @@ class SpeechFormTests(InstanceTestCase):
             )
 
         speech = Speech.objects.get(speaker_id=speaker.id)
-        self.assertEqual(speech.text, with_speaker_text)
+        self.assertEqualWithOrWithoutSlash(speech.text, with_speaker_text)
         self.assertEqual(speech.type, 'speech')
 
     def test_add_speech_with_audio(self):
@@ -358,9 +362,9 @@ class SpeechFormTests(InstanceTestCase):
         text = "First line.\nAfter break.\n\nAfter another break."
         self.client.post('/speech/add', {'text': text})
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(
+        self.assertEqualWithOrWithoutSlash(
             speech.text,
-            'First line.<br />After break.<br />\nAfter another break.'
+            'First line.<br />After break.<br>\nAfter another break.'
             )
 
         resp = self.client.get("/speech/%d/edit" % speech.id)
@@ -374,7 +378,7 @@ class SpeechFormTests(InstanceTestCase):
             {'text': text, 'speaker': speaker.id},
             )
         speech = Speech.objects.order_by('-id')[0]
-        self.assertEqual(
+        self.assertEqualWithOrWithoutSlash(
             speech.text,
             '<p>First line.<br />After break.</p>\n\n<p>New paragraph.</p>'
             )
@@ -396,7 +400,7 @@ class SpeechFormTests(InstanceTestCase):
         speech = Speech.objects.order_by('-id')[0]
         self.assertEqual(
             speech.text,
-            "Test<br />string<br />\nSecond paragraph<br />\nThird paragraph<br />\nFourth paragraph"
+            "Test<br />string<br>\nSecond paragraph<br>\nThird paragraph<br>\nFourth paragraph"
             )
 
     def test_add_speech_with_html_and_speaker(self):

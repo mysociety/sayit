@@ -30,10 +30,10 @@ if 'test' in sys.argv:
 
 urlpatterns += [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
 
-    url(r'^accounts/login/$', auth_views.login, name='login'),
-    url(r'^accounts/logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    url(r'^accounts/login/$', auth_views.LoginView.as_view(), name='login'),
+    url(r'^accounts/logout/$', auth_views.LogoutView.as_view(), {'next_page': '/'}, name='logout'),
 
-    url(r'^', include('speeches.urls', app_name='speeches', namespace='speeches')),
+    url(r'^', include('speeches.urls', namespace='speeches')),
 ]

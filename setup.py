@@ -24,7 +24,7 @@ else:
 if os.environ.get('TOX'):
     django = 'Django >= 1.11'
 else:
-    django = 'Django >= 1.11, < 2.0'
+    django = 'Django >= 1.11, < 3.0'
 
 setup(
     name="django-sayit",
@@ -42,14 +42,14 @@ setup(
         'six >= 1.4.1',
         django,
         'lxml',
-        'mysociety-Django-Select2 == 4.3.2.1',
+        'mysociety-Django-Select2 == 4.3.2.2',
         'audioread >= 1.0.1',
         'elasticsearch >= 0.4',
-        'django-haystack >= 2.5, < 2.6',
+        'django-haystack >= 2.8, < 2.9',
         'django-bleach >= 0.5.2',
-        'mysociety-django-popolo >= 0.0.5',
-        'mysociety-django-sluggable >= 0.2.7',
-        'django-subdomain-instances >= 2.0',
+        'mysociety-django-popolo >= 0.1.0',
+        'mysociety-django-sluggable >= 0.6.1.1',
+        'django-subdomain-instances >= 3.0.2',
         'easy-thumbnails >= 2.4.1',
         'unicode-slugify == 0.1.1',
     ] + ssl,
