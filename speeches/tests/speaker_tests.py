@@ -170,7 +170,7 @@ class SpeakerTests(OverrideMediaRootMixin, InstanceTestCase):
         assertRegex(
             self,
             smart_text(s2.image_cache),
-            u'^speakers/default/image\u1f60%s_.{7}\.jpg$' % sixtyfive,
+            u'^speakers/default/image\u1f60%s_.{7}\\.jpg$' % sixtyfive,
             )
 
     def test_add_speaker_with_whitespace(self):

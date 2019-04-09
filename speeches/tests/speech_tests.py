@@ -589,7 +589,7 @@ class SpeechViewTests(InstanceTestCase):
         )
 
         resp = self.client.get('/section/%d' % section.id)
-        self.assertRegexpMatches(resp.content.decode(), '>\s+1 Jan 2000\s+&ndash;\s+2 Jan 2000\s+<')
+        self.assertRegexpMatches(resp.content.decode(), r'>\s+1 Jan 2000\s+&ndash;\s+2 Jan 2000\s+<')
 
     def test_speech_page_has_buttons_to_edit(self):
         # Add a section

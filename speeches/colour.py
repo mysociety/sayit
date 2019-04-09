@@ -16,8 +16,8 @@ def relative_luminance(h):
     r = rel_calc(h[0:2])
     g = rel_calc(h[2:4])
     b = rel_calc(h[4:6])
-    l = 0.2126 * r + 0.7152 * g + 0.0722 * b
-    return l
+    luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    return luminance
 
 
 def contrast_ratio(l1, l2):

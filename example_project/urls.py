@@ -23,7 +23,7 @@ if 'test' in sys.argv:
         url(r'^%s(?P<path>.*)$' % static_url, static_views.serve, {
             'insecure': True,
         }),
-        url('^(?P<path>favicon\.ico)$', static_views.serve, {
+        url(r'^(?P<path>favicon\.ico)$', static_views.serve, {
             'insecure': True,
         }),
     ]
