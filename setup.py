@@ -22,9 +22,9 @@ else:
     ]
 
 if os.environ.get('TOX'):
-    django = 'Django >= 1.8.5'
+    django = 'Django >= 1.11'
 else:
-    django = 'Django >= 1.8.5, < 2.0'
+    django = 'Django >= 1.11, < 2.0'
 
 setup(
     name="django-sayit",
