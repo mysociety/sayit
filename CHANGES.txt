@@ -1,3 +1,9 @@
+v2.0, 2019-04-10
+    * Django 2 support.
+    * Drop support for Django before 1.11.
+    * Test fixes for changes on Travis.
+    * Add config for ffmpeg binary name.
+
 v1.5, 2017-06-16
     * Django 1.10 and 1.11 support.
 
